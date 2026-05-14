@@ -1,7 +1,30 @@
+# Environments
+.env
 .venv/
+env/
+venv/
+ENV/
+
+# Python Bytecode
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Vector Databases and Storage
 chroma_db/
 my_chroma_db/
-uploaded_docs/
 *.faiss
-*.json
+*.chunks.json
+
+# Uploaded Files
+uploaded_docs/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
