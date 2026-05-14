@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trust Before Text | Retrieval Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon"></div>
+                <h1>Trust Before Text</h1>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>Corpus Stats</h3>
+                    <div id="stats-container" class="stats-panel">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Chunks</span>
+                            <span id="total-chunks" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Documents</span>
+                            <span id="unique-docs" class="stat-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Add Knowledge</h3>
+                    <div class="upload-area" id="drop-zone">
+                        <input type="file" id="file-input" accept=".txt" hidden>
+                        <div class="upload-icon">↑</div>
+                        <p>Drop a .txt file here</p>
+                        <button class="btn-secondary" onclick="document.getElementById('file-input').click()">Browse Files</button>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Actions</h3>
+                    <button id="reset-btn" class="btn-danger">Reset Index</button>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>Retrieval Module v2.0</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h2>Retrieval Module Explorer</h2>
+                <div class="header-actions">
+                    <span class="status-indicator online">System Ready</span>
+                </div>
+            </header>
+
+            <section class="query-section">
+                <div class="query-bar-container">
+                    <input type="text" id="query-input" placeholder="Ask a question to see retrieved evidence..." autocomplete="off">
+                    <button id="query-btn" class="btn-primary">
+                        <span>Search</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="results-section">
+                <div class="results-header">
+                    <h3>Retrieved Evidence</h3>
+                    <div id="results-count" class="badge">0 Results</div>
+                </div>
+                
+                <div id="results-container" class="results-grid">
+                    <!-- Results will be injected here -->
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <h3>No evidence retrieved yet</h3>
+                        <p>Ask a question or upload a document to get started.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notifications -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
