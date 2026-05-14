@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+chroma_db/
+my_chroma_db/
+uploaded_docs/
+*.faiss
+*.json
