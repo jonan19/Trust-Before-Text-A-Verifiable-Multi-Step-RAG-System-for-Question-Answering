@@ -1,0 +1,7 @@
+Trust Before Text is a RAG-based system designed to maximize retrieval recall.
+It uses modern embedding models like Sentence Transformers to represent knowledge.
+The system is built with modularity in mind, allowing for easy integration with different vector stores like ChromaDB.
+This documentation provides an overview of the retrieval module's capabilities.
+Users can add their own text data to enhance the knowledge base.
+Dynamic querying allows for real-time interaction with the retrieved evidence.
+The UI is designed to be clean and intuitive, suitable for demonstrations.
