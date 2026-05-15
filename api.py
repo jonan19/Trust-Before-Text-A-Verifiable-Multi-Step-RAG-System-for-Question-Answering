@@ -92,8 +92,8 @@ async def upload_file(
     chunker: DocumentChunker = Depends(get_chunker)
 ):
     """Upload a file and index its contents"""
-    if not file.filename.endswith('.txt'):
-        raise HTTPException(status_code=400, detail="Only .txt files are supported for now.")
+    if not (file.filename.endswith('.txt') or file.filename.endswith('.pdf') or file.filename.endswith('.docx')):
+        raise HTTPException(status_code=400, detail="Only .txt, .pdf, and .docx files are supported.")
     
     file_path = UPLOAD_DIR / file.filename
     with file_path.open("wb") as buffer:
@@ -101,7 +101,7 @@ async def upload_file(
     
     try:
         # Load and chunk the document
-        text = DocumentLoader.load_txt(str(file_path))
+        text = DocumentLoader.load_document(str(file_path))
         chunks = chunker.chunk_document(text, source_document=file.filename, metadata={"filepath": str(file_path)})
         
         # Index chunks
