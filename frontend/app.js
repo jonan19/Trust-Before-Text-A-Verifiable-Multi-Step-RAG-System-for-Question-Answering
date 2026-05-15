@@ -90,8 +90,9 @@ async function handleQuery() {
 }
 
 async function uploadFile(file) {
-    if (!file.name.endsWith('.txt')) {
-        showNotification('Only .txt files are supported', 'error');
+    const allowedExtensions = ['.txt', '.pdf', '.docx'];
+    if (!allowedExtensions.some(ext => file.name.toLowerCase().endsWith(ext))) {
+        showNotification('Only .txt, .pdf, and .docx files are supported', 'error');
         return;
     }
 
