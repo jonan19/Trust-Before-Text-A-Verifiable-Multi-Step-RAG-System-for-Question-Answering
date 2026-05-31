@@ -1,5 +1,5 @@
 """
-validation.py — V3 Validation Pipeline for the Trust Before Text RAG system.
+validation.py — V4 Validation Pipeline for the Trust Before Text RAG system.
 
 Pipeline (7 stages, all deterministic — no LLM):
 
@@ -10,6 +10,22 @@ Pipeline (7 stages, all deterministic — no LLM):
     Stage 5  Evidence Sufficiency       heuristic: count + avg-score + coverage
     Stage 6  Evidence Structuring       add rank field, enforce descending-score order
     Stage 7  Abstention Decision        named reason: "conflict" | "insufficient" | None
+
+V3 changes vs V2:
+    - validate() receives query string for Stage 3 relevance filtering
+    - make_decision() reads abstention_reason for richer routing
+    - Verbose output shows relevant_count, abstention_reason, evidence ranks
+
+V4 changes:
+    - Stage 3 (filter_by_relevance): if chunks already carry a `relevance_score`
+      set by the retrieval module (embedding-based), those scores are used
+      directly — the TF-cosine recomputation is skipped. This is both faster
+      and more accurate (semantic vs lexical relevance).
+    - _has_numeric_contradiction: upgraded from "first number only" to a
+      unit-context-aware comparison. Numbers are only flagged as contradictory
+      when both texts reference the SAME unit (e.g. "days", "months", "%") with
+      different values. "20 days annual leave" vs "5 working days notice" no
+      longer triggers a false positive because "working_day" ≠ "day" in context.
 
 Public interface:
     validate(chunks, query="") -> dict
@@ -36,7 +52,7 @@ from utils import clean_text, compute_query_similarity, compute_chunk_similarity
 # Thresholds — tune as needed
 # ---------------------------------------------------------------------------
 DUPLICATE_SIM_THRESHOLD: float  = 0.90   # cosine sim >= this -> duplicate
-RELEVANCE_RATIO_THRESHOLD: float = 0.30  # keep chunk if sim >= best_sim * ratio (broad enough for multi-topic queries)
+RELEVANCE_RATIO_THRESHOLD: float = 0.30  # keep chunk if sim >= best_sim * ratio
 MIN_RELEVANCE_SCORE: float       = 0.05  # absolute floor (catches fully off-topic chunks)
 MIN_CHUNKS_FOR_SUFFICIENCY: int  = 1     # at least this many relevant chunks needed
 MIN_AVG_SCORE_FOR_SUFFICIENCY: float = 0.65  # avg retrieval score threshold
@@ -59,7 +75,6 @@ _CONTRADICTION_PAIRS: list[tuple[str, str]] = [
     ("mandatory",     "optional"),
     ("required",      "not required"),
     ("compulsory",    "voluntary"),
-    ("must",          "may"),
     # Capability
     ("cannot",        "can"),
     ("cannot",        "able to"),
@@ -67,7 +82,6 @@ _CONTRADICTION_PAIRS: list[tuple[str, str]] = [
     # Logical
     ("never",         "always"),
     ("no",            "yes"),
-    ("not",           "is"),
     # Approval workflow
     ("deny",          "approve"),
     ("rejected",      "approved"),
@@ -77,6 +91,20 @@ _CONTRADICTION_PAIRS: list[tuple[str, str]] = [
     ("expired",       "valid"),
     ("discontinued",  "available"),
 ]
+
+# ---------------------------------------------------------------------------
+# Unit pattern for numeric-contradiction detection  (V4 — context-aware)
+# ---------------------------------------------------------------------------
+# Captures: value, optional qualifier ("working", "calendar", "business"),
+# and the unit noun (days, weeks, months, years, hours, percent, %).
+# Qualifiers are kept to distinguish "working days" from plain "days".
+_UNIT_PATTERN = re.compile(
+    r"(\d+(?:\.\d+)?)"          # numeric value
+    r"\s*"
+    r"(calendar\s+|working\s+|business\s+)?"  # optional qualifier
+    r"(days?|weeks?|months?|years?|hours?|employees?|percent|%)",
+    re.IGNORECASE,
+)
 
 
 # ===========================================================================
@@ -88,13 +116,61 @@ def _extract_numbers(text: str) -> list[float]:
     return [float(n) for n in re.findall(r"\b\d+(?:\.\d+)?\b", text)]
 
 
+def _extract_numbers_with_unit(text: str) -> list[tuple[float, str]]:
+    """
+    Extract (value, context_key) pairs from *text*.
+
+    context_key is a normalised string combining the optional qualifier and
+    the unit, e.g.:
+        "20 days"          → (20.0, "day")
+        "5 working days"   → (5.0,  "working_day")
+        "15 calendar days" → (15.0, "calendar_day")
+        "10%"              → (10.0, "%")
+    """
+    results: list[tuple[float, str]] = []
+    for m in _UNIT_PATTERN.finditer(text):
+        val       = float(m.group(1))
+        qualifier = (m.group(2) or "").strip().lower()          # "working", "calendar", ""
+        unit      = m.group(3).lower().rstrip("s")              # normalise plural: days→day
+        ctx_key   = f"{qualifier}_{unit}" if qualifier else unit
+        results.append((val, ctx_key))
+    return results
+
+
 def _has_numeric_contradiction(text_a: str, text_b: str) -> bool:
     """
-    Return True if both texts contain numbers and their PRIMARY numeric
-    values differ by more than a rounding epsilon.
+    V4: Unit-context-aware numeric contradiction detection.
+
+    A contradiction is flagged only when both texts state a DIFFERENT numeric
+    value for the SAME unit context (e.g. "20 days" vs "15 days").
+
+    "20 days annual leave" vs "5 working days notice" does NOT trigger because
+    their context keys differ: "day" vs "working_day".
+
+    Falls back to the first-number comparison when no unit context is found
+    in either text (e.g. pure numeric config values).
 
     Scoped to same-section pairs only in the caller to reduce false positives.
     """
+    pairs_a = _extract_numbers_with_unit(text_a)
+    pairs_b = _extract_numbers_with_unit(text_b)
+
+    if pairs_a and pairs_b:
+        # Build lookup: unit_context → best (minimum) value in text_a
+        by_unit_a: dict[str, float] = {}
+        for val, ctx in pairs_a:
+            # Keep the first occurrence per context key (most prominent value)
+            if ctx not in by_unit_a:
+                by_unit_a[ctx] = val
+
+        # Compare text_b's (value, context) pairs against text_a's lookup
+        for val_b, ctx_b in pairs_b:
+            if ctx_b in by_unit_a:
+                if abs(by_unit_a[ctx_b] - val_b) > 0.01:
+                    return True   # same unit context, different values → contradiction
+        return False
+
+    # Fallback: no unit context found in at least one text → use first numbers
     nums_a = _extract_numbers(text_a)
     nums_b = _extract_numbers(text_b)
     if not nums_a or not nums_b:
@@ -107,16 +183,26 @@ def _has_keyword_contradiction(text_a: str, text_b: str) -> bool:
     Check whether the two texts express contradictory stances using the
     expanded _CONTRADICTION_PAIRS list.
 
+    V4: Uses whole-word (word-boundary) regex matching instead of substring
+    'in' checks. This prevents false positives where common words appear as
+    substrings inside longer words — e.g. "is" matching inside "decisions",
+    "increases", "basis"; or "no" matching inside "not", "note", "know".
+
     Logic: for each (neg, pos) pair —
-        - If A contains *neg* and B contains *pos*  (but NOT neg) → flag
-        - If B contains *neg* and A contains *pos*  (but NOT neg) → flag
+        - If A contains *neg* (as whole word) and B contains *pos* (but NOT neg) → flag
+        - If B contains *neg* (as whole word) and A contains *pos* (but NOT neg) → flag
     """
     a, b = text_a.lower(), text_b.lower()
+
+    def _contains(text: str, phrase: str) -> bool:
+        """True if *phrase* appears as a whole-word match in *text*."""
+        return bool(re.search(r"\b" + re.escape(phrase) + r"\b", text))
+
     for neg, pos in _CONTRADICTION_PAIRS:
-        a_neg = neg in a
-        b_neg = neg in b
-        a_pos = pos in a
-        b_pos = pos in b
+        a_neg = _contains(a, neg)
+        b_neg = _contains(b, neg)
+        a_pos = _contains(a, pos)
+        b_pos = _contains(b, pos)
 
         # Directional: one clearly asserts neg, the other clearly asserts pos
         if (a_neg and not b_neg and b_pos) or (b_neg and not a_neg and a_pos):
@@ -172,6 +258,9 @@ def remove_duplicates(chunks: list[dict]) -> list[dict]:
     Sorted descending by retrieval score so that when two chunks are
     near-duplicates the higher-scoring one is retained.
     Threshold: DUPLICATE_SIM_THRESHOLD (default 0.90).
+
+    compute_chunk_similarity is LRU-cached (utils.py) so repeated pair
+    comparisons across pipeline retries are not recomputed.
     """
     sorted_chunks = sorted(chunks, key=lambda c: c.get("score", 0.0), reverse=True)
     kept: list[dict] = []
@@ -189,44 +278,59 @@ def remove_duplicates(chunks: list[dict]) -> list[dict]:
 
 
 # ===========================================================================
-# Stage 3 — Relevance Filtering  (NEW in V3)
+# Stage 3 — Relevance Filtering  (upgraded in V4)
 # ===========================================================================
 
 def filter_by_relevance(chunks: list[dict], query: str) -> list[dict]:
     """
     Stage 3: Keep only chunks that are sufficiently relevant to the query.
 
-    Strategy (deterministic, no ML model required):
-        1. Compute TF-cosine similarity between the query and each chunk text.
-        2. Find the best similarity score across all chunks.
-        3. Keep any chunk whose similarity >= best_sim * RELEVANCE_RATIO_THRESHOLD
-           AND >= MIN_RELEVANCE_SCORE (absolute floor).
+    V4 upgrade — two-path strategy:
+
+    Path A (preferred): If chunks already carry a `relevance_score` set by
+        the retrieval module, those embedding-based scores are used directly.
+        This avoids recomputing TF-cosine similarity and produces better
+        relevance estimates (semantic > lexical matching).
+
+    Path B (fallback): If no `relevance_score` is present, compute TF-cosine
+        similarity between the query and each chunk text (original V3 behaviour).
+
+    Both paths:
+        1. Find the best relevance score across all chunks.
+        2. Keep chunks with score >= best * RELEVANCE_RATIO_THRESHOLD
+           AND >= MIN_RELEVANCE_SCORE.
 
     If query is empty or all chunks already pass, the list is returned as-is.
-    Each chunk gets an additional "relevance_score" key for downstream use.
     """
     if not query.strip() or not chunks:
-        return [{**c, "relevance_score": 1.0} for c in chunks]
+        return [{**c, "relevance_score": c.get("relevance_score", 1.0)} for c in chunks]
 
-    # Score every chunk
-    scored = [
-        {**chunk, "relevance_score": round(compute_query_similarity(query, chunk["text"]), 4)}
-        for chunk in chunks
-    ]
+    # Determine which path to use
+    has_embedding_scores = all("relevance_score" in c for c in chunks)
+
+    if has_embedding_scores:
+        # Path A: use pre-computed embedding-based relevance scores
+        scored = list(chunks)   # scores already present; no recomputation needed
+    else:
+        # Path B: compute TF-cosine as fallback
+        scored = [
+            {**chunk, "relevance_score": round(compute_query_similarity(query, chunk["text"]), 4)}
+            for chunk in chunks
+        ]
 
     best_sim = max(c["relevance_score"] for c in scored)
 
-    # If best score is effectively zero everything is off-topic
+    # If best score is effectively zero, everything is off-topic
     if best_sim < MIN_RELEVANCE_SCORE:
         return []
 
-    cutoff = best_sim * RELEVANCE_RATIO_THRESHOLD
+    cutoff   = best_sim * RELEVANCE_RATIO_THRESHOLD
     relevant = [c for c in scored if c["relevance_score"] >= cutoff]
     return relevant
 
 
 # ===========================================================================
-# Stage 4 — Evidence Consistency Analysis  (upgraded in V3)
+# Stage 4 — Evidence Consistency Analysis  (upgraded in V3 + V4)
 # ===========================================================================
 
 def detect_conflicts(chunks: list[dict]) -> bool:
@@ -239,7 +343,8 @@ def detect_conflicts(chunks: list[dict]) -> bool:
     B) For chunks sharing the same document section:
        apply both keyword AND numeric contradiction checks.
 
-    The expanded _CONTRADICTION_PAIRS list improves coverage over V2.
+    V4: _has_numeric_contradiction now uses unit-context awareness to
+    reduce false positives (e.g. "20 days leave" vs "5 working days notice").
     """
     for i, a in enumerate(chunks):
         for b in chunks[i + 1:]:
@@ -301,7 +406,7 @@ def structure_evidence(chunks: list[dict]) -> list[dict]:
         source          str     originating document
         section         str     section/heading within the document
         score           float   retrieval relevance score from the vector store
-        relevance_score float   query-text cosine similarity (Stage 3 output)
+        relevance_score float   query-text relevance (Stage 3 output)
     """
     sorted_chunks = sorted(chunks, key=lambda c: c.get("score", 0.0), reverse=True)
     structured: list[dict] = []
@@ -347,7 +452,7 @@ def decide_abstention(conflict_flag: bool, sufficiency_flag: bool) -> Optional[s
 
 def validate(chunks: list[dict], query: str = "") -> dict:
     """
-    Run the full V3 7-stage validation pipeline on retrieved chunks.
+    Run the full V4 7-stage validation pipeline on retrieved chunks.
 
     Parameters
     ----------
@@ -373,7 +478,8 @@ def validate(chunks: list[dict], query: str = "") -> dict:
     stage2 = remove_duplicates(stage1)
 
     # ── Stage 3: Relevance Filtering ─────────────────────────────────────────
-    # Adds relevance_score to each chunk; drops off-topic ones.
+    # V4: uses embedding-based relevance_score if already present in chunks
+    # (set by retrieval.py); falls back to TF-cosine if not.
     stage3 = filter_by_relevance(stage2, query)
     relevant_count = len(stage3)
 
@@ -381,17 +487,12 @@ def validate(chunks: list[dict], query: str = "") -> dict:
     # Runs on the RELEVANCE-FILTERED set (stage3).
     # Rationale: a contradiction between two documents should only trigger
     # abstention if both documents are relevant to the current query.
-    # Running on all deduped chunks would produce false-positive conflicts
-    # (e.g., the leave policy contradiction firing for a salary question).
     conflict_flag = detect_conflicts(stage3)
 
     # ── Stage 5: Sufficiency Check ───────────────────────────────────────────
-    # Run on the relevance-filtered set so low-relevance chunks don't inflate
-    # the count and mask an actually-thin evidence pool.
     sufficiency_flag = check_sufficiency(stage3)
 
     # ── Stage 6: Evidence Structuring ────────────────────────────────────────
-    # Only the relevance-filtered chunks are structured and passed to synthesis.
     structured = structure_evidence(stage3)
 
     # ── Stage 7: Abstention Decision ─────────────────────────────────────────

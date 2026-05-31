@@ -6,24 +6,60 @@ Per README:
   * The LLM must not invent information — it answers strictly from context.
   * LLM usage happens ONLY during final answer generation.
 
-This file provides:
-  1. A `generate_answer()` function that wraps the LLM call.
-  2. A clear prompt template that enforces evidence-only answering.
-  3. A deterministic mock for development / testing without an API key.
+Backend priority (first key found wins):
+  1. Groq          — llama-3.3-70b-versatile  (set GROQ_API_KEY)
+  2. OpenAI        — gpt-4o-mini              (set OPENAI_API_KEY)
+  3. Google Gemini — gemini-1.5-flash         (set GEMINI_API_KEY)
+  4. Mock          — deterministic, no key needed
+
+Environment variables are loaded from the .env file in the project root
+(via python-dotenv). Hard-coded env vars still take precedence.
+
+V4 changes:
+  - Added Groq backend (llama-3.3-70b-versatile) as the primary real LLM.
+  - Added python-dotenv support so a .env file is auto-loaded.
+  - Added exponential-backoff retry on all real API calls (max 3 attempts).
+  - max_tokens raised to 1024 for richer answers.
 """
 
 from __future__ import annotations
 
 import os
+import time
+
+# ── Load .env file if present ────────────────────────────────────────────────
+# python-dotenv loads key=value pairs from .env into os.environ.
+# Does nothing if the file is missing or python-dotenv is not installed.
+try:
+    from dotenv import load_dotenv  # type: ignore
+    load_dotenv()
+except ImportError:
+    pass   # dotenv optional — env vars can still be set via shell
 
 # ---------------------------------------------------------------------------
-# Configuration
+# Backend detection  (priority: Groq → OpenAI → Gemini → mock)
 # ---------------------------------------------------------------------------
-# Set the environment variable OPENAI_API_KEY (or equivalent) to use a
-# real LLM backend.  Without it the module falls back to the mock.
-_USE_MOCK: bool = not bool(os.getenv("OPENAI_API_KEY"))
+_GROQ_KEY:   str = os.getenv("GROQ_API_KEY",   "")
+_OPENAI_KEY: str = os.getenv("OPENAI_API_KEY", "")
+_GEMINI_KEY: str = os.getenv("GEMINI_API_KEY", "")
 
-# System prompt — enforces evidence-first, no-invention policy.
+_USE_GROQ:   bool = bool(_GROQ_KEY)
+_USE_OPENAI: bool = bool(_OPENAI_KEY)  and not _USE_GROQ
+_USE_GEMINI: bool = bool(_GEMINI_KEY)  and not _USE_GROQ and not _USE_OPENAI
+_USE_MOCK:   bool = not _USE_GROQ and not _USE_OPENAI and not _USE_GEMINI
+
+# Model names
+_GROQ_MODEL:   str = "llama-3.3-70b-versatile"
+_OPENAI_MODEL: str = "gpt-4o-mini"
+_GEMINI_MODEL: str = "gemini-1.5-flash"
+
+_MAX_TOKENS:  int   = 1024
+_MAX_RETRIES: int   = 3
+_RETRY_DELAY: float = 1.0   # seconds; doubles on each retry
+
+# ---------------------------------------------------------------------------
+# System prompts
+# ---------------------------------------------------------------------------
 _SYSTEM_PROMPT = (
     "You are a precise, evidence-based question-answering assistant. "
     "You MUST answer ONLY using the provided context. "
@@ -31,92 +67,6 @@ _SYSTEM_PROMPT = (
     "say: 'I cannot answer based on the available evidence.' "
     "Do NOT invent, assume, or infer facts beyond what is explicitly stated."
 )
-
-# ---------------------------------------------------------------------------
-# Real LLM backend (OpenAI — swap for any other provider as needed)
-# ---------------------------------------------------------------------------
-
-def _call_openai(query: str, context: str) -> str:
-    """Send query + validated context to OpenAI and return the answer."""
-    try:
-        from openai import OpenAI  # type: ignore
-    except ImportError:
-        raise ImportError(
-            "openai package not installed. Run: pip install openai"
-        )
-
-    client = OpenAI()
-    user_message = (
-        f"Context:\n{context}\n\n"
-        f"Question: {query}\n\n"
-        "Answer strictly from the context above."
-    )
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": _SYSTEM_PROMPT},
-            {"role": "user",   "content": user_message},
-        ],
-        temperature=0.0,   # deterministic output
-        max_tokens=512,
-    )
-    return response.choices[0].message.content.strip()
-
-
-# ---------------------------------------------------------------------------
-# Mock backend (no API key needed)
-# ---------------------------------------------------------------------------
-
-def _call_mock(query: str, context: str) -> str:
-    """
-    Deterministic mock that summarises the context without an LLM.
-    Suitable for development and demonstration.
-    """
-    lines = [line.strip() for line in context.splitlines() if line.strip()]
-    # Filter out source-header lines (start with "[Source:")
-    evidence_lines = [l for l in lines if not l.startswith("[Source:")]
-    if not evidence_lines:
-        return "I cannot answer based on the available evidence."
-
-    answer_parts = [f"• {line}" for line in evidence_lines]
-    return (
-        f"[MOCK LLM — no API key set]\n"
-        f"Based on the verified evidence, here is what the documents state:\n"
-        + "\n".join(answer_parts)
-    )
-
-
-# ---------------------------------------------------------------------------
-# Public entry point
-# ---------------------------------------------------------------------------
-
-def generate_answer(query: str, context: str) -> str:
-    """
-    Generate a final answer from the validated context.
-
-    Parameters
-    ----------
-    query   : The original user query (for the LLM prompt).
-    context : Pre-formatted, validated evidence block from the orchestrator.
-
-    Returns
-    -------
-    The LLM's answer string.
-    """
-    if not context.strip():
-        return "I cannot answer based on the available evidence."
-
-    if _USE_MOCK:
-        return _call_mock(query, context)
-    else:
-        return _call_openai(query, context)
-
-
-# ---------------------------------------------------------------------------
-# Synthesis-specific LLM entry point
-# ---------------------------------------------------------------------------
-# Called ONLY by synthesis.py.
-# Receives a fully-rendered constrained prompt — no free-form overrides.
 
 _SYNTHESIS_SYSTEM_PROMPT = (
     "You are a controlled synthesis assistant operating inside a "
@@ -128,31 +78,227 @@ _SYNTHESIS_SYSTEM_PROMPT = (
 )
 
 
-def _call_synthesis_openai(prompt: str) -> str:
-    """Send a pre-built synthesis prompt to the OpenAI API."""
+# ---------------------------------------------------------------------------
+# Retry helper
+# ---------------------------------------------------------------------------
+
+def _with_retry(fn, *args, **kwargs) -> str:
+    """Call *fn* with exponential backoff on transient errors."""
+    delay = _RETRY_DELAY
+    last_exc: Exception | None = None
+    for attempt in range(_MAX_RETRIES):
+        try:
+            return fn(*args, **kwargs)
+        except Exception as exc:
+            last_exc = exc
+            if attempt < _MAX_RETRIES - 1:
+                time.sleep(delay)
+                delay *= 2
+    raise RuntimeError(
+        f"LLM call failed after {_MAX_RETRIES} attempts: {last_exc}"
+    ) from last_exc
+
+
+# ===========================================================================
+# Groq backend  (llama-3.3-70b-versatile)
+# ===========================================================================
+
+def _call_groq(query: str, context: str) -> str:
+    """Send query + validated context to Groq (Llama 3.3 70B) and return the answer."""
+    try:
+        from groq import Groq  # type: ignore
+    except ImportError:
+        raise ImportError("groq package not installed. Run: pip install groq")
+
+    def _request() -> str:
+        client = Groq(api_key=_GROQ_KEY)
+        user_message = (
+            f"Context:\n{context}\n\n"
+            f"Question: {query}\n\n"
+            "Answer strictly from the context above."
+        )
+        response = client.chat.completions.create(
+            model=_GROQ_MODEL,
+            messages=[
+                {"role": "system", "content": _SYSTEM_PROMPT},
+                {"role": "user",   "content": user_message},
+            ],
+            temperature=0.0,
+            max_tokens=_MAX_TOKENS,
+        )
+        return response.choices[0].message.content.strip()
+
+    return _with_retry(_request)
+
+
+def _call_synthesis_groq(prompt: str) -> str:
+    """Send a pre-built synthesis prompt to Groq (Llama 3.3 70B)."""
+    try:
+        from groq import Groq  # type: ignore
+    except ImportError:
+        raise ImportError("groq package not installed. Run: pip install groq")
+
+    def _request() -> str:
+        client = Groq(api_key=_GROQ_KEY)
+        response = client.chat.completions.create(
+            model=_GROQ_MODEL,
+            messages=[
+                {"role": "system", "content": _SYNTHESIS_SYSTEM_PROMPT},
+                {"role": "user",   "content": prompt},
+            ],
+            temperature=0.0,
+            max_tokens=_MAX_TOKENS,
+        )
+        return response.choices[0].message.content.strip()
+
+    return _with_retry(_request)
+
+
+# ===========================================================================
+# OpenAI backend  (gpt-4o-mini)
+# ===========================================================================
+
+def _call_openai(query: str, context: str) -> str:
+    """Send query + validated context to OpenAI and return the answer."""
     try:
         from openai import OpenAI  # type: ignore
     except ImportError:
         raise ImportError("openai package not installed. Run: pip install openai")
 
-    client = OpenAI()
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": _SYNTHESIS_SYSTEM_PROMPT},
-            {"role": "user",   "content": prompt},
-        ],
-        temperature=0.0,   # deterministic — no creative latitude
-        max_tokens=512,
+    def _request() -> str:
+        client = OpenAI()
+        user_message = (
+            f"Context:\n{context}\n\n"
+            f"Question: {query}\n\n"
+            "Answer strictly from the context above."
+        )
+        response = client.chat.completions.create(
+            model=_OPENAI_MODEL,
+            messages=[
+                {"role": "system", "content": _SYSTEM_PROMPT},
+                {"role": "user",   "content": user_message},
+            ],
+            temperature=0.0,
+            max_tokens=_MAX_TOKENS,
+        )
+        return response.choices[0].message.content.strip()
+
+    return _with_retry(_request)
+
+
+def _call_synthesis_openai(prompt: str) -> str:
+    """Send a pre-built synthesis prompt to OpenAI."""
+    try:
+        from openai import OpenAI  # type: ignore
+    except ImportError:
+        raise ImportError("openai package not installed. Run: pip install openai")
+
+    def _request() -> str:
+        client = OpenAI()
+        response = client.chat.completions.create(
+            model=_OPENAI_MODEL,
+            messages=[
+                {"role": "system", "content": _SYNTHESIS_SYSTEM_PROMPT},
+                {"role": "user",   "content": prompt},
+            ],
+            temperature=0.0,
+            max_tokens=_MAX_TOKENS,
+        )
+        return response.choices[0].message.content.strip()
+
+    return _with_retry(_request)
+
+
+# ===========================================================================
+# Gemini backend  (gemini-1.5-flash)
+# ===========================================================================
+
+def _call_gemini(query: str, context: str) -> str:
+    """Send query + validated context to Google Gemini and return the answer."""
+    try:
+        import google.generativeai as genai  # type: ignore
+    except ImportError:
+        raise ImportError(
+            "google-generativeai not installed. Run: pip install google-generativeai"
+        )
+
+    def _request() -> str:
+        genai.configure(api_key=_GEMINI_KEY)
+        model = genai.GenerativeModel(
+            model_name=_GEMINI_MODEL,
+            system_instruction=_SYSTEM_PROMPT,
+        )
+        user_message = (
+            f"Context:\n{context}\n\n"
+            f"Question: {query}\n\n"
+            "Answer strictly from the context above."
+        )
+        response = model.generate_content(
+            user_message,
+            generation_config=genai.types.GenerationConfig(
+                temperature=0.0,
+                max_output_tokens=_MAX_TOKENS,
+            ),
+        )
+        return response.text.strip()
+
+    return _with_retry(_request)
+
+
+def _call_synthesis_gemini(prompt: str) -> str:
+    """Send a pre-built synthesis prompt to Google Gemini."""
+    try:
+        import google.generativeai as genai  # type: ignore
+    except ImportError:
+        raise ImportError(
+            "google-generativeai not installed. Run: pip install google-generativeai"
+        )
+
+    def _request() -> str:
+        genai.configure(api_key=_GEMINI_KEY)
+        model = genai.GenerativeModel(
+            model_name=_GEMINI_MODEL,
+            system_instruction=_SYNTHESIS_SYSTEM_PROMPT,
+        )
+        response = model.generate_content(
+            prompt,
+            generation_config=genai.types.GenerationConfig(
+                temperature=0.0,
+                max_output_tokens=_MAX_TOKENS,
+            ),
+        )
+        return response.text.strip()
+
+    return _with_retry(_request)
+
+
+# ===========================================================================
+# Mock backend  (no API key needed)
+# ===========================================================================
+
+def _call_mock(query: str, context: str) -> str:
+    """
+    Deterministic mock that summarises the context without an LLM.
+    Suitable for development and demonstration.
+    """
+    lines = [line.strip() for line in context.splitlines() if line.strip()]
+    evidence_lines = [l for l in lines if not l.startswith("[Source:")]
+    if not evidence_lines:
+        return "I cannot answer based on the available evidence."
+
+    answer_parts = [f"• {line}" for line in evidence_lines]
+    return (
+        "[MOCK LLM — no API key set]\n"
+        "Based on the verified evidence, here is what the documents state:\n"
+        + "\n".join(answer_parts)
     )
-    return response.choices[0].message.content.strip()
 
 
 def _call_synthesis_mock(prompt: str) -> str:
     """
     Deterministic synthesis mock — no API key required.
     Extracts evidence lines from the rendered prompt and returns them
-    formatted as a bulleted synthesis, mimicking what an LLM would produce.
+    formatted as a bulleted synthesis.
     """
     lines = prompt.splitlines()
     evidence_lines: list[str] = []
@@ -166,8 +312,7 @@ def _call_synthesis_mock(prompt: str) -> str:
         if stripped.startswith("Question:"):
             in_evidence = False
             continue
-        if in_evidence and stripped and not stripped.startswith("[") :
-            # Collect indented text lines (the actual chunk content)
+        if in_evidence and stripped and not stripped.startswith("["):
             evidence_lines.append(stripped)
 
     if not evidence_lines:
@@ -181,26 +326,44 @@ def _call_synthesis_mock(prompt: str) -> str:
     )
 
 
+# ===========================================================================
+# Active backend label (for startup display)
+# ===========================================================================
+
+def active_backend() -> str:
+    """Return a human-readable label for the active LLM backend."""
+    if _USE_GROQ:   return f"Groq ({_GROQ_MODEL})"
+    if _USE_OPENAI: return f"OpenAI ({_OPENAI_MODEL})"
+    if _USE_GEMINI: return f"Gemini ({_GEMINI_MODEL})"
+    return "Mock (no API key — set GROQ_API_KEY in .env)"
+
+
+# ===========================================================================
+# Public entry points
+# ===========================================================================
+
+def generate_answer(query: str, context: str) -> str:
+    """
+    Generate a final answer from validated context.
+    Backend priority: Groq → OpenAI → Gemini → mock.
+    """
+    if not context.strip():
+        return "I cannot answer based on the available evidence."
+    if _USE_GROQ:   return _call_groq(query, context)
+    if _USE_OPENAI: return _call_openai(query, context)
+    if _USE_GEMINI: return _call_gemini(query, context)
+    return _call_mock(query, context)
+
+
 def call_synthesis_llm(prompt: str) -> str:
     """
     Entry point for synthesis.py ONLY.
-
-    Accepts a fully-rendered, constrained prompt produced by synthesis.py
-    and routes it to the appropriate backend.
-
-    Parameters
-    ----------
-    prompt : The complete synthesis prompt (evidence + query, pre-formatted).
-
-    Returns
-    -------
-    The synthesized answer string.
+    Accepts a fully-rendered constrained prompt and routes to the active backend.
+    Backend priority: Groq → OpenAI → Gemini → mock.
     """
     if not prompt.strip():
         return "The provided evidence does not contain enough information to answer this question."
-
-    if _USE_MOCK:
-        return _call_synthesis_mock(prompt)
-    else:
-        return _call_synthesis_openai(prompt)
-
+    if _USE_GROQ:   return _call_synthesis_groq(prompt)
+    if _USE_OPENAI: return _call_synthesis_openai(prompt)
+    if _USE_GEMINI: return _call_synthesis_gemini(prompt)
+    return _call_synthesis_mock(prompt)

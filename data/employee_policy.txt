@@ -1,0 +1,61 @@
+ACME Corporation — Employee Policy Handbook
+===========================================
+Version 3.1 | Effective January 2024
+
+Section 1: Leave Policy
+-----------------------
+Employees are entitled to 20 days of paid annual leave per calendar year.
+Leave entitlement accrues monthly at a rate of 1.67 days per month.
+Unused leave of up to 10 days may be carried forward to the next calendar year.
+All leave requests must be submitted through the HR portal at least 5 working days in advance.
+Emergency leave of up to 3 days may be taken without prior approval but must be reported to the line manager on the first day of absence.
+
+Section 2: Remote Work Policy
+------------------------------
+Employees may work remotely up to 3 days per week subject to manager approval.
+Remote work eligibility applies to employees who have completed at least 6 months of service.
+A formal remote work agreement must be signed and submitted to HR before commencing any remote arrangement.
+Employees working remotely are expected to be available during core hours of 10:00 AM to 4:00 PM in their local time zone.
+All remote workers must ensure a secure internet connection and adhere to the company's data security policy.
+
+Section 3: Compensation and Salary Reviews
+-------------------------------------------
+Salary reviews are conducted twice a year, in April and October.
+Performance ratings from the preceding 6-month appraisal cycle are the primary input for salary adjustment decisions.
+Merit increases are awarded based on a four-tier rating: Exceptional, Meets Expectations, Needs Improvement, Unsatisfactory.
+Employees rated Exceptional may receive a merit increase of up to 15% of their base salary.
+Employees rated Meets Expectations may receive a merit increase of up to 7% of their base salary.
+Employees rated Needs Improvement or Unsatisfactory are not eligible for merit increases in that cycle.
+All compensation decisions are subject to budget approval by the Finance department.
+
+Section 4: Safety and Compliance Training
+------------------------------------------
+All employees must complete mandatory safety training within 30 days of joining the company.
+Annual refresher safety training is required for all staff and must be completed by 31st March each year.
+Employees in laboratory, manufacturing, or fieldwork roles must additionally complete role-specific safety certifications.
+Non-compliance with mandatory training requirements may result in disciplinary action.
+Training completion is tracked centrally by the Learning and Development (L&D) department.
+
+Section 5: Code of Conduct
+---------------------------
+All employees are expected to behave professionally and with integrity at all times.
+Discrimination, harassment, or bullying of any kind will not be tolerated and will result in immediate disciplinary proceedings.
+Conflicts of interest must be declared to the Ethics and Compliance team promptly.
+Employees must not accept gifts valued above £50 from clients, vendors, or partners without prior written approval from their department head.
+Confidential company information must not be shared externally without explicit written authorization.
+
+Section 6: Expense Reimbursement
+----------------------------------
+Business-related expenses must be submitted through the expense management system within 30 days of incurring the cost.
+All expenses above £100 require a receipt and prior approval from the employee's line manager.
+Travel expenses for domestic trips must not exceed the company's standard daily rate of £150 for accommodation and £40 for meals.
+International travel requires advance approval from the department head and must be booked through the corporate travel portal.
+Personal expenses will not be reimbursed under any circumstances.
+
+Section 7: Grievance Procedure
+--------------------------------
+Employees who have a workplace grievance should first attempt informal resolution by speaking with their line manager.
+If informal resolution fails, a formal grievance may be raised in writing to the HR department.
+Formal grievances will be acknowledged within 5 working days and investigated within 20 working days.
+The outcome of a formal grievance investigation will be communicated to the employee in writing.
+Employees have the right to appeal any formal grievance decision within 10 working days of receiving the outcome.

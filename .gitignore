@@ -25,3 +25,6 @@ Thumbs.db
 # Secrets / API keys
 *.env
 secrets.py
+
+# Local vector database (rebuilt automatically on first run)
+chroma_db/

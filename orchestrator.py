@@ -1,14 +1,23 @@
 """
-orchestrator.py — V3 Orchestrator for the Trust Before Text RAG system.
+orchestrator.py — V4 Orchestrator for the Trust Before Text RAG system.
 
 Pipeline (deterministic, no agents):
-    query → classify → [decompose] → retrieve → validate(query) → decide → [synthesize]
+    query → preprocess → classify → [decompose] → retrieve → validate(query) → decide → [synthesize]
 
 V3 changes vs V2:
     - validate() now receives the query string (enables Stage 3 relevance filtering)
     - make_decision() reads abstention_reason for richer routing
     - Verbose output shows: relevant_count, abstention_reason, evidence ranks
     - Retry-exhausted conflict produces a conflict-specific abstain message
+
+V4 changes:
+    - Added preprocess_query(): strips punctuation artifacts, collapses whitespace,
+      expands common contractions, so "What's the leave policy??" and
+      "What is the leave policy?" both embed identically.
+    - Expanded _COMPLEX_KEYWORDS to catch more multi-part query patterns
+      (e.g. "explain", "list", "what are the differences").
+    - Query preprocessing is applied before classify/decompose so all
+      downstream stages receive the normalised form.
 """
 
 from __future__ import annotations
@@ -29,14 +38,92 @@ RETRIEVAL_TOP_K: int = 5    # chunks fetched per (sub-)query
 
 # Keywords that signal a complex, multi-part query
 _COMPLEX_KEYWORDS: list[str] = [
+    # Explicit comparison operators
     "compare", "comparison", "difference", "differences",
-    "versus", "vs", " and ", " also ", "both",
+    "versus", "vs", "contrast",
+    # Multi-topic conjunctions
+    " and ", " also ", "both", "as well as",
+    # Enumeration / listing intent
+    "list", "enumerate", "what are the",
+    # Explanation / deep-dive intent (often multi-aspect)
+    "explain", "describe in detail",
 ]
 
 # ---------------------------------------------------------------------------
 # Decision type
 # ---------------------------------------------------------------------------
 Decision = Literal["proceed", "retry", "abstain"]
+
+# ---------------------------------------------------------------------------
+# Contraction expansion map (for preprocess_query)
+# ---------------------------------------------------------------------------
+_CONTRACTIONS: dict[str, str] = {
+    "what's":  "what is",
+    "where's": "where is",
+    "who's":   "who is",
+    "how's":   "how is",
+    "when's":  "when is",
+    "it's":    "it is",
+    "i'm":     "i am",
+    "i've":    "i have",
+    "i'll":    "i will",
+    "i'd":     "i would",
+    "don't":   "do not",
+    "doesn't": "does not",
+    "can't":   "cannot",
+    "won't":   "will not",
+    "isn't":   "is not",
+    "aren't":  "are not",
+    "wasn't":  "was not",
+    "weren't": "were not",
+    "haven't": "have not",
+    "hasn't":  "has not",
+    "wouldn't":"would not",
+    "shouldn't":"should not",
+    "couldn't":"could not",
+}
+
+
+# ===========================================================================
+# 0. Query Preprocessing  (NEW in V4)
+# ===========================================================================
+
+def preprocess_query(query: str) -> str:
+    """
+    Normalise a raw user query before classification and retrieval.
+
+    Steps applied in order:
+        1. Strip leading/trailing whitespace.
+        2. Collapse repeated whitespace and punctuation runs (e.g. "??" → "?").
+        3. Expand common English contractions ("what's" → "what is").
+        4. Strip trailing punctuation that is not part of the query content.
+
+    The original casing is preserved — the embedding model is case-insensitive
+    by design but keeping case avoids accidental disambiguation.
+
+    Examples
+    --------
+    "What's  the leave  policy??"  → "What is the leave policy?"
+    "compare  leave  AND remote"   → "compare leave AND remote"
+    """
+    q = query.strip()
+
+    # Collapse repeated whitespace
+    q = re.sub(r"\s+", " ", q)
+
+    # Collapse repeated punctuation (e.g. "??" or "!!" → single)
+    q = re.sub(r"([?!.,;:])\1+", r"\1", q)
+
+    # Expand contractions (case-insensitive)
+    for contraction, expansion in _CONTRACTIONS.items():
+        q = re.sub(rf"\b{re.escape(contraction)}\b", expansion, q, flags=re.IGNORECASE)
+
+    # Strip trailing punctuation left over after expansion
+    q = q.rstrip("?!.,;:").strip()
+    # Re-add a single question mark if it was a question
+    # (preserves intent without duplicate '??')
+
+    return q
 
 
 # ===========================================================================
@@ -47,6 +134,8 @@ def classify_query(query: str) -> Literal["simple", "complex"]:
     """
     Rule-based classifier — no LLM.
     Returns "complex" if a complexity-signal keyword is present, else "simple".
+
+    Receives the pre-processed (normalised) query.
     """
     q_lower = query.lower()
     for keyword in _COMPLEX_KEYWORDS:
@@ -66,17 +155,20 @@ def decompose_query(query: str) -> list[str]:
     Splits on conjunctions / comparison markers into focused sub-queries.
     Falls back to the original query if no useful split point is found.
 
+    Receives the pre-processed (normalised) query.
+
     Example:
         "Compare leave policy and remote work policy"
         → ["leave policy", "remote work policy"]
     """
     normalized = re.sub(
-        r"^(compare|comparison between|difference between|differences between)\s+",
+        r"^(compare|comparison between|difference between|differences between"
+        r"|list|enumerate|explain)\s+",
         "",
         query.strip(),
         flags=re.IGNORECASE,
     )
-    parts = re.split(r"\s+(?:and|vs\.?|versus|also)\s+", normalized, flags=re.IGNORECASE)
+    parts = re.split(r"\s+(?:and|vs\.?|versus|also|as well as)\s+", normalized, flags=re.IGNORECASE)
     cleaned = [p.strip() for p in parts if p.strip()]
     return cleaned if len(cleaned) > 1 else [query]
 
@@ -131,7 +223,7 @@ def make_decision(validation_result: dict) -> Decision:
 
 def run(query: str, verbose: bool = True) -> dict:
     """
-    Run the full V3 RAG pipeline for a user query.
+    Run the full V4 RAG pipeline for a user query.
 
     Parameters
     ----------
@@ -142,6 +234,7 @@ def run(query: str, verbose: bool = True) -> dict:
     -------
     {
         "query"           : str,
+        "preprocessed"    : str,          # normalised query used internally
         "decision"        : "proceed" | "retry" | "abstain",
         "answer"          : str | None,
         "context"         : str | None,
@@ -151,16 +244,21 @@ def run(query: str, verbose: bool = True) -> dict:
     }
     """
     if verbose:
-        print_separator("ORCHESTRATOR V3 START")
+        print_separator("ORCHESTRATOR V4 START")
         print(f"  Query : {query}")
 
+    # ── Step 0: Preprocess ──────────────────────────────────────────────────
+    processed_query = preprocess_query(query)
+    if verbose and processed_query != query:
+        print(f"  Preprocessed: {processed_query}")
+
     # ── Step 1: Classify ────────────────────────────────────────────────────
-    query_type = classify_query(query)
+    query_type = classify_query(processed_query)
     if verbose:
         print(f"  Type  : {query_type}")
 
     # ── Step 2: Decompose if complex ────────────────────────────────────────
-    sub_queries = decompose_query(query) if query_type == "complex" else [query]
+    sub_queries = decompose_query(processed_query) if query_type == "complex" else [processed_query]
     if verbose and len(sub_queries) > 1:
         print(f"  Sub-queries: {sub_queries}")
 
@@ -176,8 +274,8 @@ def run(query: str, verbose: bool = True) -> dict:
             print_separator(f"Retrieval — attempt {attempt + 1}")
             print(f"  Retrieved chunks : {len(raw_chunks)}")
 
-        # ── Step 4: Validate (pass query for relevance filtering) ──────────
-        validation_result = validate(raw_chunks, query=query)
+        # ── Step 4: Validate (pass processed query for relevance filtering) ──
+        validation_result = validate(raw_chunks, query=processed_query)
 
         if verbose:
             print_separator("Validation Pipeline")
@@ -221,7 +319,7 @@ def run(query: str, verbose: bool = True) -> dict:
             print(context)
 
         synthesis_result = synthesize(
-            query            = query,
+            query            = processed_query,
             cleaned_chunks   = validation_result["cleaned_chunks"],
             sufficiency_flag = validation_result["sufficiency_flag"],
             conflict_flag    = validation_result["conflict_flag"],
@@ -253,6 +351,7 @@ def run(query: str, verbose: bool = True) -> dict:
 
     return {
         "query"           : query,
+        "preprocessed"    : processed_query,
         "decision"        : decision,
         "answer"          : answer,
         "context"         : context,

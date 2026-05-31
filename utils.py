@@ -8,12 +8,21 @@ Public API:
     format_chunk_as_context(chunk)          → str
     build_context_block(chunks)             → str
     print_separator(title, width)           → None
+
+V4 changes:
+    - LRU cache (maxsize=512) on compute_query_similarity and compute_chunk_similarity
+      avoids recomputing identical pair similarities within the same pipeline run
+      (Stage 2 dedup and Stage 4 conflict detection are O(n²) callers).
+    - clean_text now normalises Unicode (NFKC) before whitespace collapsing so
+      that exotic whitespace characters and ligatures are handled consistently.
 """
 
 from __future__ import annotations
 
 import math
 import re
+import unicodedata
+from functools import lru_cache
 from typing import Optional
 
 
@@ -22,7 +31,13 @@ from typing import Optional
 # ===========================================================================
 
 def clean_text(text: str) -> str:
-    """Strip leading/trailing whitespace and collapse internal whitespace."""
+    """
+    Normalise Unicode (NFKC), strip leading/trailing whitespace, and
+    collapse all internal whitespace (including non-breaking spaces) to a
+    single ASCII space.
+    """
+    # NFKC: normalise ligatures (ﬁ→fi), exotic spaces, etc.
+    text = unicodedata.normalize("NFKC", text)
     return re.sub(r"\s+", " ", text.strip())
 
 
@@ -54,23 +69,32 @@ def _cosine(vec_a: dict[str, float], vec_b: dict[str, float]) -> float:
     return dot / (mag_a * mag_b)
 
 
+@lru_cache(maxsize=512)
 def compute_query_similarity(query: str, text: str) -> float:
     """
     Lightweight relevance score: cosine similarity between the query token
     vector and the chunk text token vector.
 
-    Used by the Relevance Filtering stage (Stage 3) in validation.py.
+    Used as a fallback by Relevance Filtering (Stage 3) in validation.py
+    when chunks do not yet carry an embedding-based relevance_score.
+
+    LRU-cached: identical (query, text) pairs across pipeline retries are
+    computed only once.
 
     Returns a float in [0, 1].
     """
     return _cosine(_token_vector(query), _token_vector(text))
 
 
+@lru_cache(maxsize=512)
 def compute_chunk_similarity(text_a: str, text_b: str) -> float:
     """
     Cosine similarity between two chunk texts.
 
     Used by Duplicate Removal (Stage 2) and Conflict Detection (Stage 4).
+
+    LRU-cached: the O(n²) Stage 2 and Stage 4 loops frequently revisit
+    the same pairs, especially across retry attempts.
     """
     return _cosine(_token_vector(text_a), _token_vector(text_b))
 
@@ -131,15 +155,17 @@ def format_chunk_as_context(chunk: dict) -> str:
     """
     Format a single validated chunk for the LLM context block.
 
+    Score is intentionally omitted — it is an internal system metric that
+    the LLM does not need and that may confuse it.
+
     Example output:
-        [Source: policy.pdf | Section: Leave Policy | Score: 0.9100]
+        [Source: policy.pdf | Section: Leave Policy]
         Employees are entitled to 20 days of leave.
     """
     source  = chunk.get("source", "unknown")
     section = chunk.get("section", "unknown")
-    score   = chunk.get("score", 0.0)
     text    = chunk.get("text", "").strip()
-    return f"[Source: {source} | Section: {section} | Score: {score:.4f}]\n{text}"
+    return f"[Source: {source} | Section: {section}]\n{text}"
 
 
 def build_context_block(chunks: list[dict]) -> str:

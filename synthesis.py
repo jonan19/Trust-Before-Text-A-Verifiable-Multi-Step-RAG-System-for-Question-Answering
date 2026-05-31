@@ -15,6 +15,11 @@ V3 changes vs V2:
     - Abstain guard also checks for empty cleaned_chunks
     - Evidence block uses rank label instead of sequential index
 
+V4 changes:
+    - Score removed from the LLM evidence block (it is an internal system metric
+      that the LLM doesn't need and that may bias or confuse generation).
+      Scores are still preserved in citations for the user-facing output.
+
 Output schema:
     {
         "status"    : "success" | "abstain",
@@ -63,16 +68,22 @@ Answer:"""
 
 def _build_evidence_block(chunks: list[dict]) -> str:
     """
-    Format structured chunks (Stage 6 output) into a numbered evidence block.
+    Format structured chunks (Stage 6 output) into a numbered evidence block
+    for the LLM prompt.
+
+    Note: Score is intentionally omitted from each evidence header. Scores
+    are internal retrieval metrics that the LLM does not need and that may
+    anchor or confuse the synthesis. They are retained in citations for the
+    user-facing output only.
 
     Uses the `rank` field from evidence structuring so the block order always
     matches the ranked order, even if chunks arrive in a different sequence.
 
     Example:
-        [Evidence #1] Source: policy.pdf | Section: Leave Policy | Score: 0.9100
+        [Evidence #1] Source: policy.pdf | Section: Leave Policy
             Employees are entitled to 20 days of annual leave per calendar year.
 
-        [Evidence #2] Source: handbook.pdf | Section: Remote Work | Score: 0.8800
+        [Evidence #2] Source: handbook.pdf | Section: Remote Work
             Employees may work remotely up to 2 days per week with manager approval.
     """
     # Sort by rank ascending (rank 1 = best)
@@ -82,10 +93,10 @@ def _build_evidence_block(chunks: list[dict]) -> str:
         rank    = chunk.get("rank", "?")
         source  = chunk.get("source", "unknown")
         section = chunk.get("section", "unknown")
-        score   = chunk.get("score", 0.0)
         text    = chunk.get("text", "").strip()
+        # Score deliberately excluded from the LLM prompt
         lines.append(
-            f"[Evidence #{rank}] Source: {source} | Section: {section} | Score: {score:.4f}\n"
+            f"[Evidence #{rank}] Source: {source} | Section: {section}\n"
             f"    {text}"
         )
     return "\n\n".join(lines)
