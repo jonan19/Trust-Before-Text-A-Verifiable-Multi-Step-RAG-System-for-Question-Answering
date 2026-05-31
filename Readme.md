@@ -1,11 +1,29 @@
-# Trust Before Text — V3 Architecture
+# Trust Before Text — V4 Architecture
 
 ## Philosophy
 
 > **"Trust Before Text"** — deterministic evidence validation before generation.
 
-The system generates answers **only** from verified evidence.
+The system generates answers **only** from verified, retrieved evidence.
 When evidence is insufficient or contradictory, it **abstains** rather than hallucinating.
+
+---
+
+## What's New in V4
+
+| Area | Improvement |
+|---|---|
+| **LLM Backend** | Groq (`llama-3.3-70b-versatile`) as primary; OpenAI / Gemini as fallbacks |
+| **Environment** | `.env` file support via `python-dotenv` |
+| **Query Preprocessing** | Contraction expansion, punctuation normalization before retrieval |
+| **Retrieval Scoring** | Linear calibration replaces magic constants; principled `[0.40, 1.0] → [0.65, 1.0]` mapping |
+| **Relevance Filtering** | Stage 3 uses embedding-based scores from retrieval (skips redundant TF-cosine) |
+| **Contradiction Detection** | Word-boundary regex matching; unit-context numeric comparison (`"20 days"` ≠ `"5 working days"`) |
+| **Incremental Ingestion** | SHA-256 manifest — only changed/new files re-ingested |
+| **Sentence Chunking** | NLTK sentence-aware chunking with character-level fallback |
+| **Performance** | LRU cache on similarity functions; query embedding cache |
+| **Model Safety** | Startup model mismatch detection + automatic re-ingest |
+| **CLI** | `--status` mode; active backend displayed at startup |
 
 ---
 
@@ -14,62 +32,67 @@ When evidence is insufficient or contradictory, it **abstains** rather than hall
 ```
 User Query
     ↓
+preprocess_query()          ← contraction expansion, punctuation cleanup  [NEW V4]
+    ↓
 Orchestrator
     ├─ classify query (simple / complex)
     ├─ decompose complex queries into sub-queries
-    └─ retrieve chunks for each sub-query
+    └─ retrieve chunks for each sub-query  (ChromaDB + sentence-transformers)
          ↓
-    Validation Pipeline (7 stages, fully deterministic)
+    Validation Pipeline (7 stages, fully deterministic — no LLM)
          ↓
     Decision Engine  →  proceed | retry | abstain
          ↓
     Synthesis Module  (LLM used ONLY here)
          ↓
-    Final Answer  (with citations + scores)
+    Final Answer  (with citations + retrieval scores)
 ```
 
 ---
 
-## V3 Validation Pipeline
+## V4 Validation Pipeline
 
 All validation is **deterministic and non-LLM**.
 
 ### Stage 1 — Chunk Normalization
-- Strip leading/trailing whitespace
-- Collapse internal whitespace
+- Unicode NFKC normalization (handles ligatures, exotic whitespace)
+- Strip and collapse whitespace
 - Remove empty chunks
 
 ### Stage 2 — Duplicate Removal
-- Compute TF cosine similarity between all chunk pairs
+- TF cosine similarity between all chunk pairs (LRU-cached)
 - If similarity ≥ `DUPLICATE_SIM_THRESHOLD` (0.90), keep only the higher-scoring chunk
-- Prevents redundant evidence from inflating sufficiency scores
 
-### Stage 3 — Relevance Filtering *(New in V3)*
-- Compute TF cosine similarity between the query and each chunk
-- Find the best similarity score across all chunks
-- Keep chunks whose similarity ≥ `best_sim × RELEVANCE_RATIO_THRESHOLD` (0.30)
-- Absolute floor: any chunk scoring < `MIN_RELEVANCE_SCORE` (0.05) is dropped
-- Output: each passing chunk gets a `relevance_score` field
+### Stage 3 — Relevance Filtering *(Upgraded in V4)*
+**V4:** If chunks carry a `relevance_score` set by the retrieval module (embedding-based cosine similarity), those scores are used directly — TF-cosine recomputation is skipped entirely.
 
-### Stage 4 — Evidence Consistency Analysis *(Upgraded in V3)*
-- Runs on the **relevance-filtered** chunk set (stage 3 output)
-- For each pair of chunks sharing the same section OR with high semantic similarity (cosine ≥ 0.55):
-  - Check keyword contradiction using 21 antonym pairs (expanded from 10 in V2)
-  - Check numeric contradiction for same-section pairs (e.g., "20 days" vs "15 days")
-- Sets `conflict_flag = True` if any contradiction is found
+**Fallback:** If no `relevance_score` is present, TF cosine similarity is computed between the query and each chunk.
 
-**21 antonym pairs include:**
-`prohibited/allowed`, `banned/permitted`, `mandatory/optional`, `cannot/can`,
-`never/always`, `deny/approve`, `rejected/approved`, `terminated/active`, and more.
+Both paths:
+- Find the best relevance score across all chunks
+- Keep chunks with score ≥ `best_sim × RELEVANCE_RATIO_THRESHOLD` (0.30)
+- Absolute floor: drop chunks below `MIN_RELEVANCE_SCORE` (0.05)
 
-### Stage 5 — Evidence Sufficiency Check *(Upgraded in V3)*
-Heuristics (all three must pass):
-- **H1**: At least `MIN_CHUNKS_FOR_SUFFICIENCY` (1) relevant chunks
+### Stage 4 — Evidence Consistency Analysis *(Upgraded in V4)*
+Runs on the relevance-filtered chunk set. For each pair of chunks sharing the same section OR with cosine similarity ≥ 0.55:
+
+**Keyword contradiction** *(V4: word-boundary matching)*
+- Uses `re.search(r'\b...\b')` instead of substring `in` — prevents `"is"` from matching inside `"decisions"`, `"increases"`, etc.
+- 21 antonym pairs: `prohibited/allowed`, `banned/permitted`, `mandatory/optional`, `cannot/can`, `never/always`, `deny/approve`, `rejected/approved`, `terminated/active`, and more.
+
+**Numeric contradiction** *(V4: unit-context aware)*
+- Numbers flagged as contradictory ONLY when both texts reference the **same unit context**
+- `"20 days annual leave"` vs `"5 working days notice"` → **no conflict** (`"day"` ≠ `"working_day"`)
+- `"20 days annual leave"` vs `"15 days annual leave"` → **conflict** (same context, different value)
+
+### Stage 5 — Evidence Sufficiency Check
+All three heuristics must pass:
+- **H1**: At least `MIN_CHUNKS_FOR_SUFFICIENCY` (1) relevant chunk
 - **H2**: Average retrieval score ≥ `MIN_AVG_SCORE_FOR_SUFFICIENCY` (0.65)
 - **H3**: At least one chunk has `relevance_score > MIN_RELEVANCE_SCORE`
 
-### Stage 6 — Evidence Structuring *(New in V3)*
-Returns chunks as fully-typed structured dicts with enforced descending score order:
+### Stage 6 — Evidence Structuring
+Returns chunks as fully-typed structured dicts in descending score order:
 
 ```python
 {
@@ -77,16 +100,15 @@ Returns chunks as fully-typed structured dicts with enforced descending score or
     "text"           : "...",
     "source"         : "policy.pdf",
     "section"        : "Leave Policy",
-    "score"          : 0.9100,     # retrieval score from vector store
-    "relevance_score": 0.6736,     # query-text cosine similarity (Stage 3)
+    "score"          : 0.8055,     # calibrated retrieval score [SCORE_FLOOR, 1.0]
+    "relevance_score": 0.6665,     # raw embedding cosine similarity (Stage 3)
 }
 ```
 
-### Stage 7 — Abstention Decision *(New in V3)*
-Returns a named reason instead of a bare boolean:
+### Stage 7 — Abstention Decision
 
 | Condition | Reason | Action |
-|-----------|--------|--------|
+|---|---|---|
 | `conflict_flag == True` | `"conflict"` | retry → abstain |
 | `sufficiency_flag == False` | `"insufficient"` | abstain |
 | Both pass | `None` | proceed to synthesis |
@@ -104,13 +126,41 @@ abstention_reason == None           →  PROCEED
 
 ---
 
+## Retrieval Module *(V4 — redesigned scoring)*
+
+- Embedding model: `multi-qa-MiniLM-L6-cos-v1` (optimised for query-to-passage retrieval)
+- Vector store: ChromaDB (persistent, cosine similarity space)
+- **Score calibration**: linear mapping `[MIN_COSINE_THRESHOLD=0.40, 1.0] → [SCORE_FLOOR=0.65, 1.0]`
+  - Chunks below 0.40 raw cosine similarity are discarded (off-topic noise)
+  - Every passing chunk receives a calibrated score ≥ 0.65 (validation sufficiency threshold)
+- Each chunk carries both `score` (calibrated) and `relevance_score` (raw cosine) for transparency
+- Query embeddings are cached to avoid redundant `encode()` calls on retries
+
+---
+
+## Ingestion Pipeline *(V4 — incremental)*
+
+```bash
+python ingestion.py           # incremental: only changed/new files
+python ingestion.py --force   # full rebuild
+```
+
+**V4 features:**
+- **SHA-256 manifest** (`chroma_db/manifest.json`): tracks file hashes and embedding model name
+- Only changed/new files re-ingested; deleted files cleaned from ChromaDB
+- **NLTK sentence-aware chunking**: sentences accumulated into chunks respecting sentence boundaries
+- **PDF TOC extraction**: uses document outline/bookmarks for section names when available
+- Embedding model name stored in manifest for consistency checking
+
+---
+
 ## Synthesis Module
 
 Called **only** after the Decision Engine confirms `PROCEED`.
 
-- Receives **only** structured, ranked evidence chunks + flags
-- Never accesses the vector database or raw retrieval output
+- Receives **only** structured, ranked evidence + flags — never the raw retrieval output
 - Uses a constrained prompt: *"Answer ONLY using the provided evidence passages"*
+- **V4**: Score stripped from LLM evidence block (scores are internal metrics; kept in citations only)
 - Returns:
 
 ```python
@@ -118,25 +168,52 @@ Called **only** after the Decision Engine confirms `PROCEED`.
     "status"    : "success" | "abstain",
     "answer"    : "...",
     "citations" : [
-        {"source": "policy.pdf", "section": "Leave Policy", "score": 0.9100}
+        {"source": "policy.pdf", "section": "Leave Policy", "score": 0.8055}
     ]
 }
 ```
 
 ---
 
-## Abstention Response
+## LLM Backends
 
-When the system cannot safely answer:
+Backend priority (first key found in `.env` wins):
 
-```python
-{
-    "status"  : "abstain",
-    "reason"  : "conflict" | "insufficient",
-    "answer"  : "<human-readable explanation>",
-    "citations": []
-}
+| Priority | Backend | Model | Key |
+|---|---|---|---|
+| 1 | **Groq** | `llama-3.3-70b-versatile` | `GROQ_API_KEY` |
+| 2 | OpenAI | `gpt-4o-mini` | `OPENAI_API_KEY` |
+| 3 | Google Gemini | `gemini-1.5-flash` | `GEMINI_API_KEY` |
+| 4 | Mock | deterministic | *(none needed)* |
+
+**Setup:**
+```bash
+# Copy and edit .env
+GROQ_API_KEY=your_key_here   # get free key at console.groq.com
 ```
+
+All backends: `temperature=0.0`, `max_tokens=1024`, retry-with-exponential-backoff (3 attempts).
+
+---
+
+## Quick Start
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Add your Groq API key
+echo "GROQ_API_KEY=your_key_here" > .env
+
+# Add documents to data/ directory, then run
+python main.py                              # interactive REPL
+python main.py "What is the leave policy?" # single query
+python main.py --demo                       # run all demo queries
+python main.py --status                     # show collection info + active backend
+python main.py --ingest                     # force full re-ingest
+```
+
+The system **auto-ingests** on first run — no manual setup required.
 
 ---
 
@@ -144,83 +221,49 @@ When the system cannot safely answer:
 
 ```
 project/
-├── orchestrator.py        # pipeline controller, query classification, decision engine
+├── main.py                # entry point: REPL, CLI, demo, status modes
+├── orchestrator.py        # pipeline controller: preprocess, classify, decompose, decide
 ├── validation.py          # 7-stage deterministic validation pipeline
 ├── synthesis.py           # evidence-gated LLM answer generation
-├── retrieval_interface.py # retrieval stub (swap for real backend)
-├── llm_interface.py       # single LLM access point (OpenAI + mock)
-├── utils.py               # shared helpers: similarity, formatting, abstention
-├── main.py                # entry point + demo queries
-└── README.md              # this file
+├── retrieval.py           # ChromaDB retrieval + score calibration
+├── retrieval_interface.py # retrieval adapter
+├── ingestion.py           # document ingestion: chunking, embedding, ChromaDB storage
+├── llm_interface.py       # LLM access point: Groq / OpenAI / Gemini / mock
+├── utils.py               # shared helpers: similarity (LRU-cached), formatting, abstention
+├── requirements.txt       # dependencies
+├── .env                   # API keys (git-ignored — never committed)
+├── data/                  # source documents (.txt, .pdf)
+└── chroma_db/             # vector database (git-ignored — rebuilt automatically)
 ```
 
 ---
 
 ## Configuration Thresholds
 
-All thresholds are defined at the top of their respective modules:
-
 | Threshold | File | Default | Effect |
-|-----------|------|---------|--------|
+|---|---|---|---|
+| `MIN_COSINE_THRESHOLD` | `retrieval.py` | 0.40 | Raw cosine floor — below this = off-topic noise |
+| `SCORE_FLOOR` | `retrieval.py` | 0.65 | Minimum calibrated score for any passing chunk |
 | `DUPLICATE_SIM_THRESHOLD` | `validation.py` | 0.90 | Higher → fewer duplicates removed |
 | `RELEVANCE_RATIO_THRESHOLD` | `validation.py` | 0.30 | Higher → stricter relevance filter |
 | `MIN_RELEVANCE_SCORE` | `validation.py` | 0.05 | Absolute floor for off-topic chunks |
 | `MIN_CHUNKS_FOR_SUFFICIENCY` | `validation.py` | 1 | Minimum relevant chunks to proceed |
-| `MIN_AVG_SCORE_FOR_SUFFICIENCY` | `validation.py` | 0.65 | Minimum average retrieval score |
+| `MIN_AVG_SCORE_FOR_SUFFICIENCY` | `validation.py` | 0.65 | Must equal `SCORE_FLOOR` in retrieval.py |
 | `CONFLICT_SIM_THRESHOLD` | `validation.py` | 0.55 | Semantic similarity floor for conflict check |
 | `MAX_RETRIES` | `orchestrator.py` | 1 | Retry attempts on conflict |
 | `RETRIEVAL_TOP_K` | `orchestrator.py` | 5 | Chunks fetched per sub-query |
 
 ---
 
-## Usage
-
-```bash
-# Run all demo queries
-python main.py
-
-# Run a single query
-python main.py "What is the remote work policy?"
-
-# Use a real LLM (requires OpenAI API key)
-$env:OPENAI_API_KEY = "sk-..."
-python main.py
-```
-
----
-
-## Wiring the Real Retrieval Backend
-
-Replace the mock body in `retrieval_interface.py`:
-
-```python
-from your_retrieval_package import retrieve as _real_retrieve
-
-def retrieve(query: str, top_k: int = 5) -> list[dict]:
-    return _real_retrieve(query, top_k=top_k)
-```
-
-Each returned chunk must have: `text`, `source`, `section`, `score`.
-
----
-
 ## Design Principles
 
 | Principle | Implementation |
-|-----------|----------------|
+|---|---|
 | Trust before text | All 7 validation stages run before any LLM call |
 | Abstention over hallucination | Named abstention reasons; LLM never sees conflicting evidence |
 | Evidence-grounded synthesis | Constrained prompt; LLM cannot introduce external facts |
-| Deterministic validation | No ML models in validation; all heuristics are rule-based |
+| Deterministic validation | No ML in validation; all heuristics are rule-based |
 | Modular and explainable | One responsibility per file; each stage is a single function |
 | Traceable citations | Every answer carries source + section + retrieval score |
-
----
-
-## LLM Usage Rules
-
-- The LLM is called **only** by `synthesis.py` via `llm_interface.call_synthesis_llm()`
-- It receives **only** the structured, validated evidence block + the query
-- Temperature = 0.0 (deterministic output)
-- The system prompt forbids prior knowledge and external inference
-- Without `OPENAI_API_KEY`, a deterministic mock is used automatically
+| Incremental by default | Only changed documents are re-ingested |
+| Self-initializing | Auto-ingests on first run; detects model mismatches at startup |
