@@ -93,34 +93,41 @@ DEMO_QUERIES: list[dict] = [
 
 def _check_model_consistency(retriever: str = "chroma") -> bool:
     """
-    Verify that the selected collection was built with the current EMBEDDING_MODEL.
+    Verify that the selected collection was built with the current embedding models.
 
     Reads the manifest.json stored alongside the collection. If the model name
-    differs from the one currently configured in ingestion.py, the index is
+    differs from the one currently configured for the retriever, the index is
     stale — old embeddings are incompatible with new query embeddings.
 
     Returns True if a re-ingest is required, False if everything is consistent.
     """
-    from ingestion import EMBEDDING_MODEL
-
     if retriever == "qdrant":
-        from qdrant_retrieval import SPARSE_MODEL_NAME
-        from qdrant_retrieval import get_manifest_model, get_manifest_sparse_model
+        from qdrant_retrieval import DENSE_MODEL_NAME, MULTI_MODEL_NAME, SPARSE_MODEL_NAME
+        from qdrant_retrieval import (
+            get_manifest_model,
+            get_manifest_multi_model,
+            get_manifest_sparse_model,
+        )
         stored_model = get_manifest_model(QDRANT_DIR)
         stored_sparse_model = get_manifest_sparse_model(QDRANT_DIR)
+        stored_multi_model = get_manifest_multi_model(QDRANT_DIR)
+        expected_model = DENSE_MODEL_NAME
     else:
-        from ingestion import get_manifest_model
+        from ingestion import EMBEDDING_MODEL, get_manifest_model
+
         stored_model = get_manifest_model(CHROMA_DIR)
         stored_sparse_model = None
+        stored_multi_model = None
+        expected_model = EMBEDDING_MODEL
 
     if stored_model is None:
         # No manifest yet — treat as consistent (collection may be brand new)
         return False
 
-    if stored_model != EMBEDDING_MODEL:
+    if stored_model != expected_model:
         print("\n  ⚠  Embedding model mismatch detected!")
         print(f"     Index built with : {stored_model}")
-        print(f"     Current model    : {EMBEDDING_MODEL}")
+        print(f"     Current model    : {expected_model}")
         print(f"     Triggering automatic full {retriever} re-ingest...\n")
         return True
 
@@ -128,6 +135,13 @@ def _check_model_consistency(retriever: str = "chroma") -> bool:
         print("\n  ⚠  Qdrant sparse model mismatch detected!")
         print(f"     Index built with : {stored_sparse_model}")
         print(f"     Current model    : {SPARSE_MODEL_NAME}")
+        print("     Triggering automatic full qdrant re-ingest...\n")
+        return True
+
+    if retriever == "qdrant" and stored_multi_model != MULTI_MODEL_NAME:
+        print("\n  ⚠  Qdrant ColBERT model mismatch detected!")
+        print(f"     Index built with : {stored_multi_model}")
+        print(f"     Current model    : {MULTI_MODEL_NAME}")
         print("     Triggering automatic full qdrant re-ingest...\n")
         return True
 
@@ -313,11 +327,28 @@ def _run_status() -> None:
     print()
     print("  [Qdrant Hybrid]")
     try:
-        from qdrant_retrieval import get_manifest_model as get_qdrant_manifest_model
+        from qdrant_retrieval import (
+            DENSE_MODEL_NAME,
+            MULTI_MODEL_NAME,
+            SPARSE_MODEL_NAME,
+            get_manifest_model as get_qdrant_manifest_model,
+            get_manifest_multi_model,
+            get_manifest_sparse_model,
+        )
         from qdrant_client import QdrantClient
 
         qdrant_model = get_qdrant_manifest_model(QDRANT_DIR)
-        print(f"  Manifest model   : {qdrant_model or '(none)'}")
+        qdrant_sparse_model = get_manifest_sparse_model(QDRANT_DIR)
+        qdrant_multi_model = get_manifest_multi_model(QDRANT_DIR)
+        print(f"  Dense model      : {qdrant_model or '(none)'}")
+        print(f"  Sparse model     : {qdrant_sparse_model or '(none)'}")
+        print(f"  ColBERT model    : {qdrant_multi_model or '(none)'}")
+        if qdrant_model and qdrant_model != DENSE_MODEL_NAME:
+            print("  ⚠  DENSE MISMATCH — run with --ingest --retriever qdrant to rebuild.")
+        if qdrant_sparse_model and qdrant_sparse_model != SPARSE_MODEL_NAME:
+            print("  ⚠  SPARSE MISMATCH — run with --ingest --retriever qdrant to rebuild.")
+        if qdrant_multi_model and qdrant_multi_model != MULTI_MODEL_NAME:
+            print("  ⚠  COLBERT MISMATCH — run with --ingest --retriever qdrant to rebuild.")
         client = QdrantClient(path=str(QDRANT_DIR))
         try:
             if client.collection_exists(COLLECTION_NAME):

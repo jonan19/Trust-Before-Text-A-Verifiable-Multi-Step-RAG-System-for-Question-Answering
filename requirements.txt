@@ -7,6 +7,9 @@ qdrant-client>=1.10.0
 
 # Embedding model (multi-qa-MiniLM-L6-cos-v1)
 sentence-transformers>=2.2.2
+transformers>=4.41.0
+huggingface-hub>=0.23.0
+safetensors>=0.4.0
 
 # PDF loading
 PyMuPDF>=1.23.0
