@@ -17,6 +17,7 @@ When evidence is insufficient or contradictory, it **abstains** rather than hall
 | **Environment** | `.env` file support via `python-dotenv` |
 | **Query Preprocessing** | Contraction expansion, punctuation normalization before retrieval |
 | **Retrieval Scoring** | Linear calibration replaces magic constants; principled `[0.40, 1.0] → [0.65, 1.0]` mapping |
+| **Retriever Options** | ChromaDB dense retrieval by default; optional Qdrant hybrid dense+sparse retrieval |
 | **Relevance Filtering** | Stage 3 uses embedding-based scores from retrieval (skips redundant TF-cosine) |
 | **Contradiction Detection** | Word-boundary regex matching; unit-context numeric comparison (`"20 days"` ≠ `"5 working days"`) |
 | **Incremental Ingestion** | SHA-256 manifest — only changed/new files re-ingested |
@@ -37,7 +38,7 @@ preprocess_query()          ← contraction expansion, punctuation cleanup  [NEW
 Orchestrator
     ├─ classify query (simple / complex)
     ├─ decompose complex queries into sub-queries
-    └─ retrieve chunks for each sub-query  (ChromaDB + sentence-transformers)
+    └─ retrieve chunks for each sub-query  (ChromaDB or Qdrant hybrid)
          ↓
     Validation Pipeline (7 stages, fully deterministic — no LLM)
          ↓
@@ -129,7 +130,9 @@ abstention_reason == None           →  PROCEED
 ## Retrieval Module *(V4 — redesigned scoring)*
 
 - Embedding model: `multi-qa-MiniLM-L6-cos-v1` (optimised for query-to-passage retrieval)
-- Vector store: ChromaDB (persistent, cosine similarity space)
+- Default vector store: ChromaDB (persistent, cosine similarity space)
+- Optional vector store: Qdrant local mode with named dense and sparse vectors
+- Qdrant hybrid mode uses sentence-transformer dense retrieval plus local BM25-style sparse retrieval, then combines rankings with reciprocal rank fusion (RRF)
 - **Score calibration**: linear mapping `[MIN_COSINE_THRESHOLD=0.40, 1.0] → [SCORE_FLOOR=0.65, 1.0]`
   - Chunks below 0.40 raw cosine similarity are discarded (off-topic noise)
   - Every passing chunk receives a calibrated score ≥ 0.65 (validation sufficiency threshold)
@@ -211,6 +214,8 @@ python main.py "What is the leave policy?" # single query
 python main.py --demo                       # run all demo queries
 python main.py --status                     # show collection info + active backend
 python main.py --ingest                     # force full re-ingest
+python main.py --retriever qdrant "What is the leave policy?"
+python main.py --compare-retrievers         # benchmark ChromaDB vs Qdrant hybrid
 ```
 
 The system **auto-ingests** on first run — no manual setup required.
@@ -225,7 +230,10 @@ project/
 ├── orchestrator.py        # pipeline controller: preprocess, classify, decompose, decide
 ├── validation.py          # 7-stage deterministic validation pipeline
 ├── synthesis.py           # evidence-gated LLM answer generation
-├── retrieval.py           # ChromaDB retrieval + score calibration
+├── retrieval.py           # ChromaDB retrieval
+├── qdrant_retrieval.py    # Qdrant hybrid retrieval + ingestion
+├── retrieval_scoring.py   # shared score calibration
+├── retrieval_eval.py      # ChromaDB vs Qdrant comparison harness
 ├── retrieval_interface.py # retrieval adapter
 ├── ingestion.py           # document ingestion: chunking, embedding, ChromaDB storage
 ├── llm_interface.py       # LLM access point: Groq / OpenAI / Gemini / mock
@@ -233,7 +241,8 @@ project/
 ├── requirements.txt       # dependencies
 ├── .env                   # API keys (git-ignored — never committed)
 ├── data/                  # source documents (.txt, .pdf)
-└── chroma_db/             # vector database (git-ignored — rebuilt automatically)
+├── chroma_db/             # ChromaDB vector database (git-ignored — rebuilt automatically)
+└── qdrant_db/             # Qdrant vector database (git-ignored — rebuilt automatically)
 ```
 
 ---

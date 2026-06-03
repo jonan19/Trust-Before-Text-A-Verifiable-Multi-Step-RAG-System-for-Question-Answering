@@ -3,6 +3,7 @@
 
 # Vector database
 chromadb>=0.4.0
+qdrant-client>=1.10.0
 
 # Embedding model (multi-qa-MiniLM-L6-cos-v1)
 sentence-transformers>=2.2.2

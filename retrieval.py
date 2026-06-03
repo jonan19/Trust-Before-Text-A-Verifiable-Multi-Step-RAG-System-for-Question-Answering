@@ -51,19 +51,17 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 
 from ingestion import COLLECTION_NAME, EMBEDDING_MODEL
+from retrieval_scoring import (
+    MIN_COSINE_THRESHOLD,
+    SCORE_FLOOR,
+    calibrate_score,
+    distance_to_raw_score,
+)
 
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 DEFAULT_CHROMA_DIR:   str   = "chroma_db"
-
-# Score calibration constants
-# MIN_COSINE_THRESHOLD: discard chunks below this raw cosine similarity.
-# SCORE_FLOOR: minimum calibrated score any passing chunk receives.
-# The linear mapping [MIN_COSINE_THRESHOLD, 1.0] → [SCORE_FLOOR, 1.0] ensures
-# that validation's MIN_AVG_SCORE_FOR_SUFFICIENCY (0.65) is reachable.
-MIN_COSINE_THRESHOLD: float = 0.40   # empirically: below this = off-topic noise
-SCORE_FLOOR:          float = 0.65   # must equal validation.MIN_AVG_SCORE_FOR_SUFFICIENCY
 
 # Cached clients — avoid re-opening on every call
 _client:     chromadb.PersistentClient | None = None
@@ -112,37 +110,6 @@ def _embed_query(query: str) -> list[float]:
         model = _get_model()
         _embed_cache[query] = model.encode([query]).tolist()[0]
     return _embed_cache[query]
-
-
-def _distance_to_raw_score(distance: float) -> float:
-    """
-    Convert a ChromaDB cosine distance to a raw cosine similarity in [0, 1].
-
-    ChromaDB cosine distance = 1 - cosine_similarity (for normalised vectors).
-    Clamped to [0, 1] to handle floating-point edge cases.
-    """
-    return round(max(0.0, min(1.0, 1.0 - distance)), 6)
-
-
-def _calibrate_score(raw_score: float) -> float:
-    """
-    Linear calibration: map raw cosine similarity from
-    [MIN_COSINE_THRESHOLD, 1.0] to [SCORE_FLOOR, 1.0].
-
-    Any chunk that passes the floor filter receives at least SCORE_FLOOR,
-    ensuring validation's sufficiency check (avg >= SCORE_FLOOR) can be met
-    even with a single relevant chunk.
-
-    Formula:
-        calibrated = SCORE_FLOOR + (raw - T) / (1 - T) * (1 - SCORE_FLOOR)
-    where T = MIN_COSINE_THRESHOLD.
-    """
-    T = MIN_COSINE_THRESHOLD
-    span = 1.0 - T
-    if span <= 0:
-        return SCORE_FLOOR
-    calibrated = SCORE_FLOOR + (raw_score - T) / span * (1.0 - SCORE_FLOOR)
-    return round(min(1.0, max(SCORE_FLOOR, calibrated)), 4)
 
 
 # ===========================================================================
@@ -209,14 +176,14 @@ def retrieve(
         if not doc or not doc.strip():
             continue
 
-        raw_score = _distance_to_raw_score(dist)
+        raw_score = distance_to_raw_score(dist)
 
         # ── Floor filter: skip off-topic chunks ───────────────────────────
         if raw_score < MIN_COSINE_THRESHOLD:
             continue
 
         # ── Calibrate: linear map to [SCORE_FLOOR, 1.0] ──────────────────
-        calibrated = _calibrate_score(raw_score)
+        calibrated = calibrate_score(raw_score)
 
         chunks.append({
             "text":            doc.strip(),

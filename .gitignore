@@ -26,5 +26,7 @@ Thumbs.db
 *.env
 secrets.py
 
-# Local vector database (rebuilt automatically on first run)
+# Local data and vector databases (rebuilt or supplied locally)
+data/
 chroma_db/
+qdrant_db/
