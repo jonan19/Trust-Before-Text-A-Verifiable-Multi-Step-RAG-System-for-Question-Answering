@@ -68,3 +68,4 @@ This script will prompt you to enter questions and provide the top 3 pieces of e
 1.  **Document Preprocessing** (`document_preprocessing.py`): Handles loading `.txt`/`.pdf`/`.docx` files and generating manageable overlapping chunks while preserving metadata.
 2.  **Retrieval Module** (`retrieval_module.py`): Orchestrates generating vector embeddings and interacting with the active Vector Index.
 3.  **API Layer** (`api.py`): The FastAPI wrapper bridging the machine-learning backends to standard HTTP requests (`/upload`, `/query`, `/stats`). 
+kdhsiahidqdqdv  
