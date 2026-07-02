@@ -1,13 +1,11 @@
 """
-main.py — Entry point for the Trust Before Text RAG prototype (V4 + ChromaDB).
+main.py — Entry point for the Trust Before Text RAG prototype (V4 + Qdrant).
 
 Usage:
     python main.py                        # interactive REPL (default)
     python main.py "Your question here"   # single query from CLI
     python main.py --demo                 # run all built-in demo queries
     python main.py --ingest               # force re-ingest all documents
-    python main.py --retriever qdrant     # use Qdrant hybrid retrieval
-    python main.py --compare-retrievers   # compare ChromaDB vs Qdrant
     python main.py --status               # show collection info and exit
 
 LLM backend priority (set keys in .env):
@@ -16,18 +14,10 @@ LLM backend priority (set keys in .env):
     GEMINI_API_KEY → gemini-1.5-flash         (fallback)
     (none)         → Mock LLM (always works)
 
-V4 changes:
-    - Model consistency check at startup: if the embedding model stored in the
-      manifest differs from the current EMBEDDING_MODEL, the collection is
-      automatically re-ingested with the correct model. Prevents silent
-      wrong-embedding bugs when switching models.
-    - --status mode: shows collection stats without running queries.
-    - Incremental ingestion is default; --ingest forces full rebuild.
-
 Pipeline:
     User Query
     → Orchestrator (preprocess → classify → decompose → retrieve → validate → decide)
-    → ChromaDB Retrieval (sentence-transformers embeddings)
+    → Qdrant Hybrid Retrieval (dense + sparse + ColBERT reranking)
     → Validation Pipeline (7-stage deterministic)
     → Synthesis (evidence-grounded LLM answer)
     → Final Answer + Citations
@@ -54,7 +44,6 @@ from utils import print_separator
 # Paths
 # ---------------------------------------------------------------------------
 DATA_DIR:   Path = Path("data")
-CHROMA_DIR: Path = Path("chroma_db")
 QDRANT_DIR: Path = Path("qdrant_db")
 
 # ---------------------------------------------------------------------------
@@ -63,7 +52,7 @@ QDRANT_DIR: Path = Path("qdrant_db")
 DEMO_QUERIES: list[dict] = [
     {
         "query":    "What is the leave policy?",
-        "expected": "proceed — retrieve leave policy chunks from ChromaDB",
+        "expected": "proceed — retrieve leave policy chunks",
     },
     {
         "query":    "When are salary reviews conducted?",
@@ -92,34 +81,26 @@ DEMO_QUERIES: list[dict] = [
 # Startup: model consistency check + auto-ingestion
 # ===========================================================================
 
-def _check_model_consistency(retriever: str = "chroma") -> bool:
+def _check_model_consistency() -> bool:
     """
-    Verify that the selected collection was built with the current embedding models.
+    Verify that the Qdrant collection was built with the current embedding models.
 
     Reads the manifest.json stored alongside the collection. If the model name
-    differs from the one currently configured for the retriever, the index is
-    stale — old embeddings are incompatible with new query embeddings.
+    differs from the one currently configured, the index is stale — old
+    embeddings are incompatible with new query embeddings.
 
     Returns True if a re-ingest is required, False if everything is consistent.
     """
-    if retriever == "qdrant":
-        from qdrant_retrieval import DENSE_MODEL_NAME, MULTI_MODEL_NAME, SPARSE_MODEL_NAME
-        from qdrant_retrieval import (
-            get_manifest_model,
-            get_manifest_multi_model,
-            get_manifest_sparse_model,
-        )
-        stored_model = get_manifest_model(QDRANT_DIR)
-        stored_sparse_model = get_manifest_sparse_model(QDRANT_DIR)
-        stored_multi_model = get_manifest_multi_model(QDRANT_DIR)
-        expected_model = DENSE_MODEL_NAME
-    else:
-        from ingestion import EMBEDDING_MODEL, get_manifest_model
-
-        stored_model = get_manifest_model(CHROMA_DIR)
-        stored_sparse_model = None
-        stored_multi_model = None
-        expected_model = EMBEDDING_MODEL
+    from qdrant_retrieval import DENSE_MODEL_NAME, MULTI_MODEL_NAME, SPARSE_MODEL_NAME
+    from qdrant_retrieval import (
+        get_manifest_model,
+        get_manifest_multi_model,
+        get_manifest_sparse_model,
+    )
+    stored_model = get_manifest_model(QDRANT_DIR)
+    stored_sparse_model = get_manifest_sparse_model(QDRANT_DIR)
+    stored_multi_model = get_manifest_multi_model(QDRANT_DIR)
+    expected_model = DENSE_MODEL_NAME
 
     if stored_model is None:
         # No manifest yet — treat as consistent (collection may be brand new)
@@ -129,87 +110,66 @@ def _check_model_consistency(retriever: str = "chroma") -> bool:
         print("\n  ⚠  Embedding model mismatch detected!")
         print(f"     Index built with : {stored_model}")
         print(f"     Current model    : {expected_model}")
-        print(f"     Triggering automatic full {retriever} re-ingest...\n")
+        print("     Triggering automatic full re-ingest...\n")
         return True
 
-    if retriever == "qdrant" and stored_sparse_model != SPARSE_MODEL_NAME:
+    if stored_sparse_model != SPARSE_MODEL_NAME:
         print("\n  ⚠  Qdrant sparse model mismatch detected!")
         print(f"     Index built with : {stored_sparse_model}")
         print(f"     Current model    : {SPARSE_MODEL_NAME}")
-        print("     Triggering automatic full qdrant re-ingest...\n")
+        print("     Triggering automatic full re-ingest...\n")
         return True
 
-    if retriever == "qdrant" and stored_multi_model != MULTI_MODEL_NAME:
+    if stored_multi_model != MULTI_MODEL_NAME:
         print("\n  ⚠  Qdrant ColBERT model mismatch detected!")
         print(f"     Index built with : {stored_multi_model}")
         print(f"     Current model    : {MULTI_MODEL_NAME}")
-        print("     Triggering automatic full qdrant re-ingest...\n")
+        print("     Triggering automatic full re-ingest...\n")
         return True
 
     return False
 
 
-def _ensure_ingested(force: bool = False, retriever: str = "chroma") -> None:
+def _ensure_ingested(force: bool = False) -> None:
     """
-    Check if the selected vector store is populated and consistent. If not,
+    Check if the Qdrant vector store is populated and consistent. If not,
     run ingestion.
 
     This is called once at startup so the user never has to manually trigger
     ingestion — the system is self-initializing.
     """
     # Model consistency check (V4)
-    needs_rebuild = _check_model_consistency(retriever)
+    needs_rebuild = _check_model_consistency()
     if needs_rebuild:
         force = True
 
-    if retriever == "qdrant":
-        from qdrant_retrieval import collection_is_empty, ingest_documents, COLLECTION_NAME
-        from qdrant_client import QdrantClient
+    from qdrant_retrieval import collection_is_empty, ingest_documents, COLLECTION_NAME
 
-        if force or collection_is_empty(QDRANT_DIR):
-            print_separator("Qdrant Hybrid Ingestion")
-            if not _data_dir_has_documents():
-                _exit_no_documents()
+    if force or collection_is_empty(QDRANT_DIR):
+        print_separator("Qdrant Hybrid Ingestion")
+        if not _data_dir_has_documents():
+            _exit_no_documents()
 
-            n = ingest_documents(
-                data_dir=DATA_DIR,
-                qdrant_dir=QDRANT_DIR,
-                force=force,
-            )
-            print(f"  [Qdrant] {n} chunks ready for hybrid retrieval.\n")
-        else:
-            from qdrant_retrieval import _get_client
-            client = _get_client(str(QDRANT_DIR))
-            count = client.count(COLLECTION_NAME).count
-            print(f"  [Qdrant] Collection ready — {count} chunks loaded.")
+        n = ingest_documents(
+            data_dir=DATA_DIR,
+            qdrant_dir=QDRANT_DIR,
+            force=force,
+        )
+        print(f"  [Qdrant] {n} chunks ready for hybrid retrieval.\n")
     else:
-        from ingestion import collection_is_empty, ingest_documents, COLLECTION_NAME
-        import chromadb
-
-        if force or collection_is_empty(CHROMA_DIR):
-            print_separator("Document Ingestion")
-            if not _data_dir_has_documents():
-                _exit_no_documents()
-
-            n = ingest_documents(
-                data_dir   = DATA_DIR,
-                chroma_dir = CHROMA_DIR,
-                force      = force,
-            )
-            print(f"  [Ingestion] {n} chunks ready in ChromaDB.\n")
-        else:
-            client = chromadb.PersistentClient(path=str(CHROMA_DIR))
-            col    = client.get_collection(COLLECTION_NAME)
-            print(f"  [ChromaDB] Collection ready — {col.count()} chunks loaded.")
+        from qdrant_retrieval import _get_client
+        client = _get_client(str(QDRANT_DIR))
+        count = client.count(COLLECTION_NAME).count
+        print(f"  [Qdrant] Collection ready — {count} chunks loaded.")
 
     from llm_interface import active_backend
-    print(f"  [Retrieval] Active backend : {retriever}")
+    print(f"  [Retrieval] Active backend : qdrant")
     print(f"  [LLM]       Active backend : {active_backend()}")
 
 
 def _data_dir_has_documents() -> bool:
     return DATA_DIR.exists() and any(
-        f.suffix.lower() in {".txt", ".pdf"}
+        f.suffix.lower() in {".txt", ".pdf", ".docx"}
         for f in DATA_DIR.iterdir()
         if f.is_file()
     )
@@ -218,7 +178,7 @@ def _data_dir_has_documents() -> bool:
 def _exit_no_documents() -> None:
     print(
         f"\n  [WARNING] No documents found in '{DATA_DIR}/'.  \n"
-        f"  Add .txt or .pdf files to '{DATA_DIR}/' and restart.\n"
+        f"  Add .txt, .pdf, or .docx files to '{DATA_DIR}/' and restart.\n"
     )
     sys.exit(1)
 
@@ -295,60 +255,37 @@ def _wrap(text: str, width: int = 72) -> list[str]:
 # ===========================================================================
 
 def _run_status() -> None:
-    """Show collection statistics and exit."""
-    from ingestion import COLLECTION_NAME, EMBEDDING_MODEL, get_manifest_model
-    from retrieval_interface import active_retriever
-    import chromadb
+    """Show Qdrant collection statistics and exit."""
+    from qdrant_retrieval import (
+        DENSE_MODEL_NAME,
+        MULTI_MODEL_NAME,
+        SPARSE_MODEL_NAME,
+        COLLECTION_NAME,
+        get_manifest_model,
+        get_manifest_multi_model,
+        get_manifest_sparse_model,
+        _get_client,
+    )
 
     print_separator("Trust Before Text — Collection Status", width=70)
 
-    manifest_model = get_manifest_model(CHROMA_DIR)
-    print(f"  Configured model : {EMBEDDING_MODEL}")
-    print(f"  Active retriever : {active_retriever()}")
-    print()
-    print("  [ChromaDB]")
-    print(f"  Manifest model   : {manifest_model or '(none)'}")
-    if manifest_model and manifest_model != EMBEDDING_MODEL:
-        print("  ⚠  MISMATCH — run with --ingest to rebuild.")
+    qdrant_model = get_manifest_model(QDRANT_DIR)
+    qdrant_sparse_model = get_manifest_sparse_model(QDRANT_DIR)
+    qdrant_multi_model = get_manifest_multi_model(QDRANT_DIR)
 
-    try:
-        client = chromadb.PersistentClient(path=str(CHROMA_DIR))
-        col    = client.get_collection(COLLECTION_NAME)
-        print(f"  Collection       : {COLLECTION_NAME}")
-        print(f"  Chunks           : {col.count()}")
-        # Peek at sources
-        peek = col.get(limit=200, include=["metadatas"])
-        sources = sorted({m.get("source", "?") for m in (peek.get("metadatas") or [])})
-        print(f"  Documents        : {', '.join(sources) or '(none)'}")
-    except Exception as exc:
-        print(f"  Collection not found: {exc}")
-
-    print()
     print("  [Qdrant Hybrid]")
-    try:
-        from qdrant_retrieval import (
-            DENSE_MODEL_NAME,
-            MULTI_MODEL_NAME,
-            SPARSE_MODEL_NAME,
-            get_manifest_model as get_qdrant_manifest_model,
-            get_manifest_multi_model,
-            get_manifest_sparse_model,
-        )
-        from qdrant_client import QdrantClient
+    print(f"  Dense model      : {qdrant_model or '(none)'}")
+    print(f"  Sparse model     : {qdrant_sparse_model or '(none)'}")
+    print(f"  ColBERT model    : {qdrant_multi_model or '(none)'}")
 
-        qdrant_model = get_qdrant_manifest_model(QDRANT_DIR)
-        qdrant_sparse_model = get_manifest_sparse_model(QDRANT_DIR)
-        qdrant_multi_model = get_manifest_multi_model(QDRANT_DIR)
-        print(f"  Dense model      : {qdrant_model or '(none)'}")
-        print(f"  Sparse model     : {qdrant_sparse_model or '(none)'}")
-        print(f"  ColBERT model    : {qdrant_multi_model or '(none)'}")
-        if qdrant_model and qdrant_model != DENSE_MODEL_NAME:
-            print("  ⚠  DENSE MISMATCH — run with --ingest --retriever qdrant to rebuild.")
-        if qdrant_sparse_model and qdrant_sparse_model != SPARSE_MODEL_NAME:
-            print("  ⚠  SPARSE MISMATCH — run with --ingest --retriever qdrant to rebuild.")
-        if qdrant_multi_model and qdrant_multi_model != MULTI_MODEL_NAME:
-            print("  ⚠  COLBERT MISMATCH — run with --ingest --retriever qdrant to rebuild.")
-        from qdrant_retrieval import _get_client
+    if qdrant_model and qdrant_model != DENSE_MODEL_NAME:
+        print("  ⚠  DENSE MISMATCH — run with --ingest to rebuild.")
+    if qdrant_sparse_model and qdrant_sparse_model != SPARSE_MODEL_NAME:
+        print("  ⚠  SPARSE MISMATCH — run with --ingest to rebuild.")
+    if qdrant_multi_model and qdrant_multi_model != MULTI_MODEL_NAME:
+        print("  ⚠  COLBERT MISMATCH — run with --ingest to rebuild.")
+
+    try:
         client = _get_client(str(QDRANT_DIR))
         if client.collection_exists(COLLECTION_NAME):
             print(f"  Collection       : {COLLECTION_NAME}")
@@ -362,45 +299,6 @@ def _run_status() -> None:
     print()
     print(f"  LLM backend      : {active_backend()}")
     print_separator(width=70)
-
-
-def _parse_retriever_args(args: list[str]) -> tuple[str, list[str]]:
-    """Parse --retriever from argv without pulling in argparse for this small CLI."""
-    from retrieval_interface import SUPPORTED_RETRIEVERS
-
-    retriever = os.getenv("RAG_RETRIEVER", "chroma").strip().lower()
-    cleaned: list[str] = []
-    skip_next = False
-
-    for idx, arg in enumerate(args):
-        if skip_next:
-            skip_next = False
-            continue
-        if arg == "--retriever":
-            if idx + 1 >= len(args):
-                raise SystemExit("Missing value for --retriever. Use chroma or qdrant.")
-            retriever = args[idx + 1].strip().lower()
-            skip_next = True
-            continue
-        if arg.startswith("--retriever="):
-            retriever = arg.split("=", 1)[1].strip().lower()
-            continue
-        cleaned.append(arg)
-
-    aliases = {
-        "chromadb": "chroma",
-        "chroma_db": "chroma",
-        "hybrid": "qdrant",
-        "qdrant_hybrid": "qdrant",
-    }
-    retriever = aliases.get(retriever, retriever)
-    if retriever not in SUPPORTED_RETRIEVERS:
-        raise SystemExit(
-            f"Unsupported retriever '{retriever}'. "
-            f"Choose one of: {', '.join(SUPPORTED_RETRIEVERS)}"
-        )
-
-    return retriever, cleaned
 
 
 def _run_demo() -> None:
@@ -482,21 +380,19 @@ def _cmd_upload() -> None:
 
     if copied > 0:
         print(f"\n  [Upload] {copied} files added. Triggering re-ingestion...")
-        retriever = os.getenv("RAG_RETRIEVER", "chroma").strip().lower()
 
         # ── Release the Qdrant file lock before rebuilding ────────────────
-        if retriever == "qdrant":
-            from qdrant_retrieval import _close_client
-            _close_client()
-            # Remove stale lock files left by previous crashes
-            lock_file = QDRANT_DIR / ".lock"
-            if lock_file.exists():
-                try:
-                    lock_file.unlink()
-                except OSError:
-                    pass
+        from qdrant_retrieval import _close_client
+        _close_client()
+        # Remove stale lock files left by previous crashes
+        lock_file = QDRANT_DIR / ".lock"
+        if lock_file.exists():
+            try:
+                lock_file.unlink()
+            except OSError:
+                pass
 
-        _ensure_ingested(force=True, retriever=retriever)
+        _ensure_ingested(force=True)
 
 
 def _run_repl() -> None:
@@ -537,14 +433,15 @@ def _run_repl() -> None:
 # ===========================================================================
 
 def main() -> None:
-    retriever, args = _parse_retriever_args(sys.argv[1:])
-    os.environ["RAG_RETRIEVER"] = retriever
+    args = sys.argv[1:]
+
+    # Always use qdrant
+    os.environ["RAG_RETRIEVER"] = "qdrant"
 
     # ── Parse flags ──────────────────────────────────────────────────────
     force_ingest = "--ingest" in args
     demo_mode    = "--demo" in args
     status_mode  = "--status" in args
-    compare_mode = "--compare-retrievers" in args
     args_clean   = [a for a in args if not a.startswith("--")]
 
     # ── Status mode (no ingestion needed) ────────────────────────────────
@@ -552,15 +449,8 @@ def main() -> None:
         _run_status()
         return
 
-    if compare_mode:
-        _ensure_ingested(force=force_ingest, retriever="chroma")
-        _ensure_ingested(force=force_ingest, retriever="qdrant")
-        from retrieval_eval import run_comparison
-        run_comparison()
-        return
-
-    # ── Bootstrap: ensure selected retriever is populated and consistent ─
-    _ensure_ingested(force=force_ingest, retriever=retriever)
+    # ── Bootstrap: ensure Qdrant is populated and consistent ─────────────
+    _ensure_ingested(force=force_ingest)
 
     # ── Route to mode ────────────────────────────────────────────────────
     if demo_mode:
