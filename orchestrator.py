@@ -25,7 +25,7 @@ from __future__ import annotations
 import re
 from typing import Literal
 
-from retrieval_interface import retrieve
+from qdrant_retrieval import retrieve
 from validation import validate
 from synthesis import synthesize
 from utils import build_context_block, format_abstention_response, print_separator
