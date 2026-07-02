@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trust Before Text | Retrieval Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body class="dark-theme">
     <div class="app-container">
         <!-- Sidebar -->
@@ -15,7 +19,7 @@
                 <div class="logo-icon"></div>
                 <h1>Trust Before Text</h1>
             </div>
-            
+
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <h3>Corpus Stats</h3>
@@ -37,7 +41,8 @@
                         <input type="file" id="file-input" accept=".txt,.pdf,.docx" hidden>
                         <div class="upload-icon">↑</div>
                         <p>Drop a .txt, .pdf, or .docx file here</p>
-                        <button class="btn-secondary" onclick="document.getElementById('file-input').click()">Browse Files</button>
+                        <button class="btn-secondary" onclick="document.getElementById('file-input').click()">Browse
+                            Files</button>
                     </div>
                 </div>
 
@@ -46,24 +51,21 @@
                     <button id="reset-btn" class="btn-danger">Reset Index</button>
                 </div>
             </nav>
-            
-            <div class="sidebar-footer">
-                <p>Retrieval Module v2.0</p>
-            </div>
+
+
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
             <header class="main-header">
                 <h2>Retrieval Module Explorer</h2>
-                <div class="header-actions">
-                    <span class="status-indicator online">System Ready</span>
-                </div>
+
             </header>
 
             <section class="query-section">
                 <div class="query-bar-container">
-                    <input type="text" id="query-input" placeholder="Ask a question to see retrieved evidence..." autocomplete="off">
+                    <input type="text" id="query-input" placeholder="Ask a question to see retrieved evidence..."
+                        autocomplete="off">
                     <button id="query-btn" class="btn-primary">
                         <span>Search</span>
                     </button>
@@ -75,7 +77,7 @@
                     <h3>Retrieved Evidence</h3>
                     <div id="results-count" class="badge">0 Results</div>
                 </div>
-                
+
                 <div id="results-container" class="results-grid">
                     <!-- Results will be injected here -->
                     <div class="empty-state">
@@ -93,4 +95,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>
