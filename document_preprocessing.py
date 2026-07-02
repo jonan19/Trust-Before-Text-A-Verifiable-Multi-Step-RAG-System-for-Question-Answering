@@ -11,7 +11,14 @@ import re
 from typing import List, Dict, Any, Optional
 from pathlib import Path
 from abc import ABC, abstractmethod
-from retrieval_module import DocumentChunk
+from dataclasses import dataclass, field
+
+@dataclass
+class DocumentChunk:
+    chunk_id: str
+    text: str
+    source_document: str
+    metadata: Optional[Dict[str, Any]] = field(default_factory=dict)
 import hashlib
 
 
