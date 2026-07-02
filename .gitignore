@@ -11,10 +11,7 @@ __pycache__/
 *$py.class
 
 # Vector Databases and Storage
-chroma_db/
-my_chroma_db/
-*.faiss
-*.chunks.json
+qdrant_db/
 
 # Uploaded Files
 uploaded_docs/
