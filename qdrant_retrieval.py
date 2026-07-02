@@ -1,7 +1,7 @@
 """
 Qdrant hybrid retrieval backend.
 
-This module stores the same chunks used by ChromaDB in a local Qdrant
+This module stores document chunks in a local Qdrant
 collection with three named vector types:
     - dense: all-MiniLM-L6-v2 sentence embeddings
     - sparse: local BM25-style lexical vectors with Qdrant's IDF modifier
@@ -29,7 +29,7 @@ from typing import Any, Iterable, Sequence
 from qdrant_client import QdrantClient, models
 from sentence_transformers import SentenceTransformer
 
-from ingestion import COLLECTION_NAME
+COLLECTION_NAME: str = "trust_before_text_chunks"
 from retrieval_scoring import (
     MIN_COSINE_THRESHOLD,
     calibrate_score,
