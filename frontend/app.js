@@ -18,7 +18,7 @@ let isSearching = false;
 // Initialize
 async function init() {
     await updateStats();
-    
+
     // Event Listeners
     queryBtn.addEventListener('click', handleQuery);
     queryInput.addEventListener('keypress', (e) => {
@@ -100,7 +100,7 @@ async function uploadFile(file) {
     formData.append('file', file);
 
     showNotification(`Uploading ${file.name}...`, 'success');
-    
+
     try {
         const response = await fetch(`${API_BASE_URL}/upload`, {
             method: 'POST',
@@ -139,7 +139,33 @@ function renderResults(data) {
     const { chunks, similarity_scores } = data;
     resultsCount.textContent = `${chunks.length} Results`;
 
-    if (chunks.length === 0) {
+    let html = '';
+
+    // Render synthesized answer if present
+    if (data.answer) {
+        const statusClass = data.status === 'abstain' ? 'abstain' : 'success';
+        const statusLabel = data.status === 'abstain' ? 'ABSTAINED' : 'RESOLVED';
+        
+        let reasonLabel = '';
+        if (data.status === 'abstain' && data.abstention_reason) {
+            reasonLabel = `<span class="abstain-reason-badge">Reason: ${data.abstention_reason}</span>`;
+        }
+
+        html += `
+        <div class="answer-card ${statusClass}">
+            <div class="answer-card-header">
+                <div class="answer-header-left">
+                    <span class="answer-title">Synthesized Answer</span>
+                    ${reasonLabel}
+                </div>
+                <span class="status-badge ${statusClass}">${statusLabel}</span>
+            </div>
+            <div class="answer-text">${data.answer}</div>
+        </div>
+        `;
+    }
+
+    if (chunks.length === 0 && !data.answer) {
         resultsContainer.innerHTML = `
             <div class="empty-state">
                 <div class="empty-icon">❓</div>
@@ -150,15 +176,27 @@ function renderResults(data) {
         return;
     }
 
-    resultsContainer.innerHTML = chunks.map((chunk, i) => `
+    const raw_scores = data.raw_scores || [];
+
+    html += chunks.map((chunk, i) => {
+        const calibrated = (similarity_scores[i] * 100).toFixed(1);
+        const raw = raw_scores[i] ? (raw_scores[i] * 100).toFixed(1) : null;
+        const scoreLabel = raw
+            ? `Score: ${calibrated}% <span class="raw-score">(raw: ${raw}%)</span>`
+            : `Similarity: ${calibrated}%`;
+
+        return `
         <div class="result-card" style="animation-delay: ${i * 0.1}s">
             <div class="result-card-header">
-                <span class="source-tag">${chunk.source_document}</span>
-                <span class="score-tag">Similarity: ${(similarity_scores[i] * 100).toFixed(1)}%</span>
+                <span class="source-tag">${chunk.source_document || chunk.source}</span>
+                <span class="score-tag">${scoreLabel}</span>
             </div>
             <div class="result-text">${chunk.text}</div>
         </div>
-    `).join('');
+        `;
+    }).join('');
+
+    resultsContainer.innerHTML = html;
 }
 
 function setLoading(isLoading) {
@@ -173,7 +211,7 @@ function showNotification(message, type = 'success') {
     note.className = `notification ${type}`;
     note.textContent = message;
     notificationContainer.appendChild(note);
-    
+
     setTimeout(() => {
         note.style.opacity = '0';
         setTimeout(() => note.remove(), 300);
