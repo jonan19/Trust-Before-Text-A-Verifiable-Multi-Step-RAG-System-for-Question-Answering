@@ -1,0 +1,376 @@
+{
+  "meta": {
+    "seed": 20260728,
+    "uniform_score": 0.85,
+    "uniform_relevance": 1.0,
+    "n_values": [
+      2,
+      10,
+      40
+    ],
+    "n_conflicts": 1,
+    "draws": 5
+  },
+  "results": [
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 2,
+      "draw": 0,
+      "n_input": 2,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 2
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Employee_Handbook.docx) 6 months (Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 2,
+      "draw": 1,
+      "n_input": 2,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 2
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Employee_Handbook.docx) 6 months (Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 2,
+      "draw": 2,
+      "n_input": 2,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 2
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Employee_Handbook.docx) 6 months (Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 2,
+      "draw": 3,
+      "n_input": 2,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 2
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 2,
+      "draw": 4,
+      "n_input": 2,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 2
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 10,
+      "draw": 0,
+      "n_input": 10,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 10
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Employee_Handbook.docx), 6 months (Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 10,
+      "draw": 1,
+      "n_input": 10,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 10
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Passage 9 | Source: Employee_Handbook.docx), 6 months (Passage 10 | Source: Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 10,
+      "draw": 2,
+      "n_input": 10,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 10
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Passage 5 | Source: Employee_Handbook.docx), 6 months (Passage 6 | Source: Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 10,
+      "draw": 3,
+      "n_input": 10,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 10
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Passage 2 | Source: Employee_Handbook.docx), 6 months (Passage 10 | Source: Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 10,
+      "draw": 4,
+      "n_input": 10,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 10
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months from Passage 3, 6 months from Passage 8"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 40,
+      "draw": 0,
+      "n_input": 40,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 40
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Passage 1 | Source: Employee_Handbook.docx), 6 months (Passage 2 | Source: Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 40,
+      "draw": 1,
+      "n_input": 40,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 40
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Employee_Handbook.docx), 6 months (Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 40,
+      "draw": 2,
+      "n_input": 40,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 40
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Passage 20 | Source: Employee_Handbook.docx), 6 months (Passage 21 | Source: Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 40,
+      "draw": 3,
+      "n_input": 40,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 40
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Passage 2 | Source: Employee_Handbook.docx), 6 months (Passage 40 | Source: Recruitment_and_Onboarding_Policy.docx)"
+      }
+    },
+    {
+      "conflict": "C1",
+      "topic": "probation",
+      "query": "What is the probationary period for new employees?",
+      "N": 40,
+      "draw": 4,
+      "n_input": 40,
+      "ours": {
+        "flagged": true,
+        "kind": "nli",
+        "detected_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct": true,
+        "relevant_count": 40
+      },
+      "llm": {
+        "decision": "conflict",
+        "gave_both_values": true,
+        "correct": true,
+        "reply": "CONFLICT 3 months (Passage 30 | Source: Employee_Handbook.docx), 6 months (Passage 7 | Source: Recruitment_and_Onboarding_Policy.docx)"
+      }
+    }
+  ]
+}

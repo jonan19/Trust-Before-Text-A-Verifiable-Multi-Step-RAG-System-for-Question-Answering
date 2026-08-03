@@ -1,0 +1,503 @@
+"""
+main.py — Entry point for the Trust Before Text RAG prototype (V4 + Qdrant).
+
+Usage:
+    python main.py                        # interactive REPL (default)
+    python main.py "Your question here"   # single query from CLI
+    python main.py --demo                 # run all built-in demo queries
+    python main.py --ingest               # force re-ingest all documents
+    python main.py --status               # show collection info and exit
+
+LLM backend priority (set keys in .env):
+    GROQ_API_KEY   → llama-3.3-70b-versatile  (primary)
+    OPENAI_API_KEY → gpt-4o-mini              (fallback)
+    GEMINI_API_KEY → gemini-1.5-flash         (fallback)
+    (none)         → Mock LLM (always works)
+
+Pipeline:
+    User Query
+    → Orchestrator (preprocess → classify → decompose → retrieve → validate → decide)
+    → Qdrant Hybrid Retrieval (dense + sparse + ColBERT reranking)
+    → Validation Pipeline (7-stage deterministic)
+    → Synthesis (evidence-grounded LLM answer)
+    → Final Answer + Citations
+"""
+
+from __future__ import annotations
+
+import sys
+import os
+import shutil
+from pathlib import Path
+
+# Load .env before any module reads os.getenv()
+try:
+    from dotenv import load_dotenv  # type: ignore
+    load_dotenv()
+except ImportError:
+    pass   # dotenv optional — env vars can still be set via shell
+
+from orchestrator import run
+from utils import print_separator
+
+# ---------------------------------------------------------------------------
+# Paths
+# ---------------------------------------------------------------------------
+DATA_DIR:   Path = Path("data")
+QDRANT_DIR: Path = Path("qdrant_db")
+
+# ---------------------------------------------------------------------------
+# Demo queries — exercise all pipeline branches
+# ---------------------------------------------------------------------------
+DEMO_QUERIES: list[dict] = [
+    {
+        "query":    "What is the leave policy?",
+        "expected": "proceed — retrieve leave policy chunks",
+    },
+    {
+        "query":    "When are salary reviews conducted?",
+        "expected": "proceed — salary review section retrieved",
+    },
+    {
+        "query":    "Compare leave policy and remote work policy",
+        "expected": "proceed or abstain — complex query, decomposed into sub-queries",
+    },
+    {
+        "query":    "What is the company stock price?",
+        "expected": "abstain — insufficient evidence (not in documents)",
+    },
+    {
+        "query":    "What are the rules for expense reimbursement?",
+        "expected": "proceed — expense reimbursement section retrieved",
+    },
+    {
+        "query":    "What's the grievance procedure?",
+        "expected": "proceed — contraction expanded before retrieval",
+    },
+]
+
+
+# ===========================================================================
+# Startup: model consistency check + auto-ingestion
+# ===========================================================================
+
+def _check_model_consistency() -> bool:
+    """
+    Verify that the Qdrant collection was built with the current embedding models.
+
+    Reads the manifest.json stored alongside the collection. If the model name
+    differs from the one currently configured, the index is stale — old
+    embeddings are incompatible with new query embeddings.
+
+    Returns True if a re-ingest is required, False if everything is consistent.
+    """
+    from qdrant_retrieval import DENSE_MODEL_NAME, MULTI_MODEL_NAME, SPARSE_MODEL_NAME
+    from qdrant_retrieval import (
+        get_manifest_model,
+        get_manifest_multi_model,
+        get_manifest_sparse_model,
+    )
+    stored_model = get_manifest_model(QDRANT_DIR)
+    stored_sparse_model = get_manifest_sparse_model(QDRANT_DIR)
+    stored_multi_model = get_manifest_multi_model(QDRANT_DIR)
+    expected_model = DENSE_MODEL_NAME
+
+    if stored_model is None:
+        # No manifest yet — treat as consistent (collection may be brand new)
+        return False
+
+    if stored_model != expected_model:
+        print("\n  ⚠  Embedding model mismatch detected!")
+        print(f"     Index built with : {stored_model}")
+        print(f"     Current model    : {expected_model}")
+        print("     Triggering automatic full re-ingest...\n")
+        return True
+
+    if stored_sparse_model != SPARSE_MODEL_NAME:
+        print("\n  ⚠  Qdrant sparse model mismatch detected!")
+        print(f"     Index built with : {stored_sparse_model}")
+        print(f"     Current model    : {SPARSE_MODEL_NAME}")
+        print("     Triggering automatic full re-ingest...\n")
+        return True
+
+    if stored_multi_model != MULTI_MODEL_NAME:
+        print("\n  ⚠  Qdrant ColBERT model mismatch detected!")
+        print(f"     Index built with : {stored_multi_model}")
+        print(f"     Current model    : {MULTI_MODEL_NAME}")
+        print("     Triggering automatic full re-ingest...\n")
+        return True
+
+    return False
+
+
+def _release_stale_lock() -> None:
+    """
+    Remove a stale Qdrant lock file left behind when the previous Python
+    process was killed without a clean shutdown.
+
+    The local QdrantClient holds an exclusive file lock on ``qdrant_db/.lock``
+    for the lifetime of the process. If the process is killed (SIGKILL,
+    taskkill /F, IDE Stop button), the lock file remains on disk and every
+    subsequent run crashes with::
+
+        portalocker.exceptions.AlreadyLocked: [Errno 13] Permission denied
+
+    Safety: before deleting, we try to acquire the lock ourselves in
+    non-blocking mode. If that succeeds, the file is genuinely orphaned and
+    we can safely remove it. If another process holds it, portalocker raises
+    AlreadyLocked and we leave the file alone \u2014 Qdrant will then surface the
+    correct "concurrent access" error as usual.
+    """
+    lock_path = QDRANT_DIR / ".lock"
+    if not lock_path.exists():
+        return
+
+    try:
+        import portalocker
+        with open(lock_path, "r+b") as f:
+            portalocker.lock(f, portalocker.LOCK_EX | portalocker.LOCK_NB)
+            portalocker.unlock(f)
+        # Lock was acquirable \u2014 file is orphaned, delete it
+        lock_path.unlink()
+    except Exception:
+        # Either the file is genuinely locked by another process,
+        # or we can't open/delete it \u2014 leave it alone.
+        pass
+
+
+def _ensure_ingested(force: bool = False) -> None:
+    """
+    Check if the Qdrant vector store is populated and consistent. If not,
+    run ingestion.
+
+    This is called once at startup so the user never has to manually trigger
+    ingestion — the system is self-initializing.
+    """
+    # Remove any stale lock file from a previously killed process
+    _release_stale_lock()
+
+    # Model consistency check (V4)
+    needs_rebuild = _check_model_consistency()
+    if needs_rebuild:
+        force = True
+
+    from qdrant_retrieval import collection_is_empty, ingest_documents, COLLECTION_NAME
+
+    if force or collection_is_empty(QDRANT_DIR):
+        print_separator("Qdrant Hybrid Ingestion")
+        if not _data_dir_has_documents():
+            _exit_no_documents()
+
+        n = ingest_documents(
+            data_dir=DATA_DIR,
+            qdrant_dir=QDRANT_DIR,
+            force=force,
+        )
+        print(f"  [Qdrant] {n} chunks ready for hybrid retrieval.\n")
+    else:
+        from qdrant_retrieval import _get_client
+        client = _get_client(str(QDRANT_DIR))
+        count = client.count(COLLECTION_NAME).count
+        print(f"  [Qdrant] Collection ready — {count} chunks loaded.")
+
+    from llm_interface import active_backend
+    print(f"  [Retrieval] Active backend : qdrant")
+    print(f"  [LLM]       Active backend : {active_backend()}")
+
+
+def _data_dir_has_documents() -> bool:
+    return DATA_DIR.exists() and any(
+        f.suffix.lower() in {".txt", ".pdf", ".docx"}
+        for f in DATA_DIR.iterdir()
+        if f.is_file()
+    )
+
+
+def _exit_no_documents() -> None:
+    print(
+        f"\n  [WARNING] No documents found in '{DATA_DIR}/'.  \n"
+        f"  Add .txt, .pdf, or .docx files to '{DATA_DIR}/' and restart.\n"
+    )
+    sys.exit(1)
+
+
+# ===========================================================================
+# Output helpers
+# ===========================================================================
+
+def _print_result(result: dict) -> None:
+    """
+    Pretty-print the full pipeline result:
+    retrieved chunks → validation status → final answer → citations.
+    """
+    v = result["validation"]
+
+    print_separator("PIPELINE SUMMARY")
+    print(f"  Query     : {result['query']}")
+    if result.get("preprocessed") and result["preprocessed"] != result["query"]:
+        print(f"  Normalised: {result['preprocessed']}")
+    print(f"  Decision  : {result['decision'].upper()}")
+    print(f"  Relevant  : {v['relevant_count']} chunks passed validation")
+    print(f"  Conflict  : {v['conflict_flag']}")
+    print(f"  Sufficient: {v['sufficiency_flag']}")
+    print(f"  Confidence: {v['confidence_score']:.4f}")
+    if v['abstention_reason']:
+        print(f"  Abstain   : {v['abstention_reason']}")
+
+    sr = result.get("synthesis_result")
+    if sr:
+        print_separator("ANSWER")
+        print(f"  Status: {sr['status'].upper()}")
+        print()
+        # Word-wrap the answer at 72 chars for readability
+        answer = sr.get("answer", "")
+        for line in _wrap(answer, width=72):
+            print(f"  {line}")
+
+        if sr.get("reason"):
+            print(f"\n  Reason: {sr['reason']}")
+
+        citations = sr.get("citations", [])
+        if citations:
+            print_separator("CITATIONS")
+            for c in citations:
+                score_str = f"  (score={c['score']:.4f})" if "score" in c else ""
+                print(f"  [{c['source']}] {c['section']}{score_str}")
+
+    print_separator()
+
+
+def _wrap(text: str, width: int = 72) -> list[str]:
+    """Simple word-wrapper."""
+    words  = text.split()
+    lines  = []
+    current: list[str] = []
+    length = 0
+
+    for word in words:
+        if length + len(word) + (1 if current else 0) > width:
+            lines.append(" ".join(current))
+            current = [word]
+            length  = len(word)
+        else:
+            current.append(word)
+            length += len(word) + (1 if len(current) > 1 else 0)
+
+    if current:
+        lines.append(" ".join(current))
+    return lines
+
+
+# ===========================================================================
+# Modes
+# ===========================================================================
+
+def _run_status() -> None:
+    """Show Qdrant collection statistics and exit."""
+    from qdrant_retrieval import (
+        DENSE_MODEL_NAME,
+        MULTI_MODEL_NAME,
+        SPARSE_MODEL_NAME,
+        COLLECTION_NAME,
+        get_manifest_model,
+        get_manifest_multi_model,
+        get_manifest_sparse_model,
+        _get_client,
+    )
+
+    print_separator("Trust Before Text — Collection Status", width=70)
+
+    qdrant_model = get_manifest_model(QDRANT_DIR)
+    qdrant_sparse_model = get_manifest_sparse_model(QDRANT_DIR)
+    qdrant_multi_model = get_manifest_multi_model(QDRANT_DIR)
+
+    print("  [Qdrant Hybrid]")
+    print(f"  Dense model      : {qdrant_model or '(none)'}")
+    print(f"  Sparse model     : {qdrant_sparse_model or '(none)'}")
+    print(f"  ColBERT model    : {qdrant_multi_model or '(none)'}")
+
+    if qdrant_model and qdrant_model != DENSE_MODEL_NAME:
+        print("  ⚠  DENSE MISMATCH — run with --ingest to rebuild.")
+    if qdrant_sparse_model and qdrant_sparse_model != SPARSE_MODEL_NAME:
+        print("  ⚠  SPARSE MISMATCH — run with --ingest to rebuild.")
+    if qdrant_multi_model and qdrant_multi_model != MULTI_MODEL_NAME:
+        print("  ⚠  COLBERT MISMATCH — run with --ingest to rebuild.")
+
+    try:
+        client = _get_client(str(QDRANT_DIR))
+        if client.collection_exists(COLLECTION_NAME):
+            print(f"  Collection       : {COLLECTION_NAME}")
+            print(f"  Chunks           : {client.count(COLLECTION_NAME).count}")
+        else:
+            print("  Collection       : (none)")
+    except Exception as exc:
+        print(f"  Collection not found: {exc}")
+
+    from llm_interface import active_backend
+    print()
+    print(f"  LLM backend      : {active_backend()}")
+    print_separator(width=70)
+
+
+def _run_demo() -> None:
+    """Run all demo queries and print a summary table."""
+    print_separator("Trust Before Text — Demo Mode", width=70)
+    print(f"  Running {len(DEMO_QUERIES)} demo queries ...\n")
+
+    for idx, entry in enumerate(DEMO_QUERIES, start=1):
+        query    = entry["query"]
+        expected = entry["expected"]
+
+        print(f"\n{'=' * 70}")
+        print(f"  Demo {idx}/{len(DEMO_QUERIES)}")
+        print(f"  Expected : {expected}")
+        print(f"{'=' * 70}\n")
+
+        result = run(query, verbose=True)
+        _print_result(result)
+
+        v = result["validation"]
+        print(
+            f"\n  [Summary] "
+            f"relevant={v['relevant_count']}  "
+            f"conflict={v['conflict_flag']}  "
+            f"sufficient={v['sufficiency_flag']}  "
+            f"reason={v['abstention_reason'] or 'none'}  "
+            f"confidence={v['confidence_score']:.4f}"
+        )
+        print()
+
+
+def _run_single(query: str) -> None:
+    """Run a single query and print the result."""
+    print_separator("Trust Before Text — Single Query", width=70)
+    result = run(query, verbose=True)
+    _print_result(result)
+
+
+def _cmd_upload() -> None:
+    """Open file picker, copy files to DATA_DIR, and re-ingest."""
+    import tkinter as tk
+    from tkinter import filedialog
+
+    root = tk.Tk()
+    root.withdraw()
+    root.attributes("-topmost", True)
+
+    filetypes = [
+        ("Supported files", "*.txt *.pdf *.docx"),
+        ("Text files", "*.txt"),
+        ("PDF files", "*.pdf"),
+        ("Word documents", "*.docx"),
+        ("All files", "*.*"),
+    ]
+
+    paths = filedialog.askopenfilenames(title="Select documents to upload", filetypes=filetypes)
+    root.destroy()
+    
+    files = [Path(p) for p in paths if p]
+    if not files:
+        print("  [Upload] No files selected.")
+        return
+
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    copied = 0
+    for filepath in files:
+        ext = filepath.suffix.lower()
+        if ext not in ('.txt', '.pdf', '.docx'):
+            print(f"  [ERROR] Skipping {filepath.name} - unsupported type: {ext}")
+            continue
+
+        dest = DATA_DIR / filepath.name
+        try:
+            shutil.copy2(filepath, dest)
+            copied += 1
+            print(f"  [OK] Copied {filepath.name}")
+        except Exception as e:
+            print(f"  [ERROR] Failed to copy {filepath.name}: {e}")
+
+    if copied > 0:
+        print(f"\n  [Upload] {copied} files added. Triggering re-ingestion...")
+
+        # ── Release the Qdrant file lock before rebuilding ────────────────
+        from qdrant_retrieval import _close_client
+        _close_client()
+        # Remove stale lock files left by previous crashes
+        lock_file = QDRANT_DIR / ".lock"
+        if lock_file.exists():
+            try:
+                lock_file.unlink()
+            except OSError:
+                pass
+
+        _ensure_ingested(force=True)
+
+
+def _run_repl() -> None:
+    """Interactive REPL — accepts queries until the user types 'quit' or 'exit'."""
+    print_separator("Trust Before Text — Interactive Mode", width=70)
+    print("  Type your question and press Enter.")
+    print("  Commands: 'quit'/'exit' to stop, 'demo' to run demos, 'status' for info, 'upload' to add files.\n")
+
+    while True:
+        try:
+            query = input("  Query> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\n  Goodbye.")
+            break
+
+        if not query:
+            continue
+        if query.lower() in {"quit", "exit", "q"}:
+            print("  Goodbye.")
+            break
+        if query.lower() == "demo":
+            _run_demo()
+            continue
+        if query.lower() == "status":
+            _run_status()
+            continue
+        if query.lower() == "upload":
+            _cmd_upload()
+            continue
+
+        result = run(query, verbose=True)
+        _print_result(result)
+        print()
+
+
+# ===========================================================================
+# Entry point
+# ===========================================================================
+
+def main() -> None:
+    args = sys.argv[1:]
+
+    # Always use qdrant
+    os.environ["RAG_RETRIEVER"] = "qdrant"
+
+    # ── Parse flags ──────────────────────────────────────────────────────
+    force_ingest = "--ingest" in args
+    demo_mode    = "--demo" in args
+    status_mode  = "--status" in args
+    args_clean   = [a for a in args if not a.startswith("--")]
+
+    # ── Status mode (no ingestion needed) ────────────────────────────────
+    if status_mode:
+        _run_status()
+        return
+
+    # ── Bootstrap: ensure Qdrant is populated and consistent ─────────────
+    _ensure_ingested(force=force_ingest)
+
+    # ── Route to mode ────────────────────────────────────────────────────
+    if demo_mode:
+        _run_demo()
+    elif args_clean:
+        _run_single(" ".join(args_clean))
+    else:
+        _run_repl()
+
+
+if __name__ == "__main__":
+    main()

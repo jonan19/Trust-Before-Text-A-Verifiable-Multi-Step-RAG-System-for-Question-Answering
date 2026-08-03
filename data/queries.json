@@ -1,0 +1,1052 @@
+{
+  "queries": [
+    {
+      "id": "Q001",
+      "category": "single-fact lookup",
+      "query": "How many days of annual leave do full-time employees get?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "25 days per year plus 8 bank holidays",
+      "trace": "annual_leave_base",
+      "note": ""
+    },
+    {
+      "id": "Q002",
+      "category": "single-fact lookup",
+      "query": "What is the maximum annual leave I can carry over to next year?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "5 days, to be used by 31 March",
+      "trace": "carryover_cap",
+      "note": ""
+    },
+    {
+      "id": "Q003",
+      "category": "single-fact lookup",
+      "query": "How many weeks of full pay does enhanced maternity leave provide?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "16 weeks at full pay",
+      "trace": "maternity",
+      "note": ""
+    },
+    {
+      "id": "Q004",
+      "category": "single-fact lookup",
+      "query": "How much paternity leave is offered?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "4 weeks at full pay",
+      "trace": "paternity",
+      "note": ""
+    },
+    {
+      "id": "Q005",
+      "category": "single-fact lookup",
+      "query": "What is the business mileage reimbursement rate?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "45p/mile for first 10,000 miles, 25p/mile thereafter",
+      "trace": "mileage",
+      "note": ""
+    },
+    {
+      "id": "Q006",
+      "category": "single-fact lookup",
+      "query": "What is the deadline for submitting an expense claim?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Within 30 days of the cost being incurred",
+      "trace": "expense_deadline",
+      "note": ""
+    },
+    {
+      "id": "Q007",
+      "category": "single-fact lookup",
+      "query": "What is the hotel room cap for a stay in London?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "GBP 180 per night in London",
+      "trace": "hotel_caps",
+      "note": ""
+    },
+    {
+      "id": "Q008",
+      "category": "single-fact lookup",
+      "query": "What is the subsistence cap for an evening meal?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "GBP 30 for an evening meal",
+      "trace": "subsistence",
+      "note": ""
+    },
+    {
+      "id": "Q009",
+      "category": "single-fact lookup",
+      "query": "Over what value must a gift be declared?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Any gift over GBP 50",
+      "trace": "gift_threshold",
+      "note": ""
+    },
+    {
+      "id": "Q010",
+      "category": "single-fact lookup",
+      "query": "What is the minimum password length?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "14 characters",
+      "trace": "password_length",
+      "note": ""
+    },
+    {
+      "id": "Q011",
+      "category": "single-fact lookup",
+      "query": "How much is the employee referral bonus?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "GBP 1,500",
+      "trace": "referral_bonus",
+      "note": ""
+    },
+    {
+      "id": "Q012",
+      "category": "single-fact lookup",
+      "query": "What is the ratio of trained first-aiders to employees?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Health_and_Safety_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "At least 1 first-aider per 50 employees on site",
+      "trace": "first_aider_ratio",
+      "note": ""
+    },
+    {
+      "id": "Q013",
+      "category": "single-fact lookup",
+      "query": "How often are fire evacuation drills held?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Health_and_Safety_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Quarterly at each office",
+      "trace": "fire_drills",
+      "note": ""
+    },
+    {
+      "id": "Q014",
+      "category": "single-fact lookup",
+      "query": "What performance rating scale is used?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Performance_Management_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "A scale of 1 to 5 (3 = fully meets expectations)",
+      "trace": "rating_scale",
+      "note": ""
+    },
+    {
+      "id": "Q015",
+      "category": "single-fact lookup",
+      "query": "What multiple of salary is provided as life assurance?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "4 times base salary",
+      "trace": "life_assurance",
+      "note": ""
+    },
+    {
+      "id": "Q016",
+      "category": "single-fact lookup",
+      "query": "Am I eligible for a company car?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document covers a company car scheme",
+      "trace": "G1",
+      "note": ""
+    },
+    {
+      "id": "Q017",
+      "category": "single-fact lookup",
+      "query": "Does the company offer share options or stock to employees?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No share/equity scheme is described anywhere",
+      "trace": "G2",
+      "note": ""
+    },
+    {
+      "id": "Q018",
+      "category": "single-fact lookup",
+      "query": "Is jury service paid?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Jury service pay is not covered by any policy",
+      "trace": "G5",
+      "note": ""
+    },
+    {
+      "id": "Q019",
+      "category": "multi-part",
+      "query": "What is the annual leave entitlement and how many days can be carried over?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "25 days/year; carry over up to 5 days",
+      "trace": "annual_leave_base+carryover_cap",
+      "note": ""
+    },
+    {
+      "id": "Q020",
+      "category": "multi-part",
+      "query": "What is the mileage rate and the deadline to claim it?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "45p/25p per mile; claim within 30 days",
+      "trace": "mileage+expense_deadline",
+      "note": ""
+    },
+    {
+      "id": "Q021",
+      "category": "multi-part",
+      "query": "How much maternity and paternity leave is provided?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Maternity 16 weeks full pay; paternity 4 weeks full pay",
+      "trace": "maternity+paternity",
+      "note": ""
+    },
+    {
+      "id": "Q022",
+      "category": "multi-part",
+      "query": "What is the minimum password length and is multi-factor authentication required?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "14 characters; MFA mandatory for remote access and cloud apps",
+      "trace": "password_length+mfa",
+      "note": ""
+    },
+    {
+      "id": "Q023",
+      "category": "multi-part",
+      "query": "What are the subsistence caps for breakfast and an evening meal?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "GBP 10 breakfast; GBP 30 evening meal",
+      "trace": "subsistence",
+      "note": ""
+    },
+    {
+      "id": "Q024",
+      "category": "multi-part",
+      "query": "What are the hotel caps in London and elsewhere in the UK?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "GBP 180/night London; GBP 120/night elsewhere",
+      "trace": "hotel_caps",
+      "note": ""
+    },
+    {
+      "id": "Q025",
+      "category": "multi-part",
+      "query": "How large is the annual bonus and when is it paid?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Up to 10% of base salary; paid in April payroll",
+      "trace": "bonus",
+      "note": ""
+    },
+    {
+      "id": "Q026",
+      "category": "multi-part",
+      "query": "What is the first-aider ratio and how often are fire drills held?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Health_and_Safety_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "1 first-aider per 50 employees; quarterly fire drills",
+      "trace": "first_aider_ratio+fire_drills",
+      "note": ""
+    },
+    {
+      "id": "Q027",
+      "category": "multi-part",
+      "query": "When are performance reviews held and what rating scale is used?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Performance_Management_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Twice yearly (July, January); 1-5 rating scale",
+      "trace": "review_cycle+rating_scale",
+      "note": ""
+    },
+    {
+      "id": "Q028",
+      "category": "multi-part",
+      "query": "What relocation allowance and childcare support does the company provide?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Neither relocation support nor childcare is covered",
+      "trace": "G3+G4",
+      "note": ""
+    },
+    {
+      "id": "Q029",
+      "category": "cross-document comparison",
+      "query": "What is the standard full-time working week across the company?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "37.5 hours/week — stated consistently in the Handbook and Flexible Work policy",
+      "trace": "working_week",
+      "note": "Agreeing fact (same value 37.5 in both docs) — safe."
+    },
+    {
+      "id": "Q030",
+      "category": "cross-document comparison",
+      "query": "Compare annual leave entitlement with sabbatical eligibility.",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "25 days base leave; sabbatical after 5 years' service",
+      "trace": "annual_leave_base+sabbatical",
+      "note": ""
+    },
+    {
+      "id": "Q031",
+      "category": "cross-document comparison",
+      "query": "How does the mileage rate change after 10,000 miles?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "45p/mile up to 10,000 miles, then 25p/mile",
+      "trace": "mileage",
+      "note": ""
+    },
+    {
+      "id": "Q032",
+      "category": "cross-document comparison",
+      "query": "Compare the expense approval limit for a line manager versus a department head.",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Line manager approves up to GBP 500; above GBP 500 needs department head",
+      "trace": "expense_approval",
+      "note": ""
+    },
+    {
+      "id": "Q033",
+      "category": "cross-document comparison",
+      "query": "Compare when salary reviews take effect with when promotions take effect.",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Performance_Management_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both take effect from 1 April",
+      "trace": "pay_review+promotion",
+      "note": "Both state '1 April' (same value) — agreeing, safe."
+    },
+    {
+      "id": "Q034",
+      "category": "cross-document comparison",
+      "query": "How many days of compassionate leave are provided compared with paternity leave?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Compassionate up to 5 days; paternity 4 weeks",
+      "trace": "compassionate+paternity",
+      "note": ""
+    },
+    {
+      "id": "Q035",
+      "category": "cross-document comparison",
+      "query": "Compare the maximum remote-working days per week in the current and the 2023 policies.",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_answer_or_key_facts": "Current 2025 policy says 3 days/week; superseded 2023 policy says 2 days/week",
+      "trace": "C2",
+      "note": ""
+    },
+    {
+      "id": "Q036",
+      "category": "cross-document comparison",
+      "query": "What does the probationary period length say in the Handbook versus the Recruitment policy?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Handbook says 3 months; Recruitment says 6 months",
+      "trace": "C1",
+      "note": ""
+    },
+    {
+      "id": "Q037",
+      "category": "cross-document comparison",
+      "query": "Compare the employer pension contribution in the Handbook and the Compensation policy.",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Handbook says 5%; Compensation says 6%",
+      "trace": "C3",
+      "note": ""
+    },
+    {
+      "id": "Q038",
+      "category": "cross-document comparison",
+      "query": "Compare the rule on personal-device email access in the IT policy and the Code of Conduct.",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "IT permits it; Code of Conduct prohibits it",
+      "trace": "C4",
+      "note": ""
+    },
+    {
+      "id": "Q039",
+      "category": "conflict-probing",
+      "query": "How many days per week am I allowed to work remotely?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: 3 days/week (2025) vs 2 days/week (2023)",
+      "trace": "C2",
+      "note": ""
+    },
+    {
+      "id": "Q040",
+      "category": "conflict-probing",
+      "query": "What is the probationary period for new employees?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: 3 months (Handbook) vs 6 months (Recruitment)",
+      "trace": "C1",
+      "note": ""
+    },
+    {
+      "id": "Q041",
+      "category": "conflict-probing",
+      "query": "What percentage does the employer contribute to my pension?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: 5% (Handbook) vs 6% (Compensation)",
+      "trace": "C3",
+      "note": ""
+    },
+    {
+      "id": "Q042",
+      "category": "conflict-probing",
+      "query": "Can I use my personal phone to access work email?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: permitted (IT) vs prohibited (Code of Conduct)",
+      "trace": "C4",
+      "note": ""
+    },
+    {
+      "id": "Q043",
+      "category": "conflict-probing",
+      "query": "What is the maximum number of remote working days allowed per week?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: 3 vs 2 days/week",
+      "trace": "C2",
+      "note": ""
+    },
+    {
+      "id": "Q044",
+      "category": "conflict-probing",
+      "query": "How long is the probation period for a new starter?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: 3 vs 6 months",
+      "trace": "C1",
+      "note": ""
+    },
+    {
+      "id": "Q045",
+      "category": "conflict-probing",
+      "query": "What is the employer pension contribution rate?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: 5% vs 6%",
+      "trace": "C3",
+      "note": ""
+    },
+    {
+      "id": "Q046",
+      "category": "conflict-probing",
+      "query": "Is accessing corporate email on a personal mobile device allowed?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: permitted vs prohibited",
+      "trace": "C4",
+      "note": ""
+    },
+    {
+      "id": "Q047",
+      "category": "conflict-probing",
+      "query": "Up to how many days a week can eligible employees work from home?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: 3 vs 2 days/week",
+      "trace": "C2",
+      "note": ""
+    },
+    {
+      "id": "Q048",
+      "category": "conflict-probing",
+      "query": "What is the length of the probationary period at the company?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: 3 vs 6 months",
+      "trace": "C1",
+      "note": ""
+    },
+    {
+      "id": "Q049",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the company's current stock price?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Not in scope; MGT is private and no share price exists in the corpus",
+      "trace": "out-of-scope",
+      "note": ""
+    },
+    {
+      "id": "Q050",
+      "category": "out-of-scope / insufficient",
+      "query": "Can I bring my dog to the office?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No policy addresses pets in the workplace",
+      "trace": "G6",
+      "note": ""
+    },
+    {
+      "id": "Q051",
+      "category": "out-of-scope / insufficient",
+      "query": "What relocation allowance is available when moving for a role?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No relocation support is described",
+      "trace": "G3",
+      "note": ""
+    },
+    {
+      "id": "Q052",
+      "category": "out-of-scope / insufficient",
+      "query": "Are childcare vouchers or an on-site nursery available?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No childcare benefit is mentioned",
+      "trace": "G4",
+      "note": ""
+    },
+    {
+      "id": "Q053",
+      "category": "out-of-scope / insufficient",
+      "query": "How do I receive equity or share options?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No equity/share scheme exists in any policy",
+      "trace": "G2",
+      "note": ""
+    },
+    {
+      "id": "Q054",
+      "category": "out-of-scope / insufficient",
+      "query": "What are the eligibility rules for a company car?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No company car scheme is offered",
+      "trace": "G1",
+      "note": ""
+    },
+    {
+      "id": "Q055",
+      "category": "out-of-scope / insufficient",
+      "query": "Will I be paid while on jury service?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Jury service pay is not covered",
+      "trace": "G5",
+      "note": ""
+    },
+    {
+      "id": "Q056",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the CEO's total annual salary?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Individual executive pay is not in the corpus",
+      "trace": "out-of-scope",
+      "note": ""
+    },
+    {
+      "id": "Q057",
+      "category": "out-of-scope / insufficient",
+      "query": "Does the company pay for a gym membership?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No gym/fitness benefit is listed among core benefits",
+      "trace": "out-of-scope",
+      "note": ""
+    },
+    {
+      "id": "Q058",
+      "category": "out-of-scope / insufficient",
+      "query": "Is dental insurance included in benefits?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Only private medical is offered; dental is not mentioned",
+      "trace": "out-of-scope",
+      "note": ""
+    },
+    {
+      "id": "Q059",
+      "category": "aggregation / list-all",
+      "query": "List all the types of leave available to employees.",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Annual, sickness, maternity, paternity, adoption, shared parental, compassionate/bereavement, sabbatical, public duties",
+      "trace": "leave_types",
+      "note": ""
+    },
+    {
+      "id": "Q060",
+      "category": "aggregation / list-all",
+      "query": "What are the data classification levels used by the company?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Public, Internal, Confidential, Restricted",
+      "trace": "data_classes",
+      "note": ""
+    },
+    {
+      "id": "Q061",
+      "category": "aggregation / list-all",
+      "query": "What core benefits does the company offer?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Private medical, life assurance 4x, EAP, cycle-to-work, EV salary-sacrifice, season-ticket loan",
+      "trace": "benefits_list",
+      "note": ""
+    },
+    {
+      "id": "Q062",
+      "category": "aggregation / list-all",
+      "query": "List the stages of the disciplinary procedure.",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Informal discussion, first written warning, final written warning, dismissal",
+      "trace": "disciplinary",
+      "note": ""
+    },
+    {
+      "id": "Q063",
+      "category": "aggregation / list-all",
+      "query": "How does annual leave increase with length of service?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "25 days base, 27 after 5 years, 30 after 10 years",
+      "trace": "annual_leave_base+annual_leave_5yr+annual_leave_10yr",
+      "note": ""
+    },
+    {
+      "id": "Q064",
+      "category": "aggregation / list-all",
+      "query": "What personal protective equipment is required for field work?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Health_and_Safety_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Minimum: hard hat, safety boots, high-visibility vest on operational sites",
+      "trace": "ppe",
+      "note": ""
+    },
+    {
+      "id": "Q065",
+      "category": "aggregation / list-all",
+      "query": "What pre-employment checks are carried out before a new hire starts?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Right-to-work checks and references covering the previous 3 years; extra screening for some roles",
+      "trace": "right_to_work",
+      "note": ""
+    },
+    {
+      "id": "Q066",
+      "category": "aggregation / list-all",
+      "query": "What are the expense approval thresholds and accommodation caps?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "<=GBP 500 line manager, >GBP 500 dept head; hotels GBP 180 London / GBP 120 elsewhere",
+      "trace": "expense_approval+hotel_caps",
+      "note": ""
+    },
+    {
+      "id": "Q067",
+      "category": "scenario / applied",
+      "query": "I have completed 6 years of service. How many annual leave days am I entitled to?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "27 days per year (5-9 years band)",
+      "trace": "annual_leave_5yr",
+      "note": ""
+    },
+    {
+      "id": "Q068",
+      "category": "scenario / applied",
+      "query": "I drove 12,000 business miles this year in my own car. How is that reimbursed?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "45p for the first 10,000 miles and 25p for the remaining 2,000 miles",
+      "trace": "mileage",
+      "note": ""
+    },
+    {
+      "id": "Q069",
+      "category": "scenario / applied",
+      "query": "I have 3 years' service and want a sabbatical. Am I eligible?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No — sabbaticals require at least 5 years' continuous service",
+      "trace": "sabbatical",
+      "note": ""
+    },
+    {
+      "id": "Q070",
+      "category": "scenario / applied",
+      "query": "A supplier offered me a gift worth GBP 70. What should I do?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Decline it or declare it in the gifts register (anything over GBP 50)",
+      "trace": "gift_threshold",
+      "note": ""
+    },
+    {
+      "id": "Q071",
+      "category": "scenario / applied",
+      "query": "I have been off sick long-term after 2 years' service. What sick pay do I get?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "3 months at full pay then 3 months at half pay in a rolling 12 months",
+      "trace": "sick_pay",
+      "note": ""
+    },
+    {
+      "id": "Q072",
+      "category": "scenario / applied",
+      "query": "As a new starter, when will my first formal performance review be?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Performance_Management_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "At the next mid-year (July) or year-end (January) review",
+      "trace": "review_cycle",
+      "note": ""
+    },
+    {
+      "id": "Q073",
+      "category": "scenario / applied",
+      "query": "I want to claim an expense from 45 days ago. Will it be paid?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "It may be refused — claims must be submitted within 30 days",
+      "trace": "expense_deadline",
+      "note": ""
+    },
+    {
+      "id": "Q074",
+      "category": "scenario / applied",
+      "query": "I am booking a hotel in London for a business trip. What is the nightly limit?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "GBP 180 per night in London",
+      "trace": "hotel_caps",
+      "note": ""
+    },
+    {
+      "id": "Q075",
+      "category": "scenario / applied",
+      "query": "I am a new employee. How long is my probationary period?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: Handbook 3 months vs Recruitment 6 months",
+      "trace": "C1",
+      "note": ""
+    },
+    {
+      "id": "Q076",
+      "category": "scenario / applied",
+      "query": "I would like to work from home. How many days a week can I do that?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "expected_answer_or_key_facts": "Conflict: current 3 days/week vs superseded 2 days/week",
+      "trace": "C2",
+      "note": ""
+    },
+    {
+      "id": "Q077",
+      "category": "scenario / applied",
+      "query": "I am relocating cities for this role. What relocation support can I claim?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No relocation support is described in any policy",
+      "trace": "G3",
+      "note": ""
+    },
+    {
+      "id": "Q078",
+      "category": "scenario / applied",
+      "query": "Can I bring my pet to work on Fridays?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No policy addresses pets in the workplace",
+      "trace": "G6",
+      "note": ""
+    }
+  ]
+}

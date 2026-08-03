@@ -1,0 +1,37 @@
+# Trust Before Text — RAG System Dependencies
+# Install with: pip install -r requirements.txt
+
+# Vector database
+qdrant-client>=1.10.0
+numpy
+
+# Embedding model (multi-qa-MiniLM-L6-cos-v1)
+sentence-transformers>=2.2.2
+transformers>=4.41.0
+huggingface-hub>=0.23.0
+safetensors>=0.4.0
+
+# Document processing
+PyMuPDF>=1.23.0
+PyPDF2
+python-docx
+nltk>=3.8.0
+
+# Environment variable loading from .env file
+python-dotenv>=1.0.0
+
+# API and Web Server
+fastapi>=0.100.0
+uvicorn>=0.22.0
+python-multipart>=0.0.6
+
+# ── LLM backends (at least one recommended; mock works without any) ─────────
+
+# Groq — llama-3.3-70b-versatile  [PRIMARY — set GROQ_API_KEY in .env]
+groq>=0.9.0
+
+# OpenAI — gpt-4o-mini            [FALLBACK — set OPENAI_API_KEY in .env]
+# openai>=1.0.0
+
+# Google Gemini — gemini-1.5-flash [FALLBACK — set GEMINI_API_KEY in .env]
+# google-generativeai>=0.7.0

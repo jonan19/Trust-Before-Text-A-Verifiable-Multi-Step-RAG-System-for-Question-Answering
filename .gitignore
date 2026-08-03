@@ -1,0 +1,28 @@
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Vector Databases and Storage
+qdrant_db/
+
+# Uploaded Files
+uploaded_docs/
+
+# IDEs and Editors
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db

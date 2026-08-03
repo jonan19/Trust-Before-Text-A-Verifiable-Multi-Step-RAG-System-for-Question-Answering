@@ -1,0 +1,3255 @@
+{
+  "meta": {
+    "model": "llama-3.3-70b-versatile",
+    "consistency_runs": 5,
+    "consistency_temp": 0.7,
+    "canonical_temp": 0.0,
+    "max_chunks_sent": 12,
+    "n_queries": 78,
+    "elapsed_sec": 289.6,
+    "stopped_early_daily_cap": false
+  },
+  "summary": {
+    "n_queries": 78,
+    "accuracy": {
+      "ours": 72,
+      "ours_pct": 92.3,
+      "baseline": 76,
+      "baseline_pct": 97.4
+    },
+    "pillar1_consistency": {
+      "baseline_flips": 1,
+      "baseline_flip_pct": 1.3,
+      "ours_flips": 0,
+      "note": "flip = the 5 temp>0 runs are not all identical"
+    },
+    "pillar2_leakage": {
+      "n_gaps": 16,
+      "baseline_canonical_leaks": 0,
+      "baseline_any_hot_leaks": 0,
+      "ours_leaks": 0
+    },
+    "pillar3_attribution": {
+      "n_conflicts": 16,
+      "baseline_flagged": 15,
+      "baseline_named_both_docs": 16,
+      "baseline_gave_both_values": 15,
+      "baseline_mean_score_out_of_3": 2.88,
+      "ours_flagged": 16,
+      "ours_structural_score_out_of_3": 3,
+      "note": "ours names both docs + quotes both sentences structurally"
+    }
+  },
+  "results": [
+    {
+      "id": "Q001",
+      "category": "single-fact lookup",
+      "query": "How many days of annual leave do full-time employees get?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How many days of annual leave do full-time employees get"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "25 days per year, in addition to the 8 public bank holidays recognised in England and Wales (Passage 1 | Source: Leave_and_Time_Off_Policy.docx).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q002",
+      "category": "single-fact lookup",
+      "query": "What is the maximum annual leave I can carry over to next year?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the maximum annual leave I can carry over to next year"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1 and Passage 2, the maximum annual leave that can be carried over to the next year is 5 days. (Source: Leave_and_Time_Off_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q003",
+      "category": "single-fact lookup",
+      "query": "How many weeks of full pay does enhanced maternity leave provide?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How many weeks of full pay does enhanced maternity leave provide"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, enhanced maternity pay provides 16 weeks at full pay. (Source: Leave_and_Time_Off_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q004",
+      "category": "single-fact lookup",
+      "query": "How much paternity leave is offered?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How much paternity leave is offered"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "4 weeks of paternity leave at full pay, to be taken within 52 weeks of the birth or placement for adoption, as stated in Passage 1 and Passage 2 of the Leave_and_Time_Off_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q005",
+      "category": "single-fact lookup",
+      "query": "What is the business mileage reimbursement rate?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the business mileage reimbursement rate"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The business mileage reimbursement rate is 45 pence per mile for the first 10,000 business miles in the tax year, and 25 pence per mile for any additional business miles, according to Passage 1 | Source: Travel_and_Expense_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q006",
+      "category": "single-fact lookup",
+      "query": "What is the deadline for submitting an expense claim?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the deadline for submitting an expense claim"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "All expense claims must be submitted through the expense system within 30 days of the date the cost was incurred. Claims submitted after 30 days may be refused. (Passage 2 | Source: Travel_and_Expense_Policy.docx) and also (Passage 1 | Source: Travel_and_Expense_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q007",
+      "category": "single-fact lookup",
+      "query": "What is the hotel room cap for a stay in London?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the hotel room cap for a stay in London"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "GBP 180 per night, according to Passage 1 | Source: Travel_and_Expense_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q008",
+      "category": "single-fact lookup",
+      "query": "What is the subsistence cap for an evening meal?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the subsistence cap for an evening meal"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The subsistence cap for an evening meal is GBP 30, supported by receipts (Passage 1 | Source: Travel_and_Expense_Policy.docx).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q009",
+      "category": "single-fact lookup",
+      "query": "Over what value must a gift be declared?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Over what value must a gift be declared"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "GBP 50, according to Passage 1 | Source: Code_of_Conduct_and_Disciplinary_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q010",
+      "category": "single-fact lookup",
+      "query": "What is the minimum password length?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the minimum password length"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The minimum password length is 14 characters, according to Passage 1 | Source: IT_and_Acceptable_Use_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q011",
+      "category": "single-fact lookup",
+      "query": "How much is the employee referral bonus?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How much is the employee referral bonus"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The employee referral bonus is GBP 1,500, paid in the payroll following confirmation of the new hire's probation (Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q012",
+      "category": "single-fact lookup",
+      "query": "What is the ratio of trained first-aiders to employees?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the ratio of trained first-aiders to employees"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The company maintains a ratio of at least 1 trained first-aider for every 50 employees on site, according to Passage 1 | Source: Health_and_Safety_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q013",
+      "category": "single-fact lookup",
+      "query": "How often are fire evacuation drills held?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How often are fire evacuation drills held"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Fire evacuation drills are carried out quarterly at each office, according to Passage 1 | Source: Health_and_Safety_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q014",
+      "category": "single-fact lookup",
+      "query": "What performance rating scale is used?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What performance rating scale is used"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The performance rating scale used is 1 to 5, where 1 is 'below expectations' and 5 is 'outstanding', according to Passage 1 | Source: Performance_Management_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q015",
+      "category": "single-fact lookup",
+      "query": "What multiple of salary is provided as life assurance?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What multiple of salary is provided as life assurance"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The company provides life assurance at 4 times base salary, according to Passage 1 | Source: Compensation_and_Benefits_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q016",
+      "category": "single-fact lookup",
+      "query": "Am I eligible for a company car?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Am I eligible for a company car"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q017",
+      "category": "single-fact lookup",
+      "query": "Does the company offer share options or stock to employees?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Does the company offer share options or stock to employees"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q018",
+      "category": "single-fact lookup",
+      "query": "Is jury service paid?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Is jury service paid"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q019",
+      "category": "multi-part",
+      "query": "What is the annual leave entitlement and how many days can be carried over?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the annual leave entitlement and how many days can be carried over"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Leave_and_Time_Off_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The standard annual leave entitlement is 25 days per year for full-time employees, in addition to the 8 public bank holidays recognised in England and Wales (Passage 2). Annual leave entitlement increases with length of service, with 27 days per year after completing 5 years of continuous service, and 30 days per year after completing 10 years of continuous service (Passage 1). Employees may carry over a maximum of 5 days of unused annual leave into the following leave year (Passage 1, Passage 3).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q020",
+      "category": "multi-part",
+      "query": "What is the mileage rate and the deadline to claim it?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the mileage rate and the deadline to claim it"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The mileage rate for the first 10,000 business miles in the tax year is 45 pence per mile, and 25 pence per mile for any additional business miles, as stated in Passage 1 | Source: Travel_and_Expense_Policy.docx. The deadline to claim expenses, including mileage, is within 30 days of the date the cost was incurred, as stated in Passage 3 | Source: Travel_and_Expense_Policy.docx and Passage 4 | Source: Travel_and_Expense_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q021",
+      "category": "multi-part",
+      "query": "How much maternity and paternity leave is provided?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How much maternity and paternity leave is provided"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Maternity leave is up to 52 weeks, with 16 weeks at full pay, 23 weeks at the prevailing rate of Statutory Maternity Pay, and 13 weeks unpaid (Passage 1). Paternity leave is 4 weeks at full pay (Passage 2).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q022",
+      "category": "multi-part",
+      "query": "What is the minimum password length and is multi-factor authentication required?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the minimum password length and is multi-factor authentication required"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The minimum password length is 14 characters, as stated in Passage 2 | Source: IT_and_Acceptable_Use_Policy.docx. Multi-factor authentication is mandatory for all remote access and for all cloud-based business applications, as stated in Passage 1 | Source: IT_and_Acceptable_Use_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q023",
+      "category": "multi-part",
+      "query": "What are the subsistence caps for breakfast and an evening meal?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the subsistence caps for breakfast and an evening meal"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The subsistence caps are GBP 10 for breakfast and GBP 30 for an evening meal, supported by receipts, according to Passage 1 | Source: Travel_and_Expense_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q024",
+      "category": "multi-part",
+      "query": "What are the hotel caps in London and elsewhere in the UK?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the hotel caps in London and elsewhere in the UK"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The hotel caps are GBP 180 per night in London and GBP 120 per night elsewhere in the United Kingdom, according to Passage 1 | Source: Travel_and_Expense_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q025",
+      "category": "multi-part",
+      "query": "How large is the annual bonus and when is it paid?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How large is the annual bonus and when is it paid"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The annual bonus is discretionary and up to 10% of base salary, based on a combination of company performance against targets and individual performance rating. Bonuses are paid in the April payroll following the performance year (Passage 1 | Source: Compensation_and_Benefits_Policy.docx).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q026",
+      "category": "multi-part",
+      "query": "What is the first-aider ratio and how often are fire drills held?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the first-aider ratio and how often are fire drills held"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The first-aider ratio is at least 1 trained first-aider for every 50 employees on site, as stated in Passage 1 | Source: Health_and_Safety_Policy.docx. Fire evacuation drills are carried out quarterly at each office, as stated in Passage 2 | Source: Health_and_Safety_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q027",
+      "category": "multi-part",
+      "query": "When are performance reviews held and what rating scale is used?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "When are performance reviews held and what rating scale is used"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Performance reviews are conducted twice per year: a mid-year review in July and a year-end review in January, as stated in Passage 1. The year-end review uses a rating scale of 1 to 5, where 1 is 'below expectations' and 5 is 'outstanding', as stated in Passage 2.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q028",
+      "category": "multi-part",
+      "query": "What relocation allowance and childcare support does the company provide?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What relocation allowance and childcare support does the company provide"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q029",
+      "category": "cross-document comparison",
+      "query": "What is the standard full-time working week across the company?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the standard full-time working week across the company"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The standard full-time working week at Meridian Grid Technologies is 37.5 hours, worked Monday to Friday, exclusive of an unpaid one-hour lunch break each day (Passage 1 | Source: Employee_Handbook.docx).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q030",
+      "category": "cross-document comparison",
+      "query": "Compare annual leave entitlement with sabbatical eligibility.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Compare annual leave entitlement with sabbatical eligibility"
+      ],
+      "query_type": "complex",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "To compare annual leave entitlement with sabbatical eligibility, we need to look at the relevant passages. \n\nAnnual leave entitlement is described in Passage 3 as 25 days per year for full-time employees, with increases to 27 days after 5 years of service and 30 days after 10 years of service, as mentioned in Passage 2.\n\nSabbatical eligibility is described in Passage 1 as being available to employees with at least 5 years of continuous service, for an unpaid period of between 1 and 6 months.\n\nSince the information about annual leave entitlement and sabbatical eligibility is present and consistent across the relevant passages, we can directly compare the two. Employees become eligible for a sabbatical after completing 5 years of continuous service, which is the same period after which their annual leave entitlement increases to 27 days per year. \n\nTherefore, the comparison shows that the eligibility for a sabbatical coincides with the first increase in annual leave entitlement, from 25 to 27 days, as described in Passages 1, 2, and 3.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q031",
+      "category": "cross-document comparison",
+      "query": "How does the mileage rate change after 10,000 miles?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How does the mileage rate change after 10,000 miles"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "After 10,000 miles, the mileage rate changes to 25 pence per mile, according to Passage 1 | Source: Travel_and_Expense_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q032",
+      "category": "cross-document comparison",
+      "query": "Compare the expense approval limit for a line manager versus a department head.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 50,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "expense approval limit for a line manager",
+        "a department head"
+      ],
+      "query_type": "complex",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1 (Source: Travel_and_Expense_Policy.docx), the expense approval limit for a line manager is GBP 500, while claims above GBP 500 require additional approval from the department head. \n\nTherefore, the answer is: \nLine manager: GBP 500 (Travel_and_Expense_Policy.docx), Department head: above GBP 500 (Travel_and_Expense_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q033",
+      "category": "cross-document comparison",
+      "query": "Compare when salary reviews take effect with when promotions take effect.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Compare when salary reviews take effect with when promotions take effect"
+      ],
+      "query_type": "complex",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, promotions take effect from 1 April. \nAccording to Passage 2, salary reviews take effect from 1 April. \nSince both passages agree that promotions and salary reviews take effect on the same date, 1 April, there is no conflict. \n\nThe answer is: Both promotions and salary reviews take effect from 1 April, as stated in Passage 1 and Passage 2.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q034",
+      "category": "cross-document comparison",
+      "query": "How many days of compassionate leave are provided compared with paternity leave?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How many days of compassionate leave are provided compared with paternity leave"
+      ],
+      "query_type": "complex",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Compassionate leave is 5 days, as stated in Passage 1. Paternity leave is 4 weeks (which is 20 days, assuming a 5-day workweek and a 4-week period of 20 working days, but the exact conversion is not provided), as stated in Passage 2 and Passage 3, but Passage 2 and Passage 3 do not provide the conversion to days. However, Passage 2 and Passage 3 agree on the number of weeks for paternity leave. Since the conversion from weeks to days for paternity leave is not explicitly provided, we cannot directly compare the two types of leave in days. Therefore, the answer is: \nINSUFFICIENT",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q035",
+      "category": "cross-document comparison",
+      "query": "Compare the maximum remote-working days per week in the current and the 2023 policies.",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_chunks": 51,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "maximum remote-working days per week in the current",
+        "the 2023 policies"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The 2023 policy, as stated in Passage 1, allows eligible employees to work remotely for up to 2 days per week. The current policy, as stated in Passage 2, allows eligible employees to work remotely for up to 3 days per week. \n\nSince the two policies give different values for the maximum remote-working days per week, the answer is: \nCONFLICT 2 days (Passage 1, Remote_Working_Policy_2023_Superseded.docx), 3 days (Passage 2, Flexible_and_Remote_Work_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": false,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q036",
+      "category": "cross-document comparison",
+      "query": "What does the probationary period length say in the Handbook versus the Recruitment policy?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_chunks": 51,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What does the probationary period length say in the Handbook",
+        "the Recruitment policy"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, 3 months (Employee_Handbook.docx), 6 months (Recruitment_and_Onboarding_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q037",
+      "category": "cross-document comparison",
+      "query": "Compare the employer pension contribution in the Handbook and the Compensation policy.",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "n_chunks": 42,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "employer pension contribution in the Handbook",
+        "the Compensation policy"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 5% (Employee_Handbook.docx) and 6% (Compensation_and_Benefits_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q038",
+      "category": "cross-document comparison",
+      "query": "Compare the rule on personal-device email access in the IT policy and the Code of Conduct.",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_chunks": 48,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "rule on personal-device email access in the IT policy",
+        "the Code of Conduct"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, permitted for enrolled employees (IT_and_Acceptable_Use_Policy.docx), prohibited at all times (Code_of_Conduct_and_Disciplinary_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q039",
+      "category": "conflict-probing",
+      "query": "How many days per week am I allowed to work remotely?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How many days per week am I allowed to work remotely"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 2 days [Passage 1 | Source: Remote_Working_Policy_2023_Superseded.docx], 3 days [Passage 2 | Source: Flexible_and_Remote_Work_Policy.docx]",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q040",
+      "category": "conflict-probing",
+      "query": "What is the probationary period for new employees?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the probationary period for new employees"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 6 months from Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx, 3 months from Passage 2 | Source: Employee_Handbook.docx",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q041",
+      "category": "conflict-probing",
+      "query": "What percentage does the employer contribute to my pension?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What percentage does the employer contribute to my pension"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 6% (Compensation_and_Benefits_Policy.docx), 5% (Employee_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q042",
+      "category": "conflict-probing",
+      "query": "Can I use my personal phone to access work email?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Can I use my personal phone to access work email"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT: permitted (Passage 1 | Source: IT_and_Acceptable_Use_Policy.docx), prohibited (Passage 2 | Source: Code_of_Conduct_and_Disciplinary_Policy.docx and Passage 3 | Source: Code_of_Conduct_and_Disciplinary_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q043",
+      "category": "conflict-probing",
+      "query": "What is the maximum number of remote working days allowed per week?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the maximum number of remote working days allowed per week"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 2 days [Passage 1 | Source: Remote_Working_Policy_2023_Superseded.docx], 3 days [Passage 2 | Source: Flexible_and_Remote_Work_Policy.docx]",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q044",
+      "category": "conflict-probing",
+      "query": "How long is the probation period for a new starter?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "sub_queries": [
+        "How long is the probation period for a new starter"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 6 months (Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx), 3 months (Passage 2 | Source: Employee_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q045",
+      "category": "conflict-probing",
+      "query": "What is the employer pension contribution rate?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the employer pension contribution rate"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 6% (Compensation_and_Benefits_Policy.docx), 5% (Employee_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q046",
+      "category": "conflict-probing",
+      "query": "Is accessing corporate email on a personal mobile device allowed?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Is accessing corporate email on a personal mobile device allowed"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, allowed (IT_and_Acceptable_Use_Policy.docx, Passage 1), prohibited (Code_of_Conduct_and_Disciplinary_Policy.docx, Passage 2 and Passage 3)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q047",
+      "category": "conflict-probing",
+      "query": "Up to how many days a week can eligible employees work from home?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Up to how many days a week can eligible employees work from home"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 2 days [Passage 1 | Source: Remote_Working_Policy_2023_Superseded.docx], 3 days [Passage 2 | Source: Flexible_and_Remote_Work_Policy.docx]",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q048",
+      "category": "conflict-probing",
+      "query": "What is the length of the probationary period at the company?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the length of the probationary period at the company"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 6 months (Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx) and 3 months (Passage 2 | Source: Employee_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q049",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the company's current stock price?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the company's current stock price"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q050",
+      "category": "out-of-scope / insufficient",
+      "query": "Can I bring my dog to the office?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Can I bring my dog to the office"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q051",
+      "category": "out-of-scope / insufficient",
+      "query": "What relocation allowance is available when moving for a role?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What relocation allowance is available when moving for a role"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q052",
+      "category": "out-of-scope / insufficient",
+      "query": "Are childcare vouchers or an on-site nursery available?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Are childcare vouchers or an on-site nursery available"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q053",
+      "category": "out-of-scope / insufficient",
+      "query": "How do I receive equity or share options?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How do I receive equity or share options"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q054",
+      "category": "out-of-scope / insufficient",
+      "query": "What are the eligibility rules for a company car?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the eligibility rules for a company car"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q055",
+      "category": "out-of-scope / insufficient",
+      "query": "Will I be paid while on jury service?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Will I be paid while on jury service"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q056",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the CEO's total annual salary?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the CEO's total annual salary"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q057",
+      "category": "out-of-scope / insufficient",
+      "query": "Does the company pay for a gym membership?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Does the company pay for a gym membership"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q058",
+      "category": "out-of-scope / insufficient",
+      "query": "Is dental insurance included in benefits?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Is dental insurance included in benefits"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q059",
+      "category": "aggregation / list-all",
+      "query": "List all the types of leave available to employees.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "List all the types of leave available to employees"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Based on the provided context passages, the types of leave available to employees are:\n\n1. Annual Leave (Passage 1, Passage 8, Passage 11)\n2. Public Bank Holidays (Passage 1)\n3. Sick Leave (Passage 2)\n4. Family Leave, including:\n   - Maternity Leave (Passage 3, Passage 6)\n   - Paternity Leave (Passage 6)\n   - Adoption Leave (Passage 6)\n   - Shared Parental Leave (Passage 6)\n5. Compassionate and Bereavement Leave (Passage 7)\n6. Sabbatical Leave (Passage 7)\n7. Parental Bereavement Leave (Passage 7)\n\nNote that this list might not be exhaustive, as the passages provided may not cover all types of leave available to employees. However, based on the given context, the above list includes all the types of leave mentioned.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q060",
+      "category": "aggregation / list-all",
+      "query": "What are the data classification levels used by the company?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the data classification levels used by the company"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The company uses four classification levels: Public, Internal, Confidential and Restricted, according to Passage 1 | Source: IT_and_Acceptable_Use_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q061",
+      "category": "aggregation / list-all",
+      "query": "What core benefits does the company offer?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What core benefits does the company offer"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The company offers the following core benefits: private medical insurance, life assurance, an employee assistance programme, a cycle-to-work scheme, an electric-vehicle salary-sacrifice scheme, and a season-ticket loan (Passage 1 | Source: Compensation_and_Benefits_Policy.docx). Additionally, Passage 3 (Source: Employee_Handbook.docx) mentions private medical insurance, life assurance, an annual discretionary bonus, and an employee assistance programme as core benefits. Although the lists are not identical, they do not directly conflict, as Passage 1 provides a more detailed list, while Passage 3 provides a more general overview. Therefore, combining the information from both passages, the company's core benefits include private medical insurance, life assurance, an employee assistance programme, a cycle-to-work scheme, an electric-vehicle salary-sacrifice scheme, a season-ticket loan, and an annual discretionary bonus.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q062",
+      "category": "aggregation / list-all",
+      "query": "List the stages of the disciplinary procedure.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "List the stages of the disciplinary procedure"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Compensation_and_Benefits_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The disciplinary procedure follows progressive stages: an informal discussion where appropriate, followed by a formal first written warning, a final written warning, and dismissal. (Passage 1 | Source: Code_of_Conduct_and_Disciplinary_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q063",
+      "category": "aggregation / list-all",
+      "query": "How does annual leave increase with length of service?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "How does annual leave increase with length of service"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Annual leave entitlement increases with length of service. Employees receive 27 days per year after completing 5 years of continuous service, and 30 days per year after completing 10 years of continuous service, according to Passage 1 | Source: Leave_and_Time_Off_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q064",
+      "category": "aggregation / list-all",
+      "query": "What personal protective equipment is required for field work?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What personal protective equipment is required for field work"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Health_and_Safety_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Field engineers and site visitors must wear the personal protective equipment specified in the relevant site risk assessment, which as a minimum includes a hard hat, safety boots and a high-visibility vest when on operational sites, according to Passage 1 | Source: Health_and_Safety_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q065",
+      "category": "aggregation / list-all",
+      "query": "What pre-employment checks are carried out before a new hire starts?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "sub_queries": [
+        "What pre-employment checks are carried out before a new hire starts"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Right-to-work checks must be completed and documented before an individual starts employment, in line with UK immigration law. References covering the previous 3 years of employment are obtained for all appointments. Roles with safety or financial responsibility are subject to additional background screening, according to Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q066",
+      "category": "aggregation / list-all",
+      "query": "What are the expense approval thresholds and accommodation caps?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the expense approval thresholds and accommodation caps"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The expense approval thresholds are as follows: individual claims up to GBP 500 are approved by the line manager, and claims above GBP 500 require additional approval from the department head, as stated in Passage 3. \n\nThe accommodation caps are GBP 180 per night in London and GBP 120 per night elsewhere in the United Kingdom, as stated in Passage 1. \n\nTherefore, the answer is: \nExpense approval thresholds: GBP 500 (Passage 3)\nAccommodation caps: GBP 180 per night in London and GBP 120 per night elsewhere in the United Kingdom (Passage 1)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q067",
+      "category": "scenario / applied",
+      "query": "I have completed 6 years of service. How many annual leave days am I entitled to?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I have completed 6 years of service. How many annual leave days am I entitled to"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, after completing 5 years of continuous service, employees receive 27 days per year, and after completing 10 years of continuous service, employees receive 30 days per year. Since you have completed 6 years of service, which is more than 5 years but less than 10 years, the exact number of annual leave days you are entitled to is not explicitly stated in the passages. Therefore, the answer is: INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q068",
+      "category": "scenario / applied",
+      "query": "I drove 12,000 business miles this year in my own car. How is that reimbursed?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I drove 12,000 business miles this year in my own car. How is that reimbursed"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "For the first 10,000 business miles, mileage is reimbursed at 45 pence per mile, and for the additional 2,000 business miles, mileage is reimbursed at 25 pence per mile, according to Passage 1 | Source: Travel_and_Expense_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q069",
+      "category": "scenario / applied",
+      "query": "I have 3 years' service and want a sabbatical. Am I eligible?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I have 3 years' service and want a sabbatical. Am I eligible"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 2, employees with at least 5 years of continuous service may apply for an unpaid sabbatical. Since you have 3 years of service, you are not eligible. (Source: Leave_and_Time_Off_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": true
+    },
+    {
+      "id": "Q070",
+      "category": "scenario / applied",
+      "query": "A supplier offered me a gift worth GBP 70. What should I do?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "A supplier offered me a gift worth GBP 70. What should I do"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, Source: Code_of_Conduct_and_Disciplinary_Policy.docx, any gift or hospitality with a value over GBP 50 must be declined or, where declining would cause offence, declared in the gifts and hospitality register and referred to a manager. Since the gift is worth GBP 70, which is over GBP 50, you should either decline the gift or declare it and refer it to a manager.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q071",
+      "category": "scenario / applied",
+      "query": "I have been off sick long-term after 2 years' service. What sick pay do I get?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I have been off sick long-term after 2 years' service. What sick pay do I get"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "After completing 1 year of continuous service, employees are entitled to company sick pay of 3 months at full pay followed by 3 months at half pay in any rolling 12-month period (Passage 1 | Source: Leave_and_Time_Off_Policy.docx). Since you have been off sick after 2 years of service, you would be entitled to this company sick pay.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q072",
+      "category": "scenario / applied",
+      "query": "As a new starter, when will my first formal performance review be?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "sub_queries": [
+        "As a new starter, when will my first formal performance review be"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q073",
+      "category": "scenario / applied",
+      "query": "I want to claim an expense from 45 days ago. Will it be paid?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I want to claim an expense from 45 days ago. Will it be paid"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, claims submitted after 30 days may be refused. Since your expense is from 45 days ago, it is possible that it may be refused, but the passage does not explicitly state that it will not be paid. However, Passage 2 also mentions that claims submitted after 30 days may be refused, which is consistent with Passage 1. Therefore, the answer is: \nIt may be refused, (Passage 1 | Source: Travel_and_Expense_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q074",
+      "category": "scenario / applied",
+      "query": "I am booking a hotel in London for a business trip. What is the nightly limit?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I am booking a hotel in London for a business trip. What is the nightly limit"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "GBP 180 per night, according to Passage 1 | Source: Travel_and_Expense_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q075",
+      "category": "scenario / applied",
+      "query": "I am a new employee. How long is my probationary period?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I am a new employee. How long is my probationary period"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 6 months from Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx, 3 months from Passage 2 | Source: Employee_Handbook.docx",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q076",
+      "category": "scenario / applied",
+      "query": "I would like to work from home. How many days a week can I do that?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I would like to work from home. How many days a week can I do that"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 2 days (Passage 1 | Source: Remote_Working_Policy_2023_Superseded.docx), 3 days (Passage 3 | Source: Flexible_and_Remote_Work_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q077",
+      "category": "scenario / applied",
+      "query": "I am relocating cities for this role. What relocation support can I claim?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "I am relocating cities for this role. What relocation support can I claim"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q078",
+      "category": "scenario / applied",
+      "query": "Can I bring my pet to work on Fridays?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "sub_queries": [
+        "Can I bring my pet to work on Fridays"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    }
+  ]
+}

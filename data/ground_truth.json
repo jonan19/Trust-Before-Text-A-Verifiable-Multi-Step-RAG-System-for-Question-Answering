@@ -1,0 +1,745 @@
+{
+  "company": {
+    "name": "Meridian Grid Technologies Ltd (MGT)",
+    "industry": "Renewable-energy & smart-grid engineering",
+    "employees": 1400,
+    "founded": 2009,
+    "hq": "Manchester, UK",
+    "sites": [
+      "Manchester (HQ)",
+      "Bristol",
+      "Glasgow",
+      "Leeds",
+      "UK-wide field teams"
+    ],
+    "notes": "Fictional. All figures UK conventions (statutory leave, SSP, HMRC mileage, auto-enrolment)."
+  },
+  "documents": [
+    {
+      "file": "Employee_Handbook.docx",
+      "doc_id": "MGT-HR-001",
+      "title": "Employee Handbook",
+      "version": "2025.2"
+    },
+    {
+      "file": "Leave_and_Time_Off_Policy.docx",
+      "doc_id": "MGT-HR-002",
+      "title": "Leave & Time-Off Policy",
+      "version": "4.1"
+    },
+    {
+      "file": "Flexible_and_Remote_Work_Policy.docx",
+      "doc_id": "MGT-HR-003",
+      "title": "Flexible & Remote Work Policy (2025, current)",
+      "version": "3.0"
+    },
+    {
+      "file": "Remote_Working_Policy_2023_Superseded.docx",
+      "doc_id": "MGT-HR-003a",
+      "title": "Remote Working Policy (2023, superseded)",
+      "version": "1.2"
+    },
+    {
+      "file": "Compensation_and_Benefits_Policy.docx",
+      "doc_id": "MGT-HR-004",
+      "title": "Compensation & Benefits Policy",
+      "version": "2.3"
+    },
+    {
+      "file": "Performance_Management_Policy.docx",
+      "doc_id": "MGT-HR-005",
+      "title": "Performance Management Policy",
+      "version": "2.0"
+    },
+    {
+      "file": "Recruitment_and_Onboarding_Policy.docx",
+      "doc_id": "MGT-HR-006",
+      "title": "Recruitment & Onboarding Policy",
+      "version": "1.4"
+    },
+    {
+      "file": "IT_and_Acceptable_Use_Policy.docx",
+      "doc_id": "MGT-HR-007",
+      "title": "IT & Acceptable Use Policy",
+      "version": "3.1"
+    },
+    {
+      "file": "Travel_and_Expense_Policy.docx",
+      "doc_id": "MGT-HR-008",
+      "title": "Travel & Expense Policy",
+      "version": "2.1"
+    },
+    {
+      "file": "Code_of_Conduct_and_Disciplinary_Policy.docx",
+      "doc_id": "MGT-HR-009",
+      "title": "Code of Conduct & Disciplinary Policy",
+      "version": "2.2"
+    },
+    {
+      "file": "Health_and_Safety_Policy.docx",
+      "doc_id": "MGT-HR-010",
+      "title": "Health & Safety Policy",
+      "version": "1.3"
+    }
+  ],
+  "facts": [
+    {
+      "id": "working_week",
+      "topic": "Standard full-time working week",
+      "value": "37.5 hours/week (Mon-Fri)",
+      "type": "agreeing",
+      "sources": [
+        [
+          "Employee_Handbook.docx",
+          "2. Working Hours"
+        ],
+        [
+          "Flexible_and_Remote_Work_Policy.docx",
+          "4. Core Hours and Flexible Time"
+        ]
+      ]
+    },
+    {
+      "id": "core_hours",
+      "topic": "Core hours",
+      "value": "10:00 to 16:00",
+      "type": "single",
+      "sources": [
+        [
+          "Flexible_and_Remote_Work_Policy.docx",
+          "4. Core Hours and Flexible Time"
+        ]
+      ]
+    },
+    {
+      "id": "annual_leave_base",
+      "topic": "Base annual leave entitlement",
+      "value": "25 days/year (+8 bank holidays)",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "2.1 Entitlement"
+        ]
+      ]
+    },
+    {
+      "id": "annual_leave_5yr",
+      "topic": "Annual leave after 5 years' service",
+      "value": "27 days/year",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "2.1 Entitlement"
+        ]
+      ]
+    },
+    {
+      "id": "annual_leave_10yr",
+      "topic": "Annual leave after 10 years' service",
+      "value": "30 days/year",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "2.1 Entitlement"
+        ]
+      ]
+    },
+    {
+      "id": "carryover_cap",
+      "topic": "Annual leave carry-over cap",
+      "value": "5 days (use by 31 March)",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "2.2 Carry-Over"
+        ]
+      ]
+    },
+    {
+      "id": "sick_pay",
+      "topic": "Company sick pay (after 1 year service)",
+      "value": "3 months full pay + 3 months half pay (rolling 12 months)",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "3. Sickness Absence and Sick Pay"
+        ]
+      ]
+    },
+    {
+      "id": "maternity",
+      "topic": "Enhanced maternity pay",
+      "value": "16 weeks full pay (then 23 wks SMP, 13 wks unpaid; up to 52 wks total)",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "4.1 Maternity Leave"
+        ]
+      ]
+    },
+    {
+      "id": "paternity",
+      "topic": "Enhanced paternity leave",
+      "value": "4 weeks full pay",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "4.2 Paternity Leave"
+        ]
+      ]
+    },
+    {
+      "id": "compassionate",
+      "topic": "Compassionate/bereavement leave",
+      "value": "up to 5 days paid",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "5.1 Compassionate and Bereavement Leave"
+        ]
+      ]
+    },
+    {
+      "id": "sabbatical",
+      "topic": "Sabbatical eligibility",
+      "value": "after 5 years' service; 1-6 months unpaid",
+      "type": "single",
+      "sources": [
+        [
+          "Leave_and_Time_Off_Policy.docx",
+          "5.2 Sabbatical Leave"
+        ]
+      ]
+    },
+    {
+      "id": "pay_review",
+      "topic": "Salary review cadence",
+      "value": "annual; increases effective 1 April",
+      "type": "single",
+      "sources": [
+        [
+          "Compensation_and_Benefits_Policy.docx",
+          "2. Salary and Pay Reviews"
+        ]
+      ]
+    },
+    {
+      "id": "pension_employee",
+      "topic": "Employee minimum pension contribution",
+      "value": "4% of pensionable salary",
+      "type": "single",
+      "sources": [
+        [
+          "Compensation_and_Benefits_Policy.docx",
+          "3. Workplace Pension"
+        ]
+      ]
+    },
+    {
+      "id": "bonus",
+      "topic": "Discretionary annual bonus",
+      "value": "up to 10% of base salary",
+      "type": "single",
+      "sources": [
+        [
+          "Compensation_and_Benefits_Policy.docx",
+          "4. Annual Bonus"
+        ]
+      ]
+    },
+    {
+      "id": "life_assurance",
+      "topic": "Life assurance",
+      "value": "4x base salary",
+      "type": "single",
+      "sources": [
+        [
+          "Compensation_and_Benefits_Policy.docx",
+          "5. Core Benefits"
+        ]
+      ]
+    },
+    {
+      "id": "ev_scheme",
+      "topic": "Electric-vehicle salary-sacrifice scheme (personal cars)",
+      "value": "available",
+      "type": "single",
+      "sources": [
+        [
+          "Compensation_and_Benefits_Policy.docx",
+          "5. Core Benefits"
+        ]
+      ]
+    },
+    {
+      "id": "notice_standard",
+      "topic": "Notice period after probation (standard)",
+      "value": "1 month written notice",
+      "type": "agreeing",
+      "sources": [
+        [
+          "Compensation_and_Benefits_Policy.docx",
+          "6. Notice Periods"
+        ],
+        [
+          "Code_of_Conduct_and_Disciplinary_Policy.docx",
+          "7. Notice Periods"
+        ]
+      ]
+    },
+    {
+      "id": "notice_senior",
+      "topic": "Notice period after probation (senior manager+)",
+      "value": "3 months written notice",
+      "type": "agreeing",
+      "sources": [
+        [
+          "Compensation_and_Benefits_Policy.docx",
+          "6. Notice Periods"
+        ],
+        [
+          "Code_of_Conduct_and_Disciplinary_Policy.docx",
+          "7. Notice Periods"
+        ]
+      ]
+    },
+    {
+      "id": "referral_bonus",
+      "topic": "Employee referral bonus",
+      "value": "GBP 1,500 (on referred hire passing probation)",
+      "type": "single",
+      "sources": [
+        [
+          "Recruitment_and_Onboarding_Policy.docx",
+          "4. Employee Referral Scheme"
+        ]
+      ]
+    },
+    {
+      "id": "probation_notice",
+      "topic": "Notice period during probation",
+      "value": "1 week (either party)",
+      "type": "single",
+      "sources": [
+        [
+          "Recruitment_and_Onboarding_Policy.docx",
+          "5. Probationary Period"
+        ]
+      ]
+    },
+    {
+      "id": "onboarding",
+      "topic": "Onboarding plan",
+      "value": "structured 90-day plan; 30/60/90-day check-ins",
+      "type": "single",
+      "sources": [
+        [
+          "Recruitment_and_Onboarding_Policy.docx",
+          "6. Onboarding"
+        ]
+      ]
+    },
+    {
+      "id": "right_to_work",
+      "topic": "Right-to-work checks",
+      "value": "completed before start; 3 years of references",
+      "type": "single",
+      "sources": [
+        [
+          "Recruitment_and_Onboarding_Policy.docx",
+          "3. Right to Work and Pre-Employment Checks"
+        ]
+      ]
+    },
+    {
+      "id": "password_length",
+      "topic": "Minimum password length",
+      "value": "14 characters",
+      "type": "single",
+      "sources": [
+        [
+          "IT_and_Acceptable_Use_Policy.docx",
+          "2. Accounts, Passwords and Authentication"
+        ]
+      ]
+    },
+    {
+      "id": "mfa",
+      "topic": "Multi-factor authentication",
+      "value": "mandatory for remote access + cloud apps",
+      "type": "single",
+      "sources": [
+        [
+          "IT_and_Acceptable_Use_Policy.docx",
+          "2. Accounts, Passwords and Authentication"
+        ]
+      ]
+    },
+    {
+      "id": "data_classes",
+      "topic": "Data classification levels",
+      "value": "Public, Internal, Confidential, Restricted",
+      "type": "single",
+      "sources": [
+        [
+          "IT_and_Acceptable_Use_Policy.docx",
+          "3. Data Classification"
+        ]
+      ]
+    },
+    {
+      "id": "incident_report",
+      "topic": "Security incident reporting deadline",
+      "value": "within 1 hour of discovery",
+      "type": "single",
+      "sources": [
+        [
+          "IT_and_Acceptable_Use_Policy.docx",
+          "7. Incident Reporting"
+        ]
+      ]
+    },
+    {
+      "id": "mileage",
+      "topic": "Business mileage reimbursement",
+      "value": "45p/mile first 10,000 miles; 25p/mile thereafter",
+      "type": "single",
+      "sources": [
+        [
+          "Travel_and_Expense_Policy.docx",
+          "2. Mileage and Private Vehicle Use"
+        ]
+      ]
+    },
+    {
+      "id": "hotel_caps",
+      "topic": "Hotel room caps",
+      "value": "GBP 180/night London; GBP 120/night elsewhere UK",
+      "type": "single",
+      "sources": [
+        [
+          "Travel_and_Expense_Policy.docx",
+          "4. Accommodation"
+        ]
+      ]
+    },
+    {
+      "id": "subsistence",
+      "topic": "Subsistence meal caps",
+      "value": "GBP 10 breakfast; GBP 30 evening meal",
+      "type": "single",
+      "sources": [
+        [
+          "Travel_and_Expense_Policy.docx",
+          "5. Subsistence"
+        ]
+      ]
+    },
+    {
+      "id": "expense_deadline",
+      "topic": "Expense claim submission deadline",
+      "value": "within 30 days of cost",
+      "type": "single",
+      "sources": [
+        [
+          "Travel_and_Expense_Policy.docx",
+          "6. Approval and Submission"
+        ]
+      ]
+    },
+    {
+      "id": "expense_approval",
+      "topic": "Expense approval thresholds",
+      "value": "<= GBP 500 line manager; > GBP 500 department head",
+      "type": "single",
+      "sources": [
+        [
+          "Travel_and_Expense_Policy.docx",
+          "6. Approval and Submission"
+        ]
+      ]
+    },
+    {
+      "id": "gift_threshold",
+      "topic": "Gift/hospitality declaration threshold",
+      "value": "over GBP 50 must be declined/declared",
+      "type": "single",
+      "sources": [
+        [
+          "Code_of_Conduct_and_Disciplinary_Policy.docx",
+          "3. Gifts and Hospitality"
+        ]
+      ]
+    },
+    {
+      "id": "disciplinary",
+      "topic": "Disciplinary stages",
+      "value": "informal -> first written (6mo) -> final written (12mo) -> dismissal",
+      "type": "single",
+      "sources": [
+        [
+          "Code_of_Conduct_and_Disciplinary_Policy.docx",
+          "6. Disciplinary Procedure"
+        ]
+      ]
+    },
+    {
+      "id": "grievance",
+      "topic": "Grievance procedure",
+      "value": "informal first; formal meeting normally within 10 working days; right to appeal",
+      "type": "single",
+      "sources": [
+        [
+          "Code_of_Conduct_and_Disciplinary_Policy.docx",
+          "8. Grievance Procedure"
+        ]
+      ]
+    },
+    {
+      "id": "whistleblowing",
+      "topic": "Whistleblowing",
+      "value": "confidential channel; protection from detriment",
+      "type": "single",
+      "sources": [
+        [
+          "Code_of_Conduct_and_Disciplinary_Policy.docx",
+          "9. Whistleblowing"
+        ]
+      ]
+    },
+    {
+      "id": "review_cycle",
+      "topic": "Performance review cycle",
+      "value": "twice per year (mid-year July, year-end January)",
+      "type": "single",
+      "sources": [
+        [
+          "Performance_Management_Policy.docx",
+          "2. Performance Review Cycle"
+        ]
+      ]
+    },
+    {
+      "id": "rating_scale",
+      "topic": "Performance rating scale",
+      "value": "1 to 5 (3 = fully meets)",
+      "type": "single",
+      "sources": [
+        [
+          "Performance_Management_Policy.docx",
+          "3. Objectives and Ratings"
+        ]
+      ]
+    },
+    {
+      "id": "promotion",
+      "topic": "Promotion cycle",
+      "value": "annual (year-end review), effective 1 April; rating 4+ required",
+      "type": "single",
+      "sources": [
+        [
+          "Performance_Management_Policy.docx",
+          "4. Promotion"
+        ]
+      ]
+    },
+    {
+      "id": "pip",
+      "topic": "Performance Improvement Plan duration",
+      "value": "normally 8 to 12 weeks",
+      "type": "single",
+      "sources": [
+        [
+          "Performance_Management_Policy.docx",
+          "5. Managing Underperformance"
+        ]
+      ]
+    },
+    {
+      "id": "first_aider_ratio",
+      "topic": "First-aider ratio",
+      "value": "at least 1 per 50 employees on site",
+      "type": "single",
+      "sources": [
+        [
+          "Health_and_Safety_Policy.docx",
+          "4. First Aid"
+        ]
+      ]
+    },
+    {
+      "id": "fire_drills",
+      "topic": "Fire evacuation drills",
+      "value": "quarterly at each office",
+      "type": "single",
+      "sources": [
+        [
+          "Health_and_Safety_Policy.docx",
+          "5. Fire Safety"
+        ]
+      ]
+    },
+    {
+      "id": "dse",
+      "topic": "Display screen equipment assessment",
+      "value": "self-assessment on appointment + on change (incl. home)",
+      "type": "single",
+      "sources": [
+        [
+          "Health_and_Safety_Policy.docx",
+          "3. Display Screen Equipment"
+        ]
+      ]
+    },
+    {
+      "id": "ppe",
+      "topic": "PPE for field work",
+      "value": "min hard hat, safety boots, hi-vis vest on operational sites",
+      "type": "single",
+      "sources": [
+        [
+          "Health_and_Safety_Policy.docx",
+          "6. Personal Protective Equipment and Field Work"
+        ]
+      ]
+    },
+    {
+      "id": "lone_working",
+      "topic": "Lone working",
+      "value": "check-in schedule + alarm; risk assessment for high-risk",
+      "type": "single",
+      "sources": [
+        [
+          "Health_and_Safety_Policy.docx",
+          "7. Lone Working"
+        ]
+      ]
+    },
+    {
+      "id": "riddor",
+      "topic": "Accident reporting",
+      "value": "reportable injuries notified to HSE under RIDDOR",
+      "type": "single",
+      "sources": [
+        [
+          "Health_and_Safety_Policy.docx",
+          "8. Accident and Incident Reporting"
+        ]
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "C1",
+      "topic": "Length of the probationary period",
+      "docs": [
+        [
+          "Employee_Handbook.docx",
+          "3 months",
+          "3. Probationary Period"
+        ],
+        [
+          "Recruitment_and_Onboarding_Policy.docx",
+          "6 months",
+          "5. Probationary Period"
+        ]
+      ],
+      "detector": "numeric + NLI",
+      "realism": "Cross-document drift: handbook summary vs authoritative recruitment policy"
+    },
+    {
+      "id": "C2",
+      "topic": "Maximum remote-working days per week",
+      "docs": [
+        [
+          "Flexible_and_Remote_Work_Policy.docx",
+          "3 days/week (2025, current)",
+          "3. Hybrid Working Arrangements"
+        ],
+        [
+          "Remote_Working_Policy_2023_Superseded.docx",
+          "2 days/week (2023, superseded)",
+          "3. Remote Working Days"
+        ]
+      ],
+      "detector": "NLI (spans diluted below numeric sim gate)",
+      "realism": "Versioned: superseded 2023 policy still in the corpus alongside current 2025 policy"
+    },
+    {
+      "id": "C3",
+      "topic": "Employer pension contribution rate",
+      "docs": [
+        [
+          "Compensation_and_Benefits_Policy.docx",
+          "6% (authoritative)",
+          "3. Workplace Pension"
+        ],
+        [
+          "Employee_Handbook.docx",
+          "5% (out-of-date summary)",
+          "4. Pay and Benefits Summary"
+        ]
+      ],
+      "detector": "numeric + NLI",
+      "realism": "Handbook benefits summary is stale vs authoritative reward policy"
+    },
+    {
+      "id": "C4",
+      "topic": "Use of personal mobile devices to access corporate email",
+      "docs": [
+        [
+          "IT_and_Acceptable_Use_Policy.docx",
+          "permitted (for MDM-enrolled devices)",
+          "4. Personal Devices and Bring Your Own Device"
+        ],
+        [
+          "Code_of_Conduct_and_Disciplinary_Policy.docx",
+          "prohibited at all times",
+          "5. Use of Personal Devices"
+        ]
+      ],
+      "detector": "NLI (keyword prong diluted below sim gate)",
+      "realism": "Two owning teams (InfoSec vs Employee Relations) disagree"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "G1",
+      "topic": "Company car scheme / company vehicle eligibility",
+      "note": "No document offers a company car. Note: an EV salary-sacrifice scheme for PERSONAL cars exists (Comp & Benefits 5) — a 'company car' query is still a genuine gap, but avoid the word 'electric-vehicle scheme'."
+    },
+    {
+      "id": "G2",
+      "topic": "Share options / ESPP / equity / stock",
+      "note": "MGT is private; no share scheme is mentioned in any policy."
+    },
+    {
+      "id": "G3",
+      "topic": "Relocation allowance / relocation support",
+      "note": "No relocation package is described anywhere in the corpus."
+    },
+    {
+      "id": "G4",
+      "topic": "On-site childcare / nursery / childcare vouchers",
+      "note": "No childcare benefit is mentioned in any policy."
+    },
+    {
+      "id": "G5",
+      "topic": "Jury service pay",
+      "note": "Public-duties leave (magistrate, school governor) is unpaid and jury service is never mentioned; whether jury service is paid is not covered."
+    },
+    {
+      "id": "G6",
+      "topic": "Pet-friendly office / bringing pets to work",
+      "note": "No policy addresses pets or animals in the workplace."
+    }
+  ]
+}

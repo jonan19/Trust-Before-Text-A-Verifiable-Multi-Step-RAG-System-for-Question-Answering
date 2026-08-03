@@ -1,0 +1,779 @@
+{
+  "results": [
+    {
+      "key": "C1_probation|N2|d0",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 2,
+      "draw": 0,
+      "conflict_pos": [
+        0,
+        1
+      ],
+      "distractor_sources": [],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 2,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N2|d1",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 2,
+      "draw": 1,
+      "conflict_pos": [
+        0,
+        1
+      ],
+      "distractor_sources": [],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 2,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N2|d2",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 2,
+      "draw": 2,
+      "conflict_pos": [
+        0,
+        1
+      ],
+      "distractor_sources": [],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 2,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N2|d3",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 2,
+      "draw": 3,
+      "conflict_pos": [
+        0,
+        1
+      ],
+      "distractor_sources": [],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 2,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N2|d4",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 2,
+      "draw": 4,
+      "conflict_pos": [
+        0,
+        1
+      ],
+      "distractor_sources": [],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 2,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N10|d0",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 10,
+      "draw": 0,
+      "conflict_pos": [
+        0,
+        1
+      ],
+      "distractor_sources": [
+        "Leave_and_Time_Off_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 10,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N10|d1",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 10,
+      "draw": 1,
+      "conflict_pos": [
+        8,
+        9
+      ],
+      "distractor_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 10,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Employee_Handbook.docx) and 6 months (Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N10|d2",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 10,
+      "draw": 2,
+      "conflict_pos": [
+        4,
+        5
+      ],
+      "distractor_sources": [
+        "Performance_Management_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 10,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Passage 5 | Source: Employee_Handbook.docx), 6 months (Passage 6 | Source: Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N10|d3",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 10,
+      "draw": 3,
+      "conflict_pos": [
+        1,
+        8
+      ],
+      "distractor_sources": [
+        "Leave_and_Time_Off_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 10,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Passage 2 | Source: Employee_Handbook.docx), 6 months (Passage 9 | Source: Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N10|d4",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 10,
+      "draw": 4,
+      "conflict_pos": [
+        2,
+        7
+      ],
+      "distractor_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 10,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Passage 3 | Source: Employee_Handbook.docx), 6 months (Passage 8 | Source: Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N40|d0",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 40,
+      "draw": 0,
+      "conflict_pos": [
+        0,
+        1
+      ],
+      "distractor_sources": [
+        "Travel_and_Expense_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Performance_Management_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 40,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Passage 1 | Source: Employee_Handbook.docx), 6 months (Passage 2 | Source: Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N40|d1",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 40,
+      "draw": 1,
+      "conflict_pos": [
+        38,
+        39
+      ],
+      "distractor_sources": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 40,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Passage 39 | Source: Employee_Handbook.docx), 6 months (Passage 40 | Source: Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N40|d2",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 40,
+      "draw": 2,
+      "conflict_pos": [
+        19,
+        20
+      ],
+      "distractor_sources": [
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Flexible_and_Remote_Work_Policy.docx",
+          "Performance_Management_Policy.docx"
+        ],
+        "correct_pair": false,
+        "both_values": false,
+        "detected": false,
+        "relevant_count": 40,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Passage 20 | Source: Employee_Handbook.docx), 6 months (Passage 21 | Source: Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "key": "C1_probation|N40|d3",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 40,
+      "draw": 3,
+      "conflict_pos": [
+        1,
+        38
+      ],
+      "distractor_sources": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 40,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months (Passage 2), 6 months (Passage 39)"
+    },
+    {
+      "key": "C1_probation|N40|d4",
+      "conflict": "C1_probation",
+      "topic": "probationary period length",
+      "N": 40,
+      "draw": 4,
+      "conflict_pos": [
+        10,
+        30
+      ],
+      "distractor_sources": [
+        "Travel_and_Expense_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Health_and_Safety_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Compensation_and_Benefits_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx",
+        "Performance_Management_Policy.docx",
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx",
+        "Travel_and_Expense_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "Health_and_Safety_Policy.docx"
+      ],
+      "ours": {
+        "flagged": true,
+        "reported_pair": [
+          "Employee_Handbook.docx",
+          "Recruitment_and_Onboarding_Policy.docx"
+        ],
+        "correct_pair": true,
+        "both_values": true,
+        "detected": true,
+        "relevant_count": 40,
+        "conflict_kind": "nli"
+      },
+      "llm": {
+        "decision": "conflict",
+        "flagged": true,
+        "val_a": true,
+        "val_b": true,
+        "both_values": true,
+        "detected": true,
+        "lenient_both_values": true
+      },
+      "llm_reply": "CONFLICT 3 months, 6 months, Passage 11, Passage 31."
+    }
+  ],
+  "summary": {
+    "2": {
+      "n_haystacks": 5,
+      "ours_recall": 1.0,
+      "llm_recall": 1.0,
+      "llm_recall_lenient": 1.0
+    },
+    "10": {
+      "n_haystacks": 5,
+      "ours_recall": 1.0,
+      "llm_recall": 1.0,
+      "llm_recall_lenient": 1.0
+    },
+    "40": {
+      "n_haystacks": 5,
+      "ours_recall": 0.8,
+      "llm_recall": 1.0,
+      "llm_recall_lenient": 1.0
+    }
+  },
+  "meta": {
+    "stopped_early": false,
+    "elapsed_sec": 62.7,
+    "n_haystacks": 15
+  }
+}

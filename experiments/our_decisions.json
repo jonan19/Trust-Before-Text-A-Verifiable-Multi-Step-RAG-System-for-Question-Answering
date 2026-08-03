@@ -1,0 +1,711 @@
+{
+  "meta": {
+    "system": "Trust Before Text (current / v6)",
+    "n_queries": 78,
+    "accuracy": 72,
+    "accuracy_pct": 92.3,
+    "determinism_subset": [
+      "Q001",
+      "Q010",
+      "Q029",
+      "Q035",
+      "Q040",
+      "Q049",
+      "Q062",
+      "Q072"
+    ],
+    "determinism_flips": 0
+  },
+  "results": [
+    {
+      "id": "Q001",
+      "query": "How many days of annual leave do full-time employees get?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q002",
+      "query": "What is the maximum annual leave I can carry over to next year?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q003",
+      "query": "How many weeks of full pay does enhanced maternity leave provide?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q004",
+      "query": "How much paternity leave is offered?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q005",
+      "query": "What is the business mileage reimbursement rate?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q006",
+      "query": "What is the deadline for submitting an expense claim?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q007",
+      "query": "What is the hotel room cap for a stay in London?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q008",
+      "query": "What is the subsistence cap for an evening meal?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q009",
+      "query": "Over what value must a gift be declared?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q010",
+      "query": "What is the minimum password length?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q011",
+      "query": "How much is the employee referral bonus?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q012",
+      "query": "What is the ratio of trained first-aiders to employees?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q013",
+      "query": "How often are fire evacuation drills held?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q014",
+      "query": "What performance rating scale is used?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q015",
+      "query": "What multiple of salary is provided as life assurance?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q016",
+      "query": "Am I eligible for a company car?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q017",
+      "query": "Does the company offer share options or stock to employees?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q018",
+      "query": "Is jury service paid?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q019",
+      "query": "What is the annual leave entitlement and how many days can be carried over?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Leave_and_Time_Off_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q020",
+      "query": "What is the mileage rate and the deadline to claim it?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q021",
+      "query": "How much maternity and paternity leave is provided?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q022",
+      "query": "What is the minimum password length and is multi-factor authentication required?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q023",
+      "query": "What are the subsistence caps for breakfast and an evening meal?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q024",
+      "query": "What are the hotel caps in London and elsewhere in the UK?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q025",
+      "query": "How large is the annual bonus and when is it paid?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q026",
+      "query": "What is the first-aider ratio and how often are fire drills held?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q027",
+      "query": "When are performance reviews held and what rating scale is used?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q028",
+      "query": "What relocation allowance and childcare support does the company provide?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q029",
+      "query": "What is the standard full-time working week across the company?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q030",
+      "query": "Compare annual leave entitlement with sabbatical eligibility.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q031",
+      "query": "How does the mileage rate change after 10,000 miles?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q032",
+      "query": "Compare the expense approval limit for a line manager versus a department head.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q033",
+      "query": "Compare when salary reviews take effect with when promotions take effect.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q034",
+      "query": "How many days of compassionate leave are provided compared with paternity leave?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q035",
+      "query": "Compare the maximum remote-working days per week in the current and the 2023 policies.",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q036",
+      "query": "What does the probationary period length say in the Handbook versus the Recruitment policy?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q037",
+      "query": "Compare the employer pension contribution in the Handbook and the Compensation policy.",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q038",
+      "query": "Compare the rule on personal-device email access in the IT policy and the Code of Conduct.",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q039",
+      "query": "How many days per week am I allowed to work remotely?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q040",
+      "query": "What is the probationary period for new employees?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q041",
+      "query": "What percentage does the employer contribute to my pension?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q042",
+      "query": "Can I use my personal phone to access work email?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q043",
+      "query": "What is the maximum number of remote working days allowed per week?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q044",
+      "query": "How long is the probation period for a new starter?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q045",
+      "query": "What is the employer pension contribution rate?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q046",
+      "query": "Is accessing corporate email on a personal mobile device allowed?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q047",
+      "query": "Up to how many days a week can eligible employees work from home?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q048",
+      "query": "What is the length of the probationary period at the company?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q049",
+      "query": "What is the company's current stock price?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q050",
+      "query": "Can I bring my dog to the office?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q051",
+      "query": "What relocation allowance is available when moving for a role?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q052",
+      "query": "Are childcare vouchers or an on-site nursery available?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q053",
+      "query": "How do I receive equity or share options?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q054",
+      "query": "What are the eligibility rules for a company car?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q055",
+      "query": "Will I be paid while on jury service?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q056",
+      "query": "What is the CEO's total annual salary?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q057",
+      "query": "Does the company pay for a gym membership?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q058",
+      "query": "Is dental insurance included in benefits?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q059",
+      "query": "List all the types of leave available to employees.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q060",
+      "query": "What are the data classification levels used by the company?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q061",
+      "query": "What core benefits does the company offer?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q062",
+      "query": "List the stages of the disciplinary procedure.",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Compensation_and_Benefits_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q063",
+      "query": "How does annual leave increase with length of service?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q064",
+      "query": "What personal protective equipment is required for field work?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Health_and_Safety_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q065",
+      "query": "What pre-employment checks are carried out before a new hire starts?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q066",
+      "query": "What are the expense approval thresholds and accommodation caps?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q067",
+      "query": "I have completed 6 years of service. How many annual leave days am I entitled to?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q068",
+      "query": "I drove 12,000 business miles this year in my own car. How is that reimbursed?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q069",
+      "query": "I have 3 years' service and want a sabbatical. Am I eligible?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q070",
+      "query": "A supplier offered me a gift worth GBP 70. What should I do?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q071",
+      "query": "I have been off sick long-term after 2 years' service. What sick pay do I get?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q072",
+      "query": "As a new starter, when will my first formal performance review be?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Performance_Management_Policy.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q073",
+      "query": "I want to claim an expense from 45 days ago. Will it be paid?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q074",
+      "query": "I am booking a hotel in London for a business trip. What is the nightly limit?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q075",
+      "query": "I am a new employee. How long is my probationary period?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q076",
+      "query": "I would like to work from home. How many days a week can I do that?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q077",
+      "query": "I am relocating cities for this role. What relocation support can I claim?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q078",
+      "query": "Can I bring my pet to work on Fridays?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    }
+  ]
+}

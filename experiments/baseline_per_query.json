@@ -1,0 +1,1533 @@
+{
+  "meta": {
+    "model": "llama-3.3-70b-versatile",
+    "consistency_runs": 5,
+    "consistency_temp": 0.7,
+    "canonical_temp": 0.0,
+    "max_chunks_sent": 12,
+    "n_queries": 78,
+    "elapsed_sec": 289.6,
+    "stopped_early_daily_cap": false
+  },
+  "schema": "per-query prompted-LLM baseline (E1)",
+  "results": [
+    {
+      "id": "Q001",
+      "category": "single-fact lookup",
+      "query": "How many days of annual leave do full-time employees get?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q002",
+      "category": "single-fact lookup",
+      "query": "What is the maximum annual leave I can carry over to next year?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q003",
+      "category": "single-fact lookup",
+      "query": "How many weeks of full pay does enhanced maternity leave provide?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q004",
+      "category": "single-fact lookup",
+      "query": "How much paternity leave is offered?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q005",
+      "category": "single-fact lookup",
+      "query": "What is the business mileage reimbursement rate?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q006",
+      "category": "single-fact lookup",
+      "query": "What is the deadline for submitting an expense claim?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q007",
+      "category": "single-fact lookup",
+      "query": "What is the hotel room cap for a stay in London?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q008",
+      "category": "single-fact lookup",
+      "query": "What is the subsistence cap for an evening meal?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q009",
+      "category": "single-fact lookup",
+      "query": "Over what value must a gift be declared?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q010",
+      "category": "single-fact lookup",
+      "query": "What is the minimum password length?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q011",
+      "category": "single-fact lookup",
+      "query": "How much is the employee referral bonus?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q012",
+      "category": "single-fact lookup",
+      "query": "What is the ratio of trained first-aiders to employees?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q013",
+      "category": "single-fact lookup",
+      "query": "How often are fire evacuation drills held?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q014",
+      "category": "single-fact lookup",
+      "query": "What performance rating scale is used?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q015",
+      "category": "single-fact lookup",
+      "query": "What multiple of salary is provided as life assurance?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q016",
+      "category": "single-fact lookup",
+      "query": "Am I eligible for a company car?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q017",
+      "category": "single-fact lookup",
+      "query": "Does the company offer share options or stock to employees?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q018",
+      "category": "single-fact lookup",
+      "query": "Is jury service paid?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q019",
+      "category": "multi-part",
+      "query": "What is the annual leave entitlement and how many days can be carried over?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q020",
+      "category": "multi-part",
+      "query": "What is the mileage rate and the deadline to claim it?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q021",
+      "category": "multi-part",
+      "query": "How much maternity and paternity leave is provided?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q022",
+      "category": "multi-part",
+      "query": "What is the minimum password length and is multi-factor authentication required?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q023",
+      "category": "multi-part",
+      "query": "What are the subsistence caps for breakfast and an evening meal?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q024",
+      "category": "multi-part",
+      "query": "What are the hotel caps in London and elsewhere in the UK?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q025",
+      "category": "multi-part",
+      "query": "How large is the annual bonus and when is it paid?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q026",
+      "category": "multi-part",
+      "query": "What is the first-aider ratio and how often are fire drills held?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q027",
+      "category": "multi-part",
+      "query": "When are performance reviews held and what rating scale is used?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q028",
+      "category": "multi-part",
+      "query": "What relocation allowance and childcare support does the company provide?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q029",
+      "category": "cross-document comparison",
+      "query": "What is the standard full-time working week across the company?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q030",
+      "category": "cross-document comparison",
+      "query": "Compare annual leave entitlement with sabbatical eligibility.",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q031",
+      "category": "cross-document comparison",
+      "query": "How does the mileage rate change after 10,000 miles?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q032",
+      "category": "cross-document comparison",
+      "query": "Compare the expense approval limit for a line manager versus a department head.",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q033",
+      "category": "cross-document comparison",
+      "query": "Compare when salary reviews take effect with when promotions take effect.",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q034",
+      "category": "cross-document comparison",
+      "query": "How many days of compassionate leave are provided compared with paternity leave?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q035",
+      "category": "cross-document comparison",
+      "query": "Compare the maximum remote-working days per week in the current and the 2023 policies.",
+      "expected": "conflict",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": false,
+      "attribution": {
+        "flagged_conflict": false,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 2
+      },
+      "baseline_reply": "The 2023 policy, as stated in Passage 1, allows eligible employees to work remotely for up to 2 days per week. The current policy, as stated in Passage 2, allows eligible employees to work remotely for up to 3 days per week. \n\nSince the two policies give different values for the maximum remote-working days per week, the answer is: \nCONFLICT 2 days (Passage 1, Remote_Working_Policy_2023_Superseded.docx), 3 days (Passage 2, Flexible_and_Remote_Work_Policy.docx)"
+    },
+    {
+      "id": "Q036",
+      "category": "cross-document comparison",
+      "query": "What does the probationary period length say in the Handbook versus the Recruitment policy?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT, 3 months (Employee_Handbook.docx), 6 months (Recruitment_and_Onboarding_Policy.docx)"
+    },
+    {
+      "id": "Q037",
+      "category": "cross-document comparison",
+      "query": "Compare the employer pension contribution in the Handbook and the Compensation policy.",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 5% (Employee_Handbook.docx) and 6% (Compensation_and_Benefits_Policy.docx)"
+    },
+    {
+      "id": "Q038",
+      "category": "cross-document comparison",
+      "query": "Compare the rule on personal-device email access in the IT policy and the Code of Conduct.",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT, permitted for enrolled employees (IT_and_Acceptable_Use_Policy.docx), prohibited at all times (Code_of_Conduct_and_Disciplinary_Policy.docx)"
+    },
+    {
+      "id": "Q039",
+      "category": "conflict-probing",
+      "query": "How many days per week am I allowed to work remotely?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 2 days [Passage 1 | Source: Remote_Working_Policy_2023_Superseded.docx], 3 days [Passage 2 | Source: Flexible_and_Remote_Work_Policy.docx]"
+    },
+    {
+      "id": "Q040",
+      "category": "conflict-probing",
+      "query": "What is the probationary period for new employees?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 6 months from Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx, 3 months from Passage 2 | Source: Employee_Handbook.docx"
+    },
+    {
+      "id": "Q041",
+      "category": "conflict-probing",
+      "query": "What percentage does the employer contribute to my pension?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 6% (Compensation_and_Benefits_Policy.docx), 5% (Employee_Handbook.docx)"
+    },
+    {
+      "id": "Q042",
+      "category": "conflict-probing",
+      "query": "Can I use my personal phone to access work email?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT: permitted (Passage 1 | Source: IT_and_Acceptable_Use_Policy.docx), prohibited (Passage 2 | Source: Code_of_Conduct_and_Disciplinary_Policy.docx and Passage 3 | Source: Code_of_Conduct_and_Disciplinary_Policy.docx)"
+    },
+    {
+      "id": "Q043",
+      "category": "conflict-probing",
+      "query": "What is the maximum number of remote working days allowed per week?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 2 days [Passage 1 | Source: Remote_Working_Policy_2023_Superseded.docx], 3 days [Passage 2 | Source: Flexible_and_Remote_Work_Policy.docx]"
+    },
+    {
+      "id": "Q044",
+      "category": "conflict-probing",
+      "query": "How long is the probation period for a new starter?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 6 months (Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx), 3 months (Passage 2 | Source: Employee_Handbook.docx)"
+    },
+    {
+      "id": "Q045",
+      "category": "conflict-probing",
+      "query": "What is the employer pension contribution rate?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 6% (Compensation_and_Benefits_Policy.docx), 5% (Employee_Handbook.docx)"
+    },
+    {
+      "id": "Q046",
+      "category": "conflict-probing",
+      "query": "Is accessing corporate email on a personal mobile device allowed?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      },
+      "baseline_reply": "CONFLICT, allowed (IT_and_Acceptable_Use_Policy.docx, Passage 1), prohibited (Code_of_Conduct_and_Disciplinary_Policy.docx, Passage 2 and Passage 3)"
+    },
+    {
+      "id": "Q047",
+      "category": "conflict-probing",
+      "query": "Up to how many days a week can eligible employees work from home?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 2 days [Passage 1 | Source: Remote_Working_Policy_2023_Superseded.docx], 3 days [Passage 2 | Source: Flexible_and_Remote_Work_Policy.docx]"
+    },
+    {
+      "id": "Q048",
+      "category": "conflict-probing",
+      "query": "What is the length of the probationary period at the company?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 6 months (Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx) and 3 months (Passage 2 | Source: Employee_Handbook.docx)"
+    },
+    {
+      "id": "Q049",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the company's current stock price?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q050",
+      "category": "out-of-scope / insufficient",
+      "query": "Can I bring my dog to the office?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q051",
+      "category": "out-of-scope / insufficient",
+      "query": "What relocation allowance is available when moving for a role?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q052",
+      "category": "out-of-scope / insufficient",
+      "query": "Are childcare vouchers or an on-site nursery available?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q053",
+      "category": "out-of-scope / insufficient",
+      "query": "How do I receive equity or share options?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q054",
+      "category": "out-of-scope / insufficient",
+      "query": "What are the eligibility rules for a company car?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q055",
+      "category": "out-of-scope / insufficient",
+      "query": "Will I be paid while on jury service?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q056",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the CEO's total annual salary?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q057",
+      "category": "out-of-scope / insufficient",
+      "query": "Does the company pay for a gym membership?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q058",
+      "category": "out-of-scope / insufficient",
+      "query": "Is dental insurance included in benefits?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q059",
+      "category": "aggregation / list-all",
+      "query": "List all the types of leave available to employees.",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q060",
+      "category": "aggregation / list-all",
+      "query": "What are the data classification levels used by the company?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q061",
+      "category": "aggregation / list-all",
+      "query": "What core benefits does the company offer?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q062",
+      "category": "aggregation / list-all",
+      "query": "List the stages of the disciplinary procedure.",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q063",
+      "category": "aggregation / list-all",
+      "query": "How does annual leave increase with length of service?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q064",
+      "category": "aggregation / list-all",
+      "query": "What personal protective equipment is required for field work?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q065",
+      "category": "aggregation / list-all",
+      "query": "What pre-employment checks are carried out before a new hire starts?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q066",
+      "category": "aggregation / list-all",
+      "query": "What are the expense approval thresholds and accommodation caps?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q067",
+      "category": "scenario / applied",
+      "query": "I have completed 6 years of service. How many annual leave days am I entitled to?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q068",
+      "category": "scenario / applied",
+      "query": "I drove 12,000 business miles this year in my own car. How is that reimbursed?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q069",
+      "category": "scenario / applied",
+      "query": "I have 3 years' service and want a sabbatical. Am I eligible?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "conflict",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": true,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q070",
+      "category": "scenario / applied",
+      "query": "A supplier offered me a gift worth GBP 70. What should I do?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q071",
+      "category": "scenario / applied",
+      "query": "I have been off sick long-term after 2 years' service. What sick pay do I get?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q072",
+      "category": "scenario / applied",
+      "query": "As a new starter, when will my first formal performance review be?",
+      "expected": "answer",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": false
+    },
+    {
+      "id": "Q073",
+      "category": "scenario / applied",
+      "query": "I want to claim an expense from 45 days ago. Will it be paid?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q074",
+      "category": "scenario / applied",
+      "query": "I am booking a hotel in London for a business trip. What is the nightly limit?",
+      "expected": "answer",
+      "baseline_decision": "answer",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "answer",
+      "baseline_correct": true
+    },
+    {
+      "id": "Q075",
+      "category": "scenario / applied",
+      "query": "I am a new employee. How long is my probationary period?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 6 months from Passage 1 | Source: Recruitment_and_Onboarding_Policy.docx, 3 months from Passage 2 | Source: Employee_Handbook.docx"
+    },
+    {
+      "id": "Q076",
+      "category": "scenario / applied",
+      "query": "I would like to work from home. How many days a week can I do that?",
+      "expected": "conflict",
+      "baseline_decision": "conflict",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "conflict",
+      "baseline_correct": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      },
+      "baseline_reply": "CONFLICT 2 days (Passage 1 | Source: Remote_Working_Policy_2023_Superseded.docx), 3 days (Passage 3 | Source: Flexible_and_Remote_Work_Policy.docx)"
+    },
+    {
+      "id": "Q077",
+      "category": "scenario / applied",
+      "query": "I am relocating cities for this role. What relocation support can I claim?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q078",
+      "category": "scenario / applied",
+      "query": "Can I bring my pet to work on Fridays?",
+      "expected": "insufficient",
+      "baseline_decision": "insufficient",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_inconsistent": false,
+      "our_decision": "insufficient",
+      "baseline_correct": true,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    }
+  ]
+}
