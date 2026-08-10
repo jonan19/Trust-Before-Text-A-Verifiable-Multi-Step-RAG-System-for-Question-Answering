@@ -1,0 +1,825 @@
+{
+  "meta": {
+    "system": "Trust Before Text (current / v6, FROZEN)",
+    "corpus": "Corpus 2 (Ashcombe Falls University)",
+    "n_queries": 78,
+    "accuracy": 52,
+    "accuracy_pct": 66.7,
+    "mode": "all"
+  },
+  "results": [
+    {
+      "id": "Q001",
+      "category": "single-fact lookup",
+      "query": "What grading scale does the university use?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q002",
+      "category": "single-fact lookup",
+      "query": "What is the minimum GPA to remain in good academic standing?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q003",
+      "category": "single-fact lookup",
+      "query": "What GPA is required to make the Dean's List?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q004",
+      "category": "single-fact lookup",
+      "query": "What GPA is needed for Summa Cum Laude?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q005",
+      "category": "single-fact lookup",
+      "query": "How long do I have to resolve an Incomplete grade?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q006",
+      "category": "single-fact lookup",
+      "query": "How many transfer credit hours can count toward my degree?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q007",
+      "category": "single-fact lookup",
+      "query": "What is the per-credit-hour tuition rate for part-time students?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q008",
+      "category": "single-fact lookup",
+      "query": "What is the flat-rate tuition for a full-time student?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q009",
+      "category": "single-fact lookup",
+      "query": "What is the priority deadline to file the FAFSA?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q010",
+      "category": "single-fact lookup",
+      "query": "What is the maximum number of hours I can work under Federal Work-Study?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q011",
+      "category": "single-fact lookup",
+      "query": "How much is the late tuition payment fee?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q012",
+      "category": "single-fact lookup",
+      "query": "What happens on a first academic integrity violation?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q013",
+      "category": "single-fact lookup",
+      "query": "What are the quiet hours in the residence halls on weekdays?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q014",
+      "category": "single-fact lookup",
+      "query": "What is the minimum password length for a campus network account?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q015",
+      "category": "single-fact lookup",
+      "query": "How much does it cost to replace a lost student ID card?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q016",
+      "category": "single-fact lookup",
+      "query": "What are the eligibility criteria for an athletic scholarship?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q017",
+      "category": "single-fact lookup",
+      "query": "How do study-abroad credits transfer back to my degree?",
+      "expected": "insufficient",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": false
+    },
+    {
+      "id": "Q018",
+      "category": "single-fact lookup",
+      "query": "How much is the fine for an overdue library book?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q019",
+      "category": "multi-part",
+      "query": "How long do I have to resolve an Incomplete, and how many transfer credits can I bring in?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "International_Student_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q020",
+      "category": "multi-part",
+      "query": "What is the per-credit tuition rate and the full-time flat rate?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q021",
+      "category": "multi-part",
+      "query": "When is the FAFSA priority deadline and how many hours can I work under Work-Study?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q022",
+      "category": "multi-part",
+      "query": "What is the refund schedule and the late payment fee?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q023",
+      "category": "multi-part",
+      "query": "What are the consequences of a first versus a second academic integrity violation?",
+      "expected": "answer",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": false
+    },
+    {
+      "id": "Q024",
+      "category": "multi-part",
+      "query": "Do first-years have to live on campus, and do they need a meal plan?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q025",
+      "category": "multi-part",
+      "query": "What is the minimum password length and is a VPN required off campus?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q026",
+      "category": "multi-part",
+      "query": "How fast are emergency alerts sent, and is the safety escort service available at night?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q027",
+      "category": "multi-part",
+      "query": "What grading scale is used and what GPA do I need for the Dean's List?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q028",
+      "category": "multi-part",
+      "query": "What graduate stipend and childcare support does the university provide?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q029",
+      "category": "cross-document comparison",
+      "query": "What is the standard full-time course load according to the Handbook and the Registration policy?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q030",
+      "category": "cross-document comparison",
+      "query": "Compare the grade appeal deadline in the Grading Policy and the Conduct Policy.",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q031",
+      "category": "cross-document comparison",
+      "query": "Compare the deadline to add a course with the deadline to withdraw from one.",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q032",
+      "category": "cross-document comparison",
+      "query": "Compare the part-time per-credit tuition rate with the full-time flat rate.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q033",
+      "category": "cross-document comparison",
+      "query": "Compare how often fire drills are held with how often the safety escort service operates.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q034",
+      "category": "cross-document comparison",
+      "query": "Compare the OPT application window with the I-20 reissue deadline for international students.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q035",
+      "category": "cross-document comparison",
+      "query": "Compare the maximum credit-hour load in the current registration policy and the 2022 policy.",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q036",
+      "category": "cross-document comparison",
+      "query": "What does the academic probation length say in the Handbook versus the Grading Policy?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q037",
+      "category": "cross-document comparison",
+      "query": "Compare the minimum GPA for financial aid in the Handbook and the Financial Aid Policy.",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q038",
+      "category": "cross-document comparison",
+      "query": "Compare the rule on personal recording devices in the IT policy and the Conduct policy.",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q039",
+      "category": "conflict-probing",
+      "query": "What is the maximum number of credit hours I can take without advisor approval?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q040",
+      "category": "conflict-probing",
+      "query": "How long is academic probation for a student below the minimum GPA?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q041",
+      "category": "conflict-probing",
+      "query": "What minimum GPA do I need to keep my financial aid?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q042",
+      "category": "conflict-probing",
+      "query": "Can I record my lectures on my phone?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q043",
+      "category": "conflict-probing",
+      "query": "What is the credit-hour limit per semester without special permission?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q044",
+      "category": "conflict-probing",
+      "query": "How long will I be on probation if my GPA drops below 2.0?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q045",
+      "category": "conflict-probing",
+      "query": "What is the Satisfactory Academic Progress GPA requirement?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q046",
+      "category": "conflict-probing",
+      "query": "Is it allowed to record a class lecture with a personal device?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q047",
+      "category": "conflict-probing",
+      "query": "How many credit hours can I register for before needing advisor sign-off?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q048",
+      "category": "conflict-probing",
+      "query": "What is the length of academic probation at the university?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q049",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the university president's annual salary?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q050",
+      "category": "out-of-scope / insufficient",
+      "query": "Can I keep a cat in my dorm room?",
+      "expected": "insufficient",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": false
+    },
+    {
+      "id": "Q051",
+      "category": "out-of-scope / insufficient",
+      "query": "What stipend do graduate teaching assistants receive?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q052",
+      "category": "out-of-scope / insufficient",
+      "query": "Is there a daycare available on campus for student parents?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q053",
+      "category": "out-of-scope / insufficient",
+      "query": "How do I get credit for a semester studying abroad?",
+      "expected": "insufficient",
+      "observed": "conflict",
+      "conflict_pair": [
+        "International_Student_Policy.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q054",
+      "category": "out-of-scope / insufficient",
+      "query": "What GPA or performance is required to keep an athletic scholarship?",
+      "expected": "insufficient",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q055",
+      "category": "out-of-scope / insufficient",
+      "query": "Will I be charged a fine if I return a library book late?",
+      "expected": "insufficient",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": false
+    },
+    {
+      "id": "Q056",
+      "category": "out-of-scope / insufficient",
+      "query": "Does the university give every student free printing credits?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q057",
+      "category": "out-of-scope / insufficient",
+      "query": "Is there a shuttle bus to the airport?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q058",
+      "category": "out-of-scope / insufficient",
+      "query": "Are e-cigarettes allowed in dorm rooms?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q059",
+      "category": "aggregation / list-all",
+      "query": "List the Latin honors tiers and their GPA cutoffs.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q060",
+      "category": "aggregation / list-all",
+      "query": "List the stages of the student disciplinary process.",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Integrity_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q061",
+      "category": "aggregation / list-all",
+      "query": "What is the full grading scale used at AFU?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q062",
+      "category": "aggregation / list-all",
+      "query": "List the residence hall quiet hours for every day of the week.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q063",
+      "category": "aggregation / list-all",
+      "query": "List the consequences for a first and a second academic integrity violation.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q064",
+      "category": "aggregation / list-all",
+      "query": "What do I need to do to register a device and access resources remotely?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q065",
+      "category": "aggregation / list-all",
+      "query": "List the tuition refund percentages by withdrawal week.",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q066",
+      "category": "aggregation / list-all",
+      "query": "What are the credit-hour and GPA requirements to make the Dean's List?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q067",
+      "category": "scenario / applied",
+      "query": "My GPA this semester is 3.6 and I completed 15 credit hours. Am I on the Dean's List?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q068",
+      "category": "scenario / applied",
+      "query": "I want to withdraw from a class in week 8. What grade will I get?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q069",
+      "category": "scenario / applied",
+      "query": "I dropped a class in the first week of the semester. Will it show on my transcript?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q070",
+      "category": "scenario / applied",
+      "query": "I'm only enrolled in 9 credit hours this semester. Am I considered full-time?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q071",
+      "category": "scenario / applied",
+      "query": "I got a B in a course, retook it, and got a C. Which grade counts toward my GPA?",
+      "expected": "answer",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": false
+    },
+    {
+      "id": "Q072",
+      "category": "scenario / applied",
+      "query": "I'm an incoming first-year living 10 miles from campus. Do I have to live in university housing?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q073",
+      "category": "scenario / applied",
+      "query": "I lost my student ID card. What will it cost to replace?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q074",
+      "category": "scenario / applied",
+      "query": "I'm on an F-1 visa and graduating in May. When should I apply for OPT?",
+      "expected": "answer",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q075",
+      "category": "scenario / applied",
+      "query": "I'm a first-year student with a 1.8 GPA. How long will I be on academic probation?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q076",
+      "category": "scenario / applied",
+      "query": "My friend registered for 20 credit hours back in 2022. Can I still do that without approval?",
+      "expected": "conflict",
+      "observed": "conflict",
+      "conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "match": true
+    },
+    {
+      "id": "Q077",
+      "category": "scenario / applied",
+      "query": "I'm starting as a graduate teaching assistant next fall. What stipend will I be paid?",
+      "expected": "insufficient",
+      "observed": "insufficient",
+      "conflict_pair": null,
+      "match": true
+    },
+    {
+      "id": "Q078",
+      "category": "scenario / applied",
+      "query": "Can I bring my cat to live with me in the dorm this fall?",
+      "expected": "insufficient",
+      "observed": "answer",
+      "conflict_pair": null,
+      "match": false
+    }
+  ]
+}

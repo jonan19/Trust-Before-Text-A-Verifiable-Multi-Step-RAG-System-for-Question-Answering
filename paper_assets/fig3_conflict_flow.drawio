@@ -1,0 +1,96 @@
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="fig3conflict" name="Figure 3 - Conflict Detection">
+    <mxGraphModel dx="900" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1150" pageHeight="1150" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Figure 3. Cross-document conflict detection (Stage 4), one candidate pair" style="text;html=1;align=center;verticalAlign=middle;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="250" y="10" width="600" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Group labels -->
+        <mxCell id="gL" value="Gated branch (cheap prongs)" style="text;html=1;align=center;fontStyle=2;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="110" y="470" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="gR" value="Ungated branch (NLI prong)" style="text;html=1;align=center;fontStyle=2;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="560" y="470" width="200" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Nodes -->
+        <mxCell id="n1" value="Cross-document chunk pair (A, B)" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="310" y="50" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n2" value="Same source document?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="140" width="160" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n3" value="Extract query-relevant sentences from A and B&lt;br&gt;(sentences with the query's content words;&lt;br&gt;if none, use full text) -&gt; spans a, b" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="280" y="280" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n4" value="Compute lexical similarity sim(a, b)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="310" y="400" width="240" height="54" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n5" value="sim &gt;= 0.68 ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="120" y="500" width="180" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n6" value="Prong A: keyword antonyms&lt;br&gt;(e.g. permitted vs prohibited)&lt;br&gt;Prong B: unit-aware numeric&lt;br&gt;(same quantity, different value)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="100" y="640" width="220" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n7" value="sim &gt;= 0.15 ?&lt;br&gt;(speed floor only)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="560" y="500" width="200" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n7b" value="Prong C: NLI cross-encoder (DeBERTa-v3)&lt;br&gt;c = max( contra(a,b), contra(b,a) )" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="550" y="640" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n7c" value="c &gt;= 0.94 ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="580" y="760" width="160" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n8" value="CONFLICT&lt;br&gt;report both documents&lt;br&gt;and their clashing values" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="300" y="900" width="260" height="64" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n9" value="No conflict from this pair -&gt; test next pair" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1000" width="260" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Note callout (the key asymmetry) -->
+        <mxCell id="note" value="NLI is NOT gated on lexical similarity.&lt;br&gt;The 0.15 floor is a speed cutoff only, so&lt;br&gt;contradictions that share little wording&lt;br&gt;are still caught. This asymmetry is the&lt;br&gt;key design choice." style="shape=note;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="810" y="500" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Threshold legend -->
+        <mxCell id="legend" value="Thresholds&lt;br&gt;Lexical gate (A, B): sim &gt;= 0.68&lt;br&gt;NLI speed floor (C): sim &gt;= 0.15&lt;br&gt;NLI fires: c &gt;= 0.94" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="20" y="760" width="230" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n1" target="n2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n2" target="n3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n2" target="n9"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n3" target="n4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n4" target="n5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n4" target="n7"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n5" target="n6"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e8" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n5" target="n9"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e9" value="A or B fires" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n6" target="n8"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" value="neither" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n6" target="n9"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e11" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n7" target="n7b"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e12" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n7" target="n9"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n7b" target="n7c"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e14" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n7c" target="n8"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e15" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="n7c" target="n9"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "model": "llama-3.3-70b-versatile",
+    "corpus": "Corpus 2 (Ashcombe Falls University)",
+    "consistency_runs": 5,
+    "consistency_temp": 0.7,
+    "canonical_temp": 0.0,
+    "max_chunks_sent": 12,
+    "n_queries": 5,
+    "elapsed_sec": 193.3,
+    "stopped_early_daily_cap": false
+  },
+  "summary": {
+    "n_queries": 5,
+    "accuracy": {
+      "ours": 5,
+      "ours_pct": 100.0,
+      "baseline": 5,
+      "baseline_pct": 100.0
+    },
+    "pillar1_consistency": {
+      "baseline_flips": 0,
+      "baseline_flip_pct": 0.0,
+      "ours_flips": 0,
+      "note": "flip = the 5 temp>0 runs are not all identical"
+    },
+    "pillar2_leakage": {
+      "n_gaps": 2,
+      "baseline_canonical_leaks": 0,
+      "baseline_any_hot_leaks": 0,
+      "ours_leaks": 0
+    },
+    "pillar3_attribution": {
+      "n_conflicts": 2,
+      "baseline_flagged": 2,
+      "baseline_named_both_docs": 1,
+      "baseline_gave_both_values": 0,
+      "baseline_mean_score_out_of_3": 1.5,
+      "ours_flagged": 2,
+      "ours_structural_score_out_of_3": 3,
+      "note": "ours names both docs + quotes both sentences structurally"
+    }
+  },
+  "results": [
+    {
+      "id": "Q001",
+      "category": "single-fact lookup",
+      "query": "What grading scale does the university use?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What grading scale does the university use"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The university uses a 4.0 grading scale: A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0, according to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q016",
+      "category": "single-fact lookup",
+      "query": "What are the eligibility criteria for an athletic scholarship?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the eligibility criteria for an athletic scholarship"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q036",
+      "category": "cross-document comparison",
+      "query": "What does the academic probation length say in the Handbook versus the Grading Policy?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Academic_Catalog_and_Grading_Policy.docx"
+      ],
+      "n_chunks": 31,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What does the academic probation length say in the Handbook",
+        "the Grading Policy"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, 2 consecutive semesters (Academic_Catalog_and_Grading_Policy.docx), 1 semester (Student_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q042",
+      "category": "conflict-probing",
+      "query": "Can I record my lectures on my phone?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Can I record my lectures on my phone"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT: allowed with registration on the campus network (Passage 1), prohibited without instructor's prior written permission (Passage 2 and Passage 3)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": false,
+        "gave_both_values": false,
+        "score": 1
+      }
+    },
+    {
+      "id": "Q049",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the university president's annual salary?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the university president's annual salary"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    }
+  ]
+}

@@ -1,0 +1,483 @@
+{
+  "institution": {
+    "name": "Ashcombe Falls University (AFU)",
+    "domain": "Higher education / academic regulations",
+    "students": 8600,
+    "founded": 1965,
+    "location": "Ashcombe Falls, Ohio, USA",
+    "calendar": "Fall / Spring / Summer semesters",
+    "notes": "Fictional. Different domain from Corpus 1 (Meridian Grid HR) and different country convention (US semester/credit-hour system vs UK employment law) for a stronger generalization test. All document text is authored verbatim in data_corpus2/_build_docs.py; this file's fact/conflict values are copied from that text."
+  },
+  "documents": [
+    {
+      "file": "Student_Handbook.docx",
+      "doc_id": "AFU-AC-001",
+      "title": "Student Handbook",
+      "version": "2025.1"
+    },
+    {
+      "file": "Academic_Catalog_and_Grading_Policy.docx",
+      "doc_id": "AFU-AC-002",
+      "title": "Academic Catalog and Grading Policy",
+      "version": "2025.3"
+    },
+    {
+      "file": "Course_Registration_and_Add_Drop_Policy.docx",
+      "doc_id": "AFU-AC-003",
+      "title": "Course Registration and Add/Drop Policy (2025, current)",
+      "version": "2025.2"
+    },
+    {
+      "file": "Course_Registration_Policy_2022_Superseded.docx",
+      "doc_id": "AFU-AC-003a",
+      "title": "Course Registration Policy (2022, superseded)",
+      "version": "1.0"
+    },
+    {
+      "file": "Tuition_and_Financial_Aid_Policy.docx",
+      "doc_id": "AFU-AC-004",
+      "title": "Tuition and Financial Aid Policy",
+      "version": "3.0"
+    },
+    {
+      "file": "Academic_Integrity_Policy.docx",
+      "doc_id": "AFU-AC-005",
+      "title": "Academic Integrity Policy",
+      "version": "2.1"
+    },
+    {
+      "file": "Housing_and_Residence_Life_Policy.docx",
+      "doc_id": "AFU-AC-006",
+      "title": "Housing and Residence Life Policy",
+      "version": "1.4"
+    },
+    {
+      "file": "IT_Acceptable_Use_Policy.docx",
+      "doc_id": "AFU-AC-007",
+      "title": "IT Acceptable Use Policy",
+      "version": "2.0"
+    },
+    {
+      "file": "Student_Conduct_and_Disciplinary_Policy.docx",
+      "doc_id": "AFU-AC-008",
+      "title": "Student Conduct and Disciplinary Policy",
+      "version": "2.3"
+    },
+    {
+      "file": "Campus_Safety_and_Emergency_Policy.docx",
+      "doc_id": "AFU-AC-009",
+      "title": "Campus Safety and Emergency Policy",
+      "version": "1.6"
+    },
+    {
+      "file": "International_Student_Policy.docx",
+      "doc_id": "AFU-AC-010",
+      "title": "International Student Policy",
+      "version": "1.2"
+    }
+  ],
+  "facts": [
+    {
+      "id": "standard_course_load",
+      "topic": "Standard full-time undergraduate course load",
+      "value": "12 credit hours/semester",
+      "type": "agreeing",
+      "sources": [
+        ["Student_Handbook.docx", "3. Course Load Summary"],
+        ["Course_Registration_and_Add_Drop_Policy.docx", "2. Full-Time Status"]
+      ]
+    },
+    {
+      "id": "academic_calendar",
+      "topic": "Academic calendar (semester start dates)",
+      "value": "Fall begins last week of August; Spring begins first full week of January",
+      "type": "single",
+      "sources": [["Student_Handbook.docx", "2. Academic Calendar Overview"]]
+    },
+    {
+      "id": "grading_scale",
+      "topic": "Grading scale",
+      "value": "4.0 scale: A=4.0, B=3.0, C=2.0, D=1.0, F=0.0",
+      "type": "single",
+      "sources": [["Academic_Catalog_and_Grading_Policy.docx", "2. Grading Scale"]]
+    },
+    {
+      "id": "good_standing_gpa",
+      "topic": "Minimum GPA for good academic standing",
+      "value": "2.0 cumulative GPA",
+      "type": "single",
+      "sources": [["Academic_Catalog_and_Grading_Policy.docx", "3. Academic Standing"]]
+    },
+    {
+      "id": "deans_list_gpa",
+      "topic": "Dean's List requirement",
+      "value": "3.5 semester GPA or higher with at least 12 credit hours completed that semester",
+      "type": "single",
+      "sources": [["Academic_Catalog_and_Grading_Policy.docx", "5. Dean's List and Latin Honors"]]
+    },
+    {
+      "id": "latin_honors",
+      "topic": "Latin honors GPA cutoffs",
+      "value": "Summa Cum Laude 3.9+; Magna Cum Laude 3.7-3.89; Cum Laude 3.5-3.69",
+      "type": "single",
+      "sources": [["Academic_Catalog_and_Grading_Policy.docx", "5. Dean's List and Latin Honors"]]
+    },
+    {
+      "id": "incomplete_grade_deadline",
+      "topic": "Deadline to resolve an Incomplete (I) grade",
+      "value": "60 days after the start of the following semester, then converts to F",
+      "type": "single",
+      "sources": [["Academic_Catalog_and_Grading_Policy.docx", "6. Incomplete Grades"]]
+    },
+    {
+      "id": "repeat_course_policy",
+      "topic": "GPA treatment of repeated courses",
+      "value": "only the higher of the two grades counts toward GPA; both attempts stay on transcript",
+      "type": "single",
+      "sources": [["Academic_Catalog_and_Grading_Policy.docx", "7. Repeated Courses"]]
+    },
+    {
+      "id": "transfer_credit_cap",
+      "topic": "Maximum transfer credit hours toward a degree",
+      "value": "60 transfer credit hours",
+      "type": "single",
+      "sources": [["Academic_Catalog_and_Grading_Policy.docx", "8. Transfer Credit"]]
+    },
+    {
+      "id": "grade_appeal_deadline",
+      "topic": "Deadline to formally appeal a final grade",
+      "value": "10 business days after the grade is posted",
+      "type": "agreeing",
+      "sources": [
+        ["Academic_Catalog_and_Grading_Policy.docx", "9. Grade Appeals"],
+        ["Student_Conduct_and_Disciplinary_Policy.docx", "5. Grade Appeals"]
+      ]
+    },
+    {
+      "id": "registration_priority",
+      "topic": "Registration priority order",
+      "value": "seniors (90+ credit hours) first, then juniors, sophomores, first-years by completed credit hours",
+      "type": "single",
+      "sources": [["Course_Registration_and_Add_Drop_Policy.docx", "3. Registration Priority"]]
+    },
+    {
+      "id": "add_deadline",
+      "topic": "Deadline to add a course",
+      "value": "end of the first week of the semester",
+      "type": "single",
+      "sources": [["Course_Registration_and_Add_Drop_Policy.docx", "4. Adding a Course"]]
+    },
+    {
+      "id": "drop_deadline_no_record",
+      "topic": "Deadline to drop a course with no transcript record",
+      "value": "within the first two weeks of the semester",
+      "type": "single",
+      "sources": [["Course_Registration_and_Add_Drop_Policy.docx", "5. Dropping a Course"]]
+    },
+    {
+      "id": "withdrawal_deadline",
+      "topic": "Deadline to withdraw from a course with a 'W' grade",
+      "value": "up to the end of week 10 of the semester",
+      "type": "single",
+      "sources": [["Course_Registration_and_Add_Drop_Policy.docx", "6. Withdrawing from a Course"]]
+    },
+    {
+      "id": "waitlist_policy",
+      "topic": "Course waitlist enrollment",
+      "value": "automatic enrollment within 24 hours of a seat opening",
+      "type": "single",
+      "sources": [["Course_Registration_and_Add_Drop_Policy.docx", "8. Waitlists"]]
+    },
+    {
+      "id": "tuition_per_credit",
+      "topic": "Part-time tuition rate",
+      "value": "$595 per credit hour (below full-time status)",
+      "type": "single",
+      "sources": [["Tuition_and_Financial_Aid_Policy.docx", "2. Tuition Rates"]]
+    },
+    {
+      "id": "flat_rate_tuition",
+      "topic": "Full-time flat-rate tuition",
+      "value": "$7,850/semester (12-18 credit hours)",
+      "type": "single",
+      "sources": [["Tuition_and_Financial_Aid_Policy.docx", "2. Tuition Rates"]]
+    },
+    {
+      "id": "fafsa_priority_deadline",
+      "topic": "Priority financial aid application deadline",
+      "value": "FAFSA by March 1 each year",
+      "type": "single",
+      "sources": [["Tuition_and_Financial_Aid_Policy.docx", "3. Financial Aid Application"]]
+    },
+    {
+      "id": "work_study_hours_cap",
+      "topic": "Federal Work-Study maximum hours",
+      "value": "20 hours/week while classes are in session",
+      "type": "single",
+      "sources": [["Tuition_and_Financial_Aid_Policy.docx", "5. Federal Work-Study"]]
+    },
+    {
+      "id": "refund_schedule",
+      "topic": "Tuition refund schedule on full withdrawal",
+      "value": "100% refund within week 1, 50% within week 2, none after",
+      "type": "single",
+      "sources": [["Tuition_and_Financial_Aid_Policy.docx", "6. Refunds"]]
+    },
+    {
+      "id": "late_payment_fee",
+      "topic": "Late tuition payment fee",
+      "value": "$150 flat fee",
+      "type": "single",
+      "sources": [["Tuition_and_Financial_Aid_Policy.docx", "7. Late Payment"]]
+    },
+    {
+      "id": "plagiarism_first_offense",
+      "topic": "Consequence of a first academic integrity violation",
+      "value": "zero on the assignment/exam + mandatory academic integrity workshop",
+      "type": "single",
+      "sources": [["Academic_Integrity_Policy.docx", "3. First Offense"]]
+    },
+    {
+      "id": "plagiarism_second_offense",
+      "topic": "Consequence of a second academic integrity violation",
+      "value": "course failure + mandatory referral to Student Conduct Office",
+      "type": "single",
+      "sources": [["Academic_Integrity_Policy.docx", "4. Second Offense"]]
+    },
+    {
+      "id": "reporting_window",
+      "topic": "Instructor deadline to report a suspected integrity violation",
+      "value": "10 business days of discovery",
+      "type": "single",
+      "sources": [["Academic_Integrity_Policy.docx", "5. Reporting"]]
+    },
+    {
+      "id": "integrity_hearing_panel",
+      "topic": "Composition of the academic integrity hearing panel",
+      "value": "3-member faculty panel appointed by the Provost's Office",
+      "type": "single",
+      "sources": [["Academic_Integrity_Policy.docx", "6. Hearing Panel"]]
+    },
+    {
+      "id": "housing_requirement",
+      "topic": "On-campus housing requirement for first-years",
+      "value": "required unless commuting from within 30 miles of campus",
+      "type": "single",
+      "sources": [["Housing_and_Residence_Life_Policy.docx", "2. On-Campus Housing Requirement"]]
+    },
+    {
+      "id": "room_change_window",
+      "topic": "Room change request window",
+      "value": "weeks 3-4 of the fall semester only",
+      "type": "single",
+      "sources": [["Housing_and_Residence_Life_Policy.docx", "3. Room Changes"]]
+    },
+    {
+      "id": "quiet_hours",
+      "topic": "Residence hall quiet hours",
+      "value": "10pm-8am Sun-Thu; midnight-9am Fri-Sat",
+      "type": "single",
+      "sources": [["Housing_and_Residence_Life_Policy.docx", "4. Quiet Hours"]]
+    },
+    {
+      "id": "guest_policy",
+      "topic": "Overnight guest policy",
+      "value": "max 3 consecutive nights, must register at front desk",
+      "type": "single",
+      "sources": [["Housing_and_Residence_Life_Policy.docx", "5. Guests"]]
+    },
+    {
+      "id": "meal_plan_requirement",
+      "topic": "Meal plan requirement for residential first-years",
+      "value": "required to purchase the unlimited meal plan",
+      "type": "single",
+      "sources": [["Housing_and_Residence_Life_Policy.docx", "6. Meal Plans"]]
+    },
+    {
+      "id": "wifi_password_length",
+      "topic": "Minimum campus network account password length",
+      "value": "10 characters",
+      "type": "single",
+      "sources": [["IT_Acceptable_Use_Policy.docx", "2. Account Security"]]
+    },
+    {
+      "id": "vpn_requirement",
+      "topic": "VPN requirement for off-campus library database access",
+      "value": "required",
+      "type": "single",
+      "sources": [["IT_Acceptable_Use_Policy.docx", "3. Remote Access"]]
+    },
+    {
+      "id": "device_registration",
+      "topic": "Personal device registration for campus WiFi",
+      "value": "must register via the MyAFU portal before connecting",
+      "type": "single",
+      "sources": [["IT_Acceptable_Use_Policy.docx", "4. Device Registration"]]
+    },
+    {
+      "id": "incident_report_deadline",
+      "topic": "Deadline to report a suspected IT security incident",
+      "value": "within 24 hours of discovery",
+      "type": "single",
+      "sources": [["IT_Acceptable_Use_Policy.docx", "6. Incident Reporting"]]
+    },
+    {
+      "id": "disciplinary_stages",
+      "topic": "Student disciplinary process stages",
+      "value": "warning -> disciplinary probation -> suspension -> expulsion",
+      "type": "single",
+      "sources": [["Student_Conduct_and_Disciplinary_Policy.docx", "2. Disciplinary Stages"]]
+    },
+    {
+      "id": "hearing_notice",
+      "topic": "Notice period before a disciplinary hearing",
+      "value": "at least 5 business days' written notice",
+      "type": "single",
+      "sources": [["Student_Conduct_and_Disciplinary_Policy.docx", "3. Hearing Notice"]]
+    },
+    {
+      "id": "appeal_of_sanction",
+      "topic": "Deadline to appeal a disciplinary sanction",
+      "value": "15 business days of the decision",
+      "type": "single",
+      "sources": [["Student_Conduct_and_Disciplinary_Policy.docx", "6. Appeal of Sanctions"]]
+    },
+    {
+      "id": "emergency_alert_system",
+      "topic": "Emergency alert notification time",
+      "value": "AFU Alert texts/emails within 10 minutes of a confirmed emergency",
+      "type": "single",
+      "sources": [["Campus_Safety_and_Emergency_Policy.docx", "2. Emergency Alerts"]]
+    },
+    {
+      "id": "escort_service_hours",
+      "topic": "Campus safety escort service availability",
+      "value": "24 hours a day, 7 days a week",
+      "type": "single",
+      "sources": [["Campus_Safety_and_Emergency_Policy.docx", "3. Safety Escort Service"]]
+    },
+    {
+      "id": "fire_drill_frequency",
+      "topic": "Residence hall fire drill frequency",
+      "value": "twice per semester",
+      "type": "single",
+      "sources": [["Campus_Safety_and_Emergency_Policy.docx", "4. Fire Drills"]]
+    },
+    {
+      "id": "lost_id_replacement_fee",
+      "topic": "Lost student ID replacement fee",
+      "value": "$25",
+      "type": "single",
+      "sources": [["Campus_Safety_and_Emergency_Policy.docx", "5. Student ID Cards"]]
+    },
+    {
+      "id": "weapons_policy",
+      "topic": "Weapons on campus",
+      "value": "prohibited at all times except authorized law enforcement",
+      "type": "single",
+      "sources": [["Campus_Safety_and_Emergency_Policy.docx", "6. Weapons"]]
+    },
+    {
+      "id": "full_course_load_intl",
+      "topic": "Minimum credit hours for F-1 international students",
+      "value": "12 credit hours/semester to maintain status",
+      "type": "single",
+      "sources": [["International_Student_Policy.docx", "2. Full Course of Study"]]
+    },
+    {
+      "id": "opt_application_window",
+      "topic": "OPT work authorization application window",
+      "value": "90 to 60 days before the program end date",
+      "type": "single",
+      "sources": [["International_Student_Policy.docx", "3. Optional Practical Training"]]
+    },
+    {
+      "id": "health_insurance_requirement",
+      "topic": "International student health insurance requirement",
+      "value": "mandatory AFU-sponsored insurance unless a waiver is approved",
+      "type": "single",
+      "sources": [["International_Student_Policy.docx", "4. Health Insurance"]]
+    },
+    {
+      "id": "i20_reissue",
+      "topic": "I-20 reissue deadline after a program change",
+      "value": "within 15 days of the change",
+      "type": "single",
+      "sources": [["International_Student_Policy.docx", "5. Change of Program"]]
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "C1",
+      "topic": "Length of academic probation after falling below good-standing GPA",
+      "docs": [
+        ["Student_Handbook.docx", "one semester", "4. Academic Standing Summary"],
+        ["Academic_Catalog_and_Grading_Policy.docx", "two consecutive semesters", "4. Academic Probation"]
+      ],
+      "detector": "numeric + NLI",
+      "realism": "Cross-document drift: handbook summary vs authoritative academic catalog"
+    },
+    {
+      "id": "C2",
+      "topic": "Maximum credit hours per semester without advisor override",
+      "docs": [
+        ["Course_Registration_and_Add_Drop_Policy.docx", "18 credit hours (2025, current)", "7. Maximum Course Load"],
+        ["Course_Registration_Policy_2022_Superseded.docx", "21 credit hours (2022, superseded)", "3. Maximum Course Load"]
+      ],
+      "detector": "numeric + NLI",
+      "realism": "Versioned: superseded 2022 policy still in the corpus alongside current 2025 policy"
+    },
+    {
+      "id": "C3",
+      "topic": "Minimum cumulative GPA required for financial aid (Satisfactory Academic Progress)",
+      "docs": [
+        ["Tuition_and_Financial_Aid_Policy.docx", "2.5 cumulative GPA (authoritative)", "4. Satisfactory Academic Progress"],
+        ["Student_Handbook.docx", "2.0 cumulative GPA (out-of-date summary)", "4. Academic Standing Summary"]
+      ],
+      "detector": "numeric + NLI",
+      "realism": "Handbook financial-aid summary is stale vs authoritative Financial Services policy"
+    },
+    {
+      "id": "C4",
+      "topic": "Use of personal recording devices to record lectures",
+      "docs": [
+        ["IT_Acceptable_Use_Policy.docx", "permitted for personal note-taking (network-registered device)", "5. Classroom Recording Devices"],
+        ["Student_Conduct_and_Disciplinary_Policy.docx", "prohibited without the instructor's prior written permission", "4. Classroom Recording Devices"]
+      ],
+      "detector": "NLI (keyword prong diluted below sim gate)",
+      "realism": "Two owning offices (IT vs Student Conduct) disagree"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "G1",
+      "topic": "Athletic scholarship eligibility criteria",
+      "note": "No document describes athletics-based scholarships; Financial Aid policy covers only need-based aid and Federal Work-Study."
+    },
+    {
+      "id": "G2",
+      "topic": "Study abroad program credit transfer",
+      "note": "No document addresses study-abroad programs or how credits earned abroad transfer."
+    },
+    {
+      "id": "G3",
+      "topic": "Graduate student stipend / teaching assistantship pay",
+      "note": "No document addresses graduate assistantship stipends; International Student Policy only covers F-1 status/insurance/OPT, not pay."
+    },
+    {
+      "id": "G4",
+      "topic": "On-campus childcare / daycare for student parents",
+      "note": "No policy mentions childcare or daycare services."
+    },
+    {
+      "id": "G5",
+      "topic": "Library fines for overdue books",
+      "note": "No document mentions the library or overdue-book fines anywhere in the corpus."
+    },
+    {
+      "id": "G6",
+      "topic": "Pets in residence halls",
+      "note": "Housing and Residence Life Policy covers guests, quiet hours, and meal plans, but never mentions pets or animals."
+    }
+  ]
+}

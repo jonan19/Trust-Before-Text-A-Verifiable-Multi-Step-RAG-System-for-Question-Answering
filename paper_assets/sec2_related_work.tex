@@ -1,0 +1,120 @@
+% ─────────────────────────────────────────────────────────────────────────────
+% Section II: Background and Related Work
+% Structure: brief's argument flow (naive RAG fails -> retrieval not enough ->
+% post-hoc can't prevent -> SELF-RAG contrast -> the gap).
+% Every statistic here is verified against the cited source. Only ONE numeric
+% claim survived verification (+17.9% GSM8K, Wang et al. 2023). All other prior
+% percentages could not be confirmed in-source and were made qualitative.
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Background and Related Work}
+\label{sec:related}
+
+Trust Before Text sits at the intersection of retrieval-augmented
+generation, hallucination mitigation, and abstention. This section
+organizes the prior work around a single question: \textit{where, if
+anywhere, does a RAG system verify its evidence before committing to an
+answer?} We argue that existing systems verify either not at all, only on
+the retrieval side, or only after generation, and that none installs a
+hard, pre-generation gate.
+
+\subsection{Standard RAG and Its Failure Modes}
+Lewis et al.~\cite{lewis2020rag} established the retrieve-then-read
+paradigm, in which a dense retriever supplies passages to a
+sequence-to-sequence generator. This improved factual grounding over
+purely parametric models but exposed a persistent tension: the generator
+can bypass the retrieved evidence and fall back on its pre-training
+knowledge. The survey of Gao et al.~\cite{gao2023rag_survey} catalogs the
+resulting failure modes of naive RAG, including hallucination under
+retrieved context, brittleness on noisy or contradictory documents, and
+the absence of principled abstention.
+
+These failures are not merely theoretical. Shuster et
+al.~\cite{shuster2021retrieval} show that retrieval augmentation reduces
+but does not remove hallucination in knowledge-grounded generation, and
+the RAGTruth corpus of Wu et al.~\cite{wu2024ragtruth} demonstrates that
+hallucination occurs even when the retrieved passages contain the correct
+answer, confirming that retrieval success does not guarantee faithful
+generation. Siriwardhana et al.~\cite{siriwardhana2023rag} find that
+domain-specific fine-tuning reduces, but does not eliminate, the model's
+tendency to prefer parametric knowledge over retrieved evidence,
+particularly under vocabulary shift, while Rakin~\cite{rakin2024rag}
+reports that end-to-end fine-tuned document-QA systems retain a residual
+hallucination rate. Crucially, when documents disagree, Wolk et
+al.~\cite{wolk2025clinical} show that Fusion-in-Decoder architectures
+synthesize a false consensus from contradictory passages without ever
+surfacing the contradiction, precisely the behavior a high-stakes
+deployment cannot tolerate.
+
+\subsection{Retrieval Improvements Are Not Enough}
+A large body of work improves the retrieval stage through query expansion,
+hybrid sparse-dense fusion, and cross-encoder reranking, and these
+techniques raise average-case precision and recall on clean
+benchmarks~\cite{yu2024evaluation}. However, they operate entirely on the
+retrieval side and leave the generator unconstrained. A retrieval score
+measures query-document similarity, not evidential answerability: a
+high-similarity chunk need not contain the answer, and need not be
+consistent with the other chunks retrieved alongside it. Fadeeva et
+al.~\cite{fadeeva2023reeval} make this fragility explicit, showing that
+retrieval-augmented models fail to isolate the relevant evidence and lack
+any mechanism to abstain when the retrieved context is adversarially
+perturbed or misleading. Approaches that add a lightweight
+retrieval-quality evaluator to trigger corrective actions, such as
+Corrective RAG~\cite{yan2024crag}, improve robustness to low-quality
+retrieval, but they inherit the evaluator's own error rate and still judge
+relevance probabilistically rather than verifying evidential sufficiency.
+Better retrieval, in short, produces better candidate evidence, but it
+does not decide whether that evidence is trustworthy enough to answer
+from.
+
+\subsection{Post-Hoc Detection Cannot Prevent Hallucination}
+A complementary line of work detects hallucination \textit{after} the
+model has generated. SelfCheckGPT~\cite{manakul2023selfcheck} samples
+multiple generations and flags inconsistency as a black-box hallucination
+signal; semantic-entropy methods~\cite{farquhar2024semantic} estimate
+uncertainty over meaning-equivalent generations to the same end; and
+Chain-of-Verification~\cite{dhuliawala2023cov} has the model draft
+verification questions to check its own claims. A related family improves
+answer stability by sampling several reasoning paths and voting over them:
+self-consistency, for instance, raises chain-of-thought accuracy by a wide
+margin on arithmetic reasoning, with a reported gain of $+17.9\%$ on
+GSM8K~\cite{wang2023selfconsistency}. Yet all of these methods act on the
+model's own probabilistic behavior. They can improve or flag reliability,
+but they neither prevent unsupported content from being produced nor
+guarantee that an answer is grounded in the retrieved evidence: the
+unsupported content has already been generated by the time it can be
+detected. Evaluation frameworks such as RAGAS~\cite{es2023ragas} likewise
+measure faithfulness and context relevance at the level of end-to-end
+behavior; they can report \textit{that} a pipeline hallucinated, but not
+\textit{at which stage} it became unsafe, and they impose no gate that
+would have stopped it.
+
+\subsection{SELF-RAG and Its Limitations}
+SELF-RAG~\cite{asai2023selfrag} is the closest prior work to our approach
+and the most important point of contrast. It trains the model to emit
+reflection tokens during generation that signal retrieval utility and
+factual support, effectively interleaving verification with synthesis in a
+single pass. The verification signal, however, is a learned soft behavior:
+the reflection tokens are a probabilistic function of training, so under
+distribution shift the model may emit positive utility tokens while
+producing unsupported text. The safety property is a tendency of the
+trained model, not a guarantee of the architecture. Trust Before Text
+takes the opposite stance. Verification is completed by a deterministic
+pipeline \textit{before} the language model is invoked, so a failed
+verification means the model is never called and the unsafe answer is
+never generated. The distinction is between a signal the model is trained
+to produce and a gate the system is built to enforce.
+
+\subsection{The Gap: No Pre-Generation Verification Gate}
+Taken together, the literature verifies evidence in three places, none of
+them sufficient. Retrieval-side methods assess similarity, not
+answerability or consistency. Post-hoc detectors and end-to-end evaluators
+act only after generation, when the unsupported content already exists.
+Learned in-generation signals such as SELF-RAG's reflection tokens remain
+probabilistic and can fail silently. Attribution studies underline the
+consequence: Rashkin et al.~\cite{rashkin2023attribution} show that
+post-hoc attribution frequently misaligns claims with their cited sources,
+mixing supported and unsupported information without an intrinsic,
+verifiable mapping. What no existing system provides is a hard
+architectural boundary that blocks generation until the evidence has been
+shown to be sufficient and non-contradictory. That pre-generation
+verification gate is the gap Trust Before Text fills.

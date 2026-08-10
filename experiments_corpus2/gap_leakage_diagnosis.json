@@ -1,0 +1,323 @@
+{
+  "Q017": {
+    "query": "How do study-abroad credits transfer back to my degree?",
+    "expected": "insufficient",
+    "label": "LEAKED",
+    "processed_query": "How do study-abroad credits transfer back to my degree",
+    "query_type": "simple",
+    "sub_queries": [
+      "How do study-abroad credits transfer back to my degree"
+    ],
+    "top_k": 30,
+    "target_source": null,
+    "n_retrieved": 30,
+    "n_stage3_relevant": 4,
+    "avg_score": 0.6531,
+    "coverage": 0.4,
+    "MIN_AVG_SCORE_FOR_SUFFICIENCY": 0.65,
+    "MIN_QUERY_COVERAGE": 0.55,
+    "H1_min_chunks_pass": true,
+    "H3_relevance_floor_pass": true,
+    "H2_avg_score_pass": true,
+    "H4_coverage_pass": false,
+    "branch": "H2 (avg score) only",
+    "sufficiency_flag": true,
+    "content_terms": [
+      "back",
+      "credits",
+      "degree",
+      "study-abroad",
+      "transfer"
+    ],
+    "covered_terms": [
+      "degree",
+      "transfer"
+    ],
+    "missed_terms": [
+      "back",
+      "credits",
+      "study-abroad"
+    ],
+    "observed_decision": "answer",
+    "top_chunks": [
+      {
+        "rank": 1,
+        "source": "Academic_Catalog_and_Grading_Policy.docx",
+        "section": "6. Incomplete Grades",
+        "score": 0.7208,
+        "relevance_score": 0.5462,
+        "text": "erts automatically to an F. 7. Repeated Courses When a course is repeated, only the higher of the two grades earned is counted toward the cumulative GPA; both attempts remain on the transcript. 8. Transfer Credit A maxim"
+      },
+      {
+        "rank": 2,
+        "source": "International_Student_Policy.docx",
+        "section": "unknown",
+        "score": 0.6631,
+        "relevance_score": 0.4526,
+        "text": "International Student Policy Version 1.2 \u2014 Office of International Student Services 1. Purpose This policy governs immigration-status compliance and support services for international students. 2. Full Course of Study F-"
+      },
+      {
+        "rank": 3,
+        "source": "Tuition_and_Financial_Aid_Policy.docx",
+        "section": "5. Federal Work-Study",
+        "score": 0.616,
+        "relevance_score": 0.3759,
+        "text": "r week while classes are in session. 6. Refunds Students who withdraw from all courses receive a 100% tuition refund within the first week of the semester, 50% within the second week, and no refund thereafter. 7. Late Pa"
+      },
+      {
+        "rank": 4,
+        "source": "Academic_Catalog_and_Grading_Policy.docx",
+        "section": "5. Dean's List and Latin Honors",
+        "score": 0.6124,
+        "relevance_score": 0.3701,
+        "text": "t least 12 credit hours completed that semester. Latin honors at graduation are awarded as follows: Summa Cum Laude (3.9 and above), Magna Cum Laude (3.7 to 3.89), and Cum Laude (3.5 to 3.69). 6. Incomplete Grades A grad"
+      }
+    ]
+  },
+  "Q050": {
+    "query": "Can I keep a cat in my dorm room?",
+    "expected": "insufficient",
+    "label": "LEAKED",
+    "processed_query": "Can I keep a cat in my dorm room",
+    "query_type": "simple",
+    "sub_queries": [
+      "Can I keep a cat in my dorm room"
+    ],
+    "top_k": 30,
+    "target_source": null,
+    "n_retrieved": 30,
+    "n_stage3_relevant": 1,
+    "avg_score": 0.6582,
+    "coverage": 0.4,
+    "MIN_AVG_SCORE_FOR_SUFFICIENCY": 0.65,
+    "MIN_QUERY_COVERAGE": 0.55,
+    "H1_min_chunks_pass": true,
+    "H3_relevance_floor_pass": true,
+    "H2_avg_score_pass": true,
+    "H4_coverage_pass": false,
+    "branch": "H2 (avg score) only",
+    "sufficiency_flag": true,
+    "content_terms": [
+      "cat",
+      "dorm",
+      "i",
+      "keep",
+      "room"
+    ],
+    "covered_terms": [
+      "i",
+      "room"
+    ],
+    "missed_terms": [
+      "cat",
+      "dorm",
+      "keep"
+    ],
+    "observed_decision": "answer",
+    "top_chunks": [
+      {
+        "rank": 1,
+        "source": "Housing_and_Residence_Life_Policy.docx",
+        "section": "unknown",
+        "score": 0.6582,
+        "relevance_score": 0.4447,
+        "text": "Housing and Residence Life Policy Version 1.4 \u2014 Office of Residence Life 1. Purpose This policy governs on-campus housing eligibility and residence hall conduct. 2. On-Campus Housing Requirement All first-year students a"
+      }
+    ]
+  },
+  "Q055": {
+    "query": "Will I be charged a fine if I return a library book late?",
+    "expected": "insufficient",
+    "label": "LEAKED",
+    "processed_query": "Will I be charged a fine if I return a library book late",
+    "query_type": "simple",
+    "sub_queries": [
+      "Will I be charged a fine if I return a library book late"
+    ],
+    "top_k": 30,
+    "target_source": null,
+    "n_retrieved": 30,
+    "n_stage3_relevant": 1,
+    "avg_score": 0.6782,
+    "coverage": 0.2857,
+    "MIN_AVG_SCORE_FOR_SUFFICIENCY": 0.65,
+    "MIN_QUERY_COVERAGE": 0.55,
+    "H1_min_chunks_pass": true,
+    "H3_relevance_floor_pass": true,
+    "H2_avg_score_pass": true,
+    "H4_coverage_pass": false,
+    "branch": "H2 (avg score) only",
+    "sufficiency_flag": true,
+    "content_terms": [
+      "book",
+      "charged",
+      "fine",
+      "i",
+      "if",
+      "late",
+      "library"
+    ],
+    "covered_terms": [
+      "i",
+      "late"
+    ],
+    "missed_terms": [
+      "book",
+      "charged",
+      "fine",
+      "if",
+      "library"
+    ],
+    "observed_decision": "answer",
+    "top_chunks": [
+      {
+        "rank": 1,
+        "source": "Tuition_and_Financial_Aid_Policy.docx",
+        "section": "5. Federal Work-Study",
+        "score": 0.6782,
+        "relevance_score": 0.477,
+        "text": "r week while classes are in session. 6. Refunds Students who withdraw from all courses receive a 100% tuition refund within the first week of the semester, 50% within the second week, and no refund thereafter. 7. Late Pa"
+      }
+    ]
+  },
+  "Q078": {
+    "query": "Can I bring my cat to live with me in the dorm this fall?",
+    "expected": "insufficient",
+    "label": "LEAKED",
+    "processed_query": "Can I bring my cat to live with me in the dorm this fall",
+    "query_type": "simple",
+    "sub_queries": [
+      "Can I bring my cat to live with me in the dorm this fall"
+    ],
+    "top_k": 30,
+    "target_source": null,
+    "n_retrieved": 30,
+    "n_stage3_relevant": 1,
+    "avg_score": 0.6764,
+    "coverage": 0.5,
+    "MIN_AVG_SCORE_FOR_SUFFICIENCY": 0.65,
+    "MIN_QUERY_COVERAGE": 0.55,
+    "H1_min_chunks_pass": true,
+    "H3_relevance_floor_pass": true,
+    "H2_avg_score_pass": true,
+    "H4_coverage_pass": false,
+    "branch": "H2 (avg score) only",
+    "sufficiency_flag": true,
+    "content_terms": [
+      "bring",
+      "cat",
+      "dorm",
+      "fall",
+      "i",
+      "live"
+    ],
+    "covered_terms": [
+      "fall",
+      "i",
+      "live"
+    ],
+    "missed_terms": [
+      "bring",
+      "cat",
+      "dorm"
+    ],
+    "observed_decision": "answer",
+    "top_chunks": [
+      {
+        "rank": 1,
+        "source": "Housing_and_Residence_Life_Policy.docx",
+        "section": "unknown",
+        "score": 0.6764,
+        "relevance_score": 0.4741,
+        "text": "Housing and Residence Life Policy Version 1.4 \u2014 Office of Residence Life 1. Purpose This policy governs on-campus housing eligibility and residence hall conduct. 2. On-Campus Housing Requirement All first-year students a"
+      }
+    ]
+  },
+  "Q016": {
+    "query": "What are the eligibility criteria for an athletic scholarship?",
+    "expected": "insufficient",
+    "label": "CONTROL (correctly abstained)",
+    "processed_query": "What are the eligibility criteria for an athletic scholarship",
+    "query_type": "simple",
+    "sub_queries": [
+      "What are the eligibility criteria for an athletic scholarship"
+    ],
+    "top_k": 30,
+    "target_source": null,
+    "n_retrieved": 30,
+    "n_stage3_relevant": 1,
+    "avg_score": 0.6097,
+    "coverage": 0.0,
+    "MIN_AVG_SCORE_FOR_SUFFICIENCY": 0.65,
+    "MIN_QUERY_COVERAGE": 0.55,
+    "H1_min_chunks_pass": true,
+    "H3_relevance_floor_pass": true,
+    "H2_avg_score_pass": false,
+    "H4_coverage_pass": false,
+    "branch": "NEITHER (gate failed -> abstain)",
+    "sufficiency_flag": false,
+    "content_terms": [
+      "athletic",
+      "criteria",
+      "eligibility",
+      "scholarship"
+    ],
+    "covered_terms": [],
+    "missed_terms": [
+      "athletic",
+      "criteria",
+      "eligibility",
+      "scholarship"
+    ],
+    "observed_decision": "insufficient",
+    "top_chunks": [
+      {
+        "rank": 1,
+        "source": "Tuition_and_Financial_Aid_Policy.docx",
+        "section": "2. Tuition Rates",
+        "score": 0.6097,
+        "relevance_score": 0.3658,
+        "text": ",850 per semester. 3. Financial Aid Application Students seeking priority consideration for need-based financial aid must submit the FAFSA by March 1 each year. 4. Satisfactory Academic Progress To remain eligible for fi"
+      }
+    ]
+  },
+  "Q049": {
+    "query": "What is the university president's annual salary?",
+    "expected": "insufficient",
+    "label": "CONTROL (correctly abstained)",
+    "processed_query": "What is the university president's annual salary",
+    "query_type": "simple",
+    "sub_queries": [
+      "What is the university president's annual salary"
+    ],
+    "top_k": 30,
+    "target_source": null,
+    "n_retrieved": 30,
+    "n_stage3_relevant": 0,
+    "avg_score": 0.0,
+    "coverage": 1.0,
+    "MIN_AVG_SCORE_FOR_SUFFICIENCY": 0.65,
+    "MIN_QUERY_COVERAGE": 0.55,
+    "H1_min_chunks_pass": false,
+    "H3_relevance_floor_pass": false,
+    "H2_avg_score_pass": false,
+    "H4_coverage_pass": true,
+    "branch": "H4 (coverage) only",
+    "sufficiency_flag": false,
+    "content_terms": [
+      "annual",
+      "president's",
+      "salary",
+      "university"
+    ],
+    "covered_terms": [],
+    "missed_terms": [
+      "annual",
+      "president's",
+      "salary",
+      "university"
+    ],
+    "observed_decision": "insufficient",
+    "top_chunks": []
+  }
+}

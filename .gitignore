@@ -12,6 +12,7 @@ __pycache__/
 
 # Vector Databases and Storage
 qdrant_db/
+qdrant_db_corpus2/
 
 # Uploaded Files
 uploaded_docs/

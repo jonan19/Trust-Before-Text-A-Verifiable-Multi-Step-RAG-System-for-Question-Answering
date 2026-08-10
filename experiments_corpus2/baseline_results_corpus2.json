@@ -1,0 +1,3429 @@
+{
+  "meta": {
+    "model": "llama-3.3-70b-versatile",
+    "corpus": "Corpus 2 (Ashcombe Falls University)",
+    "consistency_runs": 5,
+    "consistency_temp": 0.7,
+    "canonical_temp": 0.0,
+    "max_chunks_sent": 12,
+    "n_queries": 78,
+    "elapsed_sec": 681.7,
+    "stopped_early_daily_cap": false
+  },
+  "summary": {
+    "n_queries": 78,
+    "accuracy": {
+      "ours": 52,
+      "ours_pct": 66.7,
+      "baseline": 77,
+      "baseline_pct": 98.7
+    },
+    "pillar1_consistency": {
+      "baseline_flips": 1,
+      "baseline_flip_pct": 1.3,
+      "ours_flips": 0,
+      "note": "flip = the 5 temp>0 runs are not all identical"
+    },
+    "pillar2_leakage": {
+      "n_gaps": 16,
+      "baseline_canonical_leaks": 0,
+      "baseline_any_hot_leaks": 0,
+      "ours_leaks": 4
+    },
+    "pillar3_attribution": {
+      "n_conflicts": 16,
+      "baseline_flagged": 15,
+      "baseline_named_both_docs": 13,
+      "baseline_gave_both_values": 8,
+      "baseline_mean_score_out_of_3": 2.25,
+      "ours_flagged": 16,
+      "ours_structural_score_out_of_3": 3,
+      "note": "ours names both docs + quotes both sentences structurally"
+    }
+  },
+  "results": [
+    {
+      "id": "Q001",
+      "category": "single-fact lookup",
+      "query": "What grading scale does the university use?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What grading scale does the university use"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The university uses a 4.0 grading scale: A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0, according to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q002",
+      "category": "single-fact lookup",
+      "query": "What is the minimum GPA to remain in good academic standing?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the minimum GPA to remain in good academic standing"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The minimum GPA to remain in good academic standing is 2.0, according to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx. However, Passage 3 | Source: Tuition_and_Financial_Aid_Policy.docx, states a minimum cumulative GPA of 2.5 for financial aid, and Passage 4 | Source: Student_Handbook.docx, and Passage 5 | Source: Student_Handbook.docx, also mention a 2.0 cumulative GPA. Passage 2 | Source: Academic_Catalog_and_Grading_Policy.docx, seems to be incomplete but also mentions a minimum cumulative GPA of 2. \n\nSince the question is about the minimum GPA for good academic standing, not financial aid, the answer is 2.0.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q003",
+      "category": "single-fact lookup",
+      "query": "What GPA is required to make the Dean's List?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What GPA is required to make the Dean's List"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "A semester GPA of 3.5 or higher with at least 12 credit hours completed that semester is required to make the Dean's List, according to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q004",
+      "category": "single-fact lookup",
+      "query": "What GPA is needed for Summa Cum Laude?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What GPA is needed for Summa Cum Laude"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Summa Cum Laude requires a GPA of 3.9 and above, according to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q005",
+      "category": "single-fact lookup",
+      "query": "How long do I have to resolve an Incomplete grade?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How long do I have to resolve an Incomplete grade"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "A grade of Incomplete (I) must be resolved within 60 days of the start of the following semester, or it converts automatically to an F. (Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q006",
+      "category": "single-fact lookup",
+      "query": "How many transfer credit hours can count toward my degree?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How many transfer credit hours can count toward my degree"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "A maximum of 60 transfer credit hours may be applied toward an undergraduate degree at Ashcombe Falls University, according to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q007",
+      "category": "single-fact lookup",
+      "query": "What is the per-credit-hour tuition rate for part-time students?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the per-credit-hour tuition rate for part-time students"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "$595 per credit hour for students enrolled below full-time status, according to Passage 1 | Source: Tuition_and_Financial_Aid_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q008",
+      "category": "single-fact lookup",
+      "query": "What is the flat-rate tuition for a full-time student?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the flat-rate tuition for a full-time student"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "$7,850 per semester, according to Passage 1 | Source: Tuition_and_Financial_Aid_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q009",
+      "category": "single-fact lookup",
+      "query": "What is the priority deadline to file the FAFSA?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the priority deadline to file the FAFSA"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "March 1 each year, according to Passage 1 | Source: Tuition_and_Financial_Aid_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q010",
+      "category": "single-fact lookup",
+      "query": "What is the maximum number of hours I can work under Federal Work-Study?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the maximum number of hours I can work under Federal Work-Study"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "20 hours per week, [Passage 1 | Source: Tuition_and_Financial_Aid_Policy.docx]",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q011",
+      "category": "single-fact lookup",
+      "query": "How much is the late tuition payment fee?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How much is the late tuition payment fee"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "$150, according to Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q012",
+      "category": "single-fact lookup",
+      "query": "What happens on a first academic integrity violation?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What happens on a first academic integrity violation"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "A first violation of academic integrity results in a zero on the assignment or exam and mandatory completion of an academic integrity workshop, according to Passage 1 | Source: Academic_Integrity_Policy.docx and also mentioned in Passage 2 | Source: Academic_Integrity_Policy.docx, although the details are not fully provided in Passage 2.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q013",
+      "category": "single-fact lookup",
+      "query": "What are the quiet hours in the residence halls on weekdays?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the quiet hours in the residence halls on weekdays"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Quiet hours are in effect from 10:00 p.m. to 8:00 a.m. Sunday through Thursday, according to Passage 1 | Source: Housing_and_Residence_Life_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q014",
+      "category": "single-fact lookup",
+      "query": "What is the minimum password length for a campus network account?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the minimum password length for a campus network account"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The minimum password length for a campus network account is 10 characters, according to Passage 1 | Source: IT_Acceptable_Use_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q015",
+      "category": "single-fact lookup",
+      "query": "How much does it cost to replace a lost student ID card?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How much does it cost to replace a lost student ID card"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "A replacement fee of $25 applies to a lost or stolen student ID card, according to Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q016",
+      "category": "single-fact lookup",
+      "query": "What are the eligibility criteria for an athletic scholarship?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the eligibility criteria for an athletic scholarship"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q017",
+      "category": "single-fact lookup",
+      "query": "How do study-abroad credits transfer back to my degree?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How do study-abroad credits transfer back to my degree"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q018",
+      "category": "single-fact lookup",
+      "query": "How much is the fine for an overdue library book?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How much is the fine for an overdue library book"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q019",
+      "category": "multi-part",
+      "query": "How long do I have to resolve an Incomplete, and how many transfer credits can I bring in?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How long do I have to resolve an Incomplete, and how many transfer credits can I bring in"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "International_Student_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "To resolve an Incomplete, you have 60 days from the start of the following semester, as stated in Passage 1. \n\nThe maximum number of transfer credits that can be applied toward an undergraduate degree is 60, as stated in Passage 2. \n\nTherefore, the answer is: \n60 days to resolve an Incomplete (Passage 1), and 60 transfer credits (Passage 2).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q020",
+      "category": "multi-part",
+      "query": "What is the per-credit tuition rate and the full-time flat rate?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the per-credit tuition rate and the full-time flat rate"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The per-credit tuition rate is $595, and the full-time flat rate is $7,850 per semester, according to Passage 1 | Source: Tuition_and_Financial_Aid_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q021",
+      "category": "multi-part",
+      "query": "When is the FAFSA priority deadline and how many hours can I work under Work-Study?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "When is the FAFSA priority deadline and how many hours can I work under Work-Study"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The FAFSA priority deadline is March 1 each year, as stated in Passage 1. Additionally, students employed under the Federal Work-Study program may work a maximum of 20 hours per week while classes are in session, also stated in Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q022",
+      "category": "multi-part",
+      "query": "What is the refund schedule and the late payment fee?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the refund schedule and the late payment fee"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The refund schedule is as follows: 100% tuition refund within the first week of the semester, 50% within the second week, and no refund thereafter, as stated in Passage 1. The late payment fee is $150, also stated in Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q023",
+      "category": "multi-part",
+      "query": "What are the consequences of a first versus a second academic integrity violation?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 31,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "consequences of a first",
+        "a second academic integrity violation"
+      ],
+      "query_type": "complex",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "A first violation of academic integrity results in a zero on the assignment or exam and mandatory completion of an academic integrity workshop, according to Passage 1. A second violation results in failure of the course and mandatory referral to the Student Conduct Office, also according to Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q024",
+      "category": "multi-part",
+      "query": "Do first-years have to live on campus, and do they need a meal plan?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Do first-years have to live on campus, and do they need a meal plan"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "First-year students are required to live in university housing unless commuting from a permanent residence within 30 miles of campus, as stated in Passage 2. Additionally, all residential first-year students are required to purchase the unlimited meal plan, according to Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q025",
+      "category": "multi-part",
+      "query": "What is the minimum password length and is a VPN required off campus?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the minimum password length and is a VPN required off campus"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The minimum password length is 10 characters, as stated in Passage 1. A VPN connection is required to access library subscription databases from off campus, also stated in Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q026",
+      "category": "multi-part",
+      "query": "How fast are emergency alerts sent, and is the safety escort service available at night?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How fast are emergency alerts sent, and is the safety escort service available at night"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Emergency alerts are sent within 10 minutes of a confirmed campus emergency, as stated in Passage 1 | Source: Campus_Safety_and_Emergency_Policy.docx. The campus safety escort service is available 24 hours a day, 7 days a week, also stated in Passage 1 | Source: Campus_Safety_and_Emergency_Policy.docx, and Passage 5 | Source: Campus_Safety_and_Emergency_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q027",
+      "category": "multi-part",
+      "query": "What grading scale is used and what GPA do I need for the Dean's List?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What grading scale is used and what GPA do I need for the Dean's List"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The grading scale used is: A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0, as stated in Passage 2. For the Dean's List, a semester GPA of 3.5 or higher with at least 12 credit hours completed that semester is required, as stated in Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q028",
+      "category": "multi-part",
+      "query": "What graduate stipend and childcare support does the university provide?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What graduate stipend and childcare support does the university provide"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q029",
+      "category": "cross-document comparison",
+      "query": "What is the standard full-time course load according to the Handbook and the Registration policy?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the standard full-time course load according to the Handbook and the Registration policy"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The standard full-time undergraduate course load is 12 credit hours per semester, according to Passage 1 (Course_Registration_Policy_2022_Superseded.docx), Passage 2 (Course_Registration_and_Add_Drop_Policy.docx), and Passage 3 (Student_Handbook.docx).",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q030",
+      "category": "cross-document comparison",
+      "query": "Compare the grade appeal deadline in the Grading Policy and the Conduct Policy.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 31,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "grade appeal deadline in the Grading Policy",
+        "the Conduct Policy"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The grade appeal deadline is 10 business days of the grade being posted, according to Passage 1 (Student_Conduct_and_Disciplinary_Policy.docx) and Passage 2 (Academic_Catalog_and_Grading_Policy.docx). There is no conflict between the two passages on this fact. \n\nAnswer: 10 business days, Passage 1 and Passage 2.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q031",
+      "category": "cross-document comparison",
+      "query": "Compare the deadline to add a course with the deadline to withdraw from one.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Compare the deadline to add a course with the deadline to withdraw from one"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The deadline to add a course is through the end of the first week of the semester (Passage 3 | Source: Course_Registration_and_Add_Drop_Policy.docx, Passage 6 | Source: Course_Registration_Policy_2022_Superseded.docx). \n\nThe deadline to withdraw from a course with a grade of 'W' is up to the end of week 10 of the semester (Passage 1 | Source: Course_Registration_and_Add_Drop_Policy.docx). \n\nTherefore, the deadline to add a course is the end of the first week, and the deadline to withdraw from a course is the end of week 10.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q032",
+      "category": "cross-document comparison",
+      "query": "Compare the part-time per-credit tuition rate with the full-time flat rate.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Compare the part-time per-credit tuition rate with the full-time flat rate"
+      ],
+      "query_type": "complex",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The part-time per-credit tuition rate is $595 per credit hour for students enrolled below full-time status, as stated in Passage 1. The full-time flat rate is $7,850 per semester, also stated in Passage 1. \n\nTherefore, the part-time per-credit tuition rate is $595 per credit hour, and the full-time flat rate is $7,850 per semester, according to Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q033",
+      "category": "cross-document comparison",
+      "query": "Compare how often fire drills are held with how often the safety escort service operates.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Compare how often fire drills are held with how often the safety escort service operates"
+      ],
+      "query_type": "complex",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "Fire drills are held twice per semester in all residence halls, according to Passage 2. The campus safety escort service is available 24 hours a day, 7 days a week, as stated in Passage 1. Since the frequencies are of different types (one is per semester and the other is daily), a direct comparison is not straightforward, but the information is present. \n\nThe safety escort service operates 24/7, according to Passage 1 | Source: Campus_Safety_and_Emergency_Policy.docx, and fire drills are held twice per semester, according to Passage 2 | Source: Campus_Safety_and_Emergency_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q034",
+      "category": "cross-document comparison",
+      "query": "Compare the OPT application window with the I-20 reissue deadline for international students.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Compare the OPT application window with the I-20 reissue deadline for international students"
+      ],
+      "query_type": "complex",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The OPT application window is between 90 and 60 days before the program end date, as stated in Passage 1. The I-20 reissue deadline for a change in academic level or major is within 15 days, as stated in Passage 1. Since both values are present in the same passage, there is no conflict. \n\nAnswer: The OPT application window is between 90 and 60 days before the program end date, and the I-20 reissue deadline for international students is within 15 days of a change in academic level or major, according to Passage 1.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q035",
+      "category": "cross-document comparison",
+      "query": "Compare the maximum credit-hour load in the current registration policy and the 2022 policy.",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx"
+      ],
+      "n_chunks": 31,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "maximum credit-hour load in the current registration policy",
+        "the 2022 policy"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 21 credit hours (Passage 3 | Source: Course_Registration_Policy_2022_Superseded.docx), 18 credit hours (Passage 4 | Source: Course_Registration_and_Add_Drop_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q036",
+      "category": "cross-document comparison",
+      "query": "What does the academic probation length say in the Handbook versus the Grading Policy?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Academic_Catalog_and_Grading_Policy.docx"
+      ],
+      "n_chunks": 31,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What does the academic probation length say in the Handbook",
+        "the Grading Policy"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, 2 consecutive semesters (Academic_Catalog_and_Grading_Policy.docx), 1 semester (Student_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q037",
+      "category": "cross-document comparison",
+      "query": "Compare the minimum GPA for financial aid in the Handbook and the Financial Aid Policy.",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "n_chunks": 31,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "minimum GPA for financial aid in the Handbook",
+        "the Financial Aid Policy"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 2.0 (Passage 2, Passage 4, Passage 6, Passage 7, Passage 8) and 2.5 (Passage 1) and 2 (Passage 3) from different documents.",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": false,
+        "gave_both_values": true,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q038",
+      "category": "cross-document comparison",
+      "query": "Compare the rule on personal recording devices in the IT policy and the Conduct policy.",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_chunks": 31,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "rule on personal recording devices in the IT policy",
+        "the Conduct policy"
+      ],
+      "query_type": "complex",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, Passage 1 allows personal recording devices for note-taking with registration, Passage 2 prohibits them without instructor's prior written permission, Passage 1 from IT_Acceptable_Use_Policy.docx, Passage 2 from Student_Conduct_and_Disciplinary_Policy.docx.",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q039",
+      "category": "conflict-probing",
+      "query": "What is the maximum number of credit hours I can take without advisor approval?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the maximum number of credit hours I can take without advisor approval"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 21 (Passage 1 | Source: Course_Registration_Policy_2022_Superseded.docx), 18 (Passage 2 | Source: Course_Registration_and_Add_Drop_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q040",
+      "category": "conflict-probing",
+      "query": "How long is academic probation for a student below the minimum GPA?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Academic_Catalog_and_Grading_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How long is academic probation for a student below the minimum GPA"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, 2 consecutive semesters (Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx), 1 semester (Passage 2 | Source: Student_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q041",
+      "category": "conflict-probing",
+      "query": "What minimum GPA do I need to keep my financial aid?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What minimum GPA do I need to keep my financial aid"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 2.0 (Passage 3 | Source: Academic_Catalog_and_Grading_Policy.docx, Passage 4 | Source: Student_Handbook.docx, Passage 5 | Source: Academic_Catalog_and_Grading_Policy.docx) and 2.5 (Passage 1 | Source: Tuition_and_Financial_Aid_Policy.docx) and 2 (Passage 2 | Source: Student_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "answer",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": true,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q042",
+      "category": "conflict-probing",
+      "query": "Can I record my lectures on my phone?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Can I record my lectures on my phone"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, yes from Passage 1, no from Passage 2 and Passage 3, Passage 1 from IT_Acceptable_Use_Policy.docx, Passage 2 from Student_Conduct_and_Disciplinary_Policy.docx, Passage 3 from Student_Conduct_and_Disciplinary_Policy.docx.",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q043",
+      "category": "conflict-probing",
+      "query": "What is the credit-hour limit per semester without special permission?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the credit-hour limit per semester without special permission"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 21 credit hours (Passage 1 | Source: Course_Registration_Policy_2022_Superseded.docx), 18 credit hours (Passage 2 | Source: Course_Registration_and_Add_Drop_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q044",
+      "category": "conflict-probing",
+      "query": "How long will I be on probation if my GPA drops below 2.0?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Academic_Catalog_and_Grading_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How long will I be on probation if my GPA drops below 2.0"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, 2 consecutive semesters (Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx), 1 semester (Passage 2 | Source: Student_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q045",
+      "category": "conflict-probing",
+      "query": "What is the Satisfactory Academic Progress GPA requirement?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the Satisfactory Academic Progress GPA requirement"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "2.5, according to Passage 1 | Source: Tuition_and_Financial_Aid_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": false,
+        "named_both_docs": false,
+        "gave_both_values": true,
+        "score": 1
+      }
+    },
+    {
+      "id": "Q046",
+      "category": "conflict-probing",
+      "query": "Is it allowed to record a class lecture with a personal device?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Is it allowed to record a class lecture with a personal device"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "IT_Acceptable_Use_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, allowed with registration on the campus network (Passage 1), prohibited without instructor's prior written permission (Passage 2 and Passage 3)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": false,
+        "gave_both_values": false,
+        "score": 1
+      }
+    },
+    {
+      "id": "Q047",
+      "category": "conflict-probing",
+      "query": "How many credit hours can I register for before needing advisor sign-off?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How many credit hours can I register for before needing advisor sign-off"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 18 credit hours (Passage 1 | Source: Course_Registration_and_Add_Drop_Policy.docx), 21 credit hours (Passage 2 | Source: Course_Registration_Policy_2022_Superseded.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q048",
+      "category": "conflict-probing",
+      "query": "What is the length of academic probation at the university?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Academic_Catalog_and_Grading_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the length of academic probation at the university"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT, 2 consecutive semesters (Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx), 1 semester (Passage 2 | Source: Student_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q049",
+      "category": "out-of-scope / insufficient",
+      "query": "What is the university president's annual salary?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the university president's annual salary"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q050",
+      "category": "out-of-scope / insufficient",
+      "query": "Can I keep a cat in my dorm room?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Can I keep a cat in my dorm room"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q051",
+      "category": "out-of-scope / insufficient",
+      "query": "What stipend do graduate teaching assistants receive?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What stipend do graduate teaching assistants receive"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q052",
+      "category": "out-of-scope / insufficient",
+      "query": "Is there a daycare available on campus for student parents?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Is there a daycare available on campus for student parents"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q053",
+      "category": "out-of-scope / insufficient",
+      "query": "How do I get credit for a semester studying abroad?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "How do I get credit for a semester studying abroad"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "International_Student_Policy.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q054",
+      "category": "out-of-scope / insufficient",
+      "query": "What GPA or performance is required to keep an athletic scholarship?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What GPA or performance is required to keep an athletic scholarship"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q055",
+      "category": "out-of-scope / insufficient",
+      "query": "Will I be charged a fine if I return a library book late?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Will I be charged a fine if I return a library book late"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q056",
+      "category": "out-of-scope / insufficient",
+      "query": "Does the university give every student free printing credits?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Does the university give every student free printing credits"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q057",
+      "category": "out-of-scope / insufficient",
+      "query": "Is there a shuttle bus to the airport?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Is there a shuttle bus to the airport"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q058",
+      "category": "out-of-scope / insufficient",
+      "query": "Are e-cigarettes allowed in dorm rooms?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Are e-cigarettes allowed in dorm rooms"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q059",
+      "category": "aggregation / list-all",
+      "query": "List the Latin honors tiers and their GPA cutoffs.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "List the Latin honors tiers and their GPA cutoffs"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The Latin honors tiers and their GPA cutoffs are as follows: \nSumma Cum Laude (3.9 and above), \nMagna Cum Laude (3.7 to 3.89), and \nCum Laude (3.5 to 3.69), \naccording to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q060",
+      "category": "aggregation / list-all",
+      "query": "List the stages of the student disciplinary process.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "List the stages of the student disciplinary process"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Integrity_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The stages of the student disciplinary process are: warning, disciplinary probation, suspension, and expulsion, as stated in Passage 1, Student_Conduct_and_Disciplinary_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q061",
+      "category": "aggregation / list-all",
+      "query": "What is the full grading scale used at AFU?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What is the full grading scale used at AFU"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The full grading scale used at AFU is: A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0, as stated in Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q062",
+      "category": "aggregation / list-all",
+      "query": "List the residence hall quiet hours for every day of the week.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "List the residence hall quiet hours for every day of the week"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The residence hall quiet hours are in effect from 10:00 p.m. to 8:00 a.m. Sunday through Thursday, and midnight to 9:00 a.m. Friday and Saturday, according to Passage 1 | Source: Housing_and_Residence_Life_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q063",
+      "category": "aggregation / list-all",
+      "query": "List the consequences for a first and a second academic integrity violation.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "List the consequences for a first and a second academic integrity violation"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "The consequences for a first academic integrity violation are a zero on the assignment or exam and mandatory completion of an academic integrity workshop, according to Passage 1 | Source: Academic_Integrity_Policy.docx. \n\nThe consequences for a second academic integrity violation are failure of the course and mandatory referral to the Student Conduct Office, according to Passage 1 | Source: Academic_Integrity_Policy.docx and Passage 2 | Source: Academic_Integrity_Policy.docx does not provide this information but Passage 1 does.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q064",
+      "category": "aggregation / list-all",
+      "query": "What do I need to do to register a device and access resources remotely?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What do I need to do to register a device and access resources remotely"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "To register a device, according to Passage 2, personal devices must be registered through the MyAFU portal before connecting to the campus WiFi network. To access resources remotely, according to Passage 1, a VPN connection is required to access library subscription databases from off campus.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q065",
+      "category": "aggregation / list-all",
+      "query": "List the tuition refund percentages by withdrawal week.",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "List the tuition refund percentages by withdrawal week"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, the tuition refund percentages by withdrawal week are: \n100% within the first week of the semester, \n50% within the second week, \nand no refund thereafter. (Source: Tuition_and_Financial_Aid_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q066",
+      "category": "aggregation / list-all",
+      "query": "What are the credit-hour and GPA requirements to make the Dean's List?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "What are the credit-hour and GPA requirements to make the Dean's List"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "To make the Dean's List, a student needs a semester GPA of 3.5 or higher with at least 12 credit hours completed that semester, according to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q067",
+      "category": "scenario / applied",
+      "query": "My GPA this semester is 3.6 and I completed 15 credit hours. Am I on the Dean's List?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "My GPA this semester is 3.6 and I completed 15 credit hours. Am I on the Dean's List"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "To be on the Dean's List, a student needs a semester GPA of 3.5 or higher with at least 12 credit hours completed that semester, according to Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx. Given your GPA is 3.6 and you completed 15 credit hours, you meet the criteria. \n\nThe answer is: Yes, you are on the Dean's List, as stated in Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q068",
+      "category": "scenario / applied",
+      "query": "I want to withdraw from a class in week 8. What grade will I get?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "I want to withdraw from a class in week 8. What grade will I get"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, a student may withdraw from a course with a grade of 'W' up to the end of week 10 of the semester. Since you are withdrawing in week 8, which is before the end of week 10, you will receive a grade of 'W'. (Passage 1 | Source: Course_Registration_and_Add_Drop_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q069",
+      "category": "scenario / applied",
+      "query": "I dropped a class in the first week of the semester. Will it show on my transcript?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "I dropped a class in the first week of the semester. Will it show on my transcript"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 2, if you drop a course within the first week of the semester, it will not appear on your transcript. Similarly, Passage 1 states that courses dropped within the first two weeks do not appear on the transcript, but since you dropped it within the first week, it falls under the condition of not being recorded. Therefore, it will not show on your transcript, as supported by Passage 2 | Source: Course_Registration_Policy_2022_Superseded.docx and Passage 1 | Source: Course_Registration_and_Add_Drop_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q070",
+      "category": "scenario / applied",
+      "query": "I'm only enrolled in 9 credit hours this semester. Am I considered full-time?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "i am only enrolled in 9 credit hours this semester. Am I considered full-time"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, Passage 2, Passage 3, Passage 4, and Passage 5, the standard full-time undergraduate course load is 12 credit hours per semester. Since you are enrolled in 9 credit hours, which is less than 12, you are not considered full-time, as stated in these passages.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q071",
+      "category": "scenario / applied",
+      "query": "I got a B in a course, retook it, and got a C. Which grade counts toward my GPA?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "I got a B in a course, retook it, and got a C. Which grade counts toward my GPA"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, when a course is repeated, only the higher of the two grades earned is counted toward the cumulative GPA. Since you got a B (higher grade) initially and a C (lower grade) on the retake, the B counts toward your GPA. (Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q072",
+      "category": "scenario / applied",
+      "query": "I'm an incoming first-year living 10 miles from campus. Do I have to live in university housing?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "i am an incoming first-year living 10 miles from campus. Do I have to live in university housing"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, all first-year students are required to live in university housing unless commuting from a permanent residence within 30 miles of campus. Since you live 10 miles from campus, which is within the 30-mile radius, you are not required to live in university housing. (Housing_and_Residence_Life_Policy.docx)",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q073",
+      "category": "scenario / applied",
+      "query": "I lost my student ID card. What will it cost to replace?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "I lost my student ID card. What will it cost to replace"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "A replacement fee of $25 applies to a lost or stolen student ID card, according to Passage 1 | Source: Campus_Safety_and_Emergency_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q074",
+      "category": "scenario / applied",
+      "query": "I'm on an F-1 visa and graduating in May. When should I apply for OPT?",
+      "expected": "answer",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "i am on an F-1 visa and graduating in May. When should I apply for OPT"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "answer",
+      "baseline_canonical_reply": "According to Passage 1, applications for Optional Practical Training (OPT) work authorization must be filed between 90 and 60 days before the program end date, Source: International_Student_Policy.docx.",
+      "baseline_hot_decisions": [
+        "answer",
+        "answer",
+        "answer",
+        "answer",
+        "answer"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false
+    },
+    {
+      "id": "Q075",
+      "category": "scenario / applied",
+      "query": "I'm a first-year student with a 1.8 GPA. How long will I be on academic probation?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Student_Handbook.docx",
+        "Academic_Catalog_and_Grading_Policy.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "i am a first-year student with a 1.8 GPA. How long will I be on academic probation"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Student_Handbook.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 2 semesters (Passage 1 | Source: Academic_Catalog_and_Grading_Policy.docx), 1 semester (Passage 2 | Source: Student_Handbook.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": false,
+        "score": 2
+      }
+    },
+    {
+      "id": "Q076",
+      "category": "scenario / applied",
+      "query": "My friend registered for 20 credit hours back in 2022. Can I still do that without approval?",
+      "expected": "conflict",
+      "expected_conflict_pair": [
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx"
+      ],
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "My friend registered for 20 credit hours back in 2022. Can I still do that without approval"
+      ],
+      "query_type": "simple",
+      "ours_decision": "conflict",
+      "ours_conflict_pair": [
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx"
+      ],
+      "baseline_canonical_decision": "conflict",
+      "baseline_canonical_reply": "CONFLICT 21 credit hours (Course_Registration_Policy_2022_Superseded.docx), 18 credit hours (Course_Registration_and_Add_Drop_Policy.docx)",
+      "baseline_hot_decisions": [
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict",
+        "conflict"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "attribution": {
+        "flagged_conflict": true,
+        "named_both_docs": true,
+        "gave_both_values": true,
+        "score": 3
+      }
+    },
+    {
+      "id": "Q077",
+      "category": "scenario / applied",
+      "query": "I'm starting as a graduate teaching assistant next fall. What stipend will I be paid?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "i am starting as a graduate teaching assistant next fall. What stipend will I be paid"
+      ],
+      "query_type": "simple",
+      "ours_decision": "insufficient",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    },
+    {
+      "id": "Q078",
+      "category": "scenario / applied",
+      "query": "Can I bring my cat to live with me in the dorm this fall?",
+      "expected": "insufficient",
+      "expected_conflict_pair": null,
+      "n_chunks": 30,
+      "n_chunks_sent": 12,
+      "retrieved_sources": [
+        "Academic_Catalog_and_Grading_Policy.docx",
+        "Academic_Integrity_Policy.docx",
+        "Campus_Safety_and_Emergency_Policy.docx",
+        "Course_Registration_Policy_2022_Superseded.docx",
+        "Course_Registration_and_Add_Drop_Policy.docx",
+        "Housing_and_Residence_Life_Policy.docx",
+        "IT_Acceptable_Use_Policy.docx",
+        "International_Student_Policy.docx",
+        "Student_Conduct_and_Disciplinary_Policy.docx",
+        "Student_Handbook.docx",
+        "Tuition_and_Financial_Aid_Policy.docx"
+      ],
+      "sub_queries": [
+        "Can I bring my cat to live with me in the dorm this fall"
+      ],
+      "query_type": "simple",
+      "ours_decision": "answer",
+      "ours_conflict_pair": null,
+      "baseline_canonical_decision": "insufficient",
+      "baseline_canonical_reply": "INSUFFICIENT",
+      "baseline_hot_decisions": [
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "baseline_hot_temp": 0.7,
+      "baseline_inconsistent": false,
+      "leakage": {
+        "canonical_leaked": false,
+        "hot_leak_count": 0,
+        "hot_runs": 5
+      }
+    }
+  ]
+}
