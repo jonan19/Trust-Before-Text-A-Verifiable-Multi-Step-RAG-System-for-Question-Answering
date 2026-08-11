@@ -315,8 +315,8 @@ Each corpus has its own Qdrant vector store (`qdrant_db/` and `qdrant_db_corpus2
 | Metric | Corpus 1 (ours) | Corpus 1 (prompted-LLM baseline) | Corpus 2 (ours) | Corpus 2 (baseline) |
 |---|---|---|---|---|
 | Decision accuracy | 92.3% (72/78) | 97.4% | 66.7% (52/78) | 98.7% |
-| Conflict recall | 100% (16/16) | n/a | 100% (16/16) | 93.75% |
-| Unsafe answers | 0 / 32 | n/a | 4 / 32 | 1 / 32 |
+| Conflict recall | 100% (16/16) | 93.75% (15/16) | 100% (16/16) | 93.75% (15/16) |
+| Unsafe answers | 0 / 32 | 1 / 32 | 4 / 32 | 1 / 32 |
 | Decision flips across reruns | 0% | 1.3% | 0% | 1.3% |
 | Decision-layer injection obeyed | 0 / 45 | n/a | 0 / 15 (spot-check) | n/a |
 
