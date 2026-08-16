@@ -46,6 +46,7 @@ DENSE_VECTOR_SIZE: int = 384
 MULTI_VECTOR_SIZE: int = 96
 MANIFEST_FILENAME: str = "manifest.json"
 SPARSE_ENCODER_FILENAME: str = "sparse_encoder.json"
+CHUNK_REGISTRY_FILENAME: str = "chunk_registry.json"
 DEFAULT_PREFETCH_LIMIT: int = 20
 
 _TOKEN_RE = re.compile(r"[a-z0-9]+(?:'[a-z0-9]+)?", re.IGNORECASE)
@@ -228,6 +229,74 @@ def _sparse_encoder_path(qdrant_dir: str | Path) -> Path:
     return Path(qdrant_dir) / SPARSE_ENCODER_FILENAME
 
 
+def _chunk_registry_path(qdrant_dir: str | Path) -> Path:
+    return Path(qdrant_dir) / CHUNK_REGISTRY_FILENAME
+
+
+def chunk_fingerprint(text: str) -> str:
+    """
+    Provenance fingerprint of a chunk's text.
+
+    Whitespace is collapsed before hashing so that a chunk which survives a
+    round-trip through display or serialisation still verifies, while any
+    change to its wording does not.
+    """
+    normalised = " ".join((text or "").split())
+    return hashlib.sha256(normalised.encode("utf-8")).hexdigest()
+
+
+_published_registry_dir: str | None = None
+
+
+def _publish_chunk_registry(qdrant_dir: str | Path) -> None:
+    """
+    Hand the active store's chunk registry to validation.Stage 0, once per store.
+
+    Kept as a one-way notification (retrieval tells validation what the corpus
+    contains) so validation stays independent of any particular vector store.
+    Silent no-op if the validation module is unavailable.
+    """
+    global _published_registry_dir
+    key = str(qdrant_dir)
+    if _published_registry_dir == key:
+        return
+    try:
+        import validation
+        validation.set_evidence_registry(load_chunk_registry(qdrant_dir))
+        _published_registry_dir = key
+    except Exception:  # pragma: no cover - provenance is best-effort, never fatal
+        pass
+
+
+def load_chunk_registry(qdrant_dir: str | Path = DEFAULT_QDRANT_DIR) -> set[str] | None:
+    """
+    The set of fingerprints of every chunk actually ingested into this store.
+
+    Returned to the validation layer so it can verify that each piece of
+    evidence it is asked to reason over really came from the indexed corpus
+    (see validation.set_evidence_registry). Returns None when the store predates
+    the registry, in which case provenance checking stays disabled rather than
+    rejecting every chunk.
+    """
+    path = _chunk_registry_path(qdrant_dir)
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return set(data.get("fingerprints", []))
+    except Exception:
+        return None
+
+
+def _write_chunk_registry(qdrant_dir: str | Path, texts: list[str]) -> None:
+    """Write the provenance registry: the fingerprint of every chunk in `texts`."""
+    _chunk_registry_path(qdrant_dir).write_text(
+        json.dumps({"fingerprints": sorted({chunk_fingerprint(t) for t in texts})},
+                   indent=1),
+        encoding="utf-8",
+    )
+
+
 def _fit_sparse_encoder(texts: list[str]) -> dict:
     tokenized = [_tokenize(text) for text in texts]
     doc_count = len(tokenized)
@@ -403,6 +472,14 @@ def ingest_documents(
     if already_current:
         client = _get_client(str(qdrant_dir))
         count = client.count(collection_name).count
+        # Backfill the provenance registry for stores ingested before it
+        # existed. Without this an unchanged collection would never gain one,
+        # and Stage 0 would stay silently disabled on exactly the stores that
+        # are already in use.
+        if not _chunk_registry_path(qdrant_dir).exists():
+            texts = [c[0] for c in _iter_document_chunks(data_dir, source_files)]
+            _write_chunk_registry(qdrant_dir, texts)
+            print(f"  [Qdrant] Wrote provenance registry for {len(texts)} chunks.")
         print(f"  [Qdrant] Collection unchanged — {count} chunks ready.")
         return count
 
@@ -505,6 +582,11 @@ def ingest_documents(
         raise e
 
     _save_sparse_encoder(qdrant_dir, sparse_encoder)
+    # Provenance registry: the fingerprint of every chunk this store contains.
+    # Written at ingest because that is the only point where the corpus is known
+    # to be exactly what the source documents say. Downstream, evidence whose
+    # fingerprint is absent from this file did not come from the corpus.
+    _write_chunk_registry(qdrant_dir, texts)
     _save_manifest(qdrant_dir, {
         "embedding_model": DENSE_MODEL_NAME,
         "sparse_model": SPARSE_MODEL_NAME,
@@ -635,6 +717,12 @@ def retrieve(
     """Retrieve top-k chunks from Qdrant using dense+sparse prefetch and ColBERT reranking."""
     if not query.strip():
         return []
+
+    # Publish this store's provenance registry to the validation layer, so
+    # Stage 0 can tell evidence that came out of this corpus from evidence that
+    # was inserted into the pipeline somewhere after retrieval. Done here rather
+    # than at import time because the store in use is only known per call.
+    _publish_chunk_registry(qdrant_dir)
 
     query_embedding = _embed_dense_query(query)
     encoder = _load_sparse_encoder(qdrant_dir)

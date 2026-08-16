@@ -43,6 +43,7 @@ Output schema:
 from __future__ import annotations
 
 import logging
+import os
 import re
 
 from llm_interface import call_synthesis_llm
@@ -55,6 +56,44 @@ _log = logging.getLogger(__name__)
 # by at least one evidence chunk for the answer to be considered faithful.
 # Sentences below this ratio trigger a user-visible caution prefix.
 NLI_FAITHFULNESS_THRESHOLD: float = 0.70
+
+# Release gate: when enabled, a sentence the evidence does not entail is removed
+# from the answer instead of being shown with a caution prefix.
+#
+# DEFAULT OFF, and the reason is a measurement rather than caution. The gate was
+# built to give the synthesis layer an output-side guarantee comparable to the
+# decision layer's, then tested by replaying real recorded outputs through it
+# (experiments_fixes/release_gate_test.py, entailment_sensitivity.py). It does
+# contain attacks: all 18 recorded hijacked answers were withheld or stripped of
+# the attacker's payload. But it is not usable, because this NLI model cannot
+# tell legitimate answer sentences from injected ones. Over 31 sentences from
+# genuine, evidence-grounded answers, the median entailment score was 0.007
+# (0.063 taking the best of three premise constructions) and only 15 of 31
+# cleared 0.50, against 0/4 for attacker payload sentences. Both classes sit
+# near zero, so gating on this signal withheld 7 of 15 legitimate answers
+# outright and trimmed the other 8.
+#
+# The synthesis layer's real containment is at the INPUT boundary instead: Stage
+# 0 provenance verification removes attacker-authored passages before any prompt
+# is built, so the model is never shown the instruction (verified on all 45 E3
+# injection cases, experiments_fixes/synthesis_containment_test.py). That is a
+# structural property and does not depend on entailment quality. This gate stays
+# available for evaluation, and would become viable with an entailment model
+# that separates the two classes.
+SYNTHESIS_RELEASE_GATE: bool = os.getenv("RAG_SYNTHESIS_RELEASE_GATE", "0") != "0"
+
+# Minimum fraction of an answer's sentences that must survive the gate for the
+# remainder to be released at all. Below this the answer is discarded entirely:
+# a mostly-unsupported answer whose surviving fragments are shown out of context
+# is its own failure mode.
+RELEASE_MIN_SUPPORTED_RATIO: float = float(
+    os.getenv("RAG_RELEASE_MIN_SUPPORTED_RATIO", "0.50")
+)
+
+_BLOCKED_ANSWER = (
+    "Cannot provide an answer: the generated response was not supported by the "
+    "retrieved evidence and was withheld."
+)
 
 # ---------------------------------------------------------------------------
 # Abstain messages (kept here for synthesis-specific phrasing)
@@ -73,16 +112,97 @@ def _split_sentences(text: str) -> list[str]:
     return [s.strip() for s in raw if len(s.strip().split()) >= 4]  # skip very short fragments
 
 
+# Matches inline citation markers the synthesis prompt asks the LLM to add,
+# e.g. "[Evidence #1]". These are a display artifact, not part of the claim
+# being made, and must be removed before NLI scoring (see _strip_citation_markers).
+_CITATION_MARKER_RE = re.compile(r"\[Evidence\s*#?\s*\d+\]", re.IGNORECASE)
+
+# Matches a leading "According to [Evidence #1] and [Evidence #2], " clause.
+# Removed as a whole clause (not just the brackets inside it) because once the
+# brackets are gone the connectors ("and", ",") left behind form a dangling,
+# ungrammatical lead-in ("According to and , the grievance procedure...")
+# that itself confuses the NLI model as badly as the brackets did (verified:
+# 0.0 entailment against a clean evidence sentence with the dangling lead-in
+# still present, vs 0.99 with it removed).
+_LEADING_ACCORDING_TO_RE = re.compile(
+    r"^according to\s+\[evidence\s*#?\s*\d+\]"
+    r"(?:\s*,\s*\[evidence\s*#?\s*\d+\])*"
+    r"(?:\s*,?\s*and\s*\[evidence\s*#?\s*\d+\])?"
+    r"\s*,\s*",
+    re.IGNORECASE,
+)
+
+
+def _strip_citation_markers(sentence: str) -> str:
+    """
+    Remove inline "[Evidence #N]" citation markers before a sentence is used
+    as an NLI hypothesis.
+
+    The synthesis prompt instructs the LLM to cite evidence inline (e.g.
+    "... [Evidence #1]." or "According to [Evidence #1] and [Evidence #2], ...").
+    The NLI cross-encoder is trained on clean declarative sentence pairs and
+    has no notion of a bracketed reference token — its presence anywhere in
+    the hypothesis collapses entailment to near-zero even when the underlying
+    claim is fully supported (verified: identical sentence with/without the
+    marker scored 0.0003 vs 0.8250 entailment against the same evidence).
+    A leading "According to ..., " clause is removed as a whole first (see
+    _LEADING_ACCORDING_TO_RE) so no dangling connector debris is left behind;
+    any remaining markers elsewhere in the sentence are then stripped
+    individually. Stripping only affects what is fed to the NLI model; the
+    citations remain in the answer shown to the user and in
+    `unsupported_sentences` for readability.
+    """
+    cleaned = _LEADING_ACCORDING_TO_RE.sub("", sentence)
+    cleaned = _CITATION_MARKER_RE.sub("", cleaned)
+    return re.sub(r"\s+", " ", cleaned).strip()
+
+
+def _split_evidence_sentences(chunks: list[dict]) -> list[str]:
+    """
+    Flatten evidence chunks into individual sentences for use as NLI premises.
+
+    Evidence chunks are fixed-length slices of a source document (see
+    document_preprocessing.py) and routinely mix several unrelated sentences
+    together, sometimes spanning a section boundary (e.g. the tail of
+    "Grievance Procedure" followed by the start of "Whistleblowing"). Feeding
+    a whole such chunk to the NLI model as a single premise was found to
+    collapse entailment to near-zero even for a claim stated almost verbatim
+    inside it (verified: 0.013 entailment against the full chunk vs 0.989
+    against the same text isolated to its own sentence) — the cross-encoder
+    is trained on short, single-topic premise/hypothesis pairs and cannot
+    reliably locate a specific supported claim inside a noisy, multi-topic
+    premise. Splitting evidence into individual sentences and taking the max
+    entailment over all of them (see _check_faithfulness) avoids this without
+    changing what counts as "supported" — a claim is credited if any single
+    evidence sentence entails it, same semantics as before.
+
+    Falls back to the raw chunk texts if none yield sentence-length spans
+    (e.g. all short fragments), so a chunk with usable text is never
+    discarded down to nothing.
+    """
+    out: list[str] = []
+    for c in chunks:
+        text = c.get("text", "")
+        if not text:
+            continue
+        out.extend(s for s in _split_sentences(text) if s)
+    if out:
+        return out
+    return [c.get("text", "") for c in chunks if c.get("text")]
+
+
 def _check_faithfulness(answer: str, chunks: list[dict]) -> dict:
     """
     V5: Post-generation NLI faithfulness check.
 
     For each sentence in the LLM's answer, check whether it is entailed
-    (supported) by at least one evidence chunk using the NLI model already
-    in memory from the validation pipeline.
+    (supported) by at least one evidence *sentence* — evidence chunks are
+    split into their constituent sentences first (see
+    _split_evidence_sentences) so the NLI model always sees a clean,
+    single-topic premise rather than a noisy multi-sentence chunk.
 
     A sentence is considered 'supported' if its maximum entailment score
-    across all chunks is >= 0.50.
+    across all evidence sentences is >= 0.50.
 
     Returns
     -------
@@ -105,24 +225,47 @@ def _check_faithfulness(answer: str, chunks: list[dict]) -> dict:
         return {"faithfulness_score": 1.0, "unsupported_sentences": []}
 
     sentences = _split_sentences(answer)
-    if not sentences or not chunks:
+    if not chunks:
         return {"faithfulness_score": 1.0, "unsupported_sentences": []}
+    if not sentences:
+        # No fragment survived _split_sentences' >=4-word minimum. Returning
+        # 1.0 here (the previous behaviour) was fail-OPEN and defeated the
+        # release gate: a bare injected payload such as "HACKED" is under the
+        # word minimum, so it was never checked, reported as fully faithful,
+        # and released verbatim (measured: 3/3 leaks against an unhardened
+        # prompt). Verify the whole answer as a single hypothesis instead of
+        # skipping it, so short answers are checked rather than trusted.
+        # A genuinely empty answer still short-circuits as faithful.
+        stripped = answer.strip()
+        if not stripped:
+            return {"faithfulness_score": 1.0, "unsupported_sentences": []}
+        sentences = [stripped]
 
-    evidence_texts = [c.get("text", "") for c in chunks if c.get("text")]
+    evidence_texts = _split_evidence_sentences(chunks)
     unsupported: list[str] = []
 
-    for sentence in sentences:
-        # Check this sentence against every chunk; it passes if ANY chunk entails it.
-        # NLI label order for nli-deberta-v3-base: [contradiction, entailment, neutral]
-        max_entailment = 0.0
-        try:
-            pairs = [(ev, sentence) for ev in evidence_texts]
-            scores = model.predict(pairs, apply_softmax=True)
-            max_entailment = max(float(s[1]) for s in scores)  # index 1 = entailment
-        except Exception as exc:
-            _log.warning("[Synthesis V5] NLI faithfulness error: %s", exc)
-            max_entailment = 1.0  # assume supported on error
+    # Check every answer sentence against every evidence sentence in a single
+    # batched NLI call rather than one model.predict() per answer sentence:
+    # the cross-encoder amortises its forward-pass overhead across the whole
+    # batch, and the pair count (sentences x evidence_texts) is unchanged
+    # either way. A sentence passes if ANY evidence sentence entails it.
+    # NLI label order for nli-deberta-v3-base: [contradiction, entailment, neutral]
+    # Citation markers are stripped from the NLI hypothesis only — the
+    # original `sentence` (with markers) is what gets recorded/displayed.
+    hypotheses = [_strip_citation_markers(s) for s in sentences]
+    try:
+        pairs = [(ev, hyp) for hyp in hypotheses for ev in evidence_texts]
+        scores = model.predict(pairs, apply_softmax=True)
+        n_ev = len(evidence_texts)
+        max_entailments = [
+            max(float(s[1]) for s in scores[i * n_ev:(i + 1) * n_ev])  # index 1 = entailment
+            for i in range(len(sentences))
+        ]
+    except Exception as exc:
+        _log.warning("[Synthesis V5] NLI faithfulness error: %s", exc)
+        max_entailments = [1.0] * len(sentences)  # assume supported on error
 
+    for sentence, max_entailment in zip(sentences, max_entailments):
         if max_entailment < 0.50:
             unsupported.append(sentence)
 
@@ -247,6 +390,46 @@ def _build_prompt(query: str, chunks: list[dict]) -> str:
 # Public entry point
 # ===========================================================================
 
+def apply_release_gate(answer: str, faithfulness: dict) -> dict:
+    """
+    Release only the part of a generated answer that the evidence entails.
+
+    Deterministic given the entailment results: it removes every sentence listed
+    as unsupported, and withholds the answer entirely when too little survives
+    (RELEASE_MIN_SUPPORTED_RATIO) or when nothing does. No model decides whether
+    to release; the model only proposes text.
+
+    Returns {"answer", "blocked", "removed_sentences", "released_ratio"}.
+    """
+    unsupported = faithfulness.get("unsupported_sentences") or []
+    if not unsupported:
+        return {"answer": answer, "blocked": False, "removed_sentences": [],
+                "released_ratio": 1.0}
+
+    sentences = _split_sentences(answer)
+    if not sentences:
+        # Nothing sentence-shaped to verify (e.g. a bare fragment). Anything
+        # unsupported was flagged, so withhold rather than release unchecked.
+        return {"answer": _BLOCKED_ANSWER, "blocked": True,
+                "removed_sentences": unsupported, "released_ratio": 0.0}
+
+    removed = set(unsupported)
+    kept = [s for s in sentences if s not in removed]
+    ratio = len(kept) / len(sentences)
+
+    if not kept or ratio < RELEASE_MIN_SUPPORTED_RATIO:
+        _log.warning("[Synthesis] Release gate withheld the answer "
+                     "(%d/%d sentences unsupported).", len(sentences) - len(kept),
+                     len(sentences))
+        return {"answer": _BLOCKED_ANSWER, "blocked": True,
+                "removed_sentences": sorted(removed), "released_ratio": round(ratio, 4)}
+
+    _log.warning("[Synthesis] Release gate removed %d unsupported sentence(s).",
+                 len(sentences) - len(kept))
+    return {"answer": " ".join(kept), "blocked": False,
+            "removed_sentences": sorted(removed), "released_ratio": round(ratio, 4)}
+
+
 def synthesize(
     query: str,
     cleaned_chunks: list[dict],
@@ -291,6 +474,25 @@ def synthesize(
     # Reuses the NLI model already loaded by the validation pipeline.
     faithfulness = _check_faithfulness(answer, cleaned_chunks)
 
+    # ── Release gate (structural containment) ────────────────────────────────
+    # Applied before the caution notice: unsupported text is removed rather than
+    # annotated, so nothing the evidence does not entail reaches the user.
+    gate = {"answer": answer, "blocked": False, "removed_sentences": [],
+            "released_ratio": 1.0}
+    if SYNTHESIS_RELEASE_GATE:
+        gate = apply_release_gate(answer, faithfulness)
+        answer = gate["answer"]
+        if gate["blocked"]:
+            return {
+                "status"               : "abstain",
+                "answer"               : answer,
+                "citations"            : [],
+                "faithfulness_score"   : faithfulness["faithfulness_score"],
+                "unsupported_sentences": faithfulness["unsupported_sentences"],
+                "release_blocked"      : True,
+                "removed_sentences"    : gate["removed_sentences"],
+            }
+
     # If faithfulness is critically low, prepend a caution notice.
     # The answer is still returned — this is a transparency signal, not a block.
     if faithfulness["faithfulness_score"] < NLI_FAITHFULNESS_THRESHOLD:
@@ -314,4 +516,6 @@ def synthesize(
         "citations"            : citations,
         "faithfulness_score"   : faithfulness["faithfulness_score"],
         "unsupported_sentences": faithfulness["unsupported_sentences"],
+        "release_blocked"      : False,
+        "removed_sentences"    : gate["removed_sentences"],
     }

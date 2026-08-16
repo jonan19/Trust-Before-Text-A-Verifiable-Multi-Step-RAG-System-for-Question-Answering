@@ -119,6 +119,66 @@ def get_nli_model():
     """
     return _get_nli_model()
 
+
+# ---------------------------------------------------------------------------
+# Query-intent embedding model — lazy-loaded, used only by the Stage 4
+# query-span relevance gate (see QUERY_SPAN_RELEVANCE).
+# ---------------------------------------------------------------------------
+_TOPIC_MODEL = None
+_TOPIC_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+_TOPIC_EMB_CACHE: dict[str, object] = {}
+
+
+def _get_topic_model():
+    """
+    Lazy-load the bi-encoder used to measure query/span topical similarity.
+
+    Deterministic (a fixed encoder, not a generative model), so it does not
+    weaken the pipeline's determinism guarantee. Returns None if
+    sentence-transformers is unavailable, in which case the gate degrades
+    open (see _query_span_similarity).
+    """
+    global _TOPIC_MODEL
+    if not _CROSSENCODER_AVAILABLE:
+        return None
+    if _TOPIC_MODEL is None:
+        try:
+            from sentence_transformers import SentenceTransformer
+            _log.info("[Validation] Loading query-intent model '%s' (first use)...",
+                      _TOPIC_MODEL_NAME)
+            _TOPIC_MODEL = SentenceTransformer(_TOPIC_MODEL_NAME)
+        except Exception as exc:  # pragma: no cover
+            _log.warning("[Validation] Failed to load query-intent model: %s — "
+                         "query-span gate disabled.", exc)
+            return None
+    return _TOPIC_MODEL
+
+
+def _query_span_similarity(query: str, span: str) -> float:
+    """
+    Cosine similarity between the query and a candidate conflicting span.
+
+    Degrades OPEN (returns 1.0) when the model is unavailable, so a missing
+    optional dependency can never silently suppress conflict detection — the
+    safe direction for this project is to keep flagging, not to skip.
+    """
+    model = _get_topic_model()
+    if model is None:
+        return 1.0
+    try:
+        import numpy as _np
+        for text in (query, span):
+            if text not in _TOPIC_EMB_CACHE:
+                _TOPIC_EMB_CACHE[text] = model.encode([text], show_progress_bar=False)[0]
+        eq, es = _TOPIC_EMB_CACHE[query], _TOPIC_EMB_CACHE[span]
+        denom = float(_np.linalg.norm(eq) * _np.linalg.norm(es))
+        if denom <= 0.0:
+            return 1.0
+        return float(_np.dot(eq, es) / denom)
+    except Exception as exc:  # pragma: no cover
+        _log.warning("[Validation] query-span similarity error: %s — gate skipped.", exc)
+        return 1.0
+
 # ---------------------------------------------------------------------------
 # Thresholds — tune as needed
 # ---------------------------------------------------------------------------
@@ -126,6 +186,11 @@ DUPLICATE_SIM_THRESHOLD: float       = 0.90   # cosine sim >= this -> duplicate
 RELEVANCE_RATIO_THRESHOLD: float     = 0.30   # keep chunk if sim >= best_sim * ratio
 MIN_RELEVANCE_SCORE: float           = 0.05   # absolute floor (catches fully off-topic chunks)
 MIN_CHUNKS_FOR_SUFFICIENCY: int      = 1      # at least this many relevant chunks needed
+MIN_CHUNKS_FOR_AVG_SUFFICIENCY: int  = int(
+    os.getenv("RAG_MIN_CHUNKS_FOR_AVG_SUFFICIENCY", "2")
+)                                              # H2 (average-score branch) only applies to an evidence
+                                               # set of at least this size — see check_sufficiency.
+                                               # 1 restores the previous behaviour.
 MIN_CHUNK_SCORE_THRESHOLD: float     = float(
     os.getenv("RAG_MIN_CHUNK_SCORE_THRESHOLD", "0.60")
 )                                              # Stage 3 hard floor on calibrated `score` — chunks
@@ -160,6 +225,47 @@ NLI_SIM_FLOOR: float                 = float(
                                                # so paraphrastic contradictions (low lexical overlap)
                                                # still reach NLI.
 MIN_CONFLICT_RELEVANCE: float        = 0.25   # both chunks must score above this to be conflict-checked
+MAX_CONFLICT_EVIDENCE_RANK: int      = int(
+    os.getenv("RAG_MAX_CONFLICT_EVIDENCE_RANK", "4")
+)                                              # Stage 4 query-relevance gate: both chunks of a pair
+                                               # must be among this query's N highest-scoring pieces
+                                               # of evidence before they may be compared at all.
+                                               # A contradiction only justifies abstention if it sits
+                                               # in the evidence that actually answers THIS question;
+                                               # two low-ranked chunks disagreeing is a fact about the
+                                               # corpus, not about the answer. The cutoff is a rank
+                                               # within the query's own ranking, not a score value, so
+                                               # it carries no corpus-specific calibration: measured on
+                                               # two independently authored corpora it preserved
+                                               # conflict recall at 16/16 on BOTH while raising
+                                               # conflict F1 (0.842 -> 0.970 and 0.604 -> 0.727).
+                                               # 0 disables the gate.
+QUERY_SPAN_RELEVANCE: float          = float(
+    os.getenv("RAG_QUERY_SPAN_RELEVANCE", "0.35")
+)                                              # Stage 4 query-intent gate: minimum semantic similarity
+                                               # between the QUERY and each conflicting span before the
+                                               # pair may be compared at all. Addresses query-irrelevant
+                                               # pair comparison (the documented root cause of every
+                                               # false conflict): a genuine contradiction between two
+                                               # documents should only drive abstention when both spans
+                                               # are actually about what was asked. Distinct from
+                                               # MIN_CONFLICT_RELEVANCE, which scores the whole retrieved
+                                               # CHUNK; a chunk can be retrieved relevantly while the
+                                               # specific sentence that contradicts is off-topic.
+                                               # 0.0 disables the gate entirely.
+                                               #
+                                               # CALIBRATION (measured, both corpora, decision-layer only):
+                                               #   Safe window (conflict recall 16/16 AND no added unsafe
+                                               #   answers): Corpus 1 holds to 0.48 (breaks 0.49);
+                                               #   Corpus 2 holds to 0.35 (breaks 0.40).
+                                               #   Default 0.35 = min of the two safe maxima, so it is
+                                               #   inside BOTH windows rather than fitted to either.
+                                               #     C1: 92.3%->93.6%, precision 0.727->0.800, 16/16, 0/32
+                                               #     C2: 66.7%->69.2%, precision 0.432->0.457, 16/16, 4/32
+                                               #   Raising to 0.47 gives C1 98.7% and conflict F1 1.000
+                                               #   but BREAKS Corpus 2 (recall 14/16, unsafe 4->6), so it
+                                               #   is corpus-specific and deliberately NOT the default.
+                                               #   Re-measure this window before trusting it on a new corpus.
 NLI_CONFLICT_THRESHOLD: float        = float(
     os.getenv("RAG_NLI_CONFLICT_THRESHOLD", "0.94")
 )                                              # NLI contradiction confidence floor.
@@ -388,6 +494,83 @@ def _weighted_confidence(chunks: list[dict]) -> float:
 
 
 # ===========================================================================
+# Stage 0 — Evidence Provenance  (NEW)
+# ===========================================================================
+
+# Fingerprints of every chunk in the corpus this pipeline is answering from,
+# published by the retrieval layer after ingestion (see
+# qdrant_retrieval.load_chunk_registry). None means "no registry available",
+# in which case the check is skipped: a store built before registries existed
+# must keep working, and refusing all evidence would be the wrong failure mode
+# for a missing file. Populated via set_evidence_registry().
+_EVIDENCE_REGISTRY: Optional[set[str]] = None
+
+
+def set_evidence_registry(fingerprints: Optional[set[str]]) -> None:
+    """Publish the corpus's chunk fingerprints for Stage 0 verification."""
+    global _EVIDENCE_REGISTRY
+    _EVIDENCE_REGISTRY = fingerprints
+
+
+def evidence_fingerprint(text: str) -> str:
+    """
+    Fingerprint used by Stage 0. Delegates to qdrant_retrieval.chunk_fingerprint
+    (the function that writes the registry this is checked against) so the two
+    sides of the provenance check cannot drift apart. Imported lazily to match
+    the existing retrieval->validation lazy-import direction and avoid a
+    module-load-time circular import.
+    """
+    from qdrant_retrieval import chunk_fingerprint
+    return chunk_fingerprint(text)
+
+
+def verify_provenance(chunks: list[dict]) -> tuple[list[dict], list[dict]]:
+    """
+    Stage 0: split evidence into chunks that provably came from the ingested
+    corpus and chunks that did not.
+
+    Why this exists
+    ---------------
+    Every later stage answers the question "is this evidence good enough?" and
+    none of them can answer "is this evidence real?". A fabricated passage
+    carrying a high retrieval score satisfies the sufficiency gate exactly as a
+    genuine one does, because the gate reads scores and text, both of which the
+    fabricator supplies (measured: a fake chunk injected into a genuine
+    knowledge gap passed the gate 4 times out of 4). No threshold can fix that,
+    because the fabricated evidence is not weak; it is false.
+
+    Provenance is checked instead of judged: a chunk counts as evidence only if
+    its fingerprint appears in the registry written when the corpus was
+    ingested. This is a deterministic set membership test, so it is immune to
+    how persuasive the fabricated text is, and it distinguishes the case
+    deterministic logic previously could not tell apart: evidence that is absent
+    versus evidence that is invented.
+
+    Returns (verified, rejected). When no registry is available every chunk is
+    returned as verified.
+    """
+    if _EVIDENCE_REGISTRY is None:
+        return list(chunks), []
+
+    verified: list[dict] = []
+    rejected: list[dict] = []
+    for chunk in chunks:
+        if evidence_fingerprint(chunk.get("text", "")) in _EVIDENCE_REGISTRY:
+            verified.append(chunk)
+        else:
+            rejected.append(chunk)
+
+    if rejected:
+        _log.warning(
+            "[Stage 0] Rejected %d chunk(s) with no provenance in the ingested "
+            "corpus (sources: %s).",
+            len(rejected),
+            sorted({c.get("source", "unknown") for c in rejected}),
+        )
+    return verified, rejected
+
+
+# ===========================================================================
 # Stage 1 — Chunk Normalization
 # ===========================================================================
 
@@ -542,12 +725,30 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
     """
     content_terms = _query_content_terms(query)
 
+    # Query-relevance gate: the score a chunk must reach to be eligible for
+    # comparison at all, defined as the score of this query's Nth-best chunk.
+    # Deriving it from the current query's own ranking (rather than an absolute
+    # score) is what makes the gate corpus-independent.
+    rank_cutoff: float | None = None
+    if MAX_CONFLICT_EVIDENCE_RANK > 0 and len(chunks) > MAX_CONFLICT_EVIDENCE_RANK:
+        ranked_scores = sorted((c.get("score", 0.0) for c in chunks), reverse=True)
+        rank_cutoff = ranked_scores[MAX_CONFLICT_EVIDENCE_RANK - 1]
+
     for i, a in enumerate(chunks):
         for b in chunks[i + 1:]:
             # Skip if from the same source file
             source_a = a.get("source", "unknown_a")
             source_b = b.get("source", "unknown_b")
             if source_a == source_b and source_a != "unknown":
+                continue
+
+            # Both chunks must be top-ranked evidence FOR THIS QUERY. A
+            # contradiction between two chunks the retriever ranked well below
+            # the best evidence is a disagreement the corpus contains, not one
+            # the answer depends on. Checked before the spans are built so
+            # irrelevant pairs also skip the expensive NLI inference.
+            if rank_cutoff is not None and (
+                    a.get("score", 0.0) < rank_cutoff or b.get("score", 0.0) < rank_cutoff):
                 continue
 
             # Guard: both chunks must be individually relevant to the query.
@@ -565,6 +766,18 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
             # cannot contradict each other — skip before any check.
             if text_a == text_b:
                 continue
+
+            # Query-intent gate: a contradiction between two documents only
+            # justifies abstention when BOTH spans are actually about what the
+            # user asked. Without this, a real conflict on topic X (e.g. remote
+            # working days) re-fires on an unrelated query about topic Y (e.g.
+            # annual leave days) whenever both chunks happen to be co-retrieved.
+            # Runs before the prong checks so irrelevant pairs also skip the
+            # expensive NLI inference. Disabled when QUERY_SPAN_RELEVANCE == 0.
+            if QUERY_SPAN_RELEVANCE > 0.0 and query.strip():
+                if (_query_span_similarity(query, text_a) < QUERY_SPAN_RELEVANCE
+                        or _query_span_similarity(query, text_b) < QUERY_SPAN_RELEVANCE):
+                    continue
 
             sim = compute_chunk_similarity(text_a, text_b)
             high_sim = sim >= CONFLICT_SIM_THRESHOLD
@@ -799,7 +1012,18 @@ def check_sufficiency(chunks: list[dict], query: str = "") -> bool:
     scores = [c.get("score", 0.0) for c in chunks]
     avg_score = sum(scores) / len(scores)
     coverage = _query_coverage(query, chunks) if query.strip() else 1.0
-    if avg_score < MIN_AVG_SCORE_FOR_SUFFICIENCY and coverage < MIN_QUERY_COVERAGE:
+    # H2 describes the quality of an evidence *set*. Over a single surviving
+    # chunk it is not an average at all: it is that one chunk's score wearing
+    # the authority of a set-level statistic, and a lone chunk sitting just
+    # above the Stage-3 floor then satisfies it. That is precisely how gap
+    # queries leaked on Corpus 2 (Q050/Q055/Q078: one chunk each, averages
+    # 0.658-0.678 against a 0.65 bar, while the coverage branch correctly
+    # rejected all three). Requiring the average branch to describe at least
+    # MIN_CHUNKS_FOR_AVG_SUFFICIENCY chunks is a structural correction, not a
+    # re-tuned threshold: a single chunk must now earn sufficiency on coverage.
+    avg_applies = len(chunks) >= MIN_CHUNKS_FOR_AVG_SUFFICIENCY
+    if not (avg_applies and avg_score >= MIN_AVG_SCORE_FOR_SUFFICIENCY) \
+            and coverage < MIN_QUERY_COVERAGE:
         return False
 
     return True
@@ -891,8 +1115,14 @@ def validate(chunks: list[dict], query: str = "") -> dict:
         "query_coverage_score": float,        # [0.0, 1.0] fraction of query terms in evidence
     }
     """
+    # ── Stage 0: Provenance ───────────────────────────────────────────────
+    # Runs before everything else: evidence that cannot be traced to the
+    # ingested corpus is not weak evidence, it is not evidence, and no later
+    # stage is able to notice the difference.
+    stage0, rejected = verify_provenance(chunks)
+
     # ── Stage 1: Normalize ────────────────────────────────────────────────
-    stage1 = normalize_chunks(chunks)
+    stage1 = normalize_chunks(stage0)
 
     # ── Stage 2: Deduplicate ──────────────────────────────────────────────
     stage2 = remove_duplicates(stage1)
@@ -941,4 +1171,6 @@ def validate(chunks: list[dict], query: str = "") -> dict:
         "abstention_reason"   : abstention_reason,
         "relevant_count"      : relevant_count,
         "query_coverage_score": query_coverage_score,
+        "unverified_count"    : len(rejected),
+        "unverified_sources"  : sorted({c.get("source", "unknown") for c in rejected}),
     }

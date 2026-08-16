@@ -13,6 +13,17 @@ __pycache__/
 # Vector Databases and Storage
 qdrant_db/
 qdrant_db_corpus2/
+qdrant_db_c1_copy/
+qdrant_db_c2_copy/
+
+# Retrieval cache (regeneratable)
+_retrieval_cache/
+
+# One-off investigation scripts and their outputs (disposable research
+# artifacts; not meant to be re-run for regression testing). The summary
+# report is kept as a team-facing status doc.
+experiments_fixes/*
+!experiments_fixes/FIXES_REPORT.md
 
 # Uploaded Files
 uploaded_docs/
