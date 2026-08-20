@@ -19,11 +19,15 @@ qdrant_db_c2_copy/
 # Retrieval cache (regeneratable)
 _retrieval_cache/
 
-# One-off investigation scripts and their outputs (disposable research
-# artifacts; not meant to be re-run for regression testing). The summary
-# report is kept as a team-facing status doc.
-experiments_fixes/*
-!experiments_fixes/FIXES_REPORT.md
+# evaluation/ is the project's test suite and is tracked in full, including the
+# one-off diagnostics: each documents how a design conclusion was reached, and
+# reviewers ask "did you try X?". Only regenerable output is ignored.
+evaluation/results/
+evaluation/_retrieval_cache/
+
+# Documentation is always tracked.
+!docs/
+!docs/**
 
 # Uploaded Files
 uploaded_docs/

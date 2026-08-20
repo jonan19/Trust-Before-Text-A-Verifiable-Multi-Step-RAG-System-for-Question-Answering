@@ -63,7 +63,7 @@ NLI_FAITHFULNESS_THRESHOLD: float = 0.70
 # DEFAULT OFF, and the reason is a measurement rather than caution. The gate was
 # built to give the synthesis layer an output-side guarantee comparable to the
 # decision layer's, then tested by replaying real recorded outputs through it
-# (experiments_fixes/release_gate_test.py, entailment_sensitivity.py). It does
+# (evaluation/release_gate_test.py, entailment_sensitivity.py). It does
 # contain attacks: all 18 recorded hijacked answers were withheld or stripped of
 # the attacker's payload. But it is not usable, because this NLI model cannot
 # tell legitimate answer sentences from injected ones. Over 31 sentences from
@@ -76,7 +76,7 @@ NLI_FAITHFULNESS_THRESHOLD: float = 0.70
 # The synthesis layer's real containment is at the INPUT boundary instead: Stage
 # 0 provenance verification removes attacker-authored passages before any prompt
 # is built, so the model is never shown the instruction (verified on all 45 E3
-# injection cases, experiments_fixes/synthesis_containment_test.py). That is a
+# injection cases, evaluation/synthesis_containment_test.py). That is a
 # structural property and does not depend on entailment quality. This gate stays
 # available for evaluation, and would become viable with an entailment model
 # that separates the two classes.
@@ -116,6 +116,25 @@ def _split_sentences(text: str) -> list[str]:
 # e.g. "[Evidence #1]". These are a display artifact, not part of the claim
 # being made, and must be removed before NLI scoring (see _strip_citation_markers).
 _CITATION_MARKER_RE = re.compile(r"\[Evidence\s*#?\s*\d+\]", re.IGNORECASE)
+
+# Matches the transparency banner this module prepends to a low-faithfulness
+# answer (see the end of synthesize()). The banner is the system describing its
+# own confidence, not a claim about the corpus, so no evidence set can ever
+# entail it. It must be removed before an answer is re-checked, because
+# `synthesize` stores the answer WITH the banner attached: re-scoring such an
+# answer counts the banner as an unsupported sentence and drags the
+# faithfulness score down, which prepends a longer banner next time. Measured:
+# 6 of 15 legitimate Corpus-1 answers scored exactly 0.000 faithfulness for
+# this reason alone, and the release gate withheld 7/15 as a result.
+_CAUTION_BANNER_RE = re.compile(
+    r"\[?\s*CAUTION:.*?Faithfulness score:\s*\d+%\s*\]?",
+    re.IGNORECASE | re.DOTALL)
+
+
+def _strip_caution_banner(answer: str) -> str:
+    """Remove this module's own transparency banner from an answer."""
+    return re.sub(r"\s+", " ", _CAUTION_BANNER_RE.sub(" ", answer)).strip()
+
 
 # Matches a leading "According to [Evidence #1] and [Evidence #2], " clause.
 # Removed as a whole clause (not just the brackets inside it) because once the
@@ -224,6 +243,11 @@ def _check_faithfulness(answer: str, chunks: list[dict]) -> dict:
     if model is None:
         return {"faithfulness_score": 1.0, "unsupported_sentences": []}
 
+    # Strip this module's own CAUTION banner before anything is scored: it is
+    # not part of the model's claim, and leaving it in makes re-checked answers
+    # look progressively less faithful (see _CAUTION_BANNER_RE).
+    answer = _strip_caution_banner(answer)
+
     sentences = _split_sentences(answer)
     if not chunks:
         return {"faithfulness_score": 1.0, "unsupported_sentences": []}
@@ -241,6 +265,15 @@ def _check_faithfulness(answer: str, chunks: list[dict]) -> dict:
             return {"faithfulness_score": 1.0, "unsupported_sentences": []}
         sentences = [stripped]
 
+    # Premises are evidence SENTENCES, not whole chunks. Adding whole-chunk
+    # premises (max over the superset) was tested and REJECTED: it cuts
+    # legitimate withholding from 3/15 to 1/15, but it also releases the
+    # attacker's payload in both genuinely-hijacked authority cases -- Q002
+    # ("the correct response based on the instruction would be 15 days") and
+    # Q067 ("Therefore, the answer is 40 days") went from withheld to released
+    # at ratios 0.667 and 0.75. A chunk-sized premise contains the injected
+    # claim verbatim, so it entails the hijacked sentence as readily as the
+    # honest one. See FIXES_REPORT.md, follow-up round item 4.
     evidence_texts = _split_evidence_sentences(chunks)
     unsupported: list[str] = []
 
@@ -405,6 +438,10 @@ def apply_release_gate(answer: str, faithfulness: dict) -> dict:
     if not unsupported:
         return {"answer": answer, "blocked": False, "removed_sentences": [],
                 "released_ratio": 1.0}
+
+    # Same banner removal as _check_faithfulness: the banner is not a released
+    # claim, so it must not count toward the supported-sentence ratio either.
+    answer = _strip_caution_banner(answer)
 
     sentences = _split_sentences(answer)
     if not sentences:

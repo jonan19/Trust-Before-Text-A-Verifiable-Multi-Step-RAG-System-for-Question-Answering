@@ -60,6 +60,7 @@ Return schema:
 from __future__ import annotations
 
 import logging
+import math
 import os
 import re
 from typing import Optional
@@ -191,6 +192,25 @@ MIN_CHUNKS_FOR_AVG_SUFFICIENCY: int  = int(
 )                                              # H2 (average-score branch) only applies to an evidence
                                                # set of at least this size — see check_sufficiency.
                                                # 1 restores the previous behaviour.
+KNEE_GAP_MULTIPLE: float             = float(
+    os.getenv("RAG_KNEE_GAP_MULTIPLE", "0")
+)                                              # Stage 3 discontinuity cutoff ("autocut"/knee).
+                                               # When > 0, evidence is cut at the largest JUMP in
+                                               # this query's own descending score curve, provided
+                                               # that jump is at least this multiple of the median
+                                               # gap between adjacent results. A ratio between gaps
+                                               # inside one result list carries no corpus
+                                               # calibration, which is the property an absolute
+                                               # floor lacks: MIN_CHUNK_SCORE_THRESHOLD=0.60
+                                               # discarded Corpus-2 Q038's conflicting chunk at
+                                               # 0.5945 and Q076's at 0.5751, before Stage 4 ever
+                                               # ran, so no conflict-side change could recover them.
+                                               # The same idea is standard practice elsewhere
+                                               # (Weaviate's autocut; knee detection in the
+                                               # adaptive-k RAG literature). 0 disables it.
+MIN_KNEE_KEEP: int                   = 2       # never cut below this many chunks: a knee computed
+                                               # over one or two results is noise, and Stage 4 needs
+                                               # at least a pair to compare at all
 MIN_CHUNK_SCORE_THRESHOLD: float     = float(
     os.getenv("RAG_MIN_CHUNK_SCORE_THRESHOLD", "0.60")
 )                                              # Stage 3 hard floor on calibrated `score` — chunks
@@ -226,8 +246,21 @@ NLI_SIM_FLOOR: float                 = float(
                                                # still reach NLI.
 MIN_CONFLICT_RELEVANCE: float        = 0.25   # both chunks must score above this to be conflict-checked
 MAX_CONFLICT_EVIDENCE_RANK: int      = int(
-    os.getenv("RAG_MAX_CONFLICT_EVIDENCE_RANK", "4")
-)                                              # Stage 4 query-relevance gate: both chunks of a pair
+    os.getenv("RAG_MAX_CONFLICT_EVIDENCE_RANK", "0")
+)                                              # RETIRED (default 0 = disabled). This positional
+                                               # cutoff was the precision mechanism before the
+                                               # Stage-4 anchor test existed. With the anchor test
+                                               # active it is inert: measured on Corpus 1, values 0
+                                               # and 6 produce byte-identical results. It is kept
+                                               # only so the old behaviour can be restored for
+                                               # comparison.
+                                               #
+                                               # Retiring it removes a knife edge. A hard top-N over
+                                               # near-tied scores decided outcomes on differences of
+                                               # ~0.0001: Corpus-1 Q047's conflicting chunk sat
+                                               # 0.0006 below the cutoff, and prefixing the query
+                                               # with "Could you tell me:" moved it 0.0001 above,
+                                               # flipping a genuine conflict into an answer.                                              # Stage 4 query-relevance gate: both chunks of a pair
                                                # must be among this query's N highest-scoring pieces
                                                # of evidence before they may be compared at all.
                                                # A contradiction only justifies abstention if it sits
@@ -240,6 +273,20 @@ MAX_CONFLICT_EVIDENCE_RANK: int      = int(
                                                # conflict recall at 16/16 on BOTH while raising
                                                # conflict F1 (0.842 -> 0.970 and 0.604 -> 0.727).
                                                # 0 disables the gate.
+RANK_TIE_EPSILON: float              = float(
+    os.getenv("RAG_RANK_TIE_EPSILON", "0.005")
+)                                              # score difference below which two chunks are
+                                               # treated as tied for the Stage-4 rank gate.
+                                               # A resolution tolerance, not a fitted class
+                                               # separator: measured over both corpora the
+                                               # median gap between adjacent ranked chunks is
+                                               # 0.0306 (C1) and 0.0153 (C2), while ~10% of
+                                               # adjacent gaps fall under 0.005 on BOTH
+                                               # (10.4% / 9.5%). So 0.005 is roughly a fifth
+                                               # of a typical real gap and an order of
+                                               # magnitude above the 0.0001-0.0006 margins
+                                               # that were deciding outcomes. 0 restores the
+                                               # exact-cutoff behaviour.
 QUERY_SPAN_RELEVANCE: float          = float(
     os.getenv("RAG_QUERY_SPAN_RELEVANCE", "0.35")
 )                                              # Stage 4 query-intent gate: minimum semantic similarity
@@ -366,6 +413,11 @@ def _extract_numbers_with_unit(text: str) -> list[tuple[float, str]]:
     return results
 
 
+def _is_calendar_year(value: float) -> bool:
+    """True for a bare four-digit integer in the calendar-year range."""
+    return float(value).is_integer() and 1900 <= value <= 2100
+
+
 def _has_numeric_contradiction(text_a: str, text_b: str) -> bool:
     """
     V4: Unit-context-aware numeric contradiction detection.
@@ -399,9 +451,21 @@ def _has_numeric_contradiction(text_a: str, text_b: str) -> bool:
                     return True   # same unit context, different values → contradiction
         return False
 
-    # Fallback: no unit context found in at least one text → use first numbers
-    nums_a = _extract_numbers(text_a)
-    nums_b = _extract_numbers(text_b)
+    # Fallback: no unit context found in at least one text → use first numbers.
+    #
+    # Calendar years are excluded here. A bare 19xx/20xx integer in a policy
+    # document is almost always the document's own version or effective date —
+    # metadata about the text, not a value the text asserts. Because this branch
+    # compares "the first number in each span" with no notion of what either
+    # number measures, an unfiltered year turns ordinary document versioning
+    # into a contradiction: Corpus-2 Q029 fired on two "Purpose" boilerplates,
+    # one "effective for the 2025-2026 academic year" and one "This 2022 policy
+    # previously governed...", neither of which asserts a policy value at all.
+    # Scoped to the fallback deliberately: a year-shaped number that carries a
+    # real unit ("2000 hours") is extracted by _extract_numbers_with_unit above
+    # and never reaches here.
+    nums_a = [n for n in _extract_numbers(text_a) if not _is_calendar_year(n)]
+    nums_b = [n for n in _extract_numbers(text_b) if not _is_calendar_year(n)]
     if not nums_a or not nums_b:
         return False
     return abs(nums_a[0] - nums_b[0]) > 0.01
@@ -633,7 +697,50 @@ def remove_duplicates(chunks: list[dict]) -> list[dict]:
 # Stage 3 — Relevance Filtering  (upgraded in V4)
 # ===========================================================================
 
-def filter_by_relevance(chunks: list[dict], query: str) -> list[dict]:
+def _knee_cut(chunks: list[dict]) -> list[dict]:
+    """
+    Cut the evidence list at the largest discontinuity in its score curve.
+
+    Scale-free by construction: it compares gaps *within one query's own
+    results* rather than testing scores against a fixed number, so it carries
+    nothing corpus-specific across to a new corpus. The guard is a ratio (this
+    jump must be KNEE_GAP_MULTIPLE times the median jump), which is likewise a
+    relationship between gaps rather than a magnitude.
+
+    Returns the list unchanged when no jump stands out, which is the safe
+    direction: keeping a weak chunk costs precision, dropping a strong one can
+    remove half of a genuine contradiction.
+    """
+    if KNEE_GAP_MULTIPLE <= 0 or len(chunks) <= MIN_KNEE_KEEP:
+        return chunks
+
+    ordered = sorted(chunks, key=lambda c: c.get("score", 0.0), reverse=True)
+    scores = [c.get("score", 0.0) for c in ordered]
+    gaps = [scores[i] - scores[i + 1] for i in range(len(scores) - 1)]
+    if not gaps:
+        return chunks
+
+    positive = sorted(g for g in gaps if g > 0)
+    if not positive:
+        return chunks
+    mid = len(positive) // 2
+    median_gap = (positive[mid] if len(positive) % 2
+                  else (positive[mid - 1] + positive[mid]) / 2)
+    if median_gap <= 0:
+        return chunks
+
+    # Only consider cut points that leave at least MIN_KNEE_KEEP chunks.
+    candidates = [(gaps[i], i + 1) for i in range(len(gaps)) if i + 1 >= MIN_KNEE_KEEP]
+    if not candidates:
+        return chunks
+    largest_gap, cut_at = max(candidates)
+    if largest_gap < KNEE_GAP_MULTIPLE * median_gap:
+        return chunks
+    return ordered[:cut_at]
+
+
+def filter_by_relevance(chunks: list[dict], query: str, *,
+                        apply_score_floor: bool = True) -> list[dict]:
     """
     Stage 3: Keep only chunks that are sufficiently relevant to the query.
 
@@ -659,7 +766,9 @@ def filter_by_relevance(chunks: list[dict], query: str) -> list[dict]:
 
     If query is empty or all chunks already pass, the list is returned as-is.
     """
-    chunks = [c for c in chunks if c.get("score", 0.0) >= MIN_CHUNK_SCORE_THRESHOLD]
+    if apply_score_floor:
+        chunks = [c for c in chunks if c.get("score", 0.0) >= MIN_CHUNK_SCORE_THRESHOLD]
+        chunks = _knee_cut(chunks)
 
     if not query.strip() or not chunks:
         return [{**c, "relevance_score": c.get("relevance_score", 1.0)} for c in chunks]
@@ -691,6 +800,273 @@ def filter_by_relevance(chunks: list[dict], query: str) -> list[dict]:
 # ===========================================================================
 # Stage 4 — Evidence Consistency Analysis  (upgraded in V3 + V4)
 # ===========================================================================
+
+MIN_CONTAINMENT_CHARS: int = 30   # shortest span that may be judged a duplicate
+                                  # of another by containment (see _same_assertion)
+
+
+def _normalize_span(text: str) -> str:
+    """Lowercase, strip punctuation, collapse whitespace — for identity tests only."""
+    return " ".join(re.sub(r"[^\w\s]", " ", text.lower()).split())
+
+
+def _same_assertion(text_a: str, text_b: str) -> bool:
+    """
+    True when two spans assert the same thing, so they cannot contradict.
+
+    Exact match, or one normalized span contained verbatim in the other. See
+    the call site in ``find_conflict`` for why containment is needed: chunk
+    boundaries clip shared boilerplate at the head, leaving two strings that
+    differ while saying the same thing.
+    """
+    if text_a == text_b:
+        return True
+    na, nb = _normalize_span(text_a), _normalize_span(text_b)
+    if not na or not nb:
+        return False
+    if na == nb:
+        return True
+    shorter, longer = (na, nb) if len(na) <= len(nb) else (nb, na)
+    return len(shorter) >= MIN_CONTAINMENT_CHARS and shorter in longer
+
+
+MAX_CONFLICT_SENTENCES: int = int(
+    os.getenv("RAG_MAX_CONFLICT_SENTENCES", "4")
+)                                              # per chunk, most query-relevant first.
+                                               # Bounds the sentence-pair cross product
+                                               # in find_conflict; a chunk contributes at
+                                               # most this many candidate assertions.
+MIN_CONFLICT_SENTENCE_CHARS: int = 25          # below this a "sentence" is a heading or
+                                               # a stray fragment, not an assertion
+
+
+# ---------------------------------------------------------------------------
+# Query focus terms — corpus-IDF weighted (Stage 4 anchor test)
+# ---------------------------------------------------------------------------
+# A query's content words are not equally informative. "How large is the annual
+# bonus and when is it paid?" shares the word "paid" with virtually every
+# sentence in a pay policy, but only sentences about BONUSES answer it. Matching
+# on any shared content term is therefore too weak to scope a contradiction:
+# measured on Corpus 1, "Bonuses are paid in the April payroll" was compared
+# against "Salaries are paid monthly in arrears on the 25th" and flagged as a
+# contradiction, the two sentences having nothing in common but "paid".
+#
+# Rarity is measured against the ingested corpus (document frequency over
+# chunks), a statistic the retriever's sparse stage already computes, and the
+# selection is RANK-based (the rarest half of what was asked) rather than an
+# absolute IDF cutoff. A rank means the same thing on any corpus; an absolute
+# cutoff is exactly the kind of fitted constant that failed to transfer before.
+# Question scaffolding — words that frame a question rather than name its
+# subject. Used ONLY by _focus_terms, deliberately not added to
+# _COVERAGE_STOPWORDS: that set is shared with the H4 coverage check, and
+# widening it perturbs sufficiency for every query (adding conjunctions to it
+# was tested and rejected for exactly that reason). Keeping the two lists
+# separate means the anchor test can be corrected without re-opening H4.
+#
+# These need excluding because corpus IDF actively MIS-ranks them. IDF measures
+# rarity in the documents, and a word like "versus" or "many" is rare in a
+# policy document precisely because it is question vocabulary, not subject
+# matter — so it scores as maximally discriminative and crowds out the real
+# topic. Measured on Corpus 1 Q036 ("What does the probationary period length
+# say in the Handbook versus the Recruitment policy?"), the selected focus
+# terms were {length, recruitment, say, versus} while "probationary", the
+# actual subject, was dropped as too common. The conflict was missed.
+_QUESTION_SCAFFOLD: frozenset[str] = frozenset({
+    # reporting verbs — refer to what a document says, not to what it is about
+    "say", "says", "said", "mention", "mentions", "mentioned", "according",
+    # comparison framing
+    "versus", "vs", "difference", "differences", "differ", "differs",
+    # quantity / degree framing
+    "many", "much", "up", "per",
+    # desire and modality framing
+    "like", "want", "wants", "need", "needs", "wish",
+})
+
+
+_CORPUS_DF: dict[str, int] | None = None
+_CORPUS_DOCS: int = 0
+ANCHOR_REQUIRE_BOTH: bool            = os.getenv(
+    "RAG_ANCHOR_REQUIRE_BOTH", "1") not in ("0", "false", "False")
+                                               # Stage 4 anchor test: must BOTH sentences of a pair
+                                               # mention a query focus term, or is one enough?
+                                               # Requiring both is stricter than the concept needs
+                                               # and fails on asymmetric vocabulary — two documents
+                                               # stating the same rule, one formally and one not.
+                                               # Corpus-2 Q045: focus {progress, requirement}; the
+                                               # 2.5 side says "Satisfactory Academic Progress ...
+                                               # 2.5" and anchors, the 2.0 side states the same rule
+                                               # informally and does not, so a genuine conflict is
+                                               # suppressed.
+FOCUS_KEEP_FRACTION: float = 0.5   # rarest half of the query's content terms
+MIN_STEM_MATCH_CHARS: int = 4      # below this, containment matching is unsafe
+
+_WORD_RE = re.compile(r"[a-z][a-z']*")
+
+
+def _tokenize(text: str) -> list[str]:
+    """
+    Alphabetic tokens only; hyphens are separators.
+
+    Numerals are excluded deliberately: a figure in the question ("a gift worth
+    GBP 70") is the value being asked ABOUT, so its absence from the evidence
+    says nothing about whether the evidence answers the question.
+    """
+    return _WORD_RE.findall(text.lower().replace("-", " "))
+
+
+def _stem(word: str) -> str:
+    """
+    Conservative suffix stripping: plural and participle endings only.
+
+    A full Porter stemmer conflates more aggressively (e.g. "policy"/"police"),
+    which for a policy corpus is the wrong trade. The goal is only to stop
+    morphology from hiding a term that is plainly present -- "claims submitted"
+    should satisfy a question about "submitting a claim".
+    """
+    for suffix, repl in (("ies", "y"), ("ied", "y"), ("sses", "ss"),
+                         ("ing", ""), ("ed", ""), ("es", ""), ("s", "")):
+        if word.endswith(suffix) and len(word) - len(suffix) + len(repl) >= 3:
+            return word[: len(word) - len(suffix)] + repl
+    return word
+
+
+def _stems(text: str) -> set[str]:
+    return {_stem(t) for t in _tokenize(text)}
+
+
+def set_corpus_stats(stats: Optional[dict]) -> None:
+    """
+    Publish the ingested corpus's document frequencies (see
+    qdrant_retrieval.load_corpus_stats). Passing None disables focus weighting,
+    in which case the anchor test is skipped rather than guessing.
+    """
+    global _CORPUS_DF, _CORPUS_DOCS
+    if not stats:
+        _CORPUS_DF, _CORPUS_DOCS = None, 0
+        return
+    _CORPUS_DF = stats.get("df") or {}
+    _CORPUS_DOCS = int(stats.get("doc_count") or 0)
+
+
+def _idf(term: str) -> float:
+    """Smoothed IDF over chunks. An unseen term is maximally rare."""
+    df = (_CORPUS_DF or {}).get(_stem(term), 0)
+    return math.log((_CORPUS_DOCS + 1) / (df + 1))
+
+
+def _focus_terms(query: str) -> set[str]:
+    """
+    The query's discriminative terms: the rarest FOCUS_KEEP_FRACTION of its
+    content words by corpus IDF. Empty when no corpus statistics have been
+    published, which disables the anchor test rather than approximating it.
+    """
+    if not _CORPUS_DF or not _CORPUS_DOCS:
+        return set()
+    expanded: set[str] = set()
+    for term in _query_content_terms(query):
+        expanded |= {w for w in _tokenize(term) if len(w) > 2}
+    expanded -= _QUESTION_SCAFFOLD
+
+    # A term the corpus does not contain at all cannot anchor anything.
+    #
+    # Smoothed IDF treats an unseen term as MAXIMALLY rare, which is right for
+    # judging whether evidence answers a question (a query term absent from the
+    # evidence is exactly what signals a knowledge gap) and wrong for choosing
+    # what a contradiction must be about. An out-of-vocabulary term is not
+    # highly discriminative, it is simply not in the corpus, and requiring a
+    # sentence to mention it guarantees the anchor test suppresses everything.
+    #
+    # This is what made the anchor test sensitive to the query's surface form.
+    # Appending "Thanks!" put "thanks" — df 0 in a policy corpus, therefore top
+    # of the IDF ranking — into the focus set, no evidence sentence mentioned
+    # it, and genuine conflicts stopped firing: 6 decisions changed on Corpus 1
+    # under `query_thanks`, 4 of them abstain -> answer. Restricting focus to
+    # in-vocabulary terms removes that whole class, including the reason
+    # _QUESTION_SCAFFOLD was needed for words like "versus" and "many".
+    #
+    # Absence stays a sufficiency signal (H4 coverage); it is only barred from
+    # being an ANCHOR signal.
+    expanded = {t for t in expanded if (_CORPUS_DF or {}).get(_stem(t), 0) > 0}
+    if not expanded:
+        return set()
+    ranked = sorted(expanded, key=lambda t: (-_idf(t), t))
+    keep = max(1, round(len(ranked) * FOCUS_KEEP_FRACTION))
+    return set(ranked[:keep])
+
+
+def _mentions_focus(sentence: str, focus: set[str]) -> bool:
+    """
+    Does *sentence* mention at least one of the query's focus terms?
+
+    Stemmed, with a containment fallback in either direction so that a term
+    split by a chunk boundary is still recognised. Floored at
+    MIN_STEM_MATCH_CHARS so short stems cannot match by accident.
+    """
+    if not focus:
+        return True
+    evidence = _stems(sentence)
+    for term in focus:
+        stem = _stem(term)
+        if stem in evidence:
+            return True
+        if len(stem) >= MIN_STEM_MATCH_CHARS and any(
+                len(e) >= MIN_STEM_MATCH_CHARS and (e in stem or stem in e)
+                for e in evidence):
+            return True
+    return False
+
+
+def _query_relevant_sentences(text: str, content_terms: set[str],
+                              limit: Optional[int] = None) -> list[str]:
+    """
+    The sentences of *text* that mention the query, most relevant first.
+
+    Ranked by how many query content terms each sentence carries, so the
+    bounded cross product in ``find_conflict`` spends its budget on the
+    sentences most likely to answer the question. With no content terms (no
+    query) the text is simply split into sentences, preserving the previous
+    whole-text behaviour.
+    """
+    limit = MAX_CONFLICT_SENTENCES if limit is None else limit
+    scored: list[tuple[int, str]] = []
+    for sentence in re.split(r"(?<=[.!?])\s+", text.strip()):
+        sentence = sentence.strip()
+        if len(sentence) < MIN_CONFLICT_SENTENCE_CHARS:
+            continue
+        if content_terms:
+            toks = {w.lower().strip(".,;:?!'\"()") for w in sentence.split()}
+            overlap = len(toks & content_terms)
+            if overlap == 0:
+                continue
+        else:
+            overlap = 1
+        scored.append((overlap, sentence))
+    scored.sort(key=lambda pair: -pair[0])
+    return [sentence for _, sentence in scored[:limit]]
+
+
+def _contradiction_kind(text_a: str, text_b: str) -> Optional[str]:
+    """
+    Run the three contradiction prongs over one pair of spans.
+
+    A) Keyword antonyms — cheap and precise, so gated on high lexical overlap.
+    B) NLI — deliberately NOT gated on high lexical overlap (Finding 1): its
+       purpose is paraphrastic contradictions, which by definition share little
+       vocabulary. Only the NLI_SIM_FLOOR performance guard applies.
+    C) Numeric, unit-aware — cheap/precise, gated on high lexical overlap.
+    """
+    if _same_assertion(text_a, text_b):
+        return None
+    sim = compute_chunk_similarity(text_a, text_b)
+    high_sim = sim >= CONFLICT_SIM_THRESHOLD
+    if high_sim and _has_keyword_contradiction(text_a, text_b):
+        return "keyword"
+    if sim >= NLI_SIM_FLOOR and _has_nli_contradiction(text_a, text_b):
+        return "nli"
+    if high_sim and _has_numeric_contradiction(text_a, text_b):
+        return "numeric"
+    return None
+
 
 def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
     """
@@ -724,6 +1100,7 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
     for the first conflicting pair, or None if no conflict is found.
     """
     content_terms = _query_content_terms(query)
+    focus = _focus_terms(query)
 
     # Query-relevance gate: the score a chunk must reach to be eligible for
     # comparison at all, defined as the score of this query's Nth-best chunk.
@@ -732,7 +1109,14 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
     rank_cutoff: float | None = None
     if MAX_CONFLICT_EVIDENCE_RANK > 0 and len(chunks) > MAX_CONFLICT_EVIDENCE_RANK:
         ranked_scores = sorted((c.get("score", 0.0) for c in chunks), reverse=True)
-        rank_cutoff = ranked_scores[MAX_CONFLICT_EVIDENCE_RANK - 1]
+        # Tie-tolerant: admit everything within RANK_TIE_EPSILON of the Nth
+        # score, so chunks the retriever could not meaningfully separate are
+        # never split by their position in the list. Without this the gate is a
+        # knife edge — Corpus-1 Q047's conflicting chunk sat 0.0006 below the
+        # cutoff, and prefixing the query with "Could you tell me:" perturbed
+        # the embedding by ~0.001, moved it 0.0001 above, and changed the
+        # decision from conflict to answer.
+        rank_cutoff = ranked_scores[MAX_CONFLICT_EVIDENCE_RANK - 1] - RANK_TIE_EPSILON
 
     for i, a in enumerate(chunks):
         for b in chunks[i + 1:]:
@@ -757,42 +1141,62 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
             if rel_a < MIN_CONFLICT_RELEVANCE or rel_b < MIN_CONFLICT_RELEVANCE:
                 continue
 
-            # Query-scoping (fix #1): compare only the query-relevant sentences.
-            text_a = _query_relevant_text(a["text"], content_terms)
-            text_b = _query_relevant_text(b["text"], content_terms)
-            if not text_a or not text_b:
+            # Query-scoping: compare the query-relevant SENTENCES pairwise.
+            #
+            # This used to join every query-relevant sentence of each chunk into
+            # one span and hand the two spans to NLI as a single premise pair.
+            # That is the wrong granularity, and it was being propped up by a
+            # bug: chunks used to arrive truncated, so the "spans" were short
+            # and NLI saw something close to a sentence pair by accident. With
+            # whole chunks the spans run to several sentences and the
+            # contradiction signal dilutes below threshold. Measured on
+            # Corpus-2 Q037, a genuine 2.5-vs-2.0 GPA conflict:
+            #
+            #     multi-sentence spans -> _has_nli_contradiction False
+            #     the two answer sentences alone -> True
+            #
+            # Comparing sentence to sentence also makes the reported evidence
+            # exact: the pair returned below is the sentence that actually
+            # contradicts, not a paragraph containing it.
+            sents_a = _query_relevant_sentences(a["text"], content_terms)
+            sents_b = _query_relevant_sentences(b["text"], content_terms)
+            if not sents_a or not sents_b:
                 continue
-            # Identical spans (e.g. shared boilerplate copied across documents)
-            # cannot contradict each other — skip before any check.
-            if text_a == text_b:
-                continue
-
-            # Query-intent gate: a contradiction between two documents only
-            # justifies abstention when BOTH spans are actually about what the
-            # user asked. Without this, a real conflict on topic X (e.g. remote
-            # working days) re-fires on an unrelated query about topic Y (e.g.
-            # annual leave days) whenever both chunks happen to be co-retrieved.
-            # Runs before the prong checks so irrelevant pairs also skip the
-            # expensive NLI inference. Disabled when QUERY_SPAN_RELEVANCE == 0.
-            if QUERY_SPAN_RELEVANCE > 0.0 and query.strip():
-                if (_query_span_similarity(query, text_a) < QUERY_SPAN_RELEVANCE
-                        or _query_span_similarity(query, text_b) < QUERY_SPAN_RELEVANCE):
-                    continue
-
-            sim = compute_chunk_similarity(text_a, text_b)
-            high_sim = sim >= CONFLICT_SIM_THRESHOLD
 
             kind: Optional[str] = None
-            # A) Keyword antonyms — gated on high lexical similarity.
-            if high_sim and _has_keyword_contradiction(text_a, text_b):
-                kind = "keyword"
-            # B) NLI — ungated (Finding 1): runs on any query-relevant pair with
-            #    at least minimal lexical overlap (NLI_SIM_FLOOR perf guard).
-            elif sim >= NLI_SIM_FLOOR and _has_nli_contradiction(text_a, text_b):
-                kind = "nli"
-            # C) Numeric — gated on high lexical similarity.
-            elif high_sim and _has_numeric_contradiction(text_a, text_b):
-                kind = "numeric"
+            text_a = text_b = ""
+            for cand_a in sents_a:
+                for cand_b in sents_b:
+                    # Anchor test: both sentences must assert something about
+                    # what was actually asked, judged on the query's FOCUS terms
+                    # (its rarest content words) rather than on any shared word.
+                    # This is the difference between "these two sentences are
+                    # about the same topic" and "these two sentences are
+                    # candidate answers to this question". A real contradiction
+                    # between two documents is only a reason to abstain when it
+                    # is a contradiction about the thing being asked; otherwise
+                    # one genuine conflict re-fires under every query that
+                    # happens to share a common word with it.
+                    anchored_a = _mentions_focus(cand_a, focus)
+                    anchored_b = _mentions_focus(cand_b, focus)
+                    if not (anchored_a and anchored_b if ANCHOR_REQUIRE_BOTH
+                            else anchored_a or anchored_b):
+                        continue
+
+                    # Query-intent gate, now per sentence: a contradiction only
+                    # justifies abstention when BOTH sentences are about what
+                    # the user asked. Runs before the prongs so irrelevant
+                    # pairs skip the expensive NLI inference.
+                    if QUERY_SPAN_RELEVANCE > 0.0 and query.strip():
+                        if (_query_span_similarity(query, cand_a) < QUERY_SPAN_RELEVANCE
+                                or _query_span_similarity(query, cand_b) < QUERY_SPAN_RELEVANCE):
+                            continue
+                    kind = _contradiction_kind(cand_a, cand_b)
+                    if kind:
+                        text_a, text_b = cand_a, cand_b
+                        break
+                if kind:
+                    break
 
             if kind:
                 _log.debug(
@@ -803,9 +1207,9 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
                     "kind": kind,
                     "chunks": [
                         {"source": source_a, "section": a.get("section", "unknown"),
-                         "text": _most_relevant_sentence(text_a, content_terms)},
+                         "text": text_a},
                         {"source": source_b, "section": b.get("section", "unknown"),
-                         "text": _most_relevant_sentence(text_b, content_terms)},
+                         "text": text_b},
                     ],
                 }
 
@@ -840,6 +1244,25 @@ _COVERAGE_STOPWORDS: frozenset[str] = frozenset({
     "would", "should", "will", "has", "have", "had", "it", "its", "that",
     "this", "these", "those", "with", "from", "about", "which", "who", "when",
     "me", "my", "all", "any", "some", "please", "get", "give", "tell",
+    # Personal pronouns. "me", "my" and "it" were already excluded; the rest of
+    # the set was not, which left first- and second-person pronouns counting as
+    # query CONTENT. A pronoun is never a topic: "i" occurs in virtually every
+    # English chunk, so it is covered for free and inflates H4 by one term.
+    # Measured on Corpus 2 Q053 ("How do I get credit for a semester studying
+    # abroad?"): coverage 0.6 = 3/5, and the three "covered" terms were
+    # "credit", "semester" and "i", while the two terms that define the
+    # question -- "studying" and "abroad" -- were absent from the evidence
+    # entirely. Completing the pronoun set is a correction to what counts as
+    # content, not a re-tuning of MIN_QUERY_COVERAGE.
+    "i", "we", "us", "our", "ours", "you", "your", "yours",
+    "myself", "ourselves", "yourself", "they", "them", "their", "theirs",
+    # NOTE: adding conjunctions/negation ("and", "or", "but", "not", "if") here
+    # was tested and REJECTED. It is defensible on the same grounds as the
+    # pronouns -- "and" is grammatical glue, not a topic -- but shrinking the
+    # denominator raises coverage for answerable and gap queries alike:
+    # Corpus 2 accuracy fell 80.8% -> 79.5% (Q019 answer -> insufficient) while
+    # recovering none of the three over-abstentions it was meant to address.
+    # See docs/archive/FIXES_REPORT.md, follow-up round item 3.
     # Command / action verbs — system instructions, never appear in doc content
     "summarize", "summarise", "summary", "explain", "describe", "detail",
     "outline", "review", "list", "show", "provide", "generate", "write",
@@ -1133,13 +1556,35 @@ def validate(chunks: list[dict], query: str = "") -> dict:
     stage3 = filter_by_relevance(stage2, query)
     relevant_count = len(stage3)
 
+    # Stage 4 and Stage 5 ask different questions and need different evidence.
+    #
+    # Sufficiency asks "is this evidence good enough to answer from?", so it must
+    # judge on strong evidence only — that is what MIN_CHUNK_SCORE_THRESHOLD is
+    # for, and removing it floods the evidence set: Corpus-1 gap leaks go 1/16 ->
+    # 10/16 with the floor off.
+    #
+    # Conflict detection asks "do any two of these disagree?", which needs
+    # RECALL. Half of a contradiction is often the weaker chunk, and once the
+    # floor has discarded it no amount of work in Stage 4 can recover it:
+    # Corpus-2 Q038's conflicting chunk scored 0.5945 and Q076's 0.5751, both
+    # just under a 0.60 bar, and both conflicts were unrecoverable at ANY
+    # rank-gate setting for exactly this reason.
+    #
+    # Serving both from one cutoff forces a trade between gap leaks and conflict
+    # recall that neither stage actually requires. The separation is structural:
+    # a contradiction is DETECTED over everything plausibly relevant, while an
+    # answer is BUILT only from evidence strong enough to support it. Weak
+    # evidence can therefore block an answer but never produce one, which is the
+    # safe direction for both stages.
+    stage3_wide = filter_by_relevance(stage2, query, apply_score_floor=False)
+
     # ── Stage 4: Conflict Detection ────────────────────────────────────────
     # Runs on the RELEVANCE-FILTERED set (stage3).
     # Rationale: a contradiction between two documents should only trigger
     # abstention if both documents are relevant to the current query.
     # find_conflict returns the offending pair (or None) so downstream code can
     # show *which* documents disagree instead of listing every retrieved source.
-    conflict_detail = find_conflict(stage3, query=query)
+    conflict_detail = find_conflict(stage3_wide, query=query)
     conflict_flag = conflict_detail is not None
 
     # ── Stage 5: Sufficiency Check ───────────────────────────────────────

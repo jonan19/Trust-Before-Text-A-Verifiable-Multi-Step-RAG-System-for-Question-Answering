@@ -47,6 +47,7 @@ MULTI_VECTOR_SIZE: int = 96
 MANIFEST_FILENAME: str = "manifest.json"
 SPARSE_ENCODER_FILENAME: str = "sparse_encoder.json"
 CHUNK_REGISTRY_FILENAME: str = "chunk_registry.json"
+CORPUS_STATS_FILENAME: str = "corpus_stats.json"
 DEFAULT_PREFETCH_LIMIT: int = 20
 
 _TOKEN_RE = re.compile(r"[a-z0-9]+(?:'[a-z0-9]+)?", re.IGNORECASE)
@@ -233,6 +234,10 @@ def _chunk_registry_path(qdrant_dir: str | Path) -> Path:
     return Path(qdrant_dir) / CHUNK_REGISTRY_FILENAME
 
 
+def _corpus_stats_path(qdrant_dir: str | Path) -> Path:
+    return Path(qdrant_dir) / CORPUS_STATS_FILENAME
+
+
 def chunk_fingerprint(text: str) -> str:
     """
     Provenance fingerprint of a chunk's text.
@@ -263,6 +268,7 @@ def _publish_chunk_registry(qdrant_dir: str | Path) -> None:
     try:
         import validation
         validation.set_evidence_registry(load_chunk_registry(qdrant_dir))
+        validation.set_corpus_stats(load_corpus_stats(qdrant_dir))
         _published_registry_dir = key
     except Exception:  # pragma: no cover - provenance is best-effort, never fatal
         pass
@@ -293,6 +299,38 @@ def _write_chunk_registry(qdrant_dir: str | Path, texts: list[str]) -> None:
     _chunk_registry_path(qdrant_dir).write_text(
         json.dumps({"fingerprints": sorted({chunk_fingerprint(t) for t in texts})},
                    indent=1),
+        encoding="utf-8",
+    )
+
+
+def load_corpus_stats(qdrant_dir: str | Path = DEFAULT_QDRANT_DIR) -> dict | None:
+    """
+    Document frequency of every stem across this store's chunks.
+
+    Handed to the validation layer so Stage 4 can tell a query's rare,
+    discriminative words from its ubiquitous ones (validation.set_corpus_stats).
+    Returns None for a store that predates the file, which disables focus
+    weighting rather than approximating it.
+    """
+    path = _corpus_stats_path(qdrant_dir)
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def _write_corpus_stats(qdrant_dir: str | Path, texts: list[str]) -> None:
+    """Write per-stem document frequency over the ingested chunks."""
+    import validation
+
+    df: dict[str, int] = {}
+    for text in texts:
+        for stem in validation._stems(text):
+            df[stem] = df.get(stem, 0) + 1
+    _corpus_stats_path(qdrant_dir).write_text(
+        json.dumps({"doc_count": len(texts), "df": df}, indent=1),
         encoding="utf-8",
     )
 
@@ -479,6 +517,7 @@ def ingest_documents(
         if not _chunk_registry_path(qdrant_dir).exists():
             texts = [c[0] for c in _iter_document_chunks(data_dir, source_files)]
             _write_chunk_registry(qdrant_dir, texts)
+            _write_corpus_stats(qdrant_dir, texts)
             print(f"  [Qdrant] Wrote provenance registry for {len(texts)} chunks.")
         print(f"  [Qdrant] Collection unchanged — {count} chunks ready.")
         return count
@@ -587,6 +626,7 @@ def ingest_documents(
     # to be exactly what the source documents say. Downstream, evidence whose
     # fingerprint is absent from this file did not come from the corpus.
     _write_chunk_registry(qdrant_dir, texts)
+    _write_corpus_stats(qdrant_dir, texts)
     _save_manifest(qdrant_dir, {
         "embedding_model": DENSE_MODEL_NAME,
         "sparse_model": SPARSE_MODEL_NAME,
