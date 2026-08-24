@@ -118,16 +118,17 @@ async def query_pipeline(request: QueryRequest):
         chunks = []
         similarity_scores = []
         raw_scores = []
-        
+
         for c in cleaned_chunks:
             chunks.append({
                 "source_document": c.get("source", "unknown"),
                 "text": c.get("text", ""),
-                "section": c.get("section", "unknown")
+                "section": c.get("section", "unknown"),
+                "rank": c.get("rank"),
             })
             similarity_scores.append(c.get("score", 0.0))
             raw_scores.append(c.get("relevance_score", 0.0))
-            
+
         return {
             "status": res.get("synthesis_result", {}).get("status", "success"),
             "query": request.query,
@@ -149,6 +150,14 @@ async def query_pipeline(request: QueryRequest):
             # Faithfulness (V5): only populated on successful synthesis
             "faithfulness_score": res.get("synthesis_result", {}).get("faithfulness_score"),
             "unsupported_sentences": res.get("synthesis_result", {}).get("unsupported_sentences", []),
+            # --- Pipeline observability (full stage-by-stage trace) ---
+            "query_type": res.get("query_type", "simple"),
+            "sub_queries": res.get("sub_queries", []),
+            "target_source": res.get("target_source"),
+            "raw_chunk_count": res.get("raw_chunk_count", 0),
+            "conflict_detail": validation_result.get("conflict_detail"),
+            "unverified_count": validation_result.get("unverified_count", 0),
+            "unverified_sources": validation_result.get("unverified_sources", []),
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

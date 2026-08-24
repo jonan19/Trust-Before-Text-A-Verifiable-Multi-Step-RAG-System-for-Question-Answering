@@ -210,6 +210,46 @@ def _split_evidence_sentences(chunks: list[dict]) -> list[str]:
     return [c.get("text", "") for c in chunks if c.get("text")]
 
 
+def _split_evidence_sentence_pairs(chunks: list[dict]) -> list[str]:
+    """
+    Adjacent-sentence-pair premises, for compound answer claims that draw on
+    two facts stated back-to-back in the source text.
+
+    Single evidence sentences (_split_evidence_sentences) are the right
+    premise for a single-fact claim, but a synthesized answer routinely
+    merges two adjacent facts into one fluent sentence — exactly what
+    synthesis is for. Scored against singles only, such a sentence is
+    entailed by NEITHER half alone and collapses to near-zero even when both
+    halves are individually supported at ~0.99. Measured on a real pair from
+    Leave_and_Time_Off_Policy.docx: "two weeks' notice ... one week or more"
+    (0.993 alone) + "no more than 10 consecutive days ... director approval"
+    (0.989 alone) -> the two joined into one sentence scored 0.001 against
+    either half. That is a scoring-granularity gap, not evidence the claim is
+    unsupported, and it was flagging correctly-cited answers as unfaithful
+    across roughly half their sentences.
+
+    Deliberately narrower than "any two evidence sentences": pairs are drawn
+    ADJACENT and WITHIN THE SAME CHUNK only. This is the direct sentence-pair
+    analogue of the existing single-sentence design (see
+    _split_evidence_sentences) and preserves its reasoning: a whole chunk is
+    rejected as a premise because it lets an attacker's injected instruction
+    ride along with unrelated real content (see the whole-chunk-premise
+    rejection note in _check_faithfulness). Two sentences that are neither
+    adjacent nor from the same source chunk have no more claim to jointly
+    supporting one compound assertion than two random sentences from
+    unrelated documents would, so pairing is not extended beyond this.
+    """
+    out: list[str] = []
+    for c in chunks:
+        text = c.get("text", "")
+        if not text:
+            continue
+        sents = [s for s in _split_sentences(text) if s]
+        for a, b in zip(sents, sents[1:]):
+            out.append(f"{a} {b}")
+    return out
+
+
 def _check_faithfulness(answer: str, chunks: list[dict]) -> dict:
     """
     V5: Post-generation NLI faithfulness check.
@@ -274,14 +314,25 @@ def _check_faithfulness(answer: str, chunks: list[dict]) -> dict:
     # at ratios 0.667 and 0.75. A chunk-sized premise contains the injected
     # claim verbatim, so it entails the hijacked sentence as readily as the
     # honest one. See FIXES_REPORT.md, follow-up round item 4.
-    evidence_texts = _split_evidence_sentences(chunks)
+    #
+    # Adjacent-pair premises (see _split_evidence_sentence_pairs) are added
+    # alongside the singles for the same reason singles were added instead of
+    # whole chunks: a compound answer sentence that merges two adjacent
+    # source facts is entailed by NEITHER fact alone (measured: two facts at
+    # ~0.99 entailment individually, 0.001 once merged into one sentence),
+    # which was scoring correctly-cited synthesis as unfaithful roughly half
+    # the time. Pairs stay adjacent-and-same-chunk, never the full chunk or
+    # any two evidence sentences at large, so the injection-payload gap above
+    # is not reopened -- a two-sentence premise is still far too small to
+    # smuggle a hijack instruction past its own attribution.
+    evidence_texts = _split_evidence_sentences(chunks) + _split_evidence_sentence_pairs(chunks)
     unsupported: list[str] = []
 
-    # Check every answer sentence against every evidence sentence in a single
+    # Check every answer sentence against every evidence premise in a single
     # batched NLI call rather than one model.predict() per answer sentence:
     # the cross-encoder amortises its forward-pass overhead across the whole
     # batch, and the pair count (sentences x evidence_texts) is unchanged
-    # either way. A sentence passes if ANY evidence sentence entails it.
+    # either way. A sentence passes if ANY evidence premise entails it.
     # NLI label order for nli-deberta-v3-base: [contradiction, entailment, neutral]
     # Citation markers are stripped from the NLI hypothesis only — the
     # original `sentence` (with markers) is what gets recorded/displayed.

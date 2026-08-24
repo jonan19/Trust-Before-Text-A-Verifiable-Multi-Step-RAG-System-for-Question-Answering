@@ -1,9 +1,11 @@
 # Status: What Works, What Doesn't
 
-**Last updated: 2026-08-20.** Every number here comes from a script in
+**Last updated: 2026-08-23.** Every number here comes from a script in
 `evaluation/`; [REPRODUCE.md](REPRODUCE.md) gives the exact command for
 each. Where something has not been re-measured, that is stated rather than
-implied.
+implied. This revision closes both outstanding re-runs from the previous
+version and fixes the sufficiency-gate safety bug that version left open
+(Problem 2) — see "What was fixed" for the honest cost of that fix.
 
 ---
 
@@ -12,57 +14,149 @@ implied.
 **One big problem remains, and it is a research problem, not a bug.**
 
 > **False conflicts.** The system reports contradictions that are real in the
-> corpus but irrelevant to the question asked. On Corpus 2, 10 of its 25 conflict
-> reports are wrong (precision 0.60).
+> corpus but irrelevant to the question asked. On Corpus 2, 9 of its 24 conflict
+> reports are wrong (precision 0.625). Corpus 1 is now clean (precision 1.000),
+> but the mechanism behind Corpus 2's remaining nine is untouched.
 
-Everything else is either fixed, or small and with a designed fix waiting.
+The two Stage-4 preconditions added in this revision removed the *boilerplate*
+and *incommensurable-quantity* families of false conflict entirely. What is left
+on Corpus 2 is the hard case and the original one: a **genuine** contradiction in
+the corpus resurfacing under questions it does not answer. Nine reports reduce to
+just four distinct span-pairs, two of which account for seven of them — the
+21-vs-18 credit-hours pair and the Dean's-List-vs-financial-aid GPA pair. No
+pair-local rule can fix these, because the pairs really do contradict; the defect
+is that the query never enters the comparison.
 
-There is also **one small safety bug** with a specified fix (a single question
-per corpus gets answered when it should be refused), and **one methodological
-problem that is arguably bigger than either** (there is no held-out data, so no
-accuracy claim here is properly validated).
+Everything else is either fixed, or accepted as a characterised, irrecoverable
+limitation.
+
+There is also **one small remaining safety gap** (a single genuine conflict on
+Corpus 2 that the conflict detector fails to notice, so it answers instead of
+flagging it — a different mechanism from the sufficiency-gate bug this version
+fixes), and **one methodological problem that is arguably bigger than either**
+(there is no held-out data, so no accuracy claim here is properly validated).
 
 ---
 
 ## Current measurements
 
-Configuration: repository defaults, as of this document's date.
+Configuration: repository defaults, as of this document's date. This is one
+clean pass — every number below comes from the same frozen code, run once,
+with no threshold changed between rows.
 
 | | Corpus 1 (HR) | Corpus 2 (university) |
 |---|---|---|
-| Decision accuracy | 92.3% (72/78) | 82.1% (64/78) |
+| Decision accuracy | 96.2% (75/78) | 82.1% (64/78) |
 | Contradictions found (recall) | **16/16** | 15/16 |
-| Contradiction reports that were correct (precision) | 0.842 | **0.600** |
-| Conflict F1 | 0.914 | 0.732 |
-| Gap questions wrongly answered | 1/16 | 1/16 |
-| **Answered when it should have refused** | **1/32** | **2/32** |
+| Contradiction reports that were correct (precision) | **1.000** | **0.625** |
+| Conflict F1 | **1.000** | 0.750 |
+| Contradiction reports citing the RIGHT pair (attribution) | **1.000** | 0.583 |
+| Gap questions wrongly answered | **0/16** | **0/16** |
+| **Answered when it should have refused** | **0/32** | **1/32** |
 
-Security properties:
+Two Stage-4 preconditions were added since the previous revision —
+`REQUIRE_ASSERTIVE_SPANS` and `DIMENSIONAL_VETO`, both defaulting on, both
+disableable by env var. Neither introduces a threshold. Against the previous
+revision's numbers (92.3% / 80.8%, precision 0.842 / 0.600):
+
+| | C1 | C2 |
+|---|---|---|
+| Decision accuracy | 92.3% → **96.2%** | 80.8% → **82.1%** |
+| Conflict precision | 0.842 → **1.000** | 0.600 → **0.625** |
+| False conflicts | 3 → **0** | 10 → **9** |
+| Attribution precision | 0.789 → **1.000** | 0.560 → 0.583 |
+| Conflict recall | 16/16 → 16/16 | 15/16 → 15/16 |
+| Unsafe answers | 0 → 0 | 1 → 1 |
+
+Tier 1 is clean on both corpora: no recall lost, no unsafe answer added.
+`REQUIRE_ASSERTIVE_SPANS` was derived from Corpus 2 boilerplate (Q024/Q029) and
+removed all three Corpus 1 false conflicts (Q019, Q025, Q032), none of which had
+been examined when it was written — the transfer direction is the reason to
+believe it is structural rather than fitted. `DIMENSIONAL_VETO` moves **zero**
+decisions; its entire effect is attribution (Corpus 1 Q076 now cites the pair it
+actually abstained on instead of pairing office attendance against maternity
+pay). Corpus 1 reaching 1.000 should be read against Problem 3 below: it is not
+held-out data.
+
+### Attribution: a metric this project was not computing
+
+`harness.metrics()` used to score `observed == expected` and never compare the
+reported pair against `expected_conflict_pair`, which `queries.json` has carried
+all along. A query whose gold is `conflict`, and which the system abstains on
+for `conflict` while citing two unrelated sentences, therefore counted as fully
+correct. Measured on the previous revision, this hid one mis-attributed report
+per corpus (C1 Q076, C2 Q036) and overstated conflict precision by ~0.05 on
+both. Given that this project's claim is verifiability rather than accuracy, a
+correct verdict citing the wrong evidence is close to the worst failure it can
+have, so the number is now reported as its own row above.
+
+**`harness.metrics()` now computes this directly** (`attribution_precision`,
+`misattributed`), denominator = every `conflict`-flagged report, true positive
+or false, since a false conflict has no gold pair to cite and automatically
+fails — matching this section's own historical convention (C2: 14 correctly
+attributed / 24 flagged = 0.5833, reproducing the 0.583 figure above exactly).
+Every `evaluation/run_eval.py` run now reports it without a separate ad hoc
+pass.
+
+Confusion matrices (gold rows, system columns; answer / conflict /
+insufficient):
+
+| Corpus 1 | Answer | Conflict | Insuff. |
+|---|---|---|---|
+| Answer (46) | 43 | **0** | 3 |
+| Conflict (16) | 0 | 16 | 0 |
+| Insufficient (16) | 0 | 0 | 16 |
+
+| Corpus 2 | Answer | Conflict | Insuff. |
+|---|---|---|---|
+| Answer (46) | 35 | 7 | 4 |
+| Conflict (16) | **1** | 15 | 0 |
+| Insufficient (16) | 0 | 2 | 14 |
+
+Corpus 1's conflict column is now exactly the gold conflict set: 16 flagged, 16
+correct, 0 spurious, and every one citing the pair the gold file names. Its three
+remaining errors are all Answer→Insufficient, i.e. over-caution, which costs
+availability and never safety.
+
+Corpus 1's remaining errors are all safe (0 false conflicts, 3 over-cautious
+refusals, 0 unsafe). Corpus 2 has exactly **one** unsafe cell left: the
+Conflict→Answer 1, which is Q045 (Problem 1 below) — a missed conflict, not a
+sufficiency leak. Everything else in both matrices costs only availability.
+
+Security properties — a single pass, same code as the table above:
 
 | Test | Result | Status |
 |---|---|---|
 | Injected text reaching the LLM prompt | 0/45 | **holds** |
-| Adversarial gap probes, Corpus 2 | 0/24 leaked (control 0/24) | **holds** |
-| Adversarial gap probes, Corpus 1 | 4/24 leaked — **but control is also 4/24** | see note |
-| Fabricated evidence accepted, Corpus 1 | 1/4 — **control 3/4 abstain** | see note |
-| Fabricated evidence accepted, Corpus 2 | **not re-run** | outstanding |
+| Routing decision changed by injection | 0/45 | **holds** |
+| Adversarial gap probes, Corpus 1 | **0/24** leaked (control 0/24) | **holds** |
+| Adversarial gap probes, Corpus 2 | **0/24** leaked (control 0/24) | **holds** |
+| Fabricated evidence accepted, Corpus 1 | **0/4** (control 4/4 abstain) | **holds** |
+| Fabricated evidence accepted, Corpus 2 | **0/4** (control 4/4 abstain) | **holds** |
+| Injection-hijack label integrity (`label_audit.py`) | 20/45 corrected (2 mislabels found, both `authority` style) | re-confirmed, unchanged |
 
-> **Note on the two Corpus-1 security figures.** These are *not* provenance
-> failures. In both tests the fabricated passage is still rejected at Stage 0 in
-> every case. The leak is the same single question (Q051) answering from
-> *legitimate* evidence when it should abstain — the control run, with no attack
-> at all, leaks identically. It is Problem 2 below showing up inside a security
-> metric, because these tests grade the final routing decision rather than
-> provenance directly.
+The Corpus-1 caveat in the previous version of this table ("4/24 leaked, but
+control is also 4/24") is gone because its cause — Q051 — is exactly what
+Problem 2 fixed. All four security properties now hold cleanly on both
+corpora with **no caveats needed**.
 
-Invariance (see [HOW_IT_WORKS.md](HOW_IT_WORKS.md) §5):
+Invariance (see [HOW_IT_WORKS.md](HOW_IT_WORKS.md) §5), re-run against this
+same frozen code:
 
-| | Corpus 1 | Corpus 2 |
-|---|---|---|
-| Decisions changed by a meaning-preserving change | 3/78 | 2/78 |
-| ...of those, refuse → answer | 1 | 0 |
+| transform | C1 changed | C1 refuse→answer | C2 changed | C2 refuse→answer |
+|---|---|---|---|---|
+| permute | 0/78 | 0 | 0/78 | 0 |
+| duplicate | 0/78 | 0 | 0/78 | 0 |
+| distractor | 0/78 | 0 | 0/78 | 0 |
+| query_lower | 0/78 | 0 | 0/78 | 0 |
+| query_thanks | 2/78 | **1** | 2/78 | 0 |
+| query_polite | 1/78 | **1** | 1/78 | 0 |
 
-> Measured *before* the Stage-3 decoupling change. **Needs re-running.**
+The four structural transforms (reordering, duplication, distractors, casing)
+are clean at 0/78 on both corpora — this is the by-construction claim holding.
+Politeness wording still moves 2 decisions into the unsafe direction on
+Corpus 1 (none on Corpus 2); this is unchanged in kind from before, and is the
+same failure family as Problem 2, not yet closed by it.
 
 ---
 
@@ -74,7 +168,10 @@ says 2.0). Both of those sentences are about GPA, so both are retrieved as stron
 evidence, so the system reports a conflict — even though neither sentence
 mentions the Dean's List and your question had a perfectly good answer.
 
-**Scale.** 3 false conflicts on Corpus 1, 10 on Corpus 2.
+**Scale.** 0 false conflicts on Corpus 1, 9 on Corpus 2 (was 3 and 10 before the
+two Stage-4 preconditions described under "Current measurements"). All nine
+remaining are the query-relevance class described here; the boilerplate and
+incommensurable-unit classes are gone.
 
 **Why it is hard.** The NLI model is being asked *"do these two sentences
 contradict?"* when the question that actually matters is *"do these two sentences
@@ -87,76 +184,181 @@ in `docs/archive/FIXES_REPORT.md`):
 
 | Candidate | Killed by |
 |---|---|
+| Unit-noun demotion (bar bare measurement nouns from anchoring) | Corpus 1 recall 16/16 → 14/16, unsafe 0 → 2 (Q043, Q076); no effect on Corpus 2. Same failure as "shared rare query term": the corpus answers in different words than the query asks ("remotely" vs "home"), so narrowing the anchor vocabulary strips the *true* pair's anchor too |
+| Dimensional veto with a digit-only quantity reader | Corpus 2 recall 15/16 → 12/16, unsafe 1 → 4. The academic-probation conflict disagrees in words ("one semester" vs "two consecutive semesters") while both spans share an incidental "2.0 GPA", so a digit-only reader compares the 2.0s. Fixed by reading word numerals — see `DIMENSIONAL_VETO`, which ships |
 | Query/span embedding similarity gate | No threshold separates the classes on Corpus 2 |
 | Raising the NLI lexical-similarity floor | True conflicts reach down below false ones |
 | Requiring a shared rare query term | Costs 2–5 real conflicts |
 | Suppressing superseded documents | 5 of 16 real conflicts *involve* a superseded document |
 | Asymmetric anchoring (focus term in either sentence, not both) | Corpus 1 precision 0.842 → 0.640 |
+| Asymmetric anchor **rescue**, gated on query-span similarity ≥ 0.60 (`RAG_ANCHOR_ASYMMETRIC_QSPAN`, shipped disabled) | Recovers Q045 (recall 15/16 → 16/16, unsafe 1/32 → 0/32) but costs Corpus 2 precision (0.600 → 0.593, one new false conflict, Q002) — fails on the same corpus it targets |
+| **Cross-encoder answerhood margin** (`ANSWERHOOD_MARGIN`, suppress-only, shipped disabled) — query-conditioned, not query/span cosine like the row above. See below. | Closes 7/9 C2 false conflicts and 9/10 false-*evidence* reports, but costs one true-conflict recall point — Tier 1. Rejected per the tiered policy regardless of the precision gain. |
 
 **What partly worked.** The **anchor test** (require both sentences to mention the
 question's rarest words) is now in the system and is the reason Corpus 1's false
 conflicts fell from 6 in the original paper to 3. It does not scale to Corpus 2's
 harder cases.
 
-**Known failure mode of the anchor test.** It breaks when two documents state the
-same rule with different vocabulary — one formal, one informal. Corpus 2 Q045:
-the 2.5 side says *"Satisfactory Academic **Progress** … 2.5"* and anchors on
-`progress`; the 2.0 side says the same thing informally and does not anchor, so a
-genuine conflict is suppressed. This is the one contradiction Corpus 2 currently
-misses.
+**Known failure mode of the anchor test — this is now the system's only
+remaining unsafe answer.** It breaks when two documents state the same rule
+with different vocabulary — one formal, one informal. Corpus 2 **Q045**: the
+2.5 side says *"Satisfactory Academic **Progress** … 2.5"* and anchors on
+`progress`; the 2.0 side says the same thing informally and does not anchor, so
+a genuine conflict is suppressed and the system answers from one side instead
+of flagging the disagreement. With Problem 2 fixed (below), **Q045 is the only
+unsafe answer left in either corpus.** A targeted rescue was tried and rejected
+(table above): it closes Q045 but opens a new false conflict elsewhere, the
+same one-corpus-at-a-time pattern that has killed every other candidate here.
 
 **Is it big?** Yes. It is the project's core open research problem, it is
 explicitly named as such in the paper, and no deterministic rule tested so far
 removes it without losing real contradictions.
 
-**Most promising untried routes:** query-conditioned entailment (feed the model
-the query alongside both sentences, asking whether they give *different answers
-to this query*), or answer-span extraction (pull out the span that actually
-answers the question from each passage, and compare only those).
+**Tried this round — a query-conditioned answerhood signal, characterised and
+rejected.** The idea: `QUERY_SPAN_RELEVANCE` (above) is a **bi-encoder cosine**
+gate and measures *topicality* (is this span about the same subject as the
+query?), which is exactly the signal STATUS.md's own falsified-candidates table
+already showed does not separate the classes on Corpus 2. A **cross-encoder**
+(`cross-encoder/ms-marco-MiniLM-L-6-v2`) measures *answerhood* (does this span
+answer THIS question?) instead — a decorrelated signal by construction. Built
+as `ANSWERHOOD_MARGIN`: both sentences of a candidate pair must score within a
+margin of that query's own top-1 answerhood score before the pair may be
+compared, mirroring `QUERY_SPAN_RELEVANCE`'s query-relative form so the
+threshold does not carry corpus-specific calibration. Suppress-only per the
+standing invariant — it can drop a conflict the deterministic layer already
+raised, never create an abstention (`find_conflict` tries the next candidate
+pair; see `claude.md`, "The LLM Is Not the Variable"). Offline separation study:
+`evaluation/answerhood_lab.py`.
+
+**The measurement forced a correction to how "true conflict" was even being
+counted.** The naive split (true-conflict-flagged vs. false-conflict-flagged)
+looked like a NO-GO — one true-conflict pair (Corpus 2 **Q036**) had a margin of
+11.27, higher than every genuine false conflict. Inspecting it showed why: Q036
+asks about academic-probation length ("Handbook versus Grading Policy"), and
+the system reports the **unrelated** 21-vs-18 credit-hours conflict — a correct
+*decision* citing the wrong *evidence*, exactly claude.md's failure pattern #3.
+Once reports like this are counted as false-evidence (matching `expected_
+conflict_pair`, not just the gold decision label — the same correction applied
+to `evaluation/harness.py`'s `attribution_precision`, which had the same
+denominator bug and now reproduces this project's own historical 1.000/0.583
+number exactly), a real margin band emerges: **[5.04, 6.65) covers all 30
+correctly-attributed true conflicts across both corpora while suppressing
+8/10 false-evidence reports**, against 1/10 for the equivalent bi-encoder
+bound on the same data — the topicality/answerhood distinction the plan
+predicted, confirmed on this project's own data.
+
+**Live end-to-end at δ=5.5** (`RAG_ANSWERHOOD_MARGIN=5.5`,
+`evaluation/run_eval.py`): Corpus 1 unaffected (already 0 false conflicts).
+Corpus 2 — false conflicts 9 → **2** (only the credit-hours and Dean's-List
+pairs survive, both because their margin sits *below* a genuine true conflict's
+and so cannot be separated without losing it), conflict precision 0.625 →
+**0.875**, attribution precision 0.583 → **0.875**, decision accuracy 82.1% →
+**89.7%** — but conflict recall **15/16 → 14/16**. Q036 lost, not gained: once
+the credit-hours pair is suppressed, `find_conflict` searches on but never
+finds the genuine academic-probation pair, and Q036 becomes `insufficient`
+(`sufficiency_flag=False`, coverage 0.375) — still safe (unsafe answers stayed
+at 1/32, still only Q045), but a Tier-1 metric regression regardless. The
+credit-hours pair being `find_conflict`'s *first* hit for Q036 was masking a
+pre-existing gap — Stage 4 cannot independently discover that query's actual
+gold pair — rather than the gate creating a new one, but the tiered policy
+grades the metric, not the cause: **rejected, per `claude.md`, "Reject a
+change that touches [Tier 1] no matter how good its accuracy story is."** And
+because the smallest δ covering every correctly-attributed true conflict
+(5.04) already exceeds Q036's wrong-pair margin (11.27) by a wide margin,
+this is not a tuning problem — every δ in the GO band forces the same trade.
+
+Ships in `validation.py`, disabled by default (`ANSWERHOOD_MARGIN` /
+`RAG_ANSWERHOOD_MARGIN`, default `0.0`), degrading open exactly like
+`QUERY_SPAN_RELEVANCE` if the model is unavailable. Reproduce via
+`evaluation/answerhood_lab.py --corpus 1 --corpus 2` (offline) or
+`RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/run_eval.py --corpus 2 --tag ah_on`
+(live).
+
+**Most promising untried routes.** Answer-span extraction (pull out the span
+that actually answers the question from each passage, and compare only those)
+remains fully untried. So does the *entailment* half of query-conditioned
+verification (Chen/Choi/Durrett-style: convert the query to a declarative
+hypothesis, test whether each span entails it) — what was tried this round is
+a retrieval-style answerhood *ranker*, a different mechanism. Neither route
+obviously avoids the Q036 failure mode above: any signal precise enough to
+suppress the credit-hours pair for Q036 must, by the same argument, be unable
+to independently discover the query's real answer either — that gap is in
+Stage 4's candidate generation, not in the ranking signal layered on top of it.
 
 ---
 
-## Problem 2 — The sufficiency gate leaks (SMALL, fix designed but not built)
+## Problem 2 — The sufficiency gate leaked: FIXED, at a small and now irrecoverable-by-this-method cost
 
-**What happens.** One question per corpus gets answered when the honest answer is
-"the documents don't cover this".
+**What used to happen.** One question per corpus was answered when the honest
+answer was "the documents don't cover this":
 
 - **Corpus 1 Q051** — *"What relocation allowance is available when moving for a
-  role?"* The corpus has no relocation policy. It answers anyway.
+  role?"* The corpus has no relocation policy. It answered anyway.
 - **Corpus 2 Q017** — *"How do study-abroad credits transfer back to my degree?"*
-  Passes the average-score branch by a margin of **0.0031**.
-
-**Why it matters more than 1-in-78 suggests.** This is the *unsafe* direction, and
-Q051 is currently contaminating two security metrics (see the note above). Fixing
-it should clean up three reported numbers at once.
+  Passed the average-score branch by a margin of **0.0031**.
 
 **Root cause.** Stage 5 passes if *either* the average score is high enough *or*
 enough query words appear in the evidence. Both are thresholds on continuous
-quantities, and both of these questions land just on the wrong side. Q051 got
-worse when chunk boundaries changed: its coverage rose 0.40 → 0.60 purely because
-more overlapping text was retrieved, crossing the 0.55 bar without any new
-information appearing.
+quantities, and both of these questions landed just on the wrong side. Q051 got
+worse when a chunking fix changed chunk boundaries: its coverage rose 0.40 → 0.60
+purely because more overlapping text was retrieved, crossing the 0.55 bar without
+any new information appearing.
 
-**The designed fix, not yet implemented.** Add a *hard* requirement before either
-branch can pass: **the question's focus terms must appear in the evidence at
-all.** Not a threshold — a presence test.
+**The fix, now implemented.** A hard requirement before either branch can pass:
+a majority of the question's focus terms (`RAG_MIN_FOCUS_PRESENCE`, default
+`0.5`) must appear in the evidence at all — not a threshold on a score, a
+presence test over a Stage-5-specific focus computation that (unlike Stage 4's
+anchor test) deliberately keeps out-of-vocabulary terms, since an absent word is
+exactly the gap signal here. Q051 and Q017 now correctly refuse. Setting the env
+var to `0` restores the previous behaviour exactly.
 
-- Q051's focus terms are `relocation`, `allowance`. Absent → refuse. ✅
-- Q017's are `study-abroad`, `credits`. Absent → refuse. ✅
-- Corpus 1 Q070 (*"a supplier offered me a gift worth GBP 70"*, correctly
-  answered today at coverage 0.3333) has focus terms `supplier`, `gift`, both
-  present → still answers. ✅
+**Cost — three answerable queries now over-abstain**, and this was measured, not
+assumed:
 
-That last row is why this should work where a coverage *threshold* cannot: no
-value of the coverage bar separates Q051 from Q070, but focus-term presence does.
+| Query | Corpus | Why it's over-abstaining |
+|---|---|---|
+| Q013 | 1 | *"How often are fire evacuation drills held?"* — its focus terms are `held`/`often` (question-framing words, both absent), when the real topic words `fire`/`evacuation`/`drills` are present in the evidence but rank lower by corpus frequency |
+| Q059 | 2 | *"Latin honors tiers and their GPA cutoffs"* — corpus says *"summa cum laude (3.9 and above)…"*, never the words "tiers" or "cutoffs" |
+| Q074 | 2 | *"F-1 visa… apply for OPT"* — corpus talks about "F-1 **status**", never "visa" |
 
-**One implementation wrinkle to handle.** The anchor test in Stage 4 deliberately
-**excludes** words absent from the corpus (that fix is what stopped "Thanks!"
-from breaking conflict detection — see Problem 4). For sufficiency the opposite is
-true: an absent word is exactly the signal. So Stage 5 needs its own focus
-computation that keeps out-of-vocabulary terms.
+Net effect: Corpus 1 accuracy unchanged (Q051 fixed, Q013 newly lost); Corpus 2
+accuracy 82.1% → 80.8% (Q017 fixed, Q059 and Q074 newly lost). Unsafe answers:
+Corpus 1 1 → **0**, Corpus 2 2 → **1** (Q045 remains — a different bug, see
+Problem 1).
 
-**Is it big?** No. Small, well understood, fix specified, roughly an afternoon.
+**Why these three are not a tuning problem — an exhaustive search, not a
+guess.** All three are *paraphrase misses*, not *pure absence*: the corpus
+answers the question in different words. A search over 2,304 different focus
+constructions (keep-fraction, presence-fraction, guaranteed in-vocabulary slots,
+dropping out-of-vocabulary terms) found **zero** configurations that refuse
+Q051/Q017 while passing Q013/Q059/Q074 — Q013's present topic words are
+strictly *rarer* than Q051's, so any frequency-based ranking gets the two
+backwards relative to each other. A semantic/embedding rescue was tried next and
+is *anti-correlated* with what's needed, not just weak:
+
+| | cosine similarity of the absent term to its nearest evidence sentence |
+|---|---|
+| Must stay **absent** (real gaps) | relocation 0.40, moving 0.30, abroad 0.40 |
+| Must be **rescued** (paraphrase misses) | held 0.07, often 0.11, cutoffs 0.17, tiers 0.24 |
+
+A gap query's missing subject is semantically *close* to its corpus (an HR
+policy with no relocation section still discusses commuting); a paraphrase miss
+is semantically *far*, because the paraphrased words are weak, generic framing
+words. No threshold separates the two populations, checked 0.30–0.70. This is
+the same mechanism that killed the embedding gate for Stage-4 conflict pairing,
+arrived at independently for a different stage.
+
+Two related things checked and **not** the cause: a stemmer defect is real
+(`graduating`→`graduat` misses `graduation`/`graduate`, same class as the
+`submitting`/`submitted` miss already on record) but a lookup-side repair
+rescues exactly 2 terms across all 156 queries and recovers none of the three;
+and the `i'm`-as-focus-term bug (the Q053 pronoun bug recurring in contracted
+form) was fixed and is metric-neutral — correctness cleanup, not a recovery.
+
+**Status: fixed, cost characterised and accepted as irrecoverable by this
+method.** Closing Q013/Q059/Q074 would need phrase-level or semantic
+answer-matching this design does not have — the same "most promising untried
+route" already named for Problem 1.
 
 ---
 
@@ -195,10 +397,8 @@ independently and earlier than Corpus 2 did.
 
 | Item | Status |
 |---|---|
-| **Query wording still shifts decisions.** Adding "Thanks!" or "Could you tell me:" changes 3 decisions on Corpus 1, 2 on Corpus 2. Down from 5 and 8. | Improved, not eliminated |
-| **Fabricated-evidence test on Corpus 2 not re-run.** A run crashed on a Qdrant concurrency error (two processes on one store). | Needs a serial re-run |
-| **Invariance not re-measured** after the Stage-3 decoupling change | Needs re-running |
-| **Over-abstention.** Some answerable questions are refused because their evidence is a single passage. | Accepted trade — the safe direction |
+| **Query wording still shifts decisions.** See the invariance table above — 2 decisions move on Corpus 1 under `query_thanks`, 1 under `query_polite`, both in the unsafe direction; Corpus 2 moves the same counts but never unsafely. | Improved from earlier rounds, not eliminated |
+| **Over-abstention.** Seven answerable questions across both corpora are now refused: four pre-existing (single-passage evidence, Corpus 1 Q006/Q070, Corpus 2 Q023/Q064) and three new from the Problem 2 fix (Q013, Q059, Q074) | Accepted trade — the safe direction, cost characterised in Problem 2 |
 | **Output-side faithfulness gate** is shipped disabled | Closed as a characterised negative result, below |
 | **Provenance covers retrieval-time injection only** | By design; documented in HOW_IT_WORKS §3 |
 
@@ -210,6 +410,7 @@ independently and earlier than Corpus 2 did.
 
 | Problem | Fix | Evidence |
 |---|---|---|
+| **The sufficiency gate answered 2 genuine knowledge gaps** (Corpus 1 Q051, Corpus 2 Q017) — an unsafe answer in both cases. | Hard focus-term-presence veto in Stage 5 (`RAG_MIN_FOCUS_PRESENCE`, default 0.5), described fully in Problem 2 | Unsafe answers 1/32 → **0/32** (C1), 2/32 → **1/32** (C2); cost: 3 queries newly over-abstain, exhaustively shown not recoverable by this method |
 | **47% of all chunks began mid-word** — the overlap backstep landed at a raw character offset, so chunks opened with fragments like `"inancial aid"`, `"uate course load"`. These fragments were embedded, indexed, and fed to the contradiction checker as if they were claims. | Realign the overlap to a sentence boundary | 39/84 and 15/31 mid-word starts → **0**, no content lost |
 | **Phantom conflicts from truncation.** A shared sentence copied across two documents, with one copy clipped, differed as a string while saying the same thing, and was reported as a contradiction. | Containment-based duplicate test instead of exact string equality | Corpus 2 Q030 fixed |
 | **Document version years compared as policy values.** Two "Purpose" boilerplates, one saying "2025-2026" and one "2022", were reported as a numeric contradiction. | Exclude calendar years from the unitless numeric fallback | Corpus 2 Q029 fixed |
@@ -245,15 +446,20 @@ argument for preferring it.
 
 ## What to do next, in order
 
-1. **Implement the focus-presence rule for Stage 5** (Problem 2). Small, specified
-   above, and it should clean up three reported numbers at once.
-2. **Re-run the outstanding verifications serially** — fabricated evidence on
-   Corpus 2, and the invariance harness on both corpora.
-3. **Get a third corpus** (Problem 3). Public, naturally occurring, independently
-   labelled. Use it once.
-4. **Problem 1 is research.** Do not spend more effort on deterministic rules —
-   five have been falsified. The untried routes are query-conditioned entailment
-   and answer-span extraction.
+1. **Get a third corpus** (Problem 3). Public, naturally occurring, independently
+   labelled. Use it once. This is now the single highest-value outstanding item —
+   both safety-bug classes below it are either fixed or exhaustively
+   characterised.
+2. **Problem 1 is research**, and now also covers the system's one remaining
+   unsafe answer (Q045). Do not spend more effort on deterministic rules — six
+   have been falsified, including a targeted anchor-rescue built specifically for
+   Q045. The untried routes are query-conditioned entailment and answer-span
+   extraction.
+3. **Problem 2's residual cost (Q013, Q059, Q074) is not a to-do at this design
+   layer** — an exhaustive search (2,304 configurations, plus a semantic/embedding
+   variant proven anti-correlated) found nothing that recovers them without
+   reopening Q051/Q017. Closing them for real needs phrase-level or semantic
+   answer-matching, i.e. the same untried route named for Problem 1.
 
 ## A note on how to read any number here
 

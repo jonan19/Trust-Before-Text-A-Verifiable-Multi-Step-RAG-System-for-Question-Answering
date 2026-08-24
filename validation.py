@@ -181,6 +181,68 @@ def _query_span_similarity(query: str, span: str) -> float:
         return 1.0
 
 # ---------------------------------------------------------------------------
+# Answerhood model — lazy-loaded, used only by the Stage 4 ANSWERHOOD_MARGIN
+# gate. Distinct from the topic bi-encoder above: a cross-encoder measures
+# query/sentence ANSWERHOOD (does this sentence answer the question?), which
+# is a different signal from topical cosine similarity — see the
+# "Answer-Anchored Relevance Gating" plan and the falsified "query/span
+# embedding similarity gate" entry in docs/STATUS.md, which is the bi-encoder
+# above, not this. Ships disabled (ANSWERHOOD_MARGIN default 0.0).
+# ---------------------------------------------------------------------------
+_ANSWERHOOD_MODEL: "_CrossEncoder | None" = None  # type: ignore[type-arg]
+_ANSWERHOOD_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+
+def _get_answerhood_model():  # type: ignore[type-arg]
+    """
+    Lazy-load the answerhood cross-encoder. A fixed encoder, not a generative
+    model, so it does not weaken the pipeline's determinism guarantee — same
+    argument as _get_topic_model. Returns None if unavailable, in which case
+    the gate degrades open (see _answerhood_margins).
+    """
+    global _ANSWERHOOD_MODEL
+    if not _CROSSENCODER_AVAILABLE:
+        return None
+    if _ANSWERHOOD_MODEL is None:
+        try:
+            _log.info("[Validation] Loading answerhood model '%s' (first use)...",
+                      _ANSWERHOOD_MODEL_NAME)
+            _ANSWERHOOD_MODEL = _CrossEncoder(_ANSWERHOOD_MODEL_NAME)
+        except Exception as exc:  # pragma: no cover
+            _log.warning("[Validation] Failed to load answerhood model: %s — "
+                         "ANSWERHOOD_MARGIN gate disabled for this process.", exc)
+            return None
+    return _ANSWERHOOD_MODEL
+
+
+def _answerhood_margins(query: str, pool: list[str]) -> dict[str, float]:
+    """
+    For every sentence in *pool*, its answerhood MARGIN to this query's own
+    top-1 score: 0.0 for the best-scoring sentence, growing for worse ones.
+    A per-query relative measure rather than an absolute cutoff — raw
+    cross-encoder scores are uncalibrated logits that do not transfer across
+    corpora (see ANSWERHOOD_MARGIN); the margin is corpus-independent the same
+    way the retired MAX_CONFLICT_EVIDENCE_RANK's rank cutoff was.
+
+    Degrades OPEN: returns {} (empty) when the model is unavailable or *pool*
+    is empty, so a missing optional dependency can never silently suppress
+    conflict detection — callers must treat an empty mapping as "gate off",
+    the same safe-direction contract as _query_span_similarity.
+    """
+    if not pool:
+        return {}
+    model = _get_answerhood_model()
+    if model is None:
+        return {}
+    try:
+        raw = model.predict([(query, s) for s in pool])
+        top1 = float(max(raw))
+        return {s: top1 - float(r) for s, r in zip(pool, raw)}
+    except Exception as exc:  # pragma: no cover
+        _log.warning("[Validation] answerhood margin error: %s — gate skipped.", exc)
+        return {}
+
+# ---------------------------------------------------------------------------
 # Thresholds — tune as needed
 # ---------------------------------------------------------------------------
 DUPLICATE_SIM_THRESHOLD: float       = 0.90   # cosine sim >= this -> duplicate
@@ -313,6 +375,46 @@ QUERY_SPAN_RELEVANCE: float          = float(
                                                #   but BREAKS Corpus 2 (recall 14/16, unsafe 4->6), so it
                                                #   is corpus-specific and deliberately NOT the default.
                                                #   Re-measure this window before trusting it on a new corpus.
+ANSWERHOOD_MARGIN: float             = float(
+    os.getenv("RAG_ANSWERHOOD_MARGIN", "0.0")
+)                                              # Stage 4 ANSWERHOOD gate (suppress-only): both sentences of
+                                               # a candidate pair must score within this MARGIN of this
+                                               # query's own top-1 answerhood score
+                                               # (cross-encoder/ms-marco-MiniLM-L-6-v2 over the query's
+                                               # candidate-sentence pool) before the pair may be compared.
+                                               # Distinct signal from QUERY_SPAN_RELEVANCE above: that gate
+                                               # is a bi-encoder measuring TOPICALITY (is this span about
+                                               # the same subject?) and was falsified as a class separator
+                                               # on Corpus 2 (docs/STATUS.md, falsified-candidates table).
+                                               # A cross-encoder measures ANSWERHOOD (does this span answer
+                                               # THIS question?) — a decorrelated signal per the
+                                               # "Answer-Anchored Relevance Gating" plan. A margin, not an
+                                               # absolute score, for the same corpus-transfer reason
+                                               # QUERY_SPAN_RELEVANCE and the retired
+                                               # MAX_CONFLICT_EVIDENCE_RANK are both relative to the
+                                               # query's own ranking rather than fitted. This gate may only
+                                               # SUPPRESS a conflict the deterministic layer already raised
+                                               # (find_conflict tries the next candidate pair, never
+                                               # creates a new abstention) — see claude.md, "The LLM Is Not
+                                               # the Variable". 0.0 disables the gate entirely (default,
+                                               # ships off).
+                                               #
+                                               # CALIBRATION (offline lab only — evaluation/answerhood_lab.py
+                                               # Phase 1, NOT yet confirmed end-to-end; re-measure via
+                                               # evaluation/run_eval.py + invariance_harness.py before
+                                               # trusting this on a new corpus or raising it above 0.0):
+                                               #   Attribution-aware go/no-go over both corpora's Stage-4
+                                               #   reported pairs (misattributed "right decision, wrong
+                                               #   evidence" reports counted as false-evidence, not true):
+                                               #   flat band [5.04, 6.65) covers all 30 correctly-attributed
+                                               #   true conflicts while suppressing 8/10 false-evidence
+                                               #   reports (vs. 1/10 for the equivalent QUERY_SPAN_RELEVANCE
+                                               #   bound on the same data). The 2 surviving false conflicts
+                                               #   are Corpus 2's two hardest known cases (docs/STATUS.md
+                                               #   Problem 1): the 21-vs-18 credit-hours pair and the
+                                               #   Dean's-List-vs-financial-aid GPA pair, whose margins
+                                               #   (4.44, 3.68) sit BELOW a true conflict's (5.04) and so
+                                               #   cannot be separated without losing that true conflict.
 NLI_CONFLICT_THRESHOLD: float        = float(
     os.getenv("RAG_NLI_CONFLICT_THRESHOLD", "0.94")
 )                                              # NLI contradiction confidence floor.
@@ -330,6 +432,50 @@ MIN_QUERY_COVERAGE: float            = float(
                                                # appear in evidence for sufficiency to pass.
                                                # Raised from 0.35 to 0.55 to block false-positive
                                                # answers when evidence only partially overlaps the query.
+MIN_FOCUS_PRESENCE: float            = float(
+    os.getenv("RAG_MIN_FOCUS_PRESENCE", "0.5")
+)                                              # Stage 5 focus-presence precondition, applied BEFORE
+                                               # the H2/H4 disjunction: this fraction of the query's
+                                               # focus terms (_sufficiency_focus_terms — the rarest
+                                               # half of its content words, out-of-vocabulary terms
+                                               # KEPT) must actually appear in the evidence.
+                                               # 0.0 disables the gate and restores the previous
+                                               # H2-OR-H4 behaviour exactly.
+                                               #
+                                               # WHY a fraction and not the pure presence test that
+                                               # docs/STATUS.md Problem 2 specifies. The spec assumed
+                                               # focus terms would be the query's TOPIC words, so
+                                               # "present at all" would be unambiguous. Measured, they
+                                               # are not: smoothed IDF ties every df-0 word at maximum
+                                               # rarity, so a gap query's real subject (Q051
+                                               # `relocation`, `moving`) and an answerable query's
+                                               # framing verbs (Q013 `held`, `often`) rank
+                                               # identically. Corpus-1 Q051 and Q013 are in fact
+                                               # feature-identical here — 2 absent df-0 terms and 3
+                                               # present in-vocabulary terms each — so NO rule over
+                                               # focus-term presence separates them, and neither does
+                                               # coverage (both 0.60). The gap is closed by requiring
+                                               # a MAJORITY of focus terms present; Q013 is the price.
+                                               #
+                                               # FALSIFIED ALTERNATIVES (both corpora, decision-layer
+                                               # only; "closes" = unsafe answers removed):
+                                               #   0.0+ (pure presence, >=1 focus term): closes Q051
+                                               #     only, costs Q013. Corpus 2 unchanged, so the
+                                               #     Q017 leak SURVIVES (unsafe stays 2/32). This is
+                                               #     the literal reading of the spec and it does not
+                                               #     close the leak it was designed for.
+                                               #   1.0 (ALL focus terms present): closes both leaks
+                                               #     but costs 44 answerable queries (24 on C1, 20 on
+                                               #     C2) — unusable.
+                                               #   0.5 with FOCUS_KEEP_FRACTION 0.34: closes both,
+                                               #     costs 13. With 0.67: closes Q051 only, costs 3.
+                                               #   0.34 (i.e. "not 1-of-3"): closes both at cost 3
+                                               #     rather than 4, but 0.34 is a value chosen to sit
+                                               #     just above 1/3 for two queries. Rejected as a
+                                               #     fitted constant, not on its measurement.
+                                               # 0.5 at the inherited FOCUS_KEEP_FRACTION is the
+                                               # cheapest configuration that closes both leaks without
+                                               # a constant fitted to a specific query.
 
 # ---------------------------------------------------------------------------
 # Antonym / contradiction pairs  (expanded in V3)
@@ -839,6 +985,54 @@ MAX_CONFLICT_SENTENCES: int = int(
 MIN_CONFLICT_SENTENCE_CHARS: int = 25          # below this a "sentence" is a heading or
                                                # a stray fragment, not an assertion
 
+REQUIRE_ASSERTIVE_SPANS: bool = os.getenv(
+    "RAG_REQUIRE_ASSERTIVE_SPANS", "1") == "1"
+#   Stage 4 assertiveness precondition. A contradiction is a disagreement
+#   between two ASSERTIONS; a span that states no rule cannot be half of one.
+#
+#   This generalises MIN_CONFLICT_SENTENCE_CHARS directly above, which tries to
+#   express the same idea by length and cannot: a "Purpose ..." section header
+#   is comfortably over 25 characters, passes that gate, and goes on to be
+#   compared against another section header. Corpus 2 Q024 and Q029 are exactly
+#   that — two scope statements flagged as contradicting each other:
+#       "Purpose This policy governs on-campus housing eligibility ..."
+#       "Purpose This policy governs campus emergency notification ..."
+#
+#   A span is assertive if it carries a QUANTITY or a DEONTIC term. Both true
+#   conflict families survive by construction: the numeric ones (3 vs 6 months,
+#   3 vs 2 days/week, 6% vs 5%) are quantitative, and the semantic one (C4,
+#   permitted vs prohibited) is deontic. Measured, decision-only, both corpora:
+#       Corpus 1  accuracy 92.3% -> 96.2%, conflict precision 0.842 -> 1.000,
+#                 F1 0.914 -> 1.000, false conflicts 3 -> 0 (Q019/Q025/Q032),
+#                 recall 16/16 unchanged, unsafe answers 0 unchanged.
+#       Corpus 2  accuracy 80.8% -> 82.1%, precision 0.600 -> 0.625,
+#                 false conflicts 10 -> 9 (Q024), recall 15/16 unchanged,
+#                 unsafe answers 1 unchanged.
+#   The rule was derived from Corpus 2 observations and removed all three
+#   Corpus 1 false conflicts, none of which had been inspected when it was
+#   written — cross-corpus transfer, not a fit. It introduces no threshold.
+#   Set to 0 to restore the previous behaviour.
+
+DIMENSIONAL_VETO: bool = os.getenv(
+    "RAG_DIMENSIONAL_VETO", "1") == "1"
+#   Stage 4 commensurability precondition, applied only when BOTH spans carry a
+#   quantity. Two numbers may only contradict if they measure the same
+#   dimension: "2 days per week" is a RATE, "26 weeks of continuous service" is
+#   a DURATION, and no disagreement between them is possible. Corpus 1 Q076
+#   reported precisely that pair — office attendance vs maternity-pay
+#   eligibility — because both spans mention "week" and NLI scored them 0.9994.
+#
+#   This is the "dimensioned numeric comparison" named in the archived roadmap
+#   and never implemented. Purely semantic conflicts are untouched: the veto
+#   only runs when both sides are quantitative, so C4 (permitted vs prohibited)
+#   never reaches it. Measured, decision-only, both corpora:
+#       Corpus 1  decision accuracy unchanged, recall 16/16 unchanged, unsafe 0
+#                 unchanged; conflict ATTRIBUTION precision 0.789 -> 0.842
+#                 (Q076 now cites the pair it actually abstained on).
+#       Corpus 2  identical to baseline in every metric.
+#   Its value is traceability, not accuracy: it moves zero queries' decisions.
+#   Set to 0 to restore the previous behaviour.
+
 
 # ---------------------------------------------------------------------------
 # Query focus terms — corpus-IDF weighted (Stage 4 anchor test)
@@ -882,6 +1076,47 @@ _QUESTION_SCAFFOLD: frozenset[str] = frozenset({
     "like", "want", "wants", "need", "needs", "wish",
 })
 
+# Politeness / greeting tokens. Used ONLY by the Stage-5 focus computation
+# (_sufficiency_focus_terms), which is why they are a separate set rather than
+# more entries in _QUESTION_SCAFFOLD above.
+#
+# Stage 4 does not need them: _focus_terms drops every out-of-vocabulary term,
+# and a policy corpus contains none of these (df 0 in both corpora), so adding
+# them to _QUESTION_SCAFFOLD would be provably inert there. Stage 5 DOES need
+# them, because it deliberately keeps out-of-vocabulary terms (an absent word is
+# the gap signal it is looking for) and therefore inherits the exact failure
+# _focus_terms was fixed for: smoothed IDF ranks an unseen word as maximally
+# rare, so "Thanks!" appended to a question puts `thanks` at the top of the
+# focus ranking, where it can never be present in the evidence.
+#
+# Measured, candidate gate at MIN_FOCUS_PRESENCE=0.5, `query_thanks` transform:
+# without this set the focus gate flips on 19/78 queries on Corpus 1 and 13/78
+# on Corpus 2; with it, 0/78 and 0/78. This is a category (gratitude/greeting
+# framing), not a single token — _COVERAGE_STOPWORDS already carries "please"
+# on identical grounds.
+_POLITENESS_SCAFFOLD: frozenset[str] = frozenset({
+    "thanks", "thank", "thankyou", "hi", "hello", "hey", "greetings",
+    "regards", "kindly", "cheers", "appreciate", "appreciated",
+})
+
+# Enclitic suffixes, for recognising that a CONTRACTED stopword is still a
+# stopword. _tokenize keeps apostrophes inside a token, so "I'm" survives whole
+# and never meets the pronoun entries in _COVERAGE_STOPWORDS — the documented
+# Q053 pronoun bug ("a pronoun is never a topic") recurring in contracted form.
+# Measured on Corpus 2 Q074: focus {graduating, i'm, opt, visa}, with `i'm`
+# occupying a quarter of the set.
+_CLITIC_SUFFIXES: tuple[str, ...] = (
+    "n't", "'re", "'ve", "'ll", "'m", "'d", "'s", "'t",
+)
+
+
+def _clitic_base(token: str) -> str:
+    """"i'm" -> "i", "don't" -> "do", "dean's" -> "dean". Unchanged if no clitic."""
+    for suffix in _CLITIC_SUFFIXES:
+        if token.endswith(suffix) and len(token) > len(suffix):
+            return token[: len(token) - len(suffix)]
+    return token
+
 
 _CORPUS_DF: dict[str, int] | None = None
 _CORPUS_DOCS: int = 0
@@ -897,6 +1132,47 @@ ANCHOR_REQUIRE_BOTH: bool            = os.getenv(
                                                # 2.5" and anchors, the 2.0 side states the same rule
                                                # informally and does not, so a genuine conflict is
                                                # suppressed.
+ANCHOR_ASYMMETRIC_QSPAN: float       = float(
+    os.getenv("RAG_ANCHOR_ASYMMETRIC_QSPAN", "0")
+)                                              # DISABLED (0 = off, current behaviour exactly).
+                                               # Candidate rescue for Corpus-2 Q045, the one genuine
+                                               # contradiction the anchor test suppresses: when only
+                                               # ONE sentence of a pair mentions a focus term, admit
+                                               # the pair anyway if BOTH sentences reach this
+                                               # query-span similarity. The intent was to buy back
+                                               # asymmetric-vocabulary conflicts without the blanket
+                                               # relaxation that was already falsified (anchor on
+                                               # EITHER sentence: Corpus 1 precision 0.842 -> 0.640).
+                                               # Diagnosed pair (Q045, both spans well clear of
+                                               # QUERY_SPAN_RELEVANCE=0.35, NLI contradiction True,
+                                               # blocked by the anchor test alone):
+                                               #   0.6489 "...need-based financial aid, students must
+                                               #           maintain at least a 2.0 cumulative GPA."
+                                               #   0.7666 "Satisfactory Academic Progress ... minimum
+                                               #           cumulative GPA of 2.5"
+                                               #
+                                               # MEASURED at 0.60, both corpora, on top of the Stage-5
+                                               # focus gate (run_eval tag `aqs60`):
+                                               #   Corpus 1: byte-identical to the default run —
+                                               #     92.3%, precision 0.8421, recall 16/16, F1 0.9143,
+                                               #     unsafe 0/32. The rescue never fires here.
+                                               #   Corpus 2: recall 15/16 -> 16/16 (Q045 RECOVERED),
+                                               #     unsafe 1/32 -> 0/32, F1 0.7317 -> 0.7442,
+                                               #     accuracy 80.8% unchanged
+                                               #     ... but precision 0.6000 -> 0.5926: one new false
+                                               #     conflict, Q002 (answer -> conflict).
+                                               #
+                                               # SHIPPED DISABLED. It is a real improvement on every
+                                               # axis except the one it was required not to move, and
+                                               # 0.60 is a value read off Q045's own span similarity
+                                               # (0.6489) — a constant derived from the query it was
+                                               # meant to fix, on the corpus that is also the training
+                                               # set (see docs/STATUS.md Problem 3). Raising the bar to
+                                               # ~0.64 would very likely drop Q002 and keep Q045, and
+                                               # that is precisely the fit-to-two-queries move this
+                                               # project has repeatedly been burned by, so it was NOT
+                                               # measured or adopted. Enable only with a third,
+                                               # genuinely held-out corpus to calibrate against.
 FOCUS_KEEP_FRACTION: float = 0.5   # rarest half of the query's content terms
 MIN_STEM_MATCH_CHARS: int = 4      # below this, containment matching is unsafe
 
@@ -994,6 +1270,137 @@ def _focus_terms(query: str) -> set[str]:
     return set(ranked[:keep])
 
 
+def _sufficiency_focus_terms(query: str) -> set[str]:
+    """
+    The Stage-5 twin of _focus_terms: the rarest FOCUS_KEEP_FRACTION of the
+    query's content words by corpus IDF, but keeping OUT-OF-VOCABULARY terms.
+
+    The two stages want opposite things from an absent word, so they cannot
+    share one focus set.
+
+      Stage 4 (anchor test) asks "what must a contradiction be ABOUT?". A term
+      the corpus does not contain cannot answer that — requiring a sentence to
+      mention it would suppress every pair — so _focus_terms drops it.
+
+      Stage 5 (sufficiency) asks "does this evidence cover what was asked?". A
+      query term the corpus does not contain at all is not noise, it is exactly
+      the knowledge gap being looked for. Corpus 1 Q051 ("what relocation
+      allowance...") is a gap precisely because `relocation` has df 0.
+
+    Dropping the in-vocabulary filter re-exposes the failure it was introduced
+    to fix — smoothed IDF ranks an unseen word as maximally rare, so question
+    scaffolding floats to the top of the ranking — which is why this function
+    subtracts _POLITENESS_SCAFFOLD as well as _QUESTION_SCAFFOLD. See the note
+    at _POLITENESS_SCAFFOLD for the measurement.
+
+    Returns an empty set when no corpus statistics have been published, which
+    disables the Stage-5 focus gate rather than approximating it.
+
+    FALSIFIED: "the ranking is the bug, not the presence test".
+    ---------------------------------------------------------
+    The three queries this gate over-abstains on (C1 Q013, C2 Q059, C2 Q074)
+    all have their topic words outranked by df-0 framing words, which suggests
+    the fix is to stop absent terms crowding out in-vocabulary ones. It is not.
+    Measured (df, presence) profiles, contractions dropped and the stemmer-miss
+    repair below applied:
+
+      C1 Q051 must REFUSE: moving(0,absent) relocation(0,absent)
+                           allowance(3,present) role(4,present) available(6,present)
+      C1 Q013 must PASS  : held(0,absent) often(0,absent)
+                           drills(2,present) evacuation(2,present) fire(2,present)
+
+    Q013's present terms are strictly RARER than Q051's while their absent terms
+    are identical, so under any ranking monotone in IDF, Q013 is harder to pass
+    than Q051: the ordering is the exact opposite of what is needed. C2 Q017 vs
+    Q059 are outright isomorphic (2 absent df-0, 4 present, rarest present df 2
+    on both sides), and both select 1-of-3 present at the shipped setting.
+
+    An exhaustive search over 2304 focus constructions — keep fraction, presence
+    fraction, guaranteed in-vocabulary slots, dropping out-of-vocabulary terms
+    entirely, with and without the two repairs below — found **0** that refuse
+    Q051 and Q017 while passing Q013, Q059 and Q074. Relaxing the target to
+    Q013 alone also yields 0. The three over-abstentions are not recoverable by
+    reweighting corpus-frequency features; separating them needs a signal this
+    function does not have (Q051's `allowance` is present only inside the
+    unrelated compound "mileage allowance payments" — phrase-level or semantic
+    matching, not term-level rarity).
+
+    FALSIFIED: repairing the stemmer's morphology misses.
+    ----------------------------------------------------
+    _stem genuinely mis-stems: "graduating"/"graduated" -> "graduat" misses both
+    "graduation" and "graduate"; "living" -> "liv" misses "live"; consonant
+    doubling is not undone ("submitting" -> "submitt" vs "submit"); and "es"/"s"
+    over-strip ("process" -> "proces", "address" -> "addres"). But _stem and
+    _tokenize are what _write_corpus_stats keyed the ingested df index with, so
+    the defect cannot be corrected at the stemmer without re-ingesting both
+    stores. A lookup-side repair (probe stem+"e", stem+"ion", the un-doubled
+    stem, and _stem applied twice) was built and measured instead: across all
+    156 queries it raises df above 0 for exactly TWO terms, both on Corpus 2
+    ("graduating" 0->1, "living" 0->1), and changes exactly ONE Stage-5 gate
+    outcome (Q047 — a conflict query, where sufficiency does not reach the
+    decision). It recovers none of the three over-abstentions, and because _idf
+    also feeds the Stage-4 anchor test it would perturb conflict scoping for
+    that zero gain. Not shipped.
+
+    FALSIFIED: counting an absent focus term as present on EMBEDDING similarity.
+    ---------------------------------------------------------------------------
+    All three over-abstentions are paraphrase misses — the corpus answers the
+    question in different words ("latin honors ... are awarded as follows:
+    summa cum laude (3.9 and above)" for `tiers`/`cutoffs`; "applications ...
+    must be filed between 90 and 60 days" for `apply`; "conducted" for `held`).
+    So rescuing an absent term by semantic rather than lexical match is the
+    obvious next move. Measured (max cosine between the term and any evidence
+    sentence, same encoder as _query_span_similarity), it is not merely weak,
+    it is ANTI-correlated with what is needed:
+
+      must stay absent   relocation 0.4024  moving 0.2969  abroad 0.3983/0.3066
+      must be rescued    held 0.0718  often 0.1071  cutoffs 0.1680  tiers 0.2385
+
+    A gap query's missing subject is semantically CLOSE to its corpus — an HR
+    corpus that has no relocation policy still discusses commuting and
+    accommodation; an international-student policy has no study-abroad section
+    but is all about immigration. A paraphrase gap is semantically FAR, because
+    the words that get paraphrased are abstraction and framing words with weak
+    embeddings. Passing Q013 needs a bar of 0.0718 or lower; refusing Q051 needs
+    one above 0.4024. No threshold satisfies both, on any corpus, at any value —
+    checked over 0.30-0.70. This is the same mechanism that killed the
+    embedding-similarity gate for Stage-4 conflict pairing, arrived at
+    independently.
+    """
+    if not _CORPUS_DF or not _CORPUS_DOCS:
+        return set()
+    expanded: set[str] = set()
+    for term in _query_content_terms(query):
+        expanded |= {w for w in _tokenize(term) if len(w) > 2}
+    expanded -= _QUESTION_SCAFFOLD
+    expanded -= _POLITENESS_SCAFFOLD
+    # A contracted stopword is still a stopword — see _CLITIC_SUFFIXES. Only the
+    # DROP decision uses the clitic base; the token itself is left untouched, so
+    # "dean's" (base "dean", not a stopword) keeps the exact surface form whose
+    # stem is the key stored in corpus_stats.json.
+    #
+    # Deliberately applied HERE and not in _tokenize, _query_content_terms or
+    # _query_coverage:
+    #   - _tokenize / _stem feed _write_corpus_stats, so the ingested df index is
+    #     keyed by THIS tokenizer's output ("dean'", "days'", "approv", "proces").
+    #     Changing either silently invalidates every df lookup against a store
+    #     that cannot be rebuilt here, which would make focus ranking worse, not
+    #     better.
+    #   - _query_coverage's term set is H4's DENOMINATOR. Removing terms from it
+    #     raises coverage for gap and answerable queries alike, which is the
+    #     shape of change already falsified for conjunctions (Corpus 2 accuracy
+    #     80.8% -> 79.5%). No gap query in either corpus contains a contracted
+    #     stopword, so there is nothing to win there and a known way to lose.
+    expanded = {t for t in expanded
+                if _clitic_base(t) not in _COVERAGE_STOPWORDS
+                and _clitic_base(t) not in _QUESTION_SCAFFOLD}
+    if not expanded:
+        return set()
+    ranked = sorted(expanded, key=lambda t: (-_idf(t), t))
+    keep = max(1, round(len(ranked) * FOCUS_KEEP_FRACTION))
+    return set(ranked[:keep])
+
+
 def _mentions_focus(sentence: str, focus: set[str]) -> bool:
     """
     Does *sentence* mention at least one of the query's focus terms?
@@ -1045,6 +1452,117 @@ def _query_relevant_sentences(text: str, content_terms: set[str],
     return [sentence for _, sentence in scored[:limit]]
 
 
+_DEONTIC_RE = re.compile(
+    r"\b(must|may|shall|should|will|cannot|can't|prohibited|forbidden|"
+    r"required|require[sd]?|entitled|eligible|allowed|permitted|expected|"
+    r"obliged|banned|denied|granted)\b", re.IGNORECASE)
+
+def _is_assertive_span(text: str) -> bool:
+    """
+    Does *text* assert a rule, rather than merely name a topic?
+
+    A contradiction is a disagreement between two claims. A section header
+    ("Purpose This policy governs campus emergency notification ...") names a
+    scope and claims nothing, so pairing two of them is a category error rather
+    than a disagreement — see REQUIRE_ASSERTIVE_SPANS for the measurement.
+
+    Assertive = carries a quantity, or a deontic/modal term. Deliberately
+    permissive: the job is to exclude boilerplate, not to parse the sentence.
+
+    "Carries a quantity" is _DIM_RE — the SAME reading the dimensional veto
+    uses — which requires a number governed by a unit ("3 months", "6%"), not
+    merely a digit somewhere in the text. The distinction is load-bearing: a
+    bare-digit test admits ordinals like "paid ... on the 25th of each month",
+    which is Corpus 1 Q025, a false conflict against "Bonuses are paid in the
+    April payroll". Measured: bare-digit reading leaves C1 at 94.9% with that
+    false conflict standing; the unit-governed reading gives 96.2% and none.
+    """
+    return bool(_DIM_RE.search(text) or _DEONTIC_RE.search(text))
+
+
+# Numerals written as words. The Corpus 2 academic-probation conflict disagrees
+# in words ("one semester" vs "two consecutive semesters") while both spans also
+# mention the same incidental "2.0 GPA". A digit-only reading therefore compares
+# the 2.0s, finds them equal, and destroys a real conflict — measured at recall
+# 15/16 -> 12/16 before this was added.
+_WORD_NUMERALS: dict[str, str] = {
+    "one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
+    "six": "6", "seven": "7", "eight": "8", "nine": "9", "ten": "10",
+    "eleven": "11", "twelve": "12",
+}
+# Adjectives that may sit between a numeral and its unit and must be stepped
+# over: "two consecutive semesters" measures semesters, not "consecutives".
+_QTY_QUALIFIERS = frozenset({
+    "consecutive", "additional", "further", "successive", "calendar",
+    "business", "working", "academic", "cumulative", "full", "complete",
+})
+# A governing "noun" that is really a verb, pronoun or conjunction means the
+# pattern matched across a clause boundary ("below 2.0 is placed" -> unit "i").
+# Such a match carries no dimension and must be discarded, not compared.
+_QTY_JUNK_UNITS = frozenset({
+    "i", "is", "are", "was", "were", "be", "or", "and", "of", "the", "a", "an",
+    "to", "in", "on", "at", "for", "with", "by", "higher", "lower", "above",
+    "below", "more", "less", "least", "most", "over", "under", "up", "who",
+    "that", "which", "will", "may", "must", "shall", "cumulative",
+})
+_DIM_NUM = r"(\d+(?:\.\d+)?)"
+_DIM_RE = re.compile(
+    _DIM_NUM + r"\s*(%|percent|per\s?cent)|"
+    + _DIM_NUM + r"\s+([a-z]+?)s?\b(?:\s+(?:per|a|each|every)\s+([a-z]+?)s?\b)?",
+    re.IGNORECASE)
+_DIM_WORD_RE = re.compile(
+    r"\b(" + "|".join(_WORD_NUMERALS) + r")\s+"
+    + r"((?:(?:" + "|".join(_QTY_QUALIFIERS) + r")\s+)*)"
+    + r"([a-z]+?)s?\b", re.IGNORECASE)
+
+
+def _span_quantities(text: str) -> dict[tuple[str, str], set[str]]:
+    """
+    The quantities *text* asserts, keyed by their dimension.
+
+    A key is (unit, period): ("day", "week") for "2 days per week" — a rate —
+    versus ("week", "") for "26 weeks" — a duration. Two spans are
+    commensurable only where their keys coincide. Calendar years are excluded:
+    a year is a date, not a measured quantity, and admitting them made two
+    "Purpose ..." headers look quantitative (Corpus 2 Q029).
+    """
+    found: dict[tuple[str, str], set[str]] = {}
+
+    def add(unit: str, period: str, value: str) -> None:
+        unit, period = unit.lower().strip(), period.lower().strip()
+        if not unit or unit in _QTY_JUNK_UNITS:
+            return
+        if re.fullmatch(r"(19|20)\d{2}", value):   # calendar year, not a quantity
+            return
+        found.setdefault((unit, period), set()).add(value)
+
+    for m in _DIM_RE.finditer(text):
+        if m.group(1):
+            if not re.fullmatch(r"(19|20)\d{2}", m.group(1)):
+                found.setdefault(("percent", ""), set()).add(m.group(1))
+            continue
+        add(m.group(4) or "", m.group(5) or "", m.group(3))
+
+    for m in _DIM_WORD_RE.finditer(text):
+        add(m.group(3) or "", "", _WORD_NUMERALS[m.group(1).lower()])
+    return found
+
+
+def _is_commensurable_conflict(text_a: str, text_b: str) -> bool:
+    """
+    May these two quantitative spans contradict at all?
+
+    True when they share a dimension AND disagree on its value. Callers must
+    only consult this when BOTH spans carry a quantity; a non-quantitative span
+    asserts its rule in prose and is none of this function's business.
+    """
+    qa, qb = _span_quantities(text_a), _span_quantities(text_b)
+    shared = set(qa) & set(qb)
+    if not shared:
+        return False
+    return any(qa[key] != qb[key] for key in shared)
+
+
 def _contradiction_kind(text_a: str, text_b: str) -> Optional[str]:
     """
     Run the three contradiction prongs over one pair of spans.
@@ -1055,17 +1573,34 @@ def _contradiction_kind(text_a: str, text_b: str) -> Optional[str]:
        vocabulary. Only the NLI_SIM_FLOOR performance guard applies.
     C) Numeric, unit-aware — cheap/precise, gated on high lexical overlap.
     """
+    # A contradiction needs two assertions. Boilerplate that states no rule
+    # cannot be half of one, so it is rejected before the prongs — which also
+    # spares those pairs the expensive NLI inference.
+    if REQUIRE_ASSERTIVE_SPANS and not (
+            _is_assertive_span(text_a) and _is_assertive_span(text_b)):
+        return None
     if _same_assertion(text_a, text_b):
         return None
     sim = compute_chunk_similarity(text_a, text_b)
     high_sim = sim >= CONFLICT_SIM_THRESHOLD
+    kind: Optional[str] = None
     if high_sim and _has_keyword_contradiction(text_a, text_b):
-        return "keyword"
-    if sim >= NLI_SIM_FLOOR and _has_nli_contradiction(text_a, text_b):
-        return "nli"
-    if high_sim and _has_numeric_contradiction(text_a, text_b):
-        return "numeric"
-    return None
+        kind = "keyword"
+    elif sim >= NLI_SIM_FLOOR and _has_nli_contradiction(text_a, text_b):
+        kind = "nli"
+    elif high_sim and _has_numeric_contradiction(text_a, text_b):
+        kind = "numeric"
+    if kind is None:
+        return None
+
+    # Commensurability. When BOTH spans are quantitative the disagreement must
+    # be about the same measured dimension; NLI cannot tell a rate from a
+    # duration and scores "2 days per week" against "26 weeks of continuous
+    # service" at 0.9994. A span that asserts its rule in prose is left alone.
+    if DIMENSIONAL_VETO and _span_quantities(text_a) and _span_quantities(text_b):
+        if not _is_commensurable_conflict(text_a, text_b):
+            return None
+    return kind
 
 
 def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
@@ -1101,6 +1636,27 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
     """
     content_terms = _query_content_terms(query)
     focus = _focus_terms(query)
+
+    # Answerhood pool (ANSWERHOOD_MARGIN gate): built once per query, not per
+    # pair, from every query-relevant sentence across every individually
+    # relevant chunk — the same candidate set the sentence-pair loop below
+    # draws sents_a/sents_b from, so a sentence's margin is relative to
+    # everything it could have been compared against for this query. Empty
+    # when the gate is off (default) or the model is unavailable, in which
+    # case the per-pair check below is skipped entirely (degrades open).
+    answerhood_margins: dict[str, float] = {}
+    if ANSWERHOOD_MARGIN > 0.0 and query.strip():
+        pool: list[str] = []
+        seen_pool: set[str] = set()
+        for c in chunks:
+            rel = c.get("relevance_score", c.get("score", 0.0))
+            if rel < MIN_CONFLICT_RELEVANCE:
+                continue
+            for sent in _query_relevant_sentences(c.get("text", ""), content_terms):
+                if sent not in seen_pool:
+                    seen_pool.add(sent)
+                    pool.append(sent)
+        answerhood_margins = _answerhood_margins(query, pool)
 
     # Query-relevance gate: the score a chunk must reach to be eligible for
     # comparison at all, defined as the score of this query's Nth-best chunk.
@@ -1179,8 +1735,15 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
                     # happens to share a common word with it.
                     anchored_a = _mentions_focus(cand_a, focus)
                     anchored_b = _mentions_focus(cand_b, focus)
-                    if not (anchored_a and anchored_b if ANCHOR_REQUIRE_BOTH
-                            else anchored_a or anchored_b):
+                    ok = (anchored_a and anchored_b if ANCHOR_REQUIRE_BOTH
+                          else anchored_a or anchored_b)
+                    if not ok and ANCHOR_REQUIRE_BOTH and (anchored_a or anchored_b) \
+                            and ANCHOR_ASYMMETRIC_QSPAN > 0.0 and query.strip():
+                        # Half-anchored pair rescued on query-span similarity —
+                        # see ANCHOR_ASYMMETRIC_QSPAN. Off by default.
+                        ok = (_query_span_similarity(query, cand_a) >= ANCHOR_ASYMMETRIC_QSPAN
+                              and _query_span_similarity(query, cand_b) >= ANCHOR_ASYMMETRIC_QSPAN)
+                    if not ok:
                         continue
 
                     # Query-intent gate, now per sentence: a contradiction only
@@ -1191,6 +1754,19 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
                         if (_query_span_similarity(query, cand_a) < QUERY_SPAN_RELEVANCE
                                 or _query_span_similarity(query, cand_b) < QUERY_SPAN_RELEVANCE):
                             continue
+
+                    # Answerhood gate: both sentences must score within
+                    # ANSWERHOOD_MARGIN of this query's own top-1 answerhood
+                    # score (see ANSWERHOOD_MARGIN docstring). Suppress-only —
+                    # a rejected pair is skipped, not returned as an
+                    # abstention; the loop tries the next candidate. Missing
+                    # sentences (pool/model unavailable) default to margin 0.0
+                    # so an empty answerhood_margins mapping is a true no-op.
+                    if ANSWERHOOD_MARGIN > 0.0 and answerhood_margins:
+                        if (answerhood_margins.get(cand_a, 0.0) > ANSWERHOOD_MARGIN
+                                or answerhood_margins.get(cand_b, 0.0) > ANSWERHOOD_MARGIN):
+                            continue
+
                     kind = _contradiction_kind(cand_a, cand_b)
                     if kind:
                         text_a, text_b = cand_a, cand_b
@@ -1405,10 +1981,12 @@ def check_sufficiency(chunks: list[dict], query: str = "") -> bool:
     """
     Stage 5: Deterministic sufficiency heuristics.
 
-    Two HARD requirements (both must hold):
+    Three HARD requirements (all must hold):
       H1. Minimum chunk count : at least MIN_CHUNKS_FOR_SUFFICIENCY chunks.
       H3. Relevance floor     : at least one chunk has relevance_score > 0
                                 (never synthesize from purely off-topic evidence).
+      H5. Focus presence      : at least MIN_FOCUS_PRESENCE of the query's focus
+                                terms appear in the evidence at all.
 
     Then ONE quality requirement, satisfied by EITHER of two signals (H2 OR H4):
       H2. Average retrieval score : avg score >= MIN_AVG_SCORE_FOR_SUFFICIENCY.
@@ -1430,6 +2008,36 @@ def check_sufficiency(chunks: list[dict], query: str = "") -> bool:
     has_relevant = any(c.get("relevance_score", 1.0) > MIN_RELEVANCE_SCORE for c in chunks)
     if not has_relevant:
         return False
+
+    # H5 — hard: the query's focus terms must be IN the evidence.
+    #
+    # H2 and H4 are both thresholds on a continuous quantity, and the two gap
+    # queries that leaked were sitting just on the wrong side of one of them:
+    # Corpus-2 Q017 cleared the average branch by 0.0031, and Corpus-1 Q051's
+    # coverage rose 0.40 -> 0.60 across the sentence-boundary chunking fix —
+    # crossing the 0.55 bar because more overlapping text was retrieved, with no
+    # new information about relocation appearing anywhere. A gate that can be
+    # moved by chunk geometry is measuring the wrong thing, so this precondition
+    # asks a different question: not "how much of the query is covered?" but
+    # "is what the query is ABOUT in here at all?".
+    #
+    # Placed BEFORE the H2/H4 disjunction on purpose. It is a veto, not a third
+    # branch — evidence that does not mention the subject cannot become
+    # sufficient by scoring well on average, which is exactly how Q051 passed.
+    #
+    # NOT a coverage threshold in disguise: coverage is a fraction over ALL
+    # content words, this is a fraction over the rarest half only, and no value
+    # of MIN_QUERY_COVERAGE separates these cases (Q051 leaks at coverage 0.60
+    # while Corpus-1 Q070 is answerable at 0.3333). See MIN_FOCUS_PRESENCE for
+    # why it is a fraction rather than the pure presence test and for the
+    # alternatives that were measured and rejected.
+    if MIN_FOCUS_PRESENCE > 0 and query.strip():
+        focus = _sufficiency_focus_terms(query)
+        if focus:
+            evidence_text = " ".join(c.get("text", "") for c in chunks)
+            present = sum(1 for t in focus if _mentions_focus(evidence_text, {t}))
+            if present / len(focus) < MIN_FOCUS_PRESENCE:
+                return False
 
     # H2 OR H4 — sufficient if evidence is strong on either average quality or coverage
     scores = [c.get("score", 0.0) for c in chunks]

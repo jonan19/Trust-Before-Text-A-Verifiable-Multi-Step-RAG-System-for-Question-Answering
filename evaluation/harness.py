@@ -130,6 +130,7 @@ def run_queries(orchestrator, queries: list[dict], *, progress: bool = True) -> 
             "category": q.get("category"),
             "query": q["query"],
             "expected": q["expected_decision"],
+            "expected_conflict_pair": q.get("expected_conflict_pair"),
             "observed": decision_of(res),
             "conflict_pair": conflict_pair(res),
             "conflict_kind": detail.get("kind"),
@@ -169,6 +170,27 @@ def metrics(records: list[dict]) -> dict:
     should_abstain = [r for r in records if r["expected"] in ("insufficient", "conflict")]
     unsafe_all = [r for r in should_abstain if r["observed"] == "answer"]
 
+    # Attribution: among ALL reports the system labelled "conflict" (true
+    # positives AND false positives — matching docs/STATUS.md's own reported
+    # numbers, e.g. C2 0.583 = 14/24, not 14/15), does the reported pair match
+    # queries.json's expected_conflict_pair? A false-conflict report has no
+    # gold pair (expected_conflict_pair is None on a non-conflict query), so it
+    # automatically fails this check — citing wrong evidence is wrong evidence
+    # whether or not the verdict happened to be right. A correct verdict citing
+    # the wrong evidence counts as fully correct under `match` above and is
+    # invisible without this. See claude.md's Conflict-Detection Invariants
+    # ("Grade attribution, not just the decision").
+    attributable = [r for r in records if r["observed"] == "conflict"]
+    correctly_attributed = [
+        r for r in attributable
+        if r["conflict_pair"] is not None and r.get("expected_conflict_pair")
+        and sorted(r["conflict_pair"]) == sorted(r["expected_conflict_pair"])
+    ]
+    attribution_precision = (
+        round(len(correctly_attributed) / len(attributable), 4) if attributable else None
+    )
+    misattributed = [r["id"] for r in attributable if r not in correctly_attributed]
+
     return {
         "n": n,
         "accuracy": correct,
@@ -179,6 +201,9 @@ def metrics(records: list[dict]) -> dict:
         "conflict_precision": round(precision, 4),
         "conflict_recall": round(recall, 4),
         "conflict_f1": round(f1, 4),
+        "attribution_precision": attribution_precision,
+        "attribution_n": len(attributable),
+        "misattributed": misattributed,
         "false_conflicts": [r["id"] for r in flagged if r["expected"] != "conflict"],
         "missed_conflicts": [r["id"] for r in true_conflict if r["observed"] != "conflict"],
         "gap_leaks": [r["id"] for r in unsafe_gap],
@@ -194,7 +219,7 @@ def config_snapshot() -> dict:
         "MIN_CHUNK_SCORE_THRESHOLD", "MIN_AVG_SCORE_FOR_SUFFICIENCY",
         "MIN_QUERY_COVERAGE", "MIN_CHUNKS_FOR_SUFFICIENCY",
         "CONFLICT_SIM_THRESHOLD", "NLI_SIM_FLOOR", "NLI_CONFLICT_THRESHOLD",
-        "MIN_CONFLICT_RELEVANCE", "QUERY_SPAN_RELEVANCE",
+        "MIN_CONFLICT_RELEVANCE", "QUERY_SPAN_RELEVANCE", "ANSWERHOOD_MARGIN",
     ]
     snap = {k: getattr(validation, k) for k in keys if hasattr(validation, k)}
     snap["env_overrides"] = {k: v for k, v in os.environ.items() if k.startswith("RAG_")}

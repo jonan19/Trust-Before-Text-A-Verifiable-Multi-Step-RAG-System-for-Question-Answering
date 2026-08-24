@@ -5,7 +5,14 @@
 qdrant-client>=1.10.0
 numpy
 
-# Embedding model (multi-qa-MiniLM-L6-cos-v1)
+# Embedding / cross-encoder models — all loaded through sentence-transformers,
+# each lazy-loaded from HuggingFace Hub on first use (no separate pip package
+# per model):
+#   multi-qa-MiniLM-L6-cos-v1        retrieval embeddings
+#   cross-encoder/nli-deberta-v3-base  Stage 4 conflict NLI
+#   sentence-transformers/all-MiniLM-L6-v2  Stage 4 QUERY_SPAN_RELEVANCE (topicality)
+#   cross-encoder/ms-marco-MiniLM-L-6-v2  Stage 4 ANSWERHOOD_MARGIN gate,
+#       ships disabled (validation.py) — only downloaded if that env var is set
 sentence-transformers>=2.2.2
 transformers>=4.41.0
 huggingface-hub>=0.23.0

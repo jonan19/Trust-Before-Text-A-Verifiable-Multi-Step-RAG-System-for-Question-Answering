@@ -139,6 +139,11 @@ python evaluation/threshold_sensitivity.py
 # How sensitive is the system to the conflict rank gate? (now retired)
 python evaluation/rank_gate_sweep.py
 
+# Does a query-conditioned ANSWERHOOD cross-encoder separate Stage 4's true
+# conflict pairs from its false ones? Offline, no live-code changes; downloads
+# cross-encoder/ms-marco-MiniLM-L-6-v2 on first use. See STATUS.md Problem 1.
+python evaluation/answerhood_lab.py --corpus 1 --corpus 2
+
 # Full pipeline with a real LLM writing answers (uses tokens)
 python evaluation/live_end_to_end.py
 ```
@@ -160,9 +165,12 @@ RAG_MIN_CHUNK_SCORE_THRESHOLD=0 python evaluation/run_eval.py --corpus 1 --tag n
 | `RAG_MIN_AVG_SCORE_FOR_SUFFICIENCY` | `0.65` | Stage 5 average-score branch |
 | `RAG_MIN_QUERY_COVERAGE` | `0.55` | Stage 5 coverage branch |
 | `RAG_MIN_CHUNKS_FOR_AVG_SUFFICIENCY` | `2` | minimum passages for the average branch to apply |
+| `RAG_MIN_FOCUS_PRESENCE` | `0.5` | Stage 5 H5: fraction of the question's focus terms that must appear in the evidence; `0` restores pre-fix behaviour (see STATUS.md Problem 2) |
 | `RAG_NLI_CONFLICT_THRESHOLD` | `0.94` | NLI contradiction confidence |
-| `RAG_QUERY_SPAN_RELEVANCE` | `0.35` | Stage 4 query-intent gate |
+| `RAG_QUERY_SPAN_RELEVANCE` | `0.35` | Stage 4 query-intent gate (bi-encoder topicality) |
+| `RAG_ANSWERHOOD_MARGIN` | `0` | off — Stage 4 cross-encoder answerhood gate; tried and rejected (Tier-1 recall cost), see STATUS.md Problem 1 |
 | `RAG_ANCHOR_REQUIRE_BOTH` | `1` | anchor test: both sentences, or either |
+| `RAG_ANCHOR_ASYMMETRIC_QSPAN` | `0` | off — anchor-rescue candidate for Q045; shipped disabled, costs Corpus 2 precision (see STATUS.md Problem 1) |
 | `RAG_MAX_CONFLICT_EVIDENCE_RANK` | `0` | **retired** — the old positional rank gate; `4` restores it |
 | `RAG_KNEE_GAP_MULTIPLE` | `0` | off — discontinuity-based evidence cutoff |
 | `RAG_RANK_TIE_EPSILON` | `0.005` | scores closer than this count as tied |

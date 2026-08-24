@@ -1,5 +1,21 @@
 # Limitation Fixes — Results
 
+> ⚠️ **Superseded.** This file's headline numbers (94.9% / 80.8% decision
+> accuracy, 0 unsafe answers) were measured against an earlier code state: the
+> positional rank gate (`MAX_CONFLICT_EVIDENCE_RANK=4`) was active, and there
+> was no Stage 0 provenance verification and no Stage 3/4/5 evidence
+> decoupling. A further round of changes — retiring the rank gate in favor of
+> the Stage-4 anchor test, decoupling the evidence sets Stage 4 and Stage 5
+> see, and comparing sentences instead of whole passages — introduced a
+> sufficiency-gate safety bug (2 gap queries answered instead of refused) that
+> was since fixed (a focus-term-presence veto in Stage 5). The figures now
+> current in [`../STATUS.md`](../STATUS.md): Corpus 1 92.3% decision accuracy
+> with **0** unsafe answers, Corpus 2 80.8% with **1** unsafe answer (a missed
+> conflict, Q045 — a different mechanism from anything fixed in this file) and
+> conflict recall 15/16 (also misses Q045). Kept in full for its audit trail of
+> rejected candidates — every rule falsified here stayed falsified — but do not
+> cite this file's headline numbers as current.
+
 Work on the six limitations recorded in the project's limitation list. Every
 number below comes from re-running the relevant test in this directory; no
 number is carried over from an earlier run except where explicitly labelled as

@@ -168,11 +168,16 @@ sides with their sources. No LLM is involved in that decision.
 
 ### Stage 5 — Sufficiency
 
-Is there enough here to answer? Two hard requirements, then a quality test that
-either of two signals can satisfy:
+Is there enough here to answer? Three hard requirements, then a quality test
+that either of two signals can satisfy:
 
 - **H1** at least one passage survived
 - **H3** at least one passage has non-zero relevance
+- **H5** a majority of the question's focus terms (its rarest, most
+  discriminative words) appear in the evidence **at all** — a presence test,
+  not a threshold. This is what refuses a question the corpus genuinely does
+  not cover, and it exists because H2/H4 alone let two such questions through
+  (see STATUS.md Problem 2 for the fix and its measured cost).
 - then **H2 OR H4**:
   - **H2** average passage score ≥ 0.65, over at least 2 passages
   - **H4** at least 55% of the question's content words appear in the evidence
@@ -181,8 +186,10 @@ The OR is deliberate. A precise single-fact question retrieves few but strong
 passages (high average, low coverage). A broad question retrieves many (high
 coverage, diluted average). Requiring both punished both shapes.
 
-> This is the **weakest stage in the system**, and the source of the one
-> outstanding safety bug. See [STATUS.md](STATUS.md).
+> This stage's H2/H4 disjunction was the source of a sufficiency-gate safety
+> bug, now fixed by H5. The system's one remaining unsafe answer is a
+> **Stage 4** conflict-detection miss, not a Stage 5 issue — see
+> [STATUS.md](STATUS.md) Problems 1 and 2.
 
 ### Stage 6 — Structure the evidence
 

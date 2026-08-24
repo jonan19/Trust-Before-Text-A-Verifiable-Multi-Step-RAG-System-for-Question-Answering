@@ -510,10 +510,15 @@ def run(query: str, verbose: bool = True) -> dict:
     return {
         "query"           : query,
         "preprocessed"    : processed_query,
+        "query_type"      : query_type,
         "decision"        : decision,
         "answer"          : answer,
         "context"         : context,
         "validation"      : validation_result,
         "sub_queries"     : sub_queries,
         "synthesis_result": synthesis_result,
+        # Observability: raw candidate count before Stage 2 dedup, so the
+        # frontend can show the full retrieve -> dedup -> filter funnel.
+        "raw_chunk_count" : len(raw_chunks),
+        "target_source"   : early_target_source,
     }
