@@ -1,0 +1,1029 @@
+{
+  "construction": {
+    "bundle_size": 4,
+    "seed": 0,
+    "chunk_size": 500,
+    "chunk_overlap": 50,
+    "qform_sha256": "206e2bf19ce70ed088bf8164ff3337821ab64af9c1c5f4bd9c8597265cf2f53c"
+  },
+  "splits": {
+    "dev": {
+      "n_documents": 61,
+      "dropped_ids": [
+        582
+      ],
+      "gold_counts": {
+        "answer": 192,
+        "conflict": 39,
+        "insufficient": 24
+      },
+      "bundles": {
+        "dev-b00": [
+          {
+            "id": 27,
+            "file_name": "AICPMutualNDA_1219166_writableV2.pdf",
+            "on_disk": "nda_27.txt"
+          },
+          {
+            "id": 79,
+            "file_name": "Confidentiality_and_Non-Disclosure_Agreement.pdf",
+            "on_disk": "nda_79.txt"
+          },
+          {
+            "id": 71,
+            "file_name": "Confidentiality%20and%20Non-Disclosure%20Agreement%20%28CNA-1%29.pdf",
+            "on_disk": "nda_71.txt"
+          },
+          {
+            "id": 152,
+            "file_name": "MNDA.pdf",
+            "on_disk": "nda_152.txt"
+          }
+        ],
+        "dev-b01": [
+          {
+            "id": 440,
+            "file_name": "1016503_0000929624-00-000894_0010.txt",
+            "on_disk": "nda_440.txt"
+          },
+          {
+            "id": 411,
+            "file_name": "859792_0001005477-96-000681_document_3.txt",
+            "on_disk": "nda_411.txt"
+          },
+          {
+            "id": 482,
+            "file_name": "1100772_0001038838-02-000125_ex1032sb2no5.txt",
+            "on_disk": "nda_482.txt"
+          },
+          {
+            "id": 13,
+            "file_name": "20150916-model-sharing-non-disclosure-agreement.pdf",
+            "on_disk": "nda_13.txt"
+          }
+        ],
+        "dev-b02": [
+          {
+            "id": 15,
+            "file_name": "2_waycda.pdf",
+            "on_disk": "nda_15.txt"
+          },
+          {
+            "id": 547,
+            "file_name": "1021097_0001047469-11-001653_a2202345zex-99_d10.htm",
+            "on_disk": "nda_547.txt"
+          },
+          {
+            "id": 595,
+            "file_name": "1334303_0001193125-10-204560_dex99e5.htm",
+            "on_disk": "nda_595.txt"
+          },
+          {
+            "id": 605,
+            "file_name": "1392091_0000950123-11-021325_c13551exv99w7.htm",
+            "on_disk": "nda_605.txt"
+          }
+        ],
+        "dev-b03": [
+          {
+            "id": 56,
+            "file_name": "annex-2-sample-non-disclosure-agreement.pdf",
+            "on_disk": "nda_56.txt"
+          },
+          {
+            "id": 69,
+            "file_name": "Confidentiality%20ND%20Agreement%209.pdf",
+            "on_disk": "nda_69.txt"
+          },
+          {
+            "id": 70,
+            "file_name": "Confidentiality%20Non-Disclosure%20and%20Appropriate%20Use%20Agreement%20-%20FAU.01082016.pdf",
+            "on_disk": "nda_70.txt"
+          },
+          {
+            "id": 586,
+            "file_name": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+            "on_disk": "nda_586.txt"
+          }
+        ],
+        "dev-b04": [
+          {
+            "id": 3,
+            "file_name": "09-24-2019-04-25-05-3914910473.pdf",
+            "on_disk": "nda_3.txt"
+          },
+          {
+            "id": 7,
+            "file_name": "1438076025NDA_28072015%20-%20AHPL.pdf",
+            "on_disk": "nda_7.txt"
+          },
+          {
+            "id": 406,
+            "file_name": "813562_0000950117-99-001205_document_14.txt",
+            "on_disk": "nda_406.txt"
+          },
+          {
+            "id": 381,
+            "file_name": "109261_0000950172-02-002217_los283194.txt",
+            "on_disk": "nda_381.txt"
+          }
+        ],
+        "dev-b05": [
+          {
+            "id": 29,
+            "file_name": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+            "on_disk": "nda_29.txt"
+          },
+          {
+            "id": 32,
+            "file_name": "Agreement_6_28_07.pdf",
+            "on_disk": "nda_32.txt"
+          },
+          {
+            "id": 563,
+            "file_name": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+            "on_disk": "nda_563.txt"
+          },
+          {
+            "id": 478,
+            "file_name": "1096182_0001144204-06-021678_v043804_ex10-3.txt",
+            "on_disk": "nda_478.txt"
+          }
+        ],
+        "dev-b06": [
+          {
+            "id": 44,
+            "file_name": "BOMI%20Non-Disclosure%20Agreement.pdf",
+            "on_disk": "nda_44.txt"
+          },
+          {
+            "id": 82,
+            "file_name": "confagree.pdf",
+            "on_disk": "nda_82.txt"
+          },
+          {
+            "id": 19,
+            "file_name": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+            "on_disk": "nda_19.txt"
+          },
+          {
+            "id": 456,
+            "file_name": "1052303_0000950109-98-003654_document_16.txt",
+            "on_disk": "nda_456.txt"
+          }
+        ],
+        "dev-b07": [
+          {
+            "id": 20,
+            "file_name": "5-Appendix-Non-Disclosure-Agreement-Mutual.pdf",
+            "on_disk": "nda_20.txt"
+          },
+          {
+            "id": 10,
+            "file_name": "180314-March-14-2018-SOW-M.pdf",
+            "on_disk": "nda_10.txt"
+          },
+          {
+            "id": 35,
+            "file_name": "Annexure-3_Confidentiality-Agreement.pdf",
+            "on_disk": "nda_35.txt"
+          },
+          {
+            "id": 598,
+            "file_name": "1366649_0001193125-14-380778_d808213dex99d2.htm",
+            "on_disk": "nda_598.txt"
+          }
+        ],
+        "dev-b08": [
+          {
+            "id": 45,
+            "file_name": "BTS_NDA.pdf",
+            "on_disk": "nda_45.txt"
+          },
+          {
+            "id": 12,
+            "file_name": "183.pdf",
+            "on_disk": "nda_12.txt"
+          },
+          {
+            "id": 405,
+            "file_name": "804151_0000950144-97-007563_document_14.txt",
+            "on_disk": "nda_405.txt"
+          },
+          {
+            "id": 488,
+            "file_name": "1108244_0001012870-00-001650_document_32.txt",
+            "on_disk": "nda_488.txt"
+          }
+        ],
+        "dev-b09": [
+          {
+            "id": 17,
+            "file_name": "36C25520Q0076-013.pdf",
+            "on_disk": "nda_17.txt"
+          },
+          {
+            "id": 81,
+            "file_name": "clearcenter-rnda.pdf",
+            "on_disk": "nda_81.txt"
+          },
+          {
+            "id": 610,
+            "file_name": "1452751_0001193125-17-086167_d334994dex99e3.htm",
+            "on_disk": "nda_610.txt"
+          },
+          {
+            "id": 398,
+            "file_name": "88190_0000950144-96-003474_document_2.txt",
+            "on_disk": "nda_398.txt"
+          }
+        ],
+        "dev-b10": [
+          {
+            "id": 14,
+            "file_name": "245490.pdf",
+            "on_disk": "nda_14.txt"
+          },
+          {
+            "id": 435,
+            "file_name": "1013322_0000912057-00-023405_document_2.txt",
+            "on_disk": "nda_435.txt"
+          },
+          {
+            "id": 37,
+            "file_name": "Attachment 9 -  Non Disclosure Agreement (Version 1).pdf",
+            "on_disk": "nda_37.txt"
+          },
+          {
+            "id": 16,
+            "file_name": "3511_standard_nda.pdf",
+            "on_disk": "nda_16.txt"
+          }
+        ],
+        "dev-b11": [
+          {
+            "id": 575,
+            "file_name": "1253176_0001193125-18-317778_d567323dex1024.htm",
+            "on_disk": "nda_575.txt"
+          },
+          {
+            "id": 28,
+            "file_name": "ATI%20504%20US%20Mutual%20NDA.pdf",
+            "on_disk": "nda_28.txt"
+          },
+          {
+            "id": 205,
+            "file_name": "NDA-No-Reservations-Layer-8-Security.pdf",
+            "on_disk": "nda_205.txt"
+          },
+          {
+            "id": 54,
+            "file_name": "C_TERMS_NDA_EN.pdf",
+            "on_disk": "nda_54.txt"
+          }
+        ],
+        "dev-b12": [
+          {
+            "id": 72,
+            "file_name": "Confidentiality%20and%20Non-Disclosure%20Agreement.pdf",
+            "on_disk": "nda_72.txt"
+          },
+          {
+            "id": 39,
+            "file_name": "Attachment%203%20-%20Confidentiality%20Release%20Form_201504131404512865.pdf",
+            "on_disk": "nda_39.txt"
+          },
+          {
+            "id": 507,
+            "file_name": "313522_0000912057-02-040085_a2091647zex-99_d3.htm",
+            "on_disk": "nda_507.txt"
+          },
+          {
+            "id": 63,
+            "file_name": "CI-Non-Disclosure-Agreement-an5h.pdf",
+            "on_disk": "nda_63.txt"
+          }
+        ],
+        "dev-b13": [
+          {
+            "id": 73,
+            "file_name": "Confidentiality-and-Non-Disclosure-Agreement-LSI-ABC.pdf",
+            "on_disk": "nda_73.txt"
+          },
+          {
+            "id": 75,
+            "file_name": "Confidentiality.pdf",
+            "on_disk": "nda_75.txt"
+          },
+          {
+            "id": 33,
+            "file_name": "Annex 18 - Non-Disclosure Agreement.pdf",
+            "on_disk": "nda_33.txt"
+          },
+          {
+            "id": 9,
+            "file_name": "17.04.01%20BPS%20Non-Disclosure%20and%20Data%20Sharing%20Agreement%20-%20Transportation%20Challenge%20vF.pdf",
+            "on_disk": "nda_9.txt"
+          }
+        ],
+        "dev-b14": [
+          {
+            "id": 64,
+            "file_name": "CNDA1218Draft3.pdf",
+            "on_disk": "nda_64.txt"
+          },
+          {
+            "id": 590,
+            "file_name": "1289434_0001047469-10-008010_a2200117zex-99_d3.htm",
+            "on_disk": "nda_590.txt"
+          },
+          {
+            "id": 486,
+            "file_name": "1104332_0000950144-00-008876_ex10-26.txt",
+            "on_disk": "nda_486.txt"
+          },
+          {
+            "id": 61,
+            "file_name": "ccporappdev-rfp-att8.pdf",
+            "on_disk": "nda_61.txt"
+          }
+        ]
+      }
+    },
+    "test": {
+      "n_documents": 123,
+      "dropped_ids": [
+        496,
+        97,
+        544
+      ],
+      "gold_counts": {
+        "answer": 396,
+        "conflict": 74,
+        "insufficient": 40
+      },
+      "bundles": {
+        "test-b00": [
+          {
+            "id": 307,
+            "file_name": "non-disclosure-agreement-en.pdf",
+            "on_disk": "nda_307.txt"
+          },
+          {
+            "id": 552,
+            "file_name": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+            "on_disk": "nda_552.txt"
+          },
+          {
+            "id": 47,
+            "file_name": "BaconNon-Disclosure.pdf",
+            "on_disk": "nda_47.txt"
+          },
+          {
+            "id": 80,
+            "file_name": "Confidentiality_and_Non-Disclosure_Agreement_Rev_10-20-16.pdf",
+            "on_disk": "nda_80.txt"
+          }
+        ],
+        "test-b01": [
+          {
+            "id": 55,
+            "file_name": "amc-general-mutual-non-disclosure-agreement-en-gb.pdf",
+            "on_disk": "nda_55.txt"
+          },
+          {
+            "id": 36,
+            "file_name": "Aspiegel_NDA_template.pdf",
+            "on_disk": "nda_36.txt"
+          },
+          {
+            "id": 412,
+            "file_name": "880458_0001021408-01-510269_dex1087.txt",
+            "on_disk": "nda_412.txt"
+          },
+          {
+            "id": 5,
+            "file_name": "12032018_NDA_The%20Munt_EN.pdf",
+            "on_disk": "nda_5.txt"
+          }
+        ],
+        "test-b02": [
+          {
+            "id": 526,
+            "file_name": "850313_0000950149-07-000090_f28028toexv99wxdyx2y.htm",
+            "on_disk": "nda_526.txt"
+          },
+          {
+            "id": 432,
+            "file_name": "1010471_0000950134-97-006281_document_5.txt",
+            "on_disk": "nda_432.txt"
+          },
+          {
+            "id": 465,
+            "file_name": "1073090_0001356564-06-000012_sorell10ksbamend2x102.txt",
+            "on_disk": "nda_465.txt"
+          },
+          {
+            "id": 23,
+            "file_name": "59b1148ff6952b0001bdbedc_20170907_non%20disclosure%20agreement_expert.pdf",
+            "on_disk": "nda_23.txt"
+          }
+        ],
+        "test-b03": [
+          {
+            "id": 46,
+            "file_name": "BT_NDA.pdf",
+            "on_disk": "nda_46.txt"
+          },
+          {
+            "id": 523,
+            "file_name": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+            "on_disk": "nda_523.txt"
+          },
+          {
+            "id": 444,
+            "file_name": "1021086_0000950162-99-000581_document_3.txt",
+            "on_disk": "nda_444.txt"
+          },
+          {
+            "id": 361,
+            "file_name": "VELCO%20NDA%20rev0%20Dec%2014%202015.pdf",
+            "on_disk": "nda_361.txt"
+          }
+        ],
+        "test-b04": [
+          {
+            "id": 49,
+            "file_name": "Bio-FIP-EOI-NDA.pdf",
+            "on_disk": "nda_49.txt"
+          },
+          {
+            "id": 408,
+            "file_name": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+            "on_disk": "nda_408.txt"
+          },
+          {
+            "id": 6,
+            "file_name": "130806ca141.pdf",
+            "on_disk": "nda_6.txt"
+          },
+          {
+            "id": 99,
+            "file_name": "eHandshake_Non_Disclosure_Agreement.pdf",
+            "on_disk": "nda_99.txt"
+          }
+        ],
+        "test-b05": [
+          {
+            "id": 4,
+            "file_name": "118.3-Non-disclosure-agreement.pdf",
+            "on_disk": "nda_4.txt"
+          },
+          {
+            "id": 606,
+            "file_name": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+            "on_disk": "nda_606.txt"
+          },
+          {
+            "id": 540,
+            "file_name": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+            "on_disk": "nda_540.txt"
+          },
+          {
+            "id": 296,
+            "file_name": "Non-Disclosure-form_1.pdf",
+            "on_disk": "nda_296.txt"
+          }
+        ],
+        "test-b06": [
+          {
+            "id": 85,
+            "file_name": "confidentialityandnondisclosureagreement.pdf",
+            "on_disk": "nda_85.txt"
+          },
+          {
+            "id": 336,
+            "file_name": "SAMED%20confidentiality%20non%20disclosure%20and%20conflict%20of%20interest%20agreement%20for%20board%20and%20committee%20members%20ver%201.pdf",
+            "on_disk": "nda_336.txt"
+          },
+          {
+            "id": 53,
+            "file_name": "CCS-Salt-Cavern-RfP-NDA.pdf",
+            "on_disk": "nda_53.txt"
+          },
+          {
+            "id": 400,
+            "file_name": "96238_0000950116-97-001823_document_13.txt",
+            "on_disk": "nda_400.txt"
+          }
+        ],
+        "test-b07": [
+          {
+            "id": 90,
+            "file_name": "Data_Use_and_Non_Disclosure_Data_Disclosed_to_MDCH_Trauma_Registry_Final_465518_7.pdf",
+            "on_disk": "nda_90.txt"
+          },
+          {
+            "id": 565,
+            "file_name": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+            "on_disk": "nda_565.txt"
+          },
+          {
+            "id": 181,
+            "file_name": "mutual-non-disclosure-agreement.pdf",
+            "on_disk": "nda_181.txt"
+          },
+          {
+            "id": 212,
+            "file_name": "NDA-Template-Media-News-Group-inc.pdf",
+            "on_disk": "nda_212.txt"
+          }
+        ],
+        "test-b08": [
+          {
+            "id": 476,
+            "file_name": "1095558_0000944209-00-000518_document_3.txt",
+            "on_disk": "nda_476.txt"
+          },
+          {
+            "id": 600,
+            "file_name": "1367408_0001367408-06-000002_risb2ex106.htm",
+            "on_disk": "nda_600.txt"
+          },
+          {
+            "id": 127,
+            "file_name": "ICTSC-NDA-General-MandA-signed.pdf",
+            "on_disk": "nda_127.txt"
+          },
+          {
+            "id": 138,
+            "file_name": "LMS_Non_Disclosure_Agreement.pdf",
+            "on_disk": "nda_138.txt"
+          }
+        ],
+        "test-b09": [
+          {
+            "id": 429,
+            "file_name": "934545_0000891618-99-004640_document_2.txt",
+            "on_disk": "nda_429.txt"
+          },
+          {
+            "id": 66,
+            "file_name": "Clause-de-non-divulgation.pdf",
+            "on_disk": "nda_66.txt"
+          },
+          {
+            "id": 78,
+            "file_name": "Confidentiality_Non-Disclosure_Agreement.pdf",
+            "on_disk": "nda_78.txt"
+          },
+          {
+            "id": 549,
+            "file_name": "1041550_0001193125-19-004977_d663808dex106.htm",
+            "on_disk": "nda_549.txt"
+          }
+        ],
+        "test-b10": [
+          {
+            "id": 26,
+            "file_name": "AGProjects-NDA.pdf",
+            "on_disk": "nda_26.txt"
+          },
+          {
+            "id": 413,
+            "file_name": "883905_0001095811-01-000469_f68556ex99-d12.txt",
+            "on_disk": "nda_413.txt"
+          },
+          {
+            "id": 43,
+            "file_name": "BO115-07-non-disclosure-agreement.pdf",
+            "on_disk": "nda_43.txt"
+          },
+          {
+            "id": 84,
+            "file_name": "confidentiality_agreement.pdf",
+            "on_disk": "nda_84.txt"
+          }
+        ],
+        "test-b11": [
+          {
+            "id": 543,
+            "file_name": "1011344_0001193125-08-097987_dex99d5.htm",
+            "on_disk": "nda_543.txt"
+          },
+          {
+            "id": 471,
+            "file_name": "1084000_0001144204-06-046785_v056501_ex10-16.txt",
+            "on_disk": "nda_471.txt"
+          },
+          {
+            "id": 62,
+            "file_name": "ceii-and-nda.pdf",
+            "on_disk": "nda_62.txt"
+          },
+          {
+            "id": 41,
+            "file_name": "Attachment-I-Non-DisclosureAgreementContractor.pdf",
+            "on_disk": "nda_41.txt"
+          }
+        ],
+        "test-b12": [
+          {
+            "id": 11,
+            "file_name": "18268-001%20Rev%20B%20Form%20Version%20in%20PDF.pdf",
+            "on_disk": "nda_11.txt"
+          },
+          {
+            "id": 387,
+            "file_name": "65781_0000950123-00-009565_y41542ex99-d_3.txt",
+            "on_disk": "nda_387.txt"
+          },
+          {
+            "id": 497,
+            "file_name": "1138169_0001050234-02-000002_ex10h.txt",
+            "on_disk": "nda_497.txt"
+          },
+          {
+            "id": 42,
+            "file_name": "BCG-Mutual-NDA.pdf",
+            "on_disk": "nda_42.txt"
+          }
+        ],
+        "test-b13": [
+          {
+            "id": 591,
+            "file_name": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+            "on_disk": "nda_591.txt"
+          },
+          {
+            "id": 585,
+            "file_name": "916457_0000916457-14-000028_exhibit104-confidentiality.htm",
+            "on_disk": "nda_585.txt"
+          },
+          {
+            "id": 52,
+            "file_name": "CBP%20Non-Disclosure%20Form_October2018.pdf",
+            "on_disk": "nda_52.txt"
+          },
+          {
+            "id": 60,
+            "file_name": "casino-nondisclosure-agmt.pdf",
+            "on_disk": "nda_60.txt"
+          }
+        ],
+        "test-b14": [
+          {
+            "id": 564,
+            "file_name": "1096147_0001193125-08-206038_dex4.htm",
+            "on_disk": "nda_564.txt"
+          },
+          {
+            "id": 452,
+            "file_name": "1043003_0000950170-98-000097_document_12.txt",
+            "on_disk": "nda_452.txt"
+          },
+          {
+            "id": 354,
+            "file_name": "Template-NDA-2-way-final-1.pdf",
+            "on_disk": "nda_354.txt"
+          },
+          {
+            "id": 31,
+            "file_name": "Agency-Lending-Disclosure_A-Z-Guide_Appendix_Sample-Confidentiality-Agreements.pdf",
+            "on_disk": "nda_31.txt"
+          }
+        ],
+        "test-b15": [
+          {
+            "id": 30,
+            "file_name": "AfriGIS_Client-NDA_Template_2019.pdf",
+            "on_disk": "nda_30.txt"
+          },
+          {
+            "id": 537,
+            "file_name": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+            "on_disk": "nda_537.txt"
+          },
+          {
+            "id": 190,
+            "file_name": "nda_9.pdf",
+            "on_disk": "nda_190.txt"
+          },
+          {
+            "id": 48,
+            "file_name": "Basic-Non-Disclosure-Agreement.pdf",
+            "on_disk": "nda_48.txt"
+          }
+        ],
+        "test-b16": [
+          {
+            "id": 21,
+            "file_name": "5-NSK-Confidentiality-Agreement-for-Suppliers.pdf",
+            "on_disk": "nda_21.txt"
+          },
+          {
+            "id": 76,
+            "file_name": "ConfidentialityAgreement.pdf",
+            "on_disk": "nda_76.txt"
+          },
+          {
+            "id": 57,
+            "file_name": "annex-iii---nda-agreement..pdf",
+            "on_disk": "nda_57.txt"
+          },
+          {
+            "id": 446,
+            "file_name": "1023734_0000912057-96-023266_document_16.txt",
+            "on_disk": "nda_446.txt"
+          }
+        ],
+        "test-b17": [
+          {
+            "id": 227,
+            "file_name": "NDA_Street_Stream_Franchise.pdf",
+            "on_disk": "nda_227.txt"
+          },
+          {
+            "id": 1,
+            "file_name": " 064-19 Non Disclosure Agreement 2019.pdf",
+            "on_disk": "nda_1.txt"
+          },
+          {
+            "id": 596,
+            "file_name": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+            "on_disk": "nda_596.txt"
+          },
+          {
+            "id": 24,
+            "file_name": "5bfbcabf0627e70bdcfc5b32_nda-ready4s.pdf",
+            "on_disk": "nda_24.txt"
+          }
+        ],
+        "test-b18": [
+          {
+            "id": 2,
+            "file_name": "01_Bosch-Automotive-Service-Solutions-Mutual-Non-Disclosure-Agreement-7-12-17.pdf",
+            "on_disk": "nda_2.txt"
+          },
+          {
+            "id": 498,
+            "file_name": "1173495_0001047469-03-033872_a2118144zex-10_12.txt",
+            "on_disk": "nda_498.txt"
+          },
+          {
+            "id": 18,
+            "file_name": "41629_1.pdf",
+            "on_disk": "nda_18.txt"
+          },
+          {
+            "id": 584,
+            "file_name": "915191_0001047469-17-003155_a2231967zex-99_8.htm",
+            "on_disk": "nda_584.txt"
+          }
+        ],
+        "test-b19": [
+          {
+            "id": 293,
+            "file_name": "Non-Disclosure-Secrecy-Agreement.pdf",
+            "on_disk": "nda_293.txt"
+          },
+          {
+            "id": 165,
+            "file_name": "Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..pdf",
+            "on_disk": "nda_165.txt"
+          },
+          {
+            "id": 546,
+            "file_name": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+            "on_disk": "nda_546.txt"
+          },
+          {
+            "id": 310,
+            "file_name": "non-disclosure-agreement-template.pdf",
+            "on_disk": "nda_310.txt"
+          }
+        ],
+        "test-b20": [
+          {
+            "id": 50,
+            "file_name": "Business-Sale-Non-Disclosure-Agreement.pdf",
+            "on_disk": "nda_50.txt"
+          },
+          {
+            "id": 401,
+            "file_name": "1002276_0001036050-99-002047_document_13.txt",
+            "on_disk": "nda_401.txt"
+          },
+          {
+            "id": 392,
+            "file_name": "768384_0000912057-00-018619_document_8.txt",
+            "on_disk": "nda_392.txt"
+          },
+          {
+            "id": 74,
+            "file_name": "Confidentiality-and-Nondisclosure-Agreement-Template.pdf",
+            "on_disk": "nda_74.txt"
+          }
+        ],
+        "test-b21": [
+          {
+            "id": 157,
+            "file_name": "MUTUAL_NDA.pdf",
+            "on_disk": "nda_157.txt"
+          },
+          {
+            "id": 611,
+            "file_name": "1457829_0000898822-13-000086_exhibit-ndaexecutionversion.htm",
+            "on_disk": "nda_611.txt"
+          },
+          {
+            "id": 455,
+            "file_name": "1050277_0001047469-99-000663_document_7.txt",
+            "on_disk": "nda_455.txt"
+          },
+          {
+            "id": 321,
+            "file_name": "Pitch-Deck-Fire-Workshop-NDA-2.2017.pdf",
+            "on_disk": "nda_321.txt"
+          }
+        ],
+        "test-b22": [
+          {
+            "id": 213,
+            "file_name": "NDA-Urban_Wind_Turbines.pdf",
+            "on_disk": "nda_213.txt"
+          },
+          {
+            "id": 77,
+            "file_name": "Confidentiality_Agreement_1.pdf",
+            "on_disk": "nda_77.txt"
+          },
+          {
+            "id": 433,
+            "file_name": "1011671_0000936392-99-000246_document_46.txt",
+            "on_disk": "nda_433.txt"
+          },
+          {
+            "id": 22,
+            "file_name": "54c808c1b20e4490b1300ad2ce3b9649.pdf",
+            "on_disk": "nda_22.txt"
+          }
+        ],
+        "test-b23": [
+          {
+            "id": 555,
+            "file_name": "1062478_0001193125-14-442753_d838170dex3.htm",
+            "on_disk": "nda_555.txt"
+          },
+          {
+            "id": 68,
+            "file_name": "Confidentiality%20Agreement.pdf",
+            "on_disk": "nda_68.txt"
+          },
+          {
+            "id": 40,
+            "file_name": "Attachment%20J.2%20-%20Non-Disclosure%20Agreement%20-Technology%20Services.pdf",
+            "on_disk": "nda_40.txt"
+          },
+          {
+            "id": 389,
+            "file_name": "71297_0000071297-97-000059_document_6.txt",
+            "on_disk": "nda_389.txt"
+          }
+        ],
+        "test-b24": [
+          {
+            "id": 451,
+            "file_name": "1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt",
+            "on_disk": "nda_451.txt"
+          },
+          {
+            "id": 301,
+            "file_name": "NonDisclosureAgreementNDASAMITT20190002v2.pdf",
+            "on_disk": "nda_301.txt"
+          },
+          {
+            "id": 58,
+            "file_name": "appendix-g-nda-form.pdf",
+            "on_disk": "nda_58.txt"
+          },
+          {
+            "id": 395,
+            "file_name": "86115_0000930661-99-001321_document_3.txt",
+            "on_disk": "nda_395.txt"
+          }
+        ],
+        "test-b25": [
+          {
+            "id": 25,
+            "file_name": "ADVANIDE-NON-DISCLOSURE-AGREEMENT.pdf",
+            "on_disk": "nda_25.txt"
+          },
+          {
+            "id": 493,
+            "file_name": "1120792_0001019687-05-002206_morgan_10qex5-2.txt",
+            "on_disk": "nda_493.txt"
+          },
+          {
+            "id": 539,
+            "file_name": "912263_0001193125-12-285724_d371520dex99e4.htm",
+            "on_disk": "nda_539.txt"
+          },
+          {
+            "id": 65,
+            "file_name": "CON-NDA-PTL-01-2012-v1%20Non-Disclosure%20Agreement%20and%20Checklist.pdf",
+            "on_disk": "nda_65.txt"
+          }
+        ],
+        "test-b26": [
+          {
+            "id": 38,
+            "file_name": "Attachment B - Intent to Propose and Non-Disclosure Agreement.pdf",
+            "on_disk": "nda_38.txt"
+          },
+          {
+            "id": 228,
+            "file_name": "NDA_V3.pdf",
+            "on_disk": "nda_228.txt"
+          },
+          {
+            "id": 51,
+            "file_name": "CA-Nov14-Doc.5.14%20-%20Template%20Confidentiality%20Agreement.pdf",
+            "on_disk": "nda_51.txt"
+          },
+          {
+            "id": 357,
+            "file_name": "UALR-Standard-Non-disclosure-AgreementTemplate.pdf",
+            "on_disk": "nda_357.txt"
+          }
+        ],
+        "test-b27": [
+          {
+            "id": 83,
+            "file_name": "confidentiality-agreement.pdf",
+            "on_disk": "nda_83.txt"
+          },
+          {
+            "id": 218,
+            "file_name": "NDAMutualTemplateClientFill.pdf",
+            "on_disk": "nda_218.txt"
+          },
+          {
+            "id": 67,
+            "file_name": "ConfidNonDisclosureAgree.pdf",
+            "on_disk": "nda_67.txt"
+          },
+          {
+            "id": 542,
+            "file_name": "1010552_0000912057-01-520246_a2051644zex-99_20.htm",
+            "on_disk": "nda_542.txt"
+          }
+        ],
+        "test-b28": [
+          {
+            "id": 521,
+            "file_name": "802724_0001193125-15-331613_d96542dex99d5.htm",
+            "on_disk": "nda_521.txt"
+          },
+          {
+            "id": 117,
+            "file_name": "Generic-NDA-Pitch-Deck-Fire.pdf",
+            "on_disk": "nda_117.txt"
+          },
+          {
+            "id": 225,
+            "file_name": "NDA_ResConnect.pdf",
+            "on_disk": "nda_225.txt"
+          },
+          {
+            "id": 289,
+            "file_name": "Non-Disclosure-Agreement-NDA.pdf",
+            "on_disk": "nda_289.txt"
+          }
+        ],
+        "test-b29": [
+          {
+            "id": 59,
+            "file_name": "buyer_profile.pdf",
+            "on_disk": "nda_59.txt"
+          },
+          {
+            "id": 8,
+            "file_name": "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf",
+            "on_disk": "nda_8.txt"
+          },
+          {
+            "id": 129,
+            "file_name": "IMOA%20Molybdenum%20Consortium%20NDA%20Agreement%20amended%20Jan%2008,%20valid%20March%2009%20onwards.pdf",
+            "on_disk": "nda_129.txt"
+          },
+          {
+            "id": 558,
+            "file_name": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+            "on_disk": "nda_558.txt"
+          }
+        ]
+      }
+    }
+  }
+}

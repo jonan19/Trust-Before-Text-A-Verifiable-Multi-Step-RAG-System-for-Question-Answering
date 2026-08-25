@@ -1,0 +1,57 @@
+NON DISCLOSURE AGREEMENT
+This NON DISCLOSURE AGREEMENT is entered into this __________ 2004 ("Effective Date") by Forschungszentrum Karlsruhe GmbH, Weberstraße 5, 76133 Karlsruhe, Federal Republic of Germany (hereinafter referred to as "Forschungszentrum") acting on its behalf and on behalf of the participants in the EU project HySafe, which are the following
+L’Air Liquide
+Federal Institute for Materials Research and Testing
+BMW Forschung und Technik GmbH
+Building Research Establishment Ltd
+Commissariat à l’Energie Atomique
+Det Norske Veritas AS
+Fraunhofer-Gesellschaft zur Foerderung der Angewandten Forschung e.V.
+Forschungszentrum Juelich GmbH
+GexCon AS
+The United Kingdom’s Health and Safety Laboratory
+Foundation INASMET
+Institut National de l’Environnement industriel et des RISques
+Instituto Superior Technico
+European Commission - Joint Research Centre - Institute for Energy
+National Center for Scientific Research Demokritos
+Norsk Hydro ASA
+Risø National Laboratory
+TNO
+University of Calgary
+University of Pisa
+Universidad Politécnica de Madrid
+University of Ulster
+VOLVO Technology Corporation
+Warsaw University of Technology
+and
+Mr./Mrs. …
+(hereinafter referred to as "Mr./Mrs. …")
+WHEREAS, Forschungszentrum is Coordinator of the Network of Excellence "Safety of Hydrogen as an Energy Carrier" (HySafe), a project in the Sixth Research and Technological Development Framework Programme of the European Community.
+WHEREAS, according to Section 5.2.3.8 of the Consortium Agreement concluded between all participants in HySafe, an Advisory Council can be constituted, which consists of distinguished scientists from organisations, companies and universities outside the Network as well as representatives from industry and authorities. It advises the Network and makes recommendations on all important matters of substance (e.g. scientific, industry and end user evaluations).
+WHEREAS, Mr./Mrs. … is appointed as a member of the Advisory Council.
+WHEREAS, each participant in HySafe may provide own confidential information related to HySafe to the Advisory Council, all such information to be considered as the “Confidential Information”, and whereupon the parties hereto wish to record the terms and conditions upon which this information will be disclosed.
+THEREFORE it is hereby agreed as follows:
+1 In this agreement:
+ “Disclosing Party” shall mean any participant in HySafe.
+“Recipient” shall mean Mr./Mrs. ….
+ 2 Recipient shall hold the Confidential Information in strict confidence and shall take all reasonable and prudent precautions to prevent the Confidential Information from reaching third parties. Recipient shall use the Confidential Information exclusively for HySafe purposes, especially to advice the Governing Board of HySafe.
+3 Recipient's obligations under this agreement shall not apply to any information which Recipient can document beyond any reasonable doubt was available to the public or known to or developed by the Recipient prior to the date first above written. These obligations shall cease as to any information which Recipient can document thereafter became or becomes available to the public, otherwise than as a result of disclosure by Recipient or was or is disclosed to Recipient by a party unrelated to Recipient, that does not have a nondisclosure obligation with respect to it. Moreover, Recipient's obligations under this agreement shall not apply to Confidential Information Recipient has a legal obligation to disclose to public authorities under law, regulation or lawful administrative decision.
+4 At any time, upon the respective Disclosing Party's request, Recipient shall promptly deliver to the respective Disclosing Party the Confidential Information and all materials relating to or involving Confidential Information (whether prepared by the respective Disclosing Party or otherwise), and will not retain any copies, extracts or other reproductions in whole or in part regarding the Confidential Information. The delivery of such material shall not relieve Recipient of its obligation of confidentiality or other obligations hereunder.
+5 Nothing in this agreement shall be construed as granting Recipient any rights of any kinds in the Confidential Information, by license or otherwise.
+6 This agreement shall be governed by the laws of Belgium. All disputes or differences arising in connection with this agreement which cannot be settled amicably shall be finally settled by arbitration in Brussels under the Rules of Arbitration of the International Chamber of Commerce by one or more arbitrators to be appointed under the terms of those rules. In any arbitration in which there are three arbitrators, the chairman shall be of juridical education. It shall be conducted in English.
+The award of the arbitration will be final and binding upon the parties concerned.
+The parties concerned may instead elect to resolve by mediation a dispute or difference arising in connection with this agreement which cannot be settled amicably.
+7 Any Disclosing Party may act individually in relation to the Recipient under this Non Disclosure Agreement.
+8 This agreement shall come into force after signature of both parties hereto on the Effective Date and shall expire on February 28, 2009. The obligations pursuant to Article 2 shall remain valid for the Recipient even after the end of this agreement for a period of five (5) years thereafter.
+IN WITNESS WHEREOF, the parties hereto have executed this agreement
+Forschungszentrum Karlsruhe GmbH
+_____________________________________
+Heinz-Jürgen FABER Oliver WITTEK
+Central Legal and Insurance Department
+Mr./Mrs. …
+____________________________
+The employer of Mr./Mrs. … hereby confirms that he has taken note of this Non Disclosure Agreement and acknowledges that Confidential Information disclosed to Mr./Mrs. … shall not be used for any internal purposes.
+[Company Name]
+____________________________
+_____________________________

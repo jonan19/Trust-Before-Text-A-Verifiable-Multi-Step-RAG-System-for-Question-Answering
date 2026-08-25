@@ -187,7 +187,8 @@ def _query_span_similarity(query: str, span: str) -> float:
 # is a different signal from topical cosine similarity — see the
 # "Answer-Anchored Relevance Gating" plan and the falsified "query/span
 # embedding similarity gate" entry in docs/STATUS.md, which is the bi-encoder
-# above, not this. Ships disabled (ANSWERHOOD_MARGIN default 0.0).
+# above, not this. Shipped enabled 2026-08-24 (ANSWERHOOD_MARGIN default 5.5);
+# set RAG_ANSWERHOOD_MARGIN=0 to disable.
 # ---------------------------------------------------------------------------
 _ANSWERHOOD_MODEL: "_CrossEncoder | None" = None  # type: ignore[type-arg]
 _ANSWERHOOD_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
@@ -376,7 +377,7 @@ QUERY_SPAN_RELEVANCE: float          = float(
                                                #   is corpus-specific and deliberately NOT the default.
                                                #   Re-measure this window before trusting it on a new corpus.
 ANSWERHOOD_MARGIN: float             = float(
-    os.getenv("RAG_ANSWERHOOD_MARGIN", "0.0")
+    os.getenv("RAG_ANSWERHOOD_MARGIN", "5.5")
 )                                              # Stage 4 ANSWERHOOD gate (suppress-only): both sentences of
                                                # a candidate pair must score within this MARGIN of this
                                                # query's own top-1 answerhood score
@@ -396,13 +397,29 @@ ANSWERHOOD_MARGIN: float             = float(
                                                # SUPPRESS a conflict the deterministic layer already raised
                                                # (find_conflict tries the next candidate pair, never
                                                # creates a new abstention) — see claude.md, "The LLM Is Not
-                                               # the Variable". 0.0 disables the gate entirely (default,
-                                               # ships off).
+                                               # the Variable". 0.0 disables the gate entirely.
                                                #
-                                               # CALIBRATION (offline lab only — evaluation/answerhood_lab.py
-                                               # Phase 1, NOT yet confirmed end-to-end; re-measure via
-                                               # evaluation/run_eval.py + invariance_harness.py before
-                                               # trusting this on a new corpus or raising it above 0.0):
+                                               # SHIPPED 2026-08-24 at 5.5 (was 0.0/disabled). Confirmed
+                                               # end-to-end, not just in the offline lab — see
+                                               # evaluation/results/invariance_corpus{1,2}.json:
+                                               #   Live at delta=5.5 (evaluation/run_eval.py): C2 false
+                                               #   conflicts 9->2, conflict precision 0.625->0.875,
+                                               #   attribution precision 0.583->0.875, accuracy 82.1%->89.7%.
+                                               #   C1 unaffected (already 0 false conflicts).
+                                               #   Invariance (evaluation/invariance_harness.py, gate ON):
+                                               #   all four structural transforms (permute/duplicate/
+                                               #   distractor/query_lower) stay 0/78 on both corpora — no
+                                               #   violation introduced. query_thanks/query_polite actually
+                                               #   IMPROVE with the gate on (C1 unsafe flips 1+1 -> 0+0).
+                                               #   Cost: C2 conflict recall 15/16 -> 14/16 (Q036) — but Q036
+                                               #   was already a wrong-evidence report (see claude.md failure
+                                               #   pattern #3), so this is a wrong-evidence-citation ->
+                                               #   honest-refusal move, not a new unsafe answer (unsafe
+                                               #   answers stayed 1/32, still only Q045). Accepted per
+                                               #   claude.md's Five-Line Decision Rule, Rule 3 (trades error
+                                               #   toward safety; cost documented here and in docs/STATUS.md).
+                                               #
+                                               # CALIBRATION (evaluation/answerhood_lab.py Phase 1):
                                                #   Attribution-aware go/no-go over both corpora's Stage-4
                                                #   reported pairs (misattributed "right decision, wrong
                                                #   evidence" reports counted as false-evidence, not true):
@@ -415,6 +432,8 @@ ANSWERHOOD_MARGIN: float             = float(
                                                #   Dean's-List-vs-financial-aid GPA pair, whose margins
                                                #   (4.44, 3.68) sit BELOW a true conflict's (5.04) and so
                                                #   cannot be separated without losing that true conflict.
+                                               #   Re-measure this band before trusting it on a new corpus —
+                                               #   set RAG_ANSWERHOOD_MARGIN=0 to restore prior behaviour.
 NLI_CONFLICT_THRESHOLD: float        = float(
     os.getenv("RAG_NLI_CONFLICT_THRESHOLD", "0.94")
 )                                              # NLI contradiction confidence floor.

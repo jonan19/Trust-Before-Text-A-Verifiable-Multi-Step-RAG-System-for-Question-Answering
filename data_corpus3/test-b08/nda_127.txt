@@ -1,0 +1,61 @@
+Confidentiality & Non-Disclosure Agreement
+1. PARTIES AND DATE:
+This agreement is made on: [Date] between:
+(1) [Company] of [Address] ; and
+(2) ICT Strategic Consulting, 56 Minnamorra Avenue, Earlwood NSW, 2206 Australia (“ICTSC”).
+2. BACKGROUND
+The parties intend to investigate a Project or Business Opportunity concerning:
+Potential investment, sale or acquisition of ICT businesses in Australia.
+For this purpose (“Purpose”), the parties intend to make confidential information available to each other, and wish to protect this information in accordance with this agreement.
+3. DEFINITIONS AND INTERPRETATIONS
+"Confidential Information" of a disclosing party ("Discloser") means the following, regardless of its form and including copies made by the receiving party ("Recipient"), whether the Recipient becomes aware of it before or after the date of this Agreement:
+ all information treated by the Discloser as confidential; and
+ disclosed by the Discloser to the Recipient or of which the Recipient becomes aware, including but not limited to, the information specified in Schedule 1;
+except where that information is:
+ made public other than by the Recipient breaching this agreement;
+ legally required to be disclosed by the Recipient;
+ known to the Recipient free of any obligation to keep it confidential; or
+ Independently developed by the Recipient without use, directly or indirectly of Confidential Information received from the Discloser.
+"Unauthorised Persons" means officers, employees or advisers of the Recipient who are not required to have access to the Confidential Information for the Purpose, and any other person who is not a party to this agreement.
+References to clauses and parties are references to clauses of, and parties to, this agreement; references to things include parts of those things; references to persons include legal and natural persons; and words importing the singular include the plural and vice versa.
+4. CONFIDENTIAL INFORMATION OBLIGATIONS
+In consideration of each party disclosing its Confidential Information to the other party for the Purpose, the Recipient must ensure that Confidential Information is:
+ maintained confidential with at least the standard of care that the Recipient maintains to protect its own confidential information;
+ not disclosed to any Unauthorised Person;
+ only used for the Purpose; and
+ not reproduced in any form except as required for the purpose.
+The Recipient must ensure that access to Confidential Information is only given to those of its officers, employees and advisers who require access for the Purpose, and that those officers, employees and advisers are informed of the confidential nature of the Confidential Information and keep that information confidential. Parties to whom the information is imparted must be warned that included ‘insider information,’ regarding publicly listed and traded shares may preclude them from such trade in those shares.
+The Confidential Information remains at all times the property of the Discloser, and other than as provided in this agreement, no rights in respect of the Confidential Information are granted or conveyed to the Recipient.
+In the event that the Recipient is legally required to disclose any Confidential Information, the Recipient must immediately notify the Discloser of that fact.
+Within 7 days of a written request by the Discloser, the Recipient must return all Confidential Information, and provide a signed certificate stating that all Confidential Information in the Recipient's possession or control has been returned.
+5. RELATIONSHIP OF PARTIES
+The parties are independent parties and nothing in this agreement constitutes a joint venture, partnership or agency. Neither party has, nor may hold itself out as having, any obligation to perform any activity or to enter into any business relationship in relation to the purpose for which confidential information was made available.
+Neither party may make any public announcement or press release concerning the purpose or this agreement without the prior written consent of the other party.
+6. GENERAL
+The parties make no warranties or representations to each other in relation to any Confidential Information including (without limitation) as to the accuracy or completeness of any Confidential Information.
+A power or right in this agreement may only be waived in writing, signed by the party to be bound by the waiver, and this agreement may only be amended or supplemented in writing executed by both parties.
+The obligations in this agreement survive the termination or purported termination of this agreement.
+This agreement is governed by the laws of New South Wales, Australia. The parties submit to the non-exclusive jurisdiction of the courts of that State.
+7. SCHEDULE 1
+ financial and business information;
+ potential customers and partners names;
+ pricing arrangements;
+ specifications and drawings;
+ accounting systems and management
+information systems;
+ the fact that the parties are discussing a Project or Opportunity;
+ data of any sort;
+ proposed business deals;
+ contracts or agreements;
+ strategies;
+ business plans, models, reports, and market projections;
+ the status of the Project or Opportunity; and
+ the fact that the parties have made information available to each other and are inspecting or evaluating that information;
+8. EXECUTION
+SIGNED for and on behalf of [Company] by
+[Sign]
+[Name] [Title]
+[Witness Sign]
+[Witness Name, Title, Co.]
+SIGNED for and on behalf of ICT Strategic Consulting by:
+ Dr Paul D Hauck, Principal

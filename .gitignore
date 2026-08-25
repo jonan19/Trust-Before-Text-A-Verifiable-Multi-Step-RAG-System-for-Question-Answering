@@ -10,11 +10,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Vector Databases and Storage
+# Vector Databases and Storage (regeneratable from data*/ via ingestion)
 qdrant_db/
 qdrant_db_corpus2/
 qdrant_db_c1_copy/
 qdrant_db_c2_copy/
+qdrant_db_c3/
 
 # Retrieval cache (regeneratable)
 _retrieval_cache/

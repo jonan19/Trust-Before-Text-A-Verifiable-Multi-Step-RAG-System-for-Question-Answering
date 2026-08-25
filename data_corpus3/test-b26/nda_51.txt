@@ -1,0 +1,36 @@
+NON-DISCLOSURE / CONFIDENTIALITY
+AGREEMENT
+BETWEEN: [Name and address of Data Owner], represented by [name and position of person signing the agreement], hereinafter referred to as "the data owner";
+AND: [Name and address of prospective applicant], represented by [name and position of person signing the agreement], hereinafter referred to as "the prospective applicant";
+Together “the Parties”
+WHEREAS THE PARTIES CONFIRM THAT:
+The prospective applicant is seeking to refer to data that the data owner owns;
+The prospective applicant is seeking to do so for a purpose under the Biocidal Products Regulation 528/2012 (“the BPR”);
+The data owner is under an obligation in certain circumstances to share data with the prospective applicant and may in any event choose to do so regardless of that obligation;
+The Parties are entering into data sharing negotiations;
+A non-disclosure agreement is necessary to reassure the Parties that the use to which any information exchanged or otherwise disclosed during the negotiations will be limited to the legitimate purpose as established in the BPR;
+THE PARTIES HAVE THEREFORE AGREED AS FOLLOWS:
+1. Disclosure of Information
+a. A Party may disclose to the other Party information with a view to negotiating the sharing of data for a purpose under the BPR (“the Purpose”). The Parties agree that the terms and conditions set forth in this Agreement shall govern any such disclosure of information. All information disclosed by a Party or by Affiliates of a Party to the other Party or its respective Affiliates orally, electronically, writing or by any other means during the data sharing negotiations shall be considered as confidential unless expressly stated otherwise by the disclosing Party. All such confidential information shall be referred to hereinafter as " ". Information shall also include the identity of the Parties, the contents of this agreement and the fact that they have entered into this Agreement.
+b. The Information, including any material support containing Information, will remain the exclusive property of the disclosing Party and the receiving Party will not acquire any right, title, license or interest on or to the Information.
+c. For any disputes arising from the supply, receipt or use of Information by an Affiliate of a Party, this Party shall bear sole responsibility for the purposes of this Agreement. “ ” shall mean any company controlling, controlled by, or under common control with a Party to this Agreement, control meaning in this context the direct or indirect ownership of more than fifty percent (50%) of the voting stock/shares of a company, or the power to nominate more than half of the directors, or the power otherwise to determine the policy of a company or organisation.
+2. Use of Information
+a. The receiving Party undertakes not to use the Information disclosed to it for any purpose except the Purpose. This Agreement does not constitute a license by implication or otherwise to use the Information commercially or otherwise.
+b. The Parties shall disclose the Information to their employees, Affiliates, external experts and/or consultants only on a need to know basis and only to the extent absolutely necessary for the Purpose. Each Party shall require that its external experts and/or consultants also have such policies and procedures in place to ensure their compliance with these confidentiality obligations.
+c. The obligations specified in this Article shall not apply to Information for which the receiving Party can reasonably demonstrate that such Information:
+i. was known to the receiving Party on a non-confidential basis prior to its disclosure pursuant to this Agreement;
+ii. is publicly known at the time of disclosure or thereafter becomes publicly known without breach of the terms of this Agreement on the part of the receiving Party;
+iii. becomes known to the receiving Party through disclosure by sources other than the disclosing Party, having a right to disclose such Information,
+iv. was independently developed by the receiving Party without access to the disclosing Party’s Information.
+3. Applicable law and arbitration
+a. The Parties shall first attempt to settle amicably any dispute arising out of this Agreement. Any dispute that cannot be settled amicably between the Parties shall be exclusively resolved by arbitration. The arbitration rules of [ … ] shall be applicable. The place of any hearing shall be [ … ] and the language of the arbitration shall be [ … ].
+b. This Agreement shall be governed by the laws of [ … ], without regard to any principle of conflict or choice of laws that would cause the application of the laws of any other jurisdiction.
+c. If at any time any provision of this Agreement is or becomes invalid or illegal in any respect, this shall have no effect on the validity of the remaining contractual provisions. The invalid provisions are to be replaced, backdated to the time of their becoming ineffective, by provisions which come closest to achieving their objective as agreed by the Parties.
+4. Assignment
+a. This Agreement may not be assigned by a Party hereto without the express written consent to such assignment by the other Parties.
+5. Other
+a. No amendment or modification of this Agreement shall be valid or binding on the Parties unless made in writing and signed on behalf of each of the Parties by their respective duly authorised officers or representatives.
+b. This Agreement shall be valid when signed by duly authorised representatives of the Parties and shall be binding on each Party for 10 (ten) years as from the date of signature of the last signatory, even if at the end of the negotiations a data sharing agreement is not signed between the Parties, or until such time as the Information enters into the public domain.
+This Agreement shall be executed in multiple counterparts which together shall constitute but one original.
+Signed _____________________ _______________________
+Dated _____________________ _______________________

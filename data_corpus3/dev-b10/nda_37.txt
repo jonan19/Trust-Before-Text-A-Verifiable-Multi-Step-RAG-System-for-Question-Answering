@@ -1,0 +1,112 @@
+NON DISCLOSURE AGREEMENT
+PRICE BENCHMARKING SERVICES
+REFERENCE NUMBER
+RM 1160
+ATTACHMENT 9
+THIS AGREEMENT is made on [date]
+BETWEEN:
+(1) Government Procurement Service of 9th Floor, The Capital, Old Hall Street, Liverpool L3 9PP (the “Authority“); and
+(2) [Insert name] [(registered in England and Wales with company number [insert])] whose [registered office/principal place of business] is at [insert registered/principal address] (the “Organisation” and together with the Authority, the “Parties”).
+WHEREAS:
+Each Party wishes to receive Confidential Information from the other Party for the purpose of [insert background; note link with clause 2.1.5] (the “Permitted Purpose”).
+IT IS AGREED as follows:
+1 Interpretation
+1.1 In this Agreement, unless the context otherwise requires:
+“Confidential Information” means:
+(a) Information, including all personal data within the meaning of the Data Protection Act 1998, and however it is conveyed, provided by the Disclosing Party pursuant to [or in anticipation of] this Agreement that relates to:
+(i) the Disclosing Party Group; or
+(ii) the operations, business, affairs, developments, intellectual property rights, trade secrets, know-how and/or personnel of the Disclosing Party Group;
+(b) other Information provided by the Disclosing Party pursuant to [or in anticipation of] this Agreement that is clearly designated as being confidential or equivalent (whether or not it is so marked) or that ought reasonably to be considered to be confidential which comes (or has come) to the Receiving Party’s attention or into the Receiving Party’s possession in connection with the Permitted Purpose;
+(c) discussions, negotiations, and correspondence between the Disclosing Party or any of its directors, officers, employees, consultants or professional advisers and the Receiving Party or any of its directors, officers, employees, consultants and professional advisers in connection with the Permitted Purpose and all matters arising there from; and
+(d) Information derived from any of the above,
+but not including any Information that:
+1.1.1.1 was in the possession of the Receiving Party without obligation of confidentiality prior to its disclosure by the Disclosing Party;
+1.1.1.2 the Receiving Party obtained on a non-confidential basis from a third party who is not, to the Receiving Party’s knowledge or belief, bound by a confidentiality agreement with the Disclosing Party or otherwise prohibited from disclosing the information to the Receiving Party;
+1.1.1.3 was already generally available and in the public domain at the time of disclosure otherwise than by a breach of this Agreement or breach of a duty of confidentiality; or
+1.1.1.4 was independently developed without access to the Confidential Information;
+“Crown Body” means any department, office or agency of the Crown;
+“Disclosing Party” means a Party that directly or indirectly discloses or makes available Confidential Information;
+“Disclosing Party Group” means:
+(a) where the Disclosing Party is the Organisation, the Organisation and any company that is a holding company or subsidiary or subsidiary undertaking of the Organisation and any subsidiary or subsidiary undertaking of any such holding company; and
+(b) where the Disclosing Party is the Authority, the Authority and any Crown Body with which the Authority or the Organisation interacts in connection with the Permitted Purpose[ and any subsidiary of the Authority];
+“EIRs” means the Environmental Information Regulations 2004;
+“FOIA” means the Freedom of Information Act 2000 and any subordinate legislation made under that Act, together with any guidance and/or codes of practice issued by the Information Commissioner or relevant Crown Body in relation to such legislation;
+“Information” means all information of whatever nature, however conveyed and in whatever form, including in writing, orally, by demonstration, electronically and in a tangible, visual or machine-readable medium (including CD-ROM, magnetic and digital form);
+“Information has the meaning given to that expression in Clause 5.1; Return Notice”
+“Permitted has the meaning given to that expression in the recital to this Purpose” Agreement;
+“Receiving Party” means the Party which directly or indirectly receives or obtains Confidential Information;
+“Receiving Party Authorised Person” has the meaning given to that expression in Clause 3.1; “Request for Information” has the meaning set out in FOIA or any apparent request for information under the FOIA or the EIRs; and
+“Specified Scope” has the meaning given to that expression in Clause 5.1.
+1.2 In this Agreement:
+1.2.1 a reference to any gender includes a reference to other genders;
+1.2.2 the singular includes the plural and vice versa;
+1.2.3 the words “include” and cognate expressions shall be construed as if they were immediately followed by the words “without limitation”;
+1.2.4 references to any statutory provision include a reference to that provision as modified, replaced, amended and/or re-enacted from time to time (before or after the date of this Agreement) and any prior or subsequent subordinate legislation made under it;
+1.2.5 the expressions "subsidiary", "holding company" and "subsidiary undertaking" shall have the meanings given to them in the Companies Act 2006;
+1.2.6 headings are included for ease of reference only and shall not affect the interpretation or construction of this Agreement; and
+1.2.7 references to Clauses are to clauses of this Agreement.
+2 Confidentiality obligations
+2.1 In consideration of the Disclosing Party providing Confidential Information, at its discretion, to the Receiving Party, the Receiving Party shall:
+2.1.1 treat all Confidential Information as secret and confidential;
+2.1.2 have in place and maintain proper security measures and procedures to protect the confidentiality of the Confidential Information (having regard to its form and nature);
+2.1.3 not disclose or permit the disclosure of any of the Confidential Information to any other person without obtaining the prior written consent of the Disclosing Party or, if relevant, other owner or except as expressly set out in this Agreement;
+2.1.4 not transfer any of the Confidential Information outside the [United Kingdom];
+2.1.5 not use or exploit any of the Confidential Information for any purpose whatsoever other than the Permitted Purpose; and
+2.1.6 immediately notify the Disclosing Party in writing if it suspects or becomes aware of any unauthorised access, copying, use or disclosure in any form of any of the Confidential Information.
+2.2 The Receiving Party shall [be responsible for taking reasonable action to] ensure that each Receiving Party Authorised Person to whom it discloses Confidential Information observes the Receiving Party’s obligations under this Agreement as if such Receiving Party Authorised Person had undertaken the same obligations as the Receiving Party.
+3 Permitted Disclosures
+3.1 The Receiving Party may disclose Confidential Information to those of its directors, officers, employees, consultants and professional advisers and auditors (each a “Receiving Party Authorised Person”) who:
+3.1.1 reasonably need to receive the Confidential Information in connection with the Permitted Purpose; and
+3.1.2 have been informed by the Receiving Party:
+(a) of the confidential nature of the Confidential Information; and
+(b) that the Disclosing Party provided the Confidential Information to the Receiving Party subject to the provisions of a written confidentiality agreement.
+3.2 The Receiving Party and each Receiving Party Authorised Person shall be entitled to disclose Confidential Information to the extent that it is required to do so by applicable law or by order of a court or other public body that has jurisdiction over the Receiving Party or Receiving Party Authorised Person, provided that Clause 4 shall apply to disclosures required under the FOIA or the EIRs.
+3.3 Before making a disclosure pursuant to Clause 3.2, the Receiving Party or relevant Receiving Party Authorised Person shall, if the circumstances permit:
+3.3.1 notify the Disclosing Party in writing of the proposed disclosure as soon as possible (and if possible before the court or other public body orders the disclosure of the Confidential Information); and
+3.3.2 ask the court or other public body to treat the Confidential Information as confidential.
+4 Additional Permitted Disclosures by the Authority and other Crown Bodies
+4.1 Where the Disclosing Party is the Organisation, the Authority and any Crown Body to which Confidential Information has been disclosed in accordance with Clause 4.1.1, may disclose any of the Confidential Information:
+4.1.1 to another Crown Body provided that the Authority or relevant Crown Body informs the recipient Crown Body of the confidential nature of the Confidential Information;
+4.1.2 pursuant to the requirements of the FOIA or the EIRs;
+4.1.3 to the extent the need for disclosure arises for the purpose of the examination and certification of the accounts of the Authority or relevant Crown Body or for any examination pursuant to section 6(1) of the National Audit Act 1983 of the economy, efficiency and effectiveness with which the Authority or relevant Crown Body is carrying out its public functions; and/or
+4.1.4 if the Authority or Crown Body has reasonable grounds to believe that the Disclosing Party is involved in activity that may constitute a serious criminal offence and the disclosure is being made to a relevant investigating or enforcement authority.
+4.2 The Organisation acknowledges that public bodies, including the Authority and other Crown Bodies, may be required under the FOIA or the EIRs to disclose Information, including Confidential Information, without consulting or obtaining consent from the Organisation. The Authority shall take reasonable steps to notify the Organisation of a Request for Information (in accordance with the Secretary of State for Constitutional Affairs’ Code of Practice on the Discharge of the Functions of Public Authorities under Part 1 of the FOIA) to the extent that it is permissible and reasonably practical for it to do so but (notwithstanding any other provision in this Agreement) the Authority or other relevant Crown Body shall be responsible for determining in its absolute discretion whether any Confidential Information and/or any other Information is exempt from disclosure in accordance with the FOIA or the EIRs.
+4.3 The Organisation shall provide all necessary assistance and cooperation as reasonably requested by the Authority or relevant Crown Body to enable the Authority or relevant Crown Body to comply with its obligations under the FOIA and the EIRs.
+5 Return of Information and surviving obligations
+5.1 The Disclosing Party may serve a notice (an “Information Return Notice”) on the Receiving Party at any time under this Clause 5.1. An Information Return Notice must specify whether it relates to (i) all Confidential Information provided by the Disclosing Party which is protected by this Agreement or (ii) only specified Information or categories of Confidential Information so protected (in either case, the “Specified Scope”). On receipt of an Information Return Notice, the Receiving Party shall:
+5.1.1 subject to Clause 5.2, at the Receiving Party’s option, securely destroy or return and provide to the Disclosing Party documents and other tangible materials that contain any of the Confidential Information within the Specified Scope, including in any case all copies of the relevant documents and other materials made by the Receiving Party and any Receiving Party Authorised Person;
+5.1.2 subject to Clause 5.2, ensure, so far as reasonably practicable, that all Confidential Information within the Specified Scope that are held in electronic, digital or other machine-readable form ceases to be readily accessible (other than by the information technology staff of the Receiving Party or Receiving Party’s Authorised Person) from any computer, word processor, voicemail system or any other device containing such Confidential Information; and
+5.1.3 make no further use of any Confidential Information which falls within the Specified Scope.
+5.2 The provisions of Clauses 5.1.1 and 5.1.2 shall not apply to the extent that the Receiving Party or Receiving Party Authorised Person is required to retain any such Confidential Information by any applicable law, rule or regulation or requirement of any competent judicial, governmental, supervisory or regulatory body or for the purposes of any audit.
+5.3 Following any destruction or return of Confidential Information to the Disclosing Party pursuant to Clause 5.1, the Receiving Party’s obligations under this Agreement shall otherwise continue in force without limit of time.
+6 General
+6.1 The Receiving Party acknowledges and agrees that all property, including intellectual property rights, in Confidential Information disclosed to it by the Disclosing Party shall remain with and be vested in the Disclosing Party or relevant member of the Disclosing Party Group.
+6.2 This Agreement does not include, expressly or by implication, any representations, warranties or other obligations:
+6.2.1 to grant the Receiving Party any licence or rights other than as may be expressly stated in this Agreement;
+6.2.2 to require the Disclosing Party to disclose, continue disclosing or update any Confidential Information; or
+6.2.3 as to the accuracy, efficacy, completeness, capabilities, safety or any other qualities whatsoever of any Information or materials provided pursuant to or in anticipation of this Agreement.
+6.3 The rights, powers and remedies provided in this Agreement are cumulative and not exclusive of any rights, powers or remedies provided by law. No failure or delay by either Party to exercise any right, power or remedy will operate as a waiver of it nor will any partial exercise preclude any further exercise of the same, or of some other right, power or remedy.
+6.4 Without prejudice to any other rights or remedies that either Party may have, each Party acknowledges and agrees that damages alone may not be an adequate remedy for any breach by a Receiving Party or any Receiving Party Authorised Person of the provisions of this Agreement. Accordingly, each Party acknowledges that the Disclosing Party shall be entitled to the remedies of injunction and specific performance as well as any other equitable relief for any threatened or actual breach of this Agreement and/or breach of confidence and that no proof of special damages shall be necessary for the enforcement of such remedies.
+6.5 For the purposes of the Contracts (Rights of Third Parties) Act 1999 no one other than the Parties has the right to enforce the terms of this Agreement.
+6.6 Each Party will be responsible for all costs incurred by it or on its behalf in connection with this Agreement.
+6.7 This Agreement may be executed in any number of counterparts and by the Parties on separate counterparts, but shall not be effective until each Party has executed at least one counterpart. Each counterpart shall constitute an original of this Agreement, but all the counterparts shall together constitute but one and the same instrument.
+7 Notices
+7.1 Any notice to be given under this Agreement (each a “Notice”) shall be given in writing and shall be delivered by hand and shall be deemed to have been duly given at the time of delivery provided that such Notice is sent to the relevant physical address, and expressly marked for the attention of the relevant individual, set out in Clause 7.2.
+7.2 Any Notice:
+7.2.1 if to be given to the Authority shall be sent to:
+[Address]
+Attention: [Contact name and/or position, e.g. “The Finance Director”]
+7.2.2 if to be given to the Organisation shall be sent to:
+[Name of Organisation]
+[Address]
+Attention: [ ]
+8 Governing law
+8.1 This Agreement shall be governed by, and construed in accordance with, English law and any matter claim or dispute arising out of or in connection with this Agreement whether contractual or non-contractual, shall be governed by and determined in accordance with English law.
+8.2 Each Party hereby irrevocably submits to the exclusive jurisdiction of the English courts in respect of any claim or dispute arising out of or in connection with this Agreement.
+IN WITNESS of the above this Agreement has been signed by the duly authorised representatives of the Parties on the date which appears at the head of page 1.
+For and on behalf of the Authority
+Signature: ______________________________ Date:
+Name: Position:
+For and on behalf of the Organisation
+Signature: ______________________________ Date:
+Name: Position:

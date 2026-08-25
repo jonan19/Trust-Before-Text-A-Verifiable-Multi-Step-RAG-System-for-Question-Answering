@@ -1,0 +1,41 @@
+APPENDIX C – SAMPLE NON-DISCLOSURE AGREEMENT
+NON-DISCLOSURE AGREEMENT
+To register, please complete and return this Non-Disclosure Agreement by fax:
+(204) 949-1178 to:
+TO: The City of Winnipeg
+Attn: Contracts Officer
+REFERENCE: Request for Proposal No. 426-2017 REQUEST FOR PROPOSAL FOR PROFESSIONAL CONSULTING SERVICES FOR EVALUATION STUDY OF WASTEWATER SCADA COMMUNICATIONS SYSTEM (the “RFP”)
+In consideration of receiving Confidential Information from the City of Winnipeg and other good and valuable consideration, the receipt and sufficiency of which is hereby acknowledged, ___________________________(insert name of legal name of counterparty) (the “Confidant”) agrees as follows:
+1. Definitions: In this Agreement the following terms shall have the following meanings:
+a) “Agreement” means this agreement.
+b) “Confidant” means the Person named as such above.
+c) “Confidential Information” means any and all information, regardless of form, format or medium (including without limitation visual or oral information), of, related to, concerning, or resulting from, the City, the RFP and/or the Permitted Use, which comes into the possession or knowledge of the Confidant, including, without limitation, the RFP, documents, business information, know how, data, trade secrets, processes, designs, communications, materials, drawings, diagrams, computer programs, concepts, and any and all copies, reproductions, modifications, and derivative works.
+d) “Effective Date” is the day and date last below written. e) “City” means The City of Winnipeg. f) “Permitted Use” means private evaluation by the Confidant solely for the purpose of preparing a submission(s) to City in response to the RFP, and for no other purpose whatsoever.
+g) “Person” shall be broadly interpreted to include, without limitation, any corporation, partnership, other entity, or individual.
+h) “Third Party” means any Person other than City or Confidant.
+2. Access/Use of Confidential Information: Subject to the terms and conditions of this Agreement, Confidant may use the Confidential Information only for the Permitted Use and for no other purpose whatsoever. Confidant acknowledges and agrees that City reserves the full independent right to modify the scope and content of Confidential Information available for access and/or use hereunder at any time and without prior notice.
+3. Restrictions: Confidant agrees that:
+a) Confidential Information shall be kept in the strictest confidence without limitation of time, and shall not be disclosed to any Third Party;
+b) Confidant shall restrict access to Confidential Information only to its employees with a need to know to carry out the Permitted Use, and prior to disclosing same, each such employee shall be made aware of the terms and conditions of this Agreement; and
+c) Confidant shall cause all of its applicable employees to observe the terms of this Agreement, and shall be responsible for any breach of the terms of this Agreement by it or any such employee. 4. Return of Confidential Information: The Confidant shall immediately on notice at any time from City return to City, or destroy, any and all Confidential Information in accordance with City’s direction.
+5. Continuing Obligations and Remedies: The obligations of Confidant under this Agreement shall not terminate but shall continue without limitation of time. Confidant acknowledges and agrees that a breach of any term or condition of this Agreement shall cause irreparable harm to City which cannot be adequately compensated for in damages, and accordingly Confidant agrees that City shall be entitled, in addition to any other remedies available to it, to interlocutory and permanent injunction relief to restrain any anticipated, present or continuing breach of this Agreement.
+6. No License Granted: Confidant acknowledges and agrees that all rights in and to Confidential Information are and shall remain the sole property of City, and Confidant agrees that it shall not contest or challenge any of City’s rights in or to any Confidential Information. Nothing in this Agreement obligates, or shall be deemed to obligate, City to provide, disclose, or deliver any Confidential Information.
+7. Enurement: This Agreement shall be binding and shall enure to the benefit of the parties hereto, and their respective legal representatives, successors and permitted assigns.
+8. Governing Law and Interpretation: This Agreement shall be subject to, interpreted, performed and enforced in accordance with the laws of Manitoba and the applicable laws of Canada without regard to Manitoba or Federal Canadian law governing conflicts of law, even if one or more of the parties to this Agreement is resident of or domiciled in any other province or country. Section headings in this Agreement are for the convenience of the parties only, and shall not affect the interpretation of this Agreement.
+9. Severability: If any provision in this Agreement is illegal, invalid or unenforceable at law, it shall be deemed to be severed from this Agreement and the remaining provisions shall continue in full force and effect. The parties agree that they shall endeavor to replace any such severed provision with a new provision which achieves substantially the same practical effect and which is valid and enforceable.
+10. No Waiver: No waiver of any provision of this Agreement, or a breach thereof, shall be effective unless it is in writing and signed by the party waiving the provision or the breach thereof. No waiver of a breach of this Agreement, whether express or implied, shall constitute a waiver of a subsequent breach thereof.
+11. Amendments: No amendment or change or modification of this Agreement shall be valid unless it is in writing and signed by both parties.
+12. Assignment: Confidant shall not assign this Agreement without first having obtained the prior written consent of City. No assignment of this Agreement shall operate so as to relieve Confidant from any obligation of this Agreement.
+13. No Authority: This Agreement shall not create, nor shall it be deemed to create, the relationship of employer and employee, principal and agent, partnership, or joint venture, between City and Confidant. Confidant has no authority whatsoever to make any representation in respect of, enter any commitment on behalf of, or incur any liability for or on behalf of, City, or to bind or purport to bind City to any Third Party in any way whatsoever.
+14. Further Acts and Assurances: Each of the parties shall, from time to time, do all acts and things and execute from time to time all such further documents and assurances as may be necessary to carry out and give effect to the terms and conditions of this Agreement.
+15. Opportunity to Negotiate: Both parties have had the opportunity to negotiate, review and comment upon this Agreement, and obtain independent legal advice with respect to the content, meaning, and legal effect of this Agreement.
+18. Fax Execution: This Agreement may be executed in any number of counterparts, including counterparts signed by fax, each of which shall be deemed an original and all of which together shall constitute one in the same instrument. A photocopied and/or fax copy of this Agreement bearing the signature of each party, in a single document or counterparts thereof as provided herein, shall be deemed an original execution version of this Agreement.
+IN WITNESS WHEREOF, an authorized representative of the Confidant has executed and delivered this Agreement, as of the ____ (day) day of _________ (month), 2016 (the “Effective Date”).
+Authorized Signature __________________________________
+Print Name: __________________________________
+Title: __________________________________
+Confidant Contact:
+Company Name: ___________________________________
+Contact Name: ___________________________________
+Title: ___________________________________
+Telephone: _____________________ Fax: _______________

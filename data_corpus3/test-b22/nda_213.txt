@@ -1,0 +1,67 @@
+Non Disclosure Agreement
+Ref M E Benson
+And
+ Urban Wind Turbines™
+Non Disclosure Agreement1
+DATE: [ …………… ]2
+PARTIES:3
+(1) [MEB Engineering & Commercial Services Ltd], a company incorporated in [ U K] (Nr 52109405 ) having its registered office at [Old Pages Cottage c / o P O Box 2184 Maids Moreton Buckingham MK18 9AZ ] (“ The Discloser “)4; and
+(2) [ ], a company incorporated in [England and Wales] (registration number ) having its registered office at [……………………………………………………………………………………………………………………………………… ], (the “Recipient”).
+AGREEMENT:
+1. Definitions
+In this Agreement:
+“Agreement” means this non disclosure agreement and any amendments to it from time to time;
+“Confidential Information” means:
+[(a) any information disclosed by [or on behalf of] the Discloser to the Recipient [during the Term / before the end of the Term] (whether disclosed in writing, orally or otherwise) that at the time of disclosure: (i) was marked as “confidential”; or (ii) should have been reasonably understood by the Recipient to be confidential;]
+[(b) the terms [(but not the existence)] of this Agreement; and]5
+[(c) [specify other confidential information here];]
+“Permitted Purpose” means input with respect to Purpose being input with respect to input with respect to Urban Wind Turbines “ TM “ and
+“Term” means the term of this Agreement.
+2. Term
+This Agreement will come into force on the [date of its execution]6 and will continue in force [indefinitely, unless and until terminated in accordance with Clause [5] / until [date] [event], upon which it will terminate automatically, unless terminated in accordance with Clause [5]].
+3. Confidentiality obligations
+3.1 The Recipient agrees and undertakes:
+(a) that it will keep all Confidential Information strictly confidential and will not disclose any part of it to any other person without the Discloser's prior written consent[, and then only under conditions of confidentiality no less onerous than those contained in this Agreement];
+(b) that it will use the same degree of care to protect the Confidential Information as it uses to protect its own confidential information of a similar nature, being at least a reasonable degree of care; and
+[(c) that it will act in good faith at all times in relation to the Confidential Information, and will not use any of the Confidential Information for any purpose other than the Permitted Purpose.]
+3.2 Notwithstanding Clause [3.1(a)], the Recipient may disclose the Confidential Information to its [officers, employees, professional advisers, insurers, agents and sub-contractors] [who have a need to have access to the Confidential Information for the performance of their work with respect to the Permitted Purpose and] who are bound by a written agreement or professional obligation to protect the confidentiality of the Confidential Information.
+3.3 This Clause [3] imposes no obligations upon the Recipient with respect to Confidential Information which:
+(a) is known to the Recipient before disclosure by [or on behalf of] the Discloser, and is not subject to any obligation of confidentiality;
+(b) is or becomes publicly known through no act or default on the part of the Recipient; or
+[(c) is obtained by the Recipient from a third party in circumstances where the Recipient has no reason to believe that there has been a breach of a duty of confidence.]
+3.4 The restrictions in this Clause [3] do not apply to the extent that any Confidential Information is required to be disclosed by any law or regulation, judicial or governmental request or order, or pursuant to the disclosure requirements relating to the listing of the stock of the Recipient on any recognised stock exchange.
+4. Warranties
+4.1 The Recipient warrants to the Discloser that it has the legal right and authority to enter into and perform its obligations under this Agreement.
+4.2 The Discloser warrants to the Recipient that it has the legal right and authority to enter into and perform its obligations under this Agreement.
+4.3 All of the parties' warranties and representations in respect of the subject matter of this Agreement are expressly set out in the terms of this Agreement. To the maximum extent permitted by applicable law, no other warranties or representations concerning the subject matter of this Agreement will be implied into this Agreement or any related contract.
+5. Termination
+5.1 [Either party] may terminate this Agreement [forthwith] at any time by giving written notice of termination to the other party.
+5.2 Upon termination:
+[(a) the Recipient will immediately cease to use the Confidential Information; and]
+(b) all the provisions of this Agreement will cease to have effect, save that the following provisions of this Agreement will survive and continue to have effect (in accordance with their terms or otherwise indefinitely): Clauses [1, 3, 5.2 to 5.4, and 6].
+[5.3 Within [5] working days following the date of effective termination of this Agreement the Recipient will destroy or return to the Discloser (at the Discloser's option) all media containing Confidential Information, and will irrevocably delete and remove all Confidential Information from its computer systems.]
+5.4 Termination of this Agreement will not affect either party’s accrued rights as at the date of termination.
+6. General
+6.1 No breach of any provision of this Agreement will be waived except with the express written consent of the party not in breach.
+6.2 If a Clause of this Agreement is determined by any court or other competent authority to be unlawful and/or unenforceable, the other Clauses of this Agreement will continue in effect. If any unlawful and/or unenforceable Clause would be lawful or enforceable if part of it were deleted, that part will be deemed to be deleted, and the rest of the Clause will continue in effect (unless that would contradict the clear intention of the parties, in which case the entirety of the relevant Clause will be deemed to be deleted).
+6.3 This Agreement may not be varied except by a written document signed by or on behalf of each of the parties.7
+6.4 Neither party may without the prior written consent of the other party assign, transfer, charge, license or otherwise dispose of or deal in this Agreement or any rights or obligations under this Agreement.
+6.5 This Agreement is made for the benefit of the parties, and is not intended to benefit any third party or be enforceable by any third party. The rights of the parties to terminate, rescind, or agree any amendment, waiver, variation or settlement under or relating to this Agreement are not subject to the consent of any third party.8
+6.6 Nothing in this Agreement shall exclude or limit any liability for a party for fraud or fraudulent misrepresentation, or any other liability which may not be excluded or limited under applicable law. Subject to this:
+(a) this Agreement constitutes the entire agreement between the parties in relation to the subject matter of this Agreement, and supersedes all previous agreements, arrangements and understandings between the parties in respect of that subject matter[; and
+(b) neither party will have any remedy in respect of any misrepresentation (whether written or oral) made to it upon which it relied in entering into this Agreement].
+6.7 This Agreement will be governed by and construed in accordance with the laws of [England and Wales];9 and the courts of [England]10 will have exclusive jurisdiction to Purpose being input with respect to input with respect to Urban Wind Turbines™
+The parties have indicated their acceptance of this Agreement by executing it below.
+EXECUTION:11
+SIGNED by [name of signatory]
+duly authorised for and on behalf
+of the Discloser ................................ Date:……………………………..
+Address …………………………………………………………………………………………………………………………………..
+Witness ……………………………………..
+Address ………………………………………………………………………………………………………………………………..
+SIGNED by [name of signatory]
+Duly authorised for and on behalf
+of the Recipient ................................... Date: ……………............
+Address ………………………………………………………………………………………………………………………………..
+Witness …………………………………………….
+Address ……………………………………………………………………………………………………

@@ -1,0 +1,94 @@
+UNILATERAL NON-DISCLOSURE AGREEMENT
+BETWEEN Nordic Knowledge Partners ApS
+Central Business Register (CVR) number: 36428198
+Dampfærgevej 9, 1.
+2100-DK Copenhagen
+(hereafter the "Service provider" or "NKP" or "Recipient")
+AND You the subject-matter expert
+(hereafter the "Subject-matter expert" or "Expert" or "Recipient")
+Each of Discloser and Recipient hereafter are also referred to as "Party" and collectively as the
+"Parties".
+1. CONTACT PERSONS
+1.1. Any notice given under or in relation to the Agreement shall be given in writing and for the attention to:
+a) If to Discloser:
+Att.: Andreas von Buchwald
+avb@nordicknowledgepartners.com
+b) If to Recipient:
+Att: You
+3. DEFINITIONS AND INTERPRETATION
+3.1. In the agreement, the following capitalised words and expressions have the following meaning:
+3.2. "Affiliate" means with respect to any person, any other person directly or indirectly, through one or more intermediaries, Controlling, or Controlled by, or under common Control with such person, where control has the meaning of the power to direct the management of a person (directly or indirectly), whether through ownership of securities, by contract or otherwise and shall be presumed to exist in relation to a controlled person when another person holds (i) a majority of the voting rights, (ii) the right to control more than half of the voting rights by virtue of an agreement, (iii) the right to direct the financial and operational management by virtue of articles of association or agreement, (iv) the right to appoint or remove the majority of the members of the supreme governing body having a controlling influence, or (v) possession of the actual majority of votes at general meetings or equivalent governance forum and thereby an actual controlling interest in such person; and "Controlled" and "Controlling" shall be construed accordingly.
+3.3. "Agreement" means this non-disclosure agreement including all appendices (if any).
+3.4. "Client" means any customers or business partners of the Party;
+3.5. "Confidential information" means any information of whatever form relating to the Project or Discloser or any of its Affiliates or Clients, supplied or made available by Discloser or on its behalf to recipient or Recipient Representatives, copies of any such information regardless of whether such information is identified as confidential or not; and information regarding:
+3.5.1. The existence of the Project;
+3.5.2. The identity of the Discloser and the willingness of the Discloser to enter into discussions and/or negotiations regarding the Project;
+3.5.3. Any information including those parts of analyses, compilations, studies and other documents which contain, reflect or are derived from such information referred to in this Clause 3.4 or discussions and negotiations relating to the project.
+3.6. "Effective Date" means the date when the last of the Parties signed the Agreement.
+3.7. "Project" has the meaning ascribed to it in Clause 4.1.
+3.8. "Representatives" means, in relation to a Party to the extent involved in the Project, (a) its Affiliates; (b) its contractors / suppliers of any tier and (c) all of the aforementioned entities' employees, directors, senior executives, professional advisors and consultants.
+4. BACKGROUND
+4.1. The Parties intend to engage in a Project/Projects where the Discloser will facilitate consultation(s) (in-person or remote, e.g. via telephone conference) between its Client and the Recipient ("Subject-matter expert consultations"). The Parties will as part of the Project disclose to each other certain non-public Confidential Information, subject to the terms and conditions set out in this Agreement, which both Parties hereby accept.
+5. CONFIDENTIALITY AND RESTRICTED USE
+5.1. Recipient shall:
+5.1.1. hold Confidential Information in confidence and protect it by using at least the same degree of care, but no less than a reasonable degree of care, as Recipient uses to safeguard its own confidential or proprietary information of a like nature from unauthorized use, disclosure or dissemination;
+5.1.2. use Confidential Information only for the Project;
+5.1.3. not copy or reproduce (or permit to be copied or reproduced) any Confidential Information, or directly or indirectly disclose or distribute any of it to any person other than those of its Representatives who are strictly required to perform Recipient's work in relation to the Project.
+5.2. The obligations in Clause 5.1 shall not apply for Confidential Information that:
+5.2.1. was, at the time of its disclosure, in the public domain or which, after Discloser's disclosure, comes into the public domain, unless it is in the public domain as a result of:
+a) a breach by Recipient of its obligations contained in this Agreement (or by any person to whom disclosure of information is made as permitted under this Agreement); or
+b) a breach by a third party of any other obligation or duty of confidentiality or non-disclosure relating to that information that Recipient is or ought to be aware of;
+5.2.2. was or becomes available to Recipient on a non-confidential basis provided that the source is not known to Recipient to be bound by a confidentiality agreement and is not otherwise in breach of any obligation of confidentiality or restricted use;
+5.2.3. is otherwise agreed in writing by Discloser to no longer being confidential and/or restricted; or
+5.2.4. is required to be disclosed by law, regulation or any competent governmental, judicial or regulatory authority, or by a recognized stock exchange, or in response to a request from a regulatory body with a supervisory role over Recipient or any of its Affiliates, in which case Recipient will (or, if Recipient's Representative is subject to the disclosure obligation, Recipient will procure that such Representative will), in each case to the extent permitted by law, regulation or the relevant authority:
+a) inform Discloser of the circumstances of the disclosure and the information that will be disclosed as soon as reasonably practicable;
+b) permit Discloser in its absolute discretion to seek to obtain an injunction or take other appropriate action to protect the Confidential Information;
+c) take all such steps as may be reasonable and practicable in the circumstances to agree the form, contents and timing of such disclosure with Discloser before making such disclosure, provided that Recipient shall not be required to take any action under this Clause which it considers in good faith to be contrary to any of its legal or regulatory obligations;
+d) consult with Discloser as to possible steps to prevent or limit such disclosure and take those steps to the extent reasonably practicable in the circumstances, provided that Recipient shall not be required to take any action under this Clause which it considers in good faith to be contrary to any of its legal or regulatory obligations; and
+e) request assurances as to confidentiality from anybody to which the Confidential Information is to be disclosed.
+5.2.5. Either Party must promptly inform the other Party after becoming aware of any breach of this Agreement whether committed by Recipient itself or its Representatives.
+5.3. Ownership – no rights intended
+5.3.1. All Confidential Information shall remain the property of Discloser or its relevant Representative, as applicable.
+5.3.2. The disclosure of Confidential Information to Recipient or its Representatives shall not give Recipient or its Representatives any licence or other rights in relation to that Confidential Information beyond the rights contained in this Agreement.
+5.3.3. Recipient shall not be entitled to file for patents or other statutory protection in any country based on any Confidential Information received hereunder. The disclosure of Confidential Information does not constitute any rights of prior use for Recipient
+5.4. As is
+5.4.1. With respect to the Confidential Information disclosed, Discloser provides the information "as is" and makes no representation or warranty, express or implied, to Recipient as to its condition, merchantability, design, operation, fitness, or use for the Project or any other matter.
+6. REPRESENTATIVES
+6.1. If Recipient discloses or distributes Confidential Information to any of its Representatives, such Representatives shall be subject to the same confidentiality and restricted use obligations as Recipient.
+6.2. Recipient shall be liable for its Representatives' acts and omissions as if such acts or omissions had been its own acts or omissions, even when such persons/entities cease to be (as the case may be) employee, director, senior executive, professional advisor, consultant, Affiliate or supplier of any tier in relation to Recipient.
+7. DURATION AND TERMINATION
+7.1. Duration
+7.1.1. The obligations contained in this Agreement shall start at the Effective Date and shall automatically terminate when the Project is terminated or completed.
+7.2. Termination
+7.2.1. Each Party may terminate the Agreement by giving one month prior written notice to the other Party.
+7.3. Continuing Obligations
+7.3.1. The obligations of confidentiality, non-disclosure and non-use set forth in this Confidentiality Agreement shall survive the termination or expiration of this Confidentiality Agreement (i) with respect to any Confidential Information that constitutes a trade secret under applicable law, for so long as such item shall continue to constitute a trade secret under applicable law, and (ii) with respect to any Confidential Information that does not constitute a trade secret under applicable law, for a period of 5 (five) years from and after the date of disclosure of such Confidential Information.
+8. RETURN OF CONFIDENTIAL INFORMATION
+8.1.1. Upon Discloser's request, Recipient shall promptly, and in any case within five (5) days from such request, return all documentation and other materials containing any Confidential Information of Discloser without retaining any copies thereof. Alternatively, at Discloser's option and request, Recipient shall destroy and/or erase all such materials and documentation and shall provide a written certification that all such materials and documentation have been destroyed and/or erased.
+8.1.2. Clause 8.1 shall not apply to Confidential Information which i) must be stored by Recipient according to provisions of mandatory law or ii) was made as a matter of routine backup provided that such Confidential Information and copies thereof shall be subject to an indefinite confidential obligation according to the terms and conditions set forth herein until returned and/or destroyed, as the case may be.
+9. OTHER PROVISIONS
+9.1. No Relationship Established
+9.1.1. This Agreement shall not constitute any rights or obligations for any of the Parties to this Agreement, to continue discussions or further to enter into any contract regarding the Project, and any Party can cease to continue such discussions at any time. The Agreement does not grant Recipient any exclusivity, and Discloser and its Affiliates may purchase similar services, works or goods from other suppliers.
+9.2. Public Statements
+9.2.1. Neither Party may use the other Party's name or trademarks or refer to the other Party directly or indirectly in any media release, public announcement, or public disclosure relating to the Agreement or its subject matter, including, but not limited to, in any promotional or marketing material or business presentations without the other Party's prior written consent in each case, except for such publication which is required under public procurement rules.
+9.3. Severability
+9.3.1. If any term or provision of the Agreement is held to be illegal, void or unenforceable in whole or in part under any enactment of law, such term or provision will be deemed not to form part of the Agreement. The enforceability of the remainder of the Agreement will not be affected.
+9.3.2. In the event that any term or provision of the Agreement, which is fundamental to the accomplishment of the purpose of the Agreement, is held to be illegal, void or unenforceable in accordance with Sub-Clause 9.3.1, the Parties shall immediately commence good-faith negotiations to reach an equitable agreement, which reflects the intent of the Parties.
+9.4. Waiver and Cumulative Rights
+9.4.1. The rights provided by the Agreement may be waived in writing only by the relevant Party in a manner that expressly indicates that a waiver is intended, and such waiver is only to apply to the specific circumstances referred to. Any failure to exercise or any delay in exercising a right by either Party will not constitute a waiver of that right or of any other rights.
+9.4.2. Unless a right of a Party is expressed to be an exclusive right, the exercise of it by the Party is without prejudice to its other rights.
+9.5. Cost
+9.5.1. Each Party shall be responsible for their own costs incurred by themselves and their Representatives.
+9.6. Written Modifications
+9.6.1. All modifications to this Agreement must be made in writing and must be signed by an authorized representative of the Parties.
+10. GOVERNING LAW AND DISPUTE RESOLUTION
+10.1. Governing Law
+10.1.1. The laws of Denmark govern the Agreement and any legal dispute arising out of or in relation to the Agreement must be solved in accordance with the laws of Denmark.
+10.2. Dispute Resolution
+10.2.1. The Parties will attempt to settle any dispute between them by entering into good-faith negotiations through the appropriate management level of governance in a timely manner. The Parties must as a minimum attend the first good-faith negotiations.
+10.2.2. Any dispute, controversy or claim arising out of or in connection with the Agreement or any breach, termination or invalidity hereof which is not resolved by prior negotiations, shall be finally settled by arbitration by The Danish Institute of Arbitration in accordance with the relevant rules adapted by The Danish Institute of Arbitration and applicable at the time of opening of the arbitration. The arbitration tribunal must have three arbitrators appointed by the Danish Institute of Arbitration unless the Parties agree otherwise. The arbitrators elect, from among their members, the chairman of the arbitration tribunal.
+10.2.3. The place of arbitration must be Copenhagen, and the language of the proceedings, including any written pleadings, must be in English, unless otherwise agreed by the Parties.
+10.2.4. Notwithstanding this Clause 10, breach of this Agreement may be stopped by injunctive relief at the ordinary courts. Nothing in this Agreement shall be construed as prohibiting Discloser from pursuing any remedies available in addition to those remedies available under the terms of this Agreement.
+11. SIGNATURE
+11.1. The Parties may choose to exchange signatures of the Agreement by means of electronic communication (by fax, email, or other electronic transmissions) and the Agreement shall not be invalid or unenforceable because the documents are exchanged electronically.
+11.2. The Agreement is executed as per your completion and submission of the form found on NKP's website https://www.nordicknowledgepartners.com/compliance.

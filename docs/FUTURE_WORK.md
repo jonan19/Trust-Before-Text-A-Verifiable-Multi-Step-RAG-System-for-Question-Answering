@@ -291,8 +291,8 @@ These are correctly-handled known issues. Listed so they are not rediscovered.
 | **Q013 / Q059 / Q074** — over-abstention | Paraphrase misses | Root-caused. Proven unfixable by lexical/frequency/semantic thresholds (2,304 configs + semantic variant). |
 | `MIN_AVG_SCORE_FOR_SUFFICIENCY` calibration | Corpus-dependent | C2 leaks: 6 at 0.55, 2 at 0.65, 1 at 0.68. Structural fixes reduced but did not remove the dependence. |
 | Conflict threshold 0.94 | Calibrated but defensible | Sits mid-band in a wide flat region, not on a tuned peak. |
-| **Q036** (C2) — "right decision, wrong evidence" | `find_conflict` reports the unrelated 21-vs-18 credit-hours pair for an academic-probation query, matching the gold *decision* but not `expected_conflict_pair` | Root-caused via the `ANSWERHOOD_MARGIN` experiment below. Not independently fixable: suppressing the wrong pair does not surface the right one — Stage 4 cannot discover it under current thresholds — so the query becomes `insufficient` instead. |
-| Cross-encoder **answerhood margin** gate (`ANSWERHOOD_MARGIN`) | Tried and characterised, shipped disabled | Real precision/attribution gain (C2 false conflicts 9→2, attribution 0.583→0.875) but costs one true-conflict recall point via Q036 above — Tier-1 regression, rejected per the tiered policy. See `docs/STATUS.md` Problem 1. |
+| **Q036** (C2) — "right decision, wrong evidence" | `find_conflict` reports the unrelated 21-vs-18 credit-hours pair for an academic-probation query, matching the gold *decision* but not `expected_conflict_pair` | Root-caused via the `ANSWERHOOD_MARGIN` experiment below. Not independently fixable: suppressing the wrong pair does not surface the right one — Stage 4 cannot discover it under current thresholds — so the query becomes `insufficient` instead of `conflict` once the gate ships. |
+| Cross-encoder **answerhood margin** gate (`ANSWERHOOD_MARGIN`) | **Shipped 2026-08-24**, δ=5.5 | Real precision/attribution gain (C2 false conflicts 9→2, attribution 0.583→0.875, accuracy 82.1%→89.7%); costs one `conflict_recall` point via Q036 above, but that query was already a wrong-evidence report, and the invariance harness (run with the gate on, both corpora) came back clean — Rule 3 of `claude.md`'s Five-Line Decision Rule. See `docs/STATUS.md` Problem 1. |
 
 **Action item flagged during audit:** the rejected anchor-loosening fix for Q045
 — *which* query it broke and *how* — should be written down explicitly. It is
@@ -315,11 +315,13 @@ Items 1–4 are days of work and materially strengthen the submission.
 Item 7 is the only one that fully answers the external-validity objection.
 
 **Done since this was written:** the retrieval-style half of "query-conditioned
-entailment" (§9, `ANSWERHOOD_MARGIN`) — tried, characterised, and rejected per
-the tiered policy; see `docs/STATUS.md` Problem 1. It also produced the Q036
-root-cause above and fixed a denominator bug in `harness.metrics()`'s
-attribution grading (`evaluation/harness.py`). Still untried: answer-span
-extraction, and the *entailment*-specific variant (declarative-hypothesis NLI
-rather than a retrieval ranker) — see `docs/STATUS.md`'s updated "most
-promising untried routes" note, which argues neither obviously escapes the
+entailment" (§9, `ANSWERHOOD_MARGIN`) — tried, characterised, and **shipped**
+2026-08-24 at δ=5.5 (the tiered policy that would have rejected it was itself
+replaced by the Five-Line Decision Rule; see `claude.md`); see `docs/STATUS.md`
+Problem 1. It also produced the Q036 root-cause above and fixed a denominator
+bug in `harness.metrics()`'s attribution grading (`evaluation/harness.py`).
+Still untried: answer-span extraction, and the *entailment*-specific variant
+(declarative-hypothesis NLI rather than a retrieval ranker) — see
+`docs/STATUS.md`'s updated "most promising untried routes" note, which argues
+neither obviously escapes the
 Q036 failure mode either.

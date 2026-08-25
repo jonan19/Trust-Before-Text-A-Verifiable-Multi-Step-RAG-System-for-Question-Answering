@@ -1,11 +1,15 @@
 # Status: What Works, What Doesn't
 
-**Last updated: 2026-08-23.** Every number here comes from a script in
+**Last updated: 2026-08-24.** Every number here comes from a script in
 `evaluation/`; [REPRODUCE.md](REPRODUCE.md) gives the exact command for
 each. Where something has not been re-measured, that is stated rather than
 implied. This revision closes both outstanding re-runs from the previous
 version and fixes the sufficiency-gate safety bug that version left open
-(Problem 2) — see "What was fixed" for the honest cost of that fix.
+(Problem 2) — see "What was fixed" for the honest cost of that fix. It also
+ships the `ANSWERHOOD_MARGIN` gate (Problem 1) at δ=5.5, previously shipped
+disabled — see Problem 1 for the reasoning. **The "Current measurements" table
+below now reflects that default.** The 2026-08-23 pre-gate numbers are kept
+alongside it for comparison, not as the current state.
 
 ---
 
@@ -14,18 +18,21 @@ version and fixes the sufficiency-gate safety bug that version left open
 **One big problem remains, and it is a research problem, not a bug.**
 
 > **False conflicts.** The system reports contradictions that are real in the
-> corpus but irrelevant to the question asked. On Corpus 2, 9 of its 24 conflict
-> reports are wrong (precision 0.625). Corpus 1 is now clean (precision 1.000),
-> but the mechanism behind Corpus 2's remaining nine is untouched.
+> corpus but irrelevant to the question asked. With the `ANSWERHOOD_MARGIN`
+> gate now shipped (δ=5.5), Corpus 2 is down to 2 wrong reports out of 17
+> (precision 0.875), from 9 of 24 (0.625) before. Corpus 1 is clean (precision
+> 1.000). The mechanism behind Corpus 2's remaining two — its two hardest known
+> false-conflict pairs — is untouched; see "Standing Decision" in `claude.md`
+> for why no further deterministic filtering is planned against them.
 
-The two Stage-4 preconditions added in this revision removed the *boilerplate*
-and *incommensurable-quantity* families of false conflict entirely. What is left
-on Corpus 2 is the hard case and the original one: a **genuine** contradiction in
-the corpus resurfacing under questions it does not answer. Nine reports reduce to
-just four distinct span-pairs, two of which account for seven of them — the
-21-vs-18 credit-hours pair and the Dean's-List-vs-financial-aid GPA pair. No
-pair-local rule can fix these, because the pairs really do contradict; the defect
-is that the query never enters the comparison.
+The two Stage-4 preconditions from the previous revision removed the
+*boilerplate* and *incommensurable-quantity* families of false conflict
+entirely; the `ANSWERHOOD_MARGIN` gate closed 7 of the remaining 9 on Corpus 2.
+What is left is the two hardest span-pairs — 21-vs-18 credit-hours and Dean's-
+List-vs-financial-aid GPA — both **genuine** contradictions in the corpus that
+resurface under questions they don't answer, and both sit below a true
+conflict's margin so cannot be separated from it without losing that true
+conflict. No pair-local rule can fix these; see Problem 1.
 
 Everything else is either fixed, or accepted as a characterised, irrecoverable
 limitation.
@@ -40,21 +47,26 @@ fixes), and **one methodological problem that is arguably bigger than either**
 
 ## Current measurements
 
-Configuration: repository defaults, as of this document's date. This is one
-clean pass — every number below comes from the same frozen code, run once,
-with no threshold changed between rows.
+Configuration: repository defaults, as of this document's date —
+`ANSWERHOOD_MARGIN` shipped at δ=5.5 (see Problem 1).
 
 | | Corpus 1 (HR) | Corpus 2 (university) |
 |---|---|---|
-| Decision accuracy | 96.2% (75/78) | 82.1% (64/78) |
-| Contradictions found (recall) | **16/16** | 15/16 |
-| Contradiction reports that were correct (precision) | **1.000** | **0.625** |
-| Conflict F1 | **1.000** | 0.750 |
-| Contradiction reports citing the RIGHT pair (attribution) | **1.000** | 0.583 |
+| Decision accuracy | 96.2% (75/78) | **89.7%** (was 82.1%) |
+| Contradictions found (recall) | **16/16** | **14/16** (was 15/16) |
+| Contradiction reports that were correct (precision) | **1.000** | **0.875** (was 0.625) |
+| Contradiction reports citing the RIGHT pair (attribution) | **1.000** | **0.875** (was 0.583) |
 | Gap questions wrongly answered | **0/16** | **0/16** |
-| **Answered when it should have refused** | **0/32** | **1/32** |
+| **Answered when it should have refused** | **0/32** | **1/32** (unchanged — still only Q045) |
 
-Two Stage-4 preconditions were added since the previous revision —
+Pre-gate numbers (repository state as of 2026-08-23, `ANSWERHOOD_MARGIN=0`):
+Corpus 2 accuracy 82.1%, recall 15/16, precision 0.625, attribution 0.583,
+Conflict F1 0.750. Kept for comparison; `RAG_ANSWERHOOD_MARGIN=0` reproduces
+them exactly. The recall drop (15/16 → 14/16, Q036) is a wrong-evidence
+citation becoming an honest refusal, not a new unsafe answer — see Problem 1
+and `claude.md` failure pattern #3.
+
+Two Stage-4 preconditions were added in an earlier revision —
 `REQUIRE_ASSERTIVE_SPANS` and `DIMENSIONAL_VETO`, both defaulting on, both
 disableable by env var. Neither introduces a threshold. Against the previous
 revision's numbers (92.3% / 80.8%, precision 0.842 / 0.600):
@@ -192,7 +204,7 @@ in `docs/archive/FIXES_REPORT.md`):
 | Suppressing superseded documents | 5 of 16 real conflicts *involve* a superseded document |
 | Asymmetric anchoring (focus term in either sentence, not both) | Corpus 1 precision 0.842 → 0.640 |
 | Asymmetric anchor **rescue**, gated on query-span similarity ≥ 0.60 (`RAG_ANCHOR_ASYMMETRIC_QSPAN`, shipped disabled) | Recovers Q045 (recall 15/16 → 16/16, unsafe 1/32 → 0/32) but costs Corpus 2 precision (0.600 → 0.593, one new false conflict, Q002) — fails on the same corpus it targets |
-| **Cross-encoder answerhood margin** (`ANSWERHOOD_MARGIN`, suppress-only, shipped disabled) — query-conditioned, not query/span cosine like the row above. See below. | Closes 7/9 C2 false conflicts and 9/10 false-*evidence* reports, but costs one true-conflict recall point — Tier 1. Rejected per the tiered policy regardless of the precision gain. |
+| ~~Cross-encoder answerhood margin~~ (`ANSWERHOOD_MARGIN`) | **Not falsified — shipped 2026-08-24.** Query-conditioned, not query/span cosine like the row above. Closes 7/9 C2 false conflicts and 9/10 false-*evidence* reports. Costs one `conflict_recall` point (Q036), but that query was already a wrong-evidence report, and the corroborating invariance check came back clean. See below. |
 
 **What partly worked.** The **anchor test** (require both sentences to mention the
 question's rarest words) is now in the system and is the reason Corpus 1's false
@@ -257,22 +269,36 @@ and so cannot be separated without losing it), conflict precision 0.625 →
 the credit-hours pair is suppressed, `find_conflict` searches on but never
 finds the genuine academic-probation pair, and Q036 becomes `insufficient`
 (`sufficiency_flag=False`, coverage 0.375) — still safe (unsafe answers stayed
-at 1/32, still only Q045), but a Tier-1 metric regression regardless. The
-credit-hours pair being `find_conflict`'s *first* hit for Q036 was masking a
-pre-existing gap — Stage 4 cannot independently discover that query's actual
-gold pair — rather than the gate creating a new one, but the tiered policy
-grades the metric, not the cause: **rejected, per `claude.md`, "Reject a
-change that touches [Tier 1] no matter how good its accuracy story is."** And
-because the smallest δ covering every correctly-attributed true conflict
-(5.04) already exceeds Q036's wrong-pair margin (11.27) by a wide margin,
-this is not a tuning problem — every δ in the GO band forces the same trade.
+at 1/32, still only Q045). The credit-hours pair being `find_conflict`'s
+*first* hit for Q036 was masking a pre-existing gap — Stage 4 cannot
+independently discover that query's actual gold pair — rather than the gate
+creating a new one. Because the smallest δ covering every correctly-attributed
+true conflict (5.04) already exceeds Q036's wrong-pair margin (11.27) by a
+wide margin, this is not a tuning problem — every δ in the GO band forces the
+same trade.
 
-Ships in `validation.py`, disabled by default (`ANSWERHOOD_MARGIN` /
-`RAG_ANSWERHOOD_MARGIN`, default `0.0`), degrading open exactly like
-`QUERY_SPAN_RELEVANCE` if the model is unavailable. Reproduce via
-`evaluation/answerhood_lab.py --corpus 1 --corpus 2` (offline) or
-`RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/run_eval.py --corpus 2 --tag ah_on`
-(live).
+**Invariance check (the missing measurement), run 2026-08-24:**
+`RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/invariance_harness.py --corpus
+{1,2}`. All four structural transforms (permute/duplicate/distractor/
+query_lower) stayed **0/78 on both corpora** — no invariance violation
+introduced. The two politeness transforms *improved*: Corpus 1's
+`query_thanks` and `query_polite` unsafe flips (1 each, documented pre-gate)
+both went to **0**, and `query_thanks`'s changed-count fell 2/78 → 1/78.
+Corpus 2's politeness numbers were already 0 unsafe and stayed there.
+
+**Shipped 2026-08-24 at δ=5.5.** Originally rejected under the project's old
+single-bucket Tier-1 rule purely on the recall drop above. That rejection did
+not survive scrutiny: Q036 was already a wrong-evidence report (claude.md
+failure pattern #3 — a correct verdict citing an unrelated pair), so the
+"loss" is a wrong-evidence-citation becoming an honest refusal, not a new
+unsafe answer. Under the project's current decision rule (`claude.md`, Five-
+Line Decision Rule) this is Rule 3 — trades error strictly toward safety —
+and ships once the corroborating structural check is run. That check (above)
+came back clean, so it shipped. `RAG_ANSWERHOOD_MARGIN=0` restores the prior
+(gate-off) behaviour exactly. Reproduce via
+`evaluation/answerhood_lab.py --corpus 1 --corpus 2` (offline),
+`python evaluation/run_eval.py --corpus 2 --tag ah_on` (live, gate on by
+default now), or `evaluation/invariance_harness.py --corpus {1,2}`.
 
 **Most promising untried routes.** Answer-span extraction (pull out the span
 that actually answers the question from each passage, and compare only those)

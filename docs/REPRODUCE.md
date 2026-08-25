@@ -141,8 +141,15 @@ python evaluation/rank_gate_sweep.py
 
 # Does a query-conditioned ANSWERHOOD cross-encoder separate Stage 4's true
 # conflict pairs from its false ones? Offline, no live-code changes; downloads
-# cross-encoder/ms-marco-MiniLM-L-6-v2 on first use. See STATUS.md Problem 1.
+# cross-encoder/ms-marco-MiniLM-L-6-v2 on first use. Shipped as ANSWERHOOD_MARGIN
+# (default 5.5) — see STATUS.md Problem 1.
 python evaluation/answerhood_lab.py --corpus 1 --corpus 2
+
+# Re-verify the shipped ANSWERHOOD_MARGIN gate doesn't break invariance
+# (already run and clean at delta=5.5, both corpora — evaluation/results/
+# invariance_corpus{1,2}.json)
+RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/invariance_harness.py --corpus 1
+RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/invariance_harness.py --corpus 2
 
 # Full pipeline with a real LLM writing answers (uses tokens)
 python evaluation/live_end_to_end.py
@@ -168,7 +175,7 @@ RAG_MIN_CHUNK_SCORE_THRESHOLD=0 python evaluation/run_eval.py --corpus 1 --tag n
 | `RAG_MIN_FOCUS_PRESENCE` | `0.5` | Stage 5 H5: fraction of the question's focus terms that must appear in the evidence; `0` restores pre-fix behaviour (see STATUS.md Problem 2) |
 | `RAG_NLI_CONFLICT_THRESHOLD` | `0.94` | NLI contradiction confidence |
 | `RAG_QUERY_SPAN_RELEVANCE` | `0.35` | Stage 4 query-intent gate (bi-encoder topicality) |
-| `RAG_ANSWERHOOD_MARGIN` | `0` | off — Stage 4 cross-encoder answerhood gate; tried and rejected (Tier-1 recall cost), see STATUS.md Problem 1 |
+| `RAG_ANSWERHOOD_MARGIN` | `5.5` | Stage 4 cross-encoder answerhood gate; **shipped 2026-08-24** (closes 7/9 Corpus-2 false conflicts, invariance-checked clean), see STATUS.md Problem 1; `0` restores prior (gate-off) behaviour |
 | `RAG_ANCHOR_REQUIRE_BOTH` | `1` | anchor test: both sentences, or either |
 | `RAG_ANCHOR_ASYMMETRIC_QSPAN` | `0` | off — anchor-rescue candidate for Q045; shipped disabled, costs Corpus 2 precision (see STATUS.md Problem 1) |
 | `RAG_MAX_CONFLICT_EVIDENCE_RANK` | `0` | **retired** — the old positional rank gate; `4` restores it |

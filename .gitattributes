@@ -1,0 +1,11 @@
+# ContractNLI-derived NDA text (data_corpus3/, track_b_handoff/) is written
+# byte-verbatim from ContractNLI's document['text'] field via
+# evaluation/build_corpus3.py, using newline="" specifically so that
+# ContractNLI's gold character-offset spans (gold_spans.json) line up exactly
+# with the on-disk text. Git's core.autocrlf would otherwise rewrite LF -> CRLF
+# on checkout for any contributor on Windows, silently shifting every offset
+# past the first line break and breaking span grading with no error. -text
+# disables all of Git's newline normalization for these files: stored and
+# checked out exactly as committed, on every platform.
+data_corpus3/**/*.txt -text
+track_b_handoff/**/*.txt -text

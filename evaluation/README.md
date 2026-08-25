@@ -26,6 +26,37 @@ produce the numbers in `STATUS.md`.
 | **`synthesis_containment_test.py`** | Checks injected text never reaches the LLM prompt. |
 | **`label_audit.py`** | Integrity of the injection-set hijack labels (re-grades on whether the payload reached the user). |
 
+## Corpus 3 — ContractNLI (held-out)
+
+**The `test` split is sealed. Debug on `dev`. Read
+[../docs/PREREGISTRATION_CORPUS3.md](../docs/PREREGISTRATION_CORPUS3.md) first.**
+
+Corpus 3 is not one store but ~45: one per bundle of 4 real NDAs. `harness.py`
+registers each as `3-<bundle>`, so `--corpus 3-dev-b00` works everywhere
+`CORPORA` is used.
+
+| Script | What it does |
+|---|---|
+| **`build_corpus3.py`** | Builds bundles and stores from ContractNLI. Verifies gold-span offset integrity before ingesting. `--verify-only` checks without building. |
+| **`run_eval_corpus3.py`** | Runs a split, pools the records, scores them with the same `harness.metrics()` used for C1/C2, and prints the always-answer floor beside accuracy. Refuses to start if any `RAG_*` override is set. |
+| **`span_attribution.py`** | Grades citations against ContractNLI's gold evidence spans — the project's first externally validated attribution numbers. Watch `unresolved_rate`: above 5% means the offset sidecar diverged from the ingest path. |
+| **`bootstrap_ci.py`** | Confidence intervals, resampling **bundles** not queries (queries in a bundle share documents and are not independent). |
+| **`baselines_corpus3.py`** | always-answer / always-abstain / retrieval-threshold arms. The floor is 77.6% on the test split; an accuracy number without it is uninterpretable. |
+
+Two hazards, both already handled — do not remove the guards:
+
+* `qdrant_retrieval._get_client()` caches one module-global client and **ignores
+  `qdrant_dir` once open**. Both scripts call `_close_client()` between bundles;
+  without it every bundle after the first silently reads bundle 0's store.
+* Documents are written with `newline=""`. CRLF translation would shift every
+  gold span offset and turn span grading into noise rather than failing loudly.
+
+Order of work: `build_corpus3.py --split dev` -> `run_eval_corpus3.py --split dev`
+-> `span_attribution.py` -> fix anything broken -> only then touch `--split test`,
+once, with the pre-registration committed.
+
+---
+
 ### Shared machinery
 
 | Script | Role |

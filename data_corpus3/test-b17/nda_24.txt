@@ -1,0 +1,72 @@
+Mutual Non-disclosure and Conﬁdentiality Agreement
+This Mutual Non-disclosure and Conﬁdentiality Agreement (”Agreement”) is made by and between Ready4S, Ltd (”Ready4S”) and the Client as named in the signature column below.
+Ready4S and Client are sometimes collectively referred to herein as the ”Parties” and individually as a ”Party”. A Party includes the entity named herein, its successors and assigns, any of its present or future corporate parents, subsidiaries, and organizations controlled by, controlling or under common control with such Party.
+Each of the Parties may be the ”Disclosing Party” and the other party will be deemed to be the ”Receiving Party”.
+RECITALS
+A. The Parties intend to enter into discussions regarding a potential future business relationship; and
+B. In order to facilitate those discussions the Parties may wish to disclose to each other certain Conﬁdential Information (as herein deﬁned).
+THEREFORE, it is agreed as follows:
+1 Deﬁnitions and Interpretation
+1.1 1.1 In this Agreement:
+Conﬁdential Information means:-
+(a) information relating to the Disclosing Party regarding its business, partners, customers or ﬁnancial aﬀairs (including details relating to any software the copyright in respect of which is vested in the Disclosing Party) which is obtained by the Receiving Party, either before or after this undertaking is entered into and either in writing or orally from or pursuant to the discussions with the Personnel of the Disclosing Party;
+(b) those portions of analyses, compilations, studies, reports and other documents prepared by the Disclosing Party which contain or otherwise reﬂect or are generated from any such information as is speciﬁed in paragraph (a) above;
+(c) information of a commercially sensitive nature relating to the Disclosing Party obtained by observation during any visits to the Disclosing Party’s premises but subject always to the proviso set out in clause.
+Disclosing Party means the Party whose Conﬁdential Information is disclosed to the Receiving Party
+Personnel means any and all staﬀ, employees, directors, oﬃcers and professional advisors of a Party
+Purpose means any and all discussions and negotiations relating to a potential agreement between the Parties hereto as more particularly set out in Recital (A)
+Receiving Party means the Party who is in receipt of Conﬁdential Information
+2 The Commitment
+2.1 In consideration of each Party agreeing to supply the other Party with Conﬁdential Information for the Purpose, and in consideration of the mutual undertakings set out herein the Parties each hereby separately agree and irrevocably undertake to each other that they will only use Conﬁdential Information for the Purpose and otherwise to act in accordance with the terms and conditions hereinafter contained.
+2.2 The disclosure of Conﬁdential Information by the Disclosing Party to the Receiving Party shall in no way be construed to imply any transfer of rights connected with the Conﬁdential Information including, without limitation, any trade marks or business secrets.
+2.3 A Receiving Party’s obligations in respect of Conﬁdential Information made available by the Disclosing Party pursuant to this Agreement shall continue notwithstanding the termination of the Purpose.
+3 Safekeeping
+3.1 A Receiving Party shall treat and safeguard as private and conﬁdential all of the Conﬁdential Information and will take all reasonable precautions in dealing with any Conﬁdential Information so as to prevent any third party from having access to the Conﬁdential Information.
+4 Limited internal dissemination
+4.1 A Receiving Party shall only disclose or reveal any Conﬁdential Information disclosed to it to those of its Personnel who are required in the course of their duties to receive and consider the same in so far as is necessary to fulﬁl the Purpose.
+4.2 Prior to the disclosure of any Conﬁdential Information to any such Personnel, the Receiving Party shall inform them of the conﬁdential nature of the material and of the provisions of this conﬁdentiality undertaking and obtain written conﬁrmation of their acceptance of these terms.
+5 Non-disclosure to third parties
+5.1 Save as otherwise permitted herein, a Receiving Party shall not, and shall procure that its Personnel do not, at any time without the Disclosing Party’s prior written consent:
+(a) disclose the Conﬁdential Information to any third party, either directly or indirectly; or
+(b) disclose to any person: -
+(i) the fact that discussions or negotiations are taking place between the Parties;
+(ii) the content of any such discussions or negotiations;
+(iii) any of the terms, conditions or other facts with respect to the Purpose; or
+(iv) that Conﬁdential Information has been requested or received, unless required to do so by law or by the order or ruling of a Court or tribunal or regulatory body or recognised stock exchange of competent jurisdiction, in which case, if the Receiving Party is required to disclose such Conﬁdential Information it shall, unless prohibited from doing so, notify the Disclosing Party promptly in writing of that fact and, in any event, prior to making such disclosure.
+6 Discussions through authorised representatives only
+6.1 It is understood that all communications regarding the Parties’ discussions, requests for additional information or meetings or questions will be submitted or directed to authorised representatives of the Parties.
+7 Exclusion from Conﬁdential Information
+7.1 These terms and conditions will not apply to any Conﬁdential Information which:
+(a) is in or becomes part of the public domain or is or otherwise becomes public knowledge by any means other than by breach by a Receiving Party or their Personnel of any obligation contained herein;
+(b) was previously or is at any time hereafter disclosed to a Receiving Party by any third Party having the right to disclose the same provided that such source is not known to the Receiving Party to be bound by a conﬁdentiality agreement with, or other obligation to secrecy to, the Disclosing Party;
+(c) is released from the provisions of this undertaking by prior written consent given by a director or authorised representative of the Disclosing Party; or
+(d) was otherwise independently acquired or developed by the Receiving Party without violating its obligations hereunder.
+8 Return of Conﬁdential Information
+8.1 The Receiving Party shall, immediately upon receipt of Notice to that eﬀect:
+(a) return to the Disclosing Party all Conﬁdential Information (including all copies held);
+(b) destroy those portions (and all copies) of any analyses, compilations, studies, reports or other documents prepared by it for its use containing or reﬂecting or generated from, in whole or in part, any Conﬁdential Information; and
+(c) expunge and destroy any Conﬁdential Information from any computer, word processor or other device in its possession or custody or control containing such information.
+9 No responsibility for information provided
+9.1 The Receiving Party understands and acknowledge that neither the Disclosing Party nor any of its Personnel is making any representation or warranty, express or implied, as to the accuracy or completeness of the Conﬁdential Information, and neither the Disclosing Party or any of its Personnel will have any liability to the Receiving party or any other person resulting from any use of the Conﬁdential Information.
+10 Breach of Undertaking
+10.1 Each Party hereby acknowledges and agrees that damages would not be an adequate remedy for any breach of this undertaking and a Disclosing Party shall be entitled to the remedies of injunction, speciﬁc performance and other equitable relief for any threatened or actual breach of any such undertaking.
+11 Notices
+11.1 Any notice or other communication to be given under this Agreement shall be in writing in English and signed by or on behalf of the Party giving it (or its representative) and shall be delivered by hand to the address or sent by fax to the fax number given in clause 11.2 (or such other address or fax number as the receiving Party has speciﬁed to the sending Party on at least 10 (ten) Business Days’ notice).
+11.2 Any notice or other communication given or made under this Agreement shall, in the absence of earlier receipt, be deemed to have been received as follows:
+(a) if delivered by hand, at the time on the date of actual delivery; or
+(b) if sent by fax, with a conﬁrmed receipt of transmission from the receiving machine, on the day on which transmitted provided that a notice deemed to have been received on a day which is not a Business Day, or after 18:00 hours in the place of receipt, shall instead be deemed to have been received on the next Business Day at the commencement of normal business hours in the place of receipt.
+11.3 The provisions of this clause shall not apply in relation to the service of documents.
+12 Counterparts
+12.1 This Agreement may be executed in any number of counterparts and by the Parties on separate counterparts, each of which is an original but all of which together constitute one and the same instrument.
+13 Governing Law
+13.1 These terms and conditions shall be governed by and construed in all respects in accordance with the laws of England.
+14 Jurisdiction
+14.1 The Parties irrevocably agree that the English courts shall have the exclusive jurisdiction to settle any dispute arising out of or in connection with this Agreement. Each Party agrees to waive any objection to the English courts, whether on the grounds of venue, or on the grounds that the forum is not appropriate.
+Signed by the Parties or their duly authorised representatives
+Ready4S, Ltd Client:
+Suite 18 Equity Chambers, 249 High
+Address:
+Street North, BH15 1DX Poole
+Sign: Sign:
+Name: Mateusz Stanuszek Name:
+Eﬀective Date:

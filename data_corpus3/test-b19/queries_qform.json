@@ -1,0 +1,257 @@
+{
+  "_qform_sha256": "206e2bf19ce70ed088bf8164ff3337821ab64af9c1c5f4bd9c8597265cf2f53c",
+  "_note": "Frozen interrogative rewrites. See build_corpus3.QFORM.",
+  "queries": [
+    {
+      "id": "test-b19-nda-1",
+      "category": "contractnli/Explicit identification",
+      "query": "Must the Disclosing Party expressly identify all Confidential Information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Explicit identification",
+      "trace": "nda-1",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-2",
+      "category": "contractnli/None-inclusion of non-technical information",
+      "query": "Is Confidential Information limited to technical information only?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None-inclusion of non-technical information",
+      "trace": "nda-2",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-3",
+      "category": "contractnli/Inclusion of verbally conveyed information",
+      "query": "Can Confidential Information include information that was conveyed verbally?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Inclusion of verbally conveyed information",
+      "trace": "nda-3",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-4",
+      "category": "contractnli/Limited use",
+      "query": "Is the Receiving Party restricted to using Confidential Information only for the purposes stated in the Agreement?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_293.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Limited use",
+      "trace": "nda-4",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-5",
+      "category": "contractnli/Sharing with employees",
+      "query": "May the Receiving Party share Confidential Information with its own employees?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Sharing with employees",
+      "trace": "nda-5",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-7",
+      "category": "contractnli/Sharing with third-parties",
+      "query": "May the Receiving Party share Confidential Information with third parties such as consultants, agents or professional advisors?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Sharing with third-parties",
+      "trace": "nda-7",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-8",
+      "category": "contractnli/Notice on compelled disclosure",
+      "query": "Must the Receiving Party notify the Disclosing Party if it is required by law or judicial process to disclose Confidential Information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Notice on compelled disclosure",
+      "trace": "nda-8",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-10",
+      "category": "contractnli/Confidentiality of Agreement",
+      "query": "Is the Receiving Party prohibited from disclosing that the Agreement was agreed or negotiated?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Confidentiality of Agreement",
+      "trace": "nda-10",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-11",
+      "category": "contractnli/No reverse engineering",
+      "query": "Is the Receiving Party prohibited from reverse engineering objects that embody Confidential Information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No reverse engineering",
+      "trace": "nda-11",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-12",
+      "category": "contractnli/Permissible development of similar information",
+      "query": "May the Receiving Party independently develop information similar to the Confidential Information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Permissible development of similar information",
+      "trace": "nda-12",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-13",
+      "category": "contractnli/Permissible acquirement of similar information",
+      "query": "May the Receiving Party acquire information similar to the Confidential Information from a third party?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_293.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Permissible acquirement of similar information",
+      "trace": "nda-13",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-15",
+      "category": "contractnli/No licensing",
+      "query": "Does the Agreement grant the Receiving Party any right or licence to the Confidential Information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No licensing",
+      "trace": "nda-15",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-16",
+      "category": "contractnli/Return of confidential information",
+      "query": "Must the Receiving Party return or destroy Confidential Information when the Agreement terminates?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Return of confidential information",
+      "trace": "nda-16",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-17",
+      "category": "contractnli/Permissible copy",
+      "query": "May the Receiving Party make copies of Confidential Information?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_165.txt",
+        "nda_310.txt"
+      ],
+      "expected_answer_or_key_facts": "Permissible copy",
+      "trace": "nda-17",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-18",
+      "category": "contractnli/No solicitation",
+      "query": "Is the Receiving Party prohibited from soliciting the Disclosing Party's representatives or employees?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No solicitation",
+      "trace": "nda-18",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-19",
+      "category": "contractnli/Survival of obligations",
+      "query": "Do any obligations under the Agreement survive its termination?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Survival of obligations",
+      "trace": "nda-19",
+      "note": ""
+    },
+    {
+      "id": "test-b19-nda-20",
+      "category": "contractnli/Permissible post-agreement possession",
+      "query": "May the Receiving Party retain any Confidential Information after the required return or destruction?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_answer_or_key_facts": "Permissible post-agreement possession",
+      "trace": "nda-20",
+      "note": ""
+    }
+  ]
+}

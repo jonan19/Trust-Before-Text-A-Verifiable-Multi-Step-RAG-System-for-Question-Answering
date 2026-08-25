@@ -46,6 +46,19 @@ CORPORA = {
     "2": {"data": ROOT / "data_corpus2", "qdrant": "qdrant_db_c2_copy"},
 }
 
+# Corpus 3 (ContractNLI) is not one store but ~45: one per 4-NDA bundle, built
+# by evaluation/build_corpus3.py. Registering them here as "3-<bundle>" means
+# run_eval.py, invariance_harness.py and every other consumer of CORPORA accept
+# them with no change — `choices=sorted(CORPORA)` picks them up automatically.
+# The retrieval cache key already includes the corpus id, so stores never mix.
+_C3_ROOT = ROOT / "data_corpus3"
+if _C3_ROOT.exists():
+    for _bundle in sorted(_p for _p in _C3_ROOT.iterdir() if _p.is_dir()):
+        CORPORA[f"3-{_bundle.name}"] = {
+            "data": _bundle,
+            "qdrant": f"qdrant_db_c3/{_bundle.name}",
+        }
+
 
 def _cache_path(corpus: str, query: str, top_k: int) -> Path:
     key = hashlib.sha256(f"{corpus}||{top_k}||{query}".encode("utf-8")).hexdigest()[:32]
@@ -96,8 +109,17 @@ def setup(corpus: str, *, stub_synthesis: bool = True):
     return orchestrator
 
 
-def load_queries(corpus: str) -> list[dict]:
-    path = CORPORA[corpus]["data"] / "queries.json"
+def load_queries(corpus: str, filename: str = "queries.json") -> list[dict]:
+    """
+    Load a corpus's query set.
+
+    `filename` exists for Corpus 3, which carries several query sets over the
+    same documents: queries.json (ContractNLI hypotheses verbatim),
+    queries_qform.json (frozen interrogative rewrites) and queries_open.json
+    (the independently authored open set). Defaults to the historical name, so
+    every existing caller is unaffected.
+    """
+    path = CORPORA[corpus]["data"] / filename
     return json.loads(path.read_text(encoding="utf-8"))["queries"]
 
 
@@ -118,7 +140,16 @@ def conflict_pair(result: dict):
     return None
 
 
-def run_queries(orchestrator, queries: list[dict], *, progress: bool = True) -> list[dict]:
+def run_queries(orchestrator, queries: list[dict], *, progress: bool = True,
+                keep_evidence: bool = False) -> list[dict]:
+    """
+    Run every query and record its decision.
+
+    `keep_evidence` additionally retains the validated evidence chunks, which
+    evaluation/span_attribution.py needs to grade citations against ContractNLI's
+    gold evidence spans. Default off so existing Corpus 1/2 result files stay
+    byte-identical.
+    """
     records: list[dict] = []
     n = len(queries)
     for i, q in enumerate(queries, 1):
@@ -144,6 +175,21 @@ def run_queries(orchestrator, queries: list[dict], *, progress: bool = True) -> 
                 if val.get("cleaned_chunks") else None
             ),
         }
+        if keep_evidence:
+            rec["evidence"] = [
+                {"source": c.get("source"), "text": c.get("text", "")}
+                for c in val.get("cleaned_chunks", [])
+            ]
+            # The conflict pair's texts are query-relevant SUB-SPANS, not whole
+            # chunks (validation.py:1803-1807), so they cannot be matched by
+            # chunk fingerprint. Keeping each span next to its source file lets
+            # span_attribution.py locate it by exact string search in that
+            # document instead. Without the source, the span is unlocatable and
+            # attribution scores as 0 for the wrong reason.
+            rec["conflict_chunks"] = [
+                {"source": c.get("source"), "text": c.get("text", "")}
+                for c in detail.get("chunks", [])
+            ]
         rec["match"] = rec["observed"] == rec["expected"]
         records.append(rec)
         if progress:

@@ -1,0 +1,76 @@
+OISAIR PROJECT
+TWO-WAY CONFIDENTIALITY AND NON-DISCLOSURE AGREEMENT
+(TO BE SIGNED ELECTRONICALLY THROUGH THE INNOVAIR PLATFORM)
+This Confidentiality and Non-Disclosure Agreement (hereinafter referred to as the “Agreement”) dated ………………………. (“Effective Date”) is made by and between:
+1) <Research institution name> with registered offices located in ……………………………, Tax registration No ………, represented by ………………………………….., in the legal capacity as …………………….. Hereinafter referred to as “………………..”
+2) <Company name> with registered offices located in ………………………….. Tax registration No. ……………, represented by …………………………., in the legal capacity as ………………………….. Hereinafter referred to as “………………..”
+The above parties hereinafter collectively referred to as the “Parties” and individually as a “Party”.
+WHEREAS
+The Parties are willing to exchange Confidential Information in the form of certain scientific, technical and commercial information, that will include confidential and proprietary material relating to ………………… (the “Field”) and the Receiving Party may use this Confidential Information for the sole consideration of assessing whether to enter into a potential or proposed business collaboration with the Disclosing Party for the joint development of the technology ………………………… (the “Permitted Purpose”) subject to the terms and conditions of this Agreement.
+IT IS AGREED as follows:
+1. Definition and interpretation
+In this Agreement, the following terms will have the respective meanings:
+“Confidential Information” shall mean scientific, research, technical or business information pertaining to the Field, including but not limited to inventions; know-how; trade secrets; techniques; processes; designs; drawings; product designs; formulae and analysis; and any business information, including but not limited to price lists; customer lists; cost analyses; reports; surveys, market information and data.
+In respect of Confidential Information disclosed in documentary form, model or any other tangible form, this shall be marked by the Disclosing Party as confidential or otherwise designated to show expressly or by necessary implication that it is imparted in confidence. Any Confidential Information disclosed by the Disclosing Party or its Representatives orally or visually, shall be identified as such prior to disclosure and summarized in a writing provided by the Disclosing Party to the Receiving Party within thirty (30) days of the date of initial disclosure. In case of disagreement regarding said summary, the Receiving Party shall make any objections in writing within thirty (30) days of receipt of the written summary.
+“Disclosing Party” shall mean the Party that discloses Confidential Information directly or indirectly to the Receiving Party in relation to this Agreement.
+“Receiving Party” shall mean the Party that receives the Confidential Information directly or indirectly from the Disclosing Party.
+“Representatives” shall mean directors, employees, professional advisors or anyone involved with the Party in a professional or business capacity.
+2. Exclusions
+The obligation of confidentiality set out in this Agreement shall not apply to any Confidential Information that:
+a) was known to the Receiving Party prior to such disclosure by the Disclosing Party, as evidenced by documentary or other physical evidence;
+b) was public knowledge at the time of such disclosure to the Receiving Party, or becomes public knowledge after such disclosure, through no action or omission by or on behalf of the Receiving Party;
+c) is lawfully disclosed or made available to the Receiving Party by a third party having no obligation to the Disclosing Party to maintain the confidentiality of such information;
+d) was independently developed or derived by the Receiving Party without the aid, application or use of information furnished by the Disclosing Party, as evidenced by documentary or other physical evidence;
+e) is disclosed with the written consent of the Disclosing Party;
+f) is required to be disclosed by the order of a governmental agency or legislative body or a court of competent jurisdiction.
+3. Obligations of confidentiality and non-use
+The Receiving Parties undertake and agree:
+a) To take proper and reasonable measures to ensure the secrecy of the Confidential Information;
+b) Not to disclose, or allow it to be disclosed, in whole or in part to any third party without the prior written consent of the Disclosing Party
+c) Not to use, in whole or in part, the Confidential Information for anything other than the Permitted Purpose.
+d) Not to use the Confidential Information for their own commercial use or for that of any other person or party, without prior written consent by the Disclosing Party;
+e) Not to make copies of the Confidential Information in any format without prior written authorisation by the Disclosing Party;
+f) Not to alter, modify, disassemble, reverse engineer or decompile any Confidential Information;
+g) Not to apply for any patent or trademark which could include any Confidential Information.
+4. Disclosure to Representatives
+The Parties shall use at least the same degree of care as the Receiving Party normally exercises to protect its own information of like character and importance, but in no event less than reasonable care. The Receiving Party undertakes to permit access to the Confidential Information only to its Representatives or employees who require access to such Information solely for the fulfilment of the Permitted Purpose, and furnished on a need-to-know basis and only on the condition that such persons are made aware of the terms of this Agreement and their obligations therein, along with the Disclosing Party’s rights to the Confidential Information. The Receiving Party shall be responsible for ensuring its Representatives comply with the terms of this Agreement.
+5. Return of information and property
+The Receiving Party acknowledges and agrees that the Confidential Information is and remains the property of the Disclosing Party. The Receiving party must, at the end of this Agreement or within seven days following written instruction by the Disclosing Party to do so, return or destroy all Confidential Information in the Receiving Party's possession, custody or control. The Receiving Party may retain one (1) copy of any such Confidential Information to be stored securely with its legal representative only if required for regulatory or insurance purposes, but in this event the confidentiality and non-use provisions in this Agreement remain in place with respect to such retained Confidential Information. The return or destruction of any Confidential Information will not diminish or otherwise affect any other obligations under this Agreement.
+6. No implied rights
+This Agreement shall not grant, nor be construed to grant any rights whatsoever beyond the scope of the Permitted Purpose of the Confidential Information to the Receiving Party. This includes, but it not limited to any license, patent or copyright. No warranty, express or implied, is given as to the accuracy or completeness of any Confidential Information provided by the Disclosing Party.
+7. No obligation
+This Agreement imposes no contractual obligation to any Party to enter into any separate business collaboration for the development of the Field or associated technology. The Disclosing Party is not obliged to disclose any Confidential Information to the Receiving Party and the Receiving Party shall have the right to refuse to accept any information prior to any disclosure.
+8. Breach
+In the event of a breach or threatened breach of the terms of this Agreement by the Receiving Party, the Disclosing Party will be entitled to seek an injunction (final or interlocutory) restraining the Receiving Party from committing a breach, or further breach, of this Agreement without the requirement to demonstrate any actual damage sustained by the Disclosing Party.
+9. Integration
+This Agreement constitutes the entire understanding between the Parties concerning the treatment of information to which this Agreement relates. No modification of this Agreement shall be binding on either Party unless agreed in writing and signed by all the Parties.
+10. Duration
+This Agreement shall terminate 5 (five) years after the Effective Date (the “Termination Date”). Notwithstanding this, any Party may terminate its involvement with this Agreement by giving 30 (thirty) days written notice (registered letter with proof of receipt) to the other Parties. Termination of this Agreement shall not affect any obligation imposed by this Agreement with respect to Confidential Information disclosed prior to termination, the obligations of non-use and non-disclosure of Confidential Information shall survive for 3 (three) years from the date of disclosure of the Confidential Information. After the term of this Agreement has ended, the Disclosing Party does not relinquish any other rights that it may have under copyright, patent, or other intellectual property laws.
+11. Agreement in counterparts
+This Agreement shall be executed in three identical counterparts, each of which shall be deemed to be an original and all of which taken together shall be deemed to constitute the same agreement when a duly authorised representative of each Party has signed all the counterparts.
+12. Applicable Law and Jurisdiction
+This Agreement shall be governed by and construed in accordance with the Laws of the Republic of Italy without regard to Italy’s conflicts of law rules. Any disputes or claim arising out of or in connection with this Agreement shall be submitted to the sole competence and jurisdiction of the ordinary Courts of Trieste.
+13. Successor and assigns
+The Parties agree that this Agreement and any subsequent amendments shall be binding on their successors in title and assigns, and undertake the necessary steps to ensure they are so bound.
+14. Third parties
+This Agreement does not create any right enforceable by any person not a Party to it.
+15. Communications
+Any notice or other communication made or given by any Party in connection with this Agreement shall be sent via fax (with confirmation) or by registered or certified mail or courier service addressed to the other Party at its address set forth below:
+<Party>
+<address>
+For the attention of
+<contacts>
+<Party>
+<address>
+For the attention of
+<contacts>
+or such other address that each Party may from time to time notify in writing to the other Party in case of changes of the above addresses.
+The communications will be deemed to be made at the effective date of receipt.
+16. Secrecy
+The existence of this Agreement cannot be disclosed to any third party. It is thus forbidden to make any oral and/or written disclosure (advertising, publication, or any other kind of external communication) of this Agreement being in force nor of the potential co-operation that could be subsequently negotiated, without prior and written authorisation of all Parties.
+Agreed by the Parties through their authorised signatories
+For and on behalf of For and on behalf of
+<Party> <Party>
+Signed Signed
+Name Name
+Date Date

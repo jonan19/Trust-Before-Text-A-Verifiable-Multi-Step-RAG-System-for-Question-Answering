@@ -150,16 +150,22 @@ would fix Q0xx", the proposal is already suspect — say so before presenting it
 These are settled. Reopening one requires the user to say so explicitly, and
 requires new information, not a new idea for the same old problem.
 
-1. **Problem 1 (false conflicts) is closed as an engineering task.** Nine
+1. **Problem 1 (false conflicts) is closed as an engineering task.** Eight
    candidates have been falsified — unit-noun demotion, digit-only dimensional
    veto, query/span embedding gate, NLI floor raise, shared-rare-term, superseded
-   -document suppression, asymmetric anchoring, asymmetric anchor rescue, and the
-   cross-encoder answerhood margin. **Every one has the same shape: it fixes one
-   class and opens another, conserving total error.** That convergence is the
-   result. It is not a losing streak, and it does not need a tenth sample.
-   *Do not design experiment #10 in this family.* Independently replicated at
-   Stage 5: an exhaustive search over 2,304 focus configurations found zero
-   solutions, and the semantic rescue was proven anti-correlated.
+   -document suppression, asymmetric anchoring, and asymmetric anchor rescue.
+   **Every one has the same shape: it fixes one class and opens another,
+   conserving total error.** That convergence is a result in its own right, not
+   a losing streak, and it does not need a ninth sample. One further candidate,
+   the cross-encoder answerhood margin, broke the pattern and **shipped** (see
+   below) rather than being falsified — but it did not eliminate the class, only
+   closed 7 of 9 Corpus-2 cases; the 2 that remain are its two hardest known
+   pairs, sitting below a true conflict's margin. *Do not design a new
+   deterministic filter for those 2* — the remaining failure is the same
+   query-never-enters-the-comparison mechanism as the eight falsified attempts,
+   just measured smaller. Independently replicated at Stage 5: an exhaustive
+   search over 2,304 focus configurations found zero solutions, and the semantic
+   rescue was proven anti-correlated.
 2. **Problem 2's residual cost (Q013, Q059, Q074) is not a to-do.** Exhaustively
    shown irrecoverable at this design layer.
 3. **The highest-value open item is an external corpus**, not any code change.
@@ -187,9 +193,11 @@ against these before treating it as novel.
    **"week"**, and cites office attendance against maternity pay.
 2. **A real conflict re-firing on questions it does not answer.** The corpus
    genuinely contradicts itself somewhere; that pair is strong evidence for many
-   queries, so it surfaces under all of them. Largest remaining error class.
-   It is a *topicality* failure, not an NLI-quality failure — a better NLI
-   checkpoint scores those two sentences identically. See Standing Decision 1.
+   queries, so it surfaces under all of them. It is a *topicality* failure, not
+   an NLI-quality failure — a better NLI checkpoint scores those two sentences
+   identically. Was the largest error class on Corpus 2 (9 of 24 false
+   conflicts); the `ANSWERHOOD_MARGIN` gate (shipped, see below) closed 7 of
+   those 9. See Standing Decision 1 for the two that remain.
 3. **Right decision, wrong evidence.** The system can abstain for "conflict"
    with a correct verdict while citing a pair unrelated to the question.
    Decision-level accuracy scores this as fully correct, so it is invisible
@@ -237,19 +245,22 @@ empirically. When diagnosing a wrong decision:
 - Retrieval is usually not the culprit either. Check the validation stages
   before suspecting the vector store.
 
-## Open Item: ANSWERHOOD_MARGIN
+## Shipped: ANSWERHOOD_MARGIN (2026-08-24)
 
-Ships disabled (`RAG_ANSWERHOOD_MARGIN`, default `0.0`). At δ=5.5 on Corpus 2:
-false conflicts 9 → 2, conflict precision 0.625 → 0.875, attribution 0.583 →
-0.875, accuracy 82.1% → 89.7%; Q036 moves from `conflict` (wrong evidence) to
-`insufficient`. No new unsafe answer (stays 1/32, still Q045).
+Default is now `5.5` (`RAG_ANSWERHOOD_MARGIN`, `validation.py`). At δ=5.5 on
+Corpus 2: false conflicts 9 → 2, conflict precision 0.625 → 0.875, attribution
+0.583 → 0.875, accuracy 82.1% → 89.7%; Q036 moves from `conflict` (wrong
+evidence) to `insufficient`. No new unsafe answer (stays 1/32, still Q045).
 
-Under the retired tier system this was rejected on the `conflict_recall`
-15/16 → 14/16 drop. Under the Five-Line Rule that reasoning does not hold —
-per failure pattern #3, Q036 was *already* wrong, and wrong-evidence → honest
-refusal is Rule 3, a move toward safety. **The rejection was made on a metric
-this project has itself documented as broken.**
+Originally rejected under the retired tier system on the `conflict_recall`
+15/16 → 14/16 drop alone. That reasoning did not hold under the Five-Line
+Rule — per failure pattern #3, Q036 was *already* wrong, and wrong-evidence →
+honest refusal is Rule 3, a move toward safety, not a regression to veto on.
 
-It remains unshipped for one honest reason: **Rule 1 was never checked.** Run
-`RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/invariance_harness.py --corpus 2`
-(and `--corpus 1`) before deciding. If invariance stays 0/78, Rule 3 says ship.
+Rule 1 (structural check) was then run and came back clean:
+`RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/invariance_harness.py --corpus
+{1,2}` — all four structural transforms stayed 0/78 on both corpora; the two
+politeness transforms actually *improved* (Corpus 1's `query_thanks` and
+`query_polite` unsafe flips both went to 0). Full results:
+`evaluation/results/invariance_corpus{1,2}.json`. Rule 3 applied: shipped.
+`RAG_ANSWERHOOD_MARGIN=0` restores the prior behaviour exactly.

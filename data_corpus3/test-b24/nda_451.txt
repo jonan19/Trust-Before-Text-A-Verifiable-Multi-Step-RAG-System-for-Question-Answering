@@ -1,0 +1,41 @@
+NOVELL MUTUAL NON-DISCLOSURE AGREEMENT
+Effective Date: January 30, 2002
+Company: Silver Stream Software
+Address: 2 Federal Street
+City: Billerica,
+State/Zip: MA 01821
+Novel Contact Person:
+Name: Bill Smith
+Phone: (617) 914-8312 Fax: (801) 365-6265
+Company Contact Person:
+Name: CRAIG DYNES
+Phone: (978) 262-3441
+In order to protect certain Confidential Information which the parties desire to disclose hereunder, Novell, Inc. ("Novell") and the "Company" identified above agree to the following terms and conditions. The terms Discloser and Recipient as used herein apply to both parties to this Agreement in their respective roles as discloser of Confidential Information and recipient of Confidential Information.
+1. Confidential Information. The "Confidential Information" of the respective pathos disclosed under this Agreement is described as follows:
+Novell: Any information and materials disclosed in relation to a potential business transaction between the parties.
+Company: Any information and materials disclosed in relation to a potential business transaction between the parties.
+Confidential Information may be disclosed in oral/verbal or tangible form. Discloser shall mark all Confidential Information disclosed in tangible form with a restrictive legend. Designated below is each party's representative for coordinating the exchange of Confidential Information.
+2. Obligation of Confidentiality. For a period of three (3) years from the date of disclosure, Recipient agrees to use the same care and discretion to avoid disclosure, publication, or dissemination of Discloser's Confidential Information as it uses with its own similar information that it does not wish to disclose publish, or disseminate, but in no event shall Recipient use less than reasonable care to protect Discloser's Confidential Information. Recipient may disclose Confidential Information to its employees and information which may be retained in non-tangible form by persons who have had access to the Confidential Information, including without limitation general ideas, concepts, know-how provided that prior agreement with such parties sufficient to require that party to treat the Confidential Information in accordance with this Agreement.
+3. Exception. No obligation of confidentiality applies to a Confidential Information that Recipient can show: (i) is or becomes, publicly available without breach of this Agreement but only from such date as it becomes so available; (ii) was rightfully in the possession of Recipient without obligation confidentiality prior to receipt thereof from Discloser (iii) was rightfully disclosed to Recipient by a third party with obligation of confidentiality; (iv) is independently developed Recipient without use of the Confidential Information; or (v) disclosed by Recipient with Discloser's prior written consent.
+4. Recipient may use the Confidential Information solely for evaluation purposes in connection with Recipient business discussions with Discloser. If software is provided Recipient under this Agreement, Recipient agrees not to reverse compile or disassemble the software to discover the human perceivable portions of the code.
+5. Ownership: All Confidential Information remains the property of Disclosure and/or its licensors.
+6. Freedom of Use. Notwithstanding anything to the contrary, Recipient shall be free to use for any purposes the Residuals resulting from access to or work with Discloser's Confidential Information. However, the foregoing does not give Recipient the right to disclose (except as set forth in Section 3) the financial, statistical, or personnel information or the business plans of Discloser, and the foregoing shall not be deemed to grant to either party a license under the other party's copyright or patents. The term "Residuals" means information which may be retained in non-tangible form by person who have had access to the Confidential Information, including without limitation general ideas, concepts, know-how or techniques contained therein. Neither party shall have any obligation to limit or restrict the assignment or reassignment of personnel.
+Except as otherwise provided in this Agreement, the parties acknowledge that the communications hereunder will not serve to impair the right of either party to independently develop, make, use, procure or market products or services now or in the future that may be similar to or competitive with those offered by Discloser, nor require Recipient to disclose any planning or other information to Discloser. This Section shall survive termination of this Agreement.
+7. Termination. This Agreement shall begin on the Effective Date above. Either party may terminate this Agreement upon written notice to the other. Upon termination of this Agreement, or earlier upon Discloser's request, Recipient shall promptly return or destroy all documents and tangible items in its possession which contain any part of the Confidential Information of Discloser. In the event of termination of this Agreement, all obligations of confidentiality shall survive and continue to bind Recipient in accordance with their terms.
+8. Disclaimer. All Confidential Information is provided "AS IS", WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED. Discloser does not represent or warrant the accuracy or completeness of the Confidential Information, that it will release any product related to the Confidential Information, or that target dates will be met. The entire risk arising out of the use of the Confidential Information remains with Recipient. Discloser may change or cancel its plans at any time.
+9. Limitation of Liability. IN NO EVENT SHALL DISCLOSER BE LIABLE FOR ANY DAMAGES WHATSOEVER (INCLUDING WITHOUT LIMITATION DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, OR OTHER PECUNIARY LOSS) ARISING OUT OF RECIPIENTS USE OF OR INABILITY TO USE THE CONFIDENTIAL INFORMATION.
+10. General.
+a. This Agreement shall be governed and construed in accordance with the laws of Utah (without regard to conflicts of laws provisions). In any legal proceeding arising out of this Agreement, the prevailing party shall be entitled to an award of its costs and reasonable attorneys' fees. The parties agree that Utah state and federal courts shall have jurisdiction and venue in any such proceeding.
+b. Export Constraints. Recipient certifies that the Confidential Information will only be used for the purposes expressly stated herein and will not be rented, leased, sold, sublicensed, assigned, or otherwise transferred. Recipient shall adhere to the U.S. Export Administration laws and regulations and shall not export or re-export any technical data or products received from Discloser or the direct product of such technical data to any proscribed country listed in the U.S. Export Administration regulations unless properly authorized by the U.S. government.
+c. Neither party may assign its rights or delegate its duties or obligations under this Agreement without prior written consent, which shall not be unreasonably withheld. The parties acknowledge that they have read this Agreement, understand it, and agree to be bound by the terms and conditions.
+Further, they agree that the complete and exclusive statement of the agreement between the parties relating to this subject shall consist of this Agreement. Any reproduction of this Agreement by reliable means will be considered an original of this document. This Agreement is executed in English.
+COMPANY: SILVERSTRAM SOFTWARE, INC.
+SIGNATURE: /s/ Craig Dynes
+NAME: CRAIG DYNES
+TITLE: VP/CFO
+DATE: January 30, 2002
+NOVELL, INC.
+SIGNATURE: /s/ Bill Smith
+NAME: BILL SMITH
+TITLE: VP, MERGERS & ACQUISITIONS
+DATE: January 30, 2002
