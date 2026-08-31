@@ -1,0 +1,123 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b11-open-01",
+      "category": "track-b/open",
+      "query": "Does information have to be identified or marked as confidential for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_41.txt",
+        "nda_471.txt",
+        "nda_62.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_41.txt",
+        "nda_471.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_41 and nda_62 protect information regardless of marking; nda_471 protects only information identified as confidential at disclosure or within thirty days. nda_543 uses a mixed test (marked, or reasonably believed confidential).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b11-open-02",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_471.txt",
+        "nda_543.txt",
+        "nda_62.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_471.txt",
+        "nda_543.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_471 is five years from JRA termination; nda_543 is a three-year term (one year for non-technical information); nda_62 survives indefinitely; nda_41 sets no term. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b11-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally compelled to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_471.txt",
+        "nda_543.txt",
+        "nda_62.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice before compelled disclosure; they agree. nda_41 has no compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b11-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_41.txt",
+        "nda_471.txt",
+        "nda_543.txt",
+        "nda_62.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require return or destruction on request; they agree. nda_62 permits one retained legal copy and routine backups. ('re(cid:84)uest' is an artifact in the source text and is quoted verbatim.)",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b11-open-05",
+      "category": "track-b/open",
+      "query": "Can the disclosing party get an injunction or specific performance for a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_41.txt",
+        "nda_543.txt",
+        "nda_62.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address remedies allow injunctive relief and/or specific performance; they agree. nda_471 has no remedies clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b11-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_41 (Maryland courts), nda_471 (New York law) and nda_62 (South Carolina courts) all point to litigation; nda_543 names only a governing law.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b11-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on the amount a party can be made to pay for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability; nda_41 imposes an uncapped indemnity.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b11-open-08",
+      "category": "track-b/open",
+      "query": "May the recipient give the protected infrastructure information to a staff member who has a felony conviction?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_62.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_62 addresses this, barring disclosure of Critical Energy Infrastructure Information to any Representative convicted of a felony. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

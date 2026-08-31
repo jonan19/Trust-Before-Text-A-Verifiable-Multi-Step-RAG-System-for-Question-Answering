@@ -1,0 +1,124 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b00-open-01",
+      "category": "track-b/open",
+      "query": "Are we allowed to pass the confidential information to our own outside accountants and lawyers for advice?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_307.txt",
+        "nda_47.txt",
+        "nda_80.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_307.txt",
+        "nda_47.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_307 and nda_47 permit disclosure to professional advisors as of right; nda_80 forbids any onward disclosure to third parties unless KDOL authorises it in writing first. Judgement call on conflict vs answer: these are separate contracts, but they take incompatible positions on the same proposition (may the recipient share with its own advisors without prior consent).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b00-open-02",
+      "category": "track-b/open",
+      "query": "After we are told to return everything, can we still keep a single copy for our records?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_307.txt",
+        "nda_47.txt",
+        "nda_552.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_307.txt",
+        "nda_47.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_552 expressly allows one archival copy in the Legal Department; nda_47 expressly forbids retaining any copies; nda_307 requires all copies to be returned or destroyed. Direct disagreement on the same point.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b00-open-03",
+      "category": "track-b/open",
+      "query": "If a court orders us to hand over the confidential information, do we have to warn the other side first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_307.txt",
+        "nda_552.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both documents that address compelled disclosure require prior notice to the disclosing party; they agree.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b00-open-04",
+      "category": "track-b/open",
+      "query": "Does signing this commit either company to actually doing a deal together?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_307.txt",
+        "nda_552.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both agree signing creates no obligation to proceed with a transaction.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b00-open-05",
+      "category": "track-b/open",
+      "query": "Can the disclosing party go to court for an injunction to stop a breach or a threatened breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_307.txt",
+        "nda_552.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow injunctive relief for breach or threatened breach. nda_307 adds that actual damages need not be proven; nda_552 does not spell that out but rests on irreparable harm.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b00-open-06",
+      "category": "track-b/open",
+      "query": "If there is a dispute under the Kansas Department of Labor agreement, which law governs it and where would it be heard?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_80 (the KDOL agreement) contains no governing-law or venue clause. The other three bundles have governing-law clauses but they do not speak to the KDOL contract.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b00-open-07",
+      "category": "track-b/open",
+      "query": "Do any of these agreements set a fixed sum payable for each breach of confidentiality?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document fixes a liquidated amount for breach. nda_307 refers to 'penalties for breach of contract' and 'damages as set forth in Section 9' but Section 9 sets no figure; nda_47's fee language concerns the broker's commission, not a confidentiality penalty.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b00-open-08",
+      "category": "track-b/open",
+      "query": "For how long does confidential information have to be kept secret?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_307.txt",
+        "nda_47.txt",
+        "nda_552.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_307.txt",
+        "nda_47.txt"
+      ],
+      "expected_answer_or_key_facts": "Free-choice question. nda_307 and nda_47 say three years; nda_552 says five years (and indefinitely for trade secrets). Labelled conflict because, read as one corpus, the documents give incompatible answers to 'how long must it be kept secret'. A reviewer could reasonably down-rate this to 'answer' on the view that each contract simply sets its own term.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

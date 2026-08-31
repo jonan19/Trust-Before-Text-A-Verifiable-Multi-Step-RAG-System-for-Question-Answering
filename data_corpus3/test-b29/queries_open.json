@@ -1,0 +1,126 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b29-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_129.txt",
+        "nda_558.txt",
+        "nda_59.txt",
+        "nda_8.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_129.txt",
+        "nda_558.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_129 is the earlier of public availability or twelve years from Registration; nda_558 is two years; nda_59 is perpetual; nda_8 runs until the Discloser terminates or the premises are vacated. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b29-open-02",
+      "category": "track-b/open",
+      "query": "If the recipient is legally compelled to disclose the confidential information, may it do so?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_129.txt",
+        "nda_558.txt",
+        "nda_8.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_129.txt",
+        "nda_558.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_129 and nda_558 permit compelled disclosure after notifying the disclosing party; nda_8 requires the recipient to resist disclosure 'even if authorized or directed under any law' and gives the Discloser the right to deny it. Incompatible on the same point.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b29-open-03",
+      "category": "track-b/open",
+      "query": "Can the recipient share the confidential information with its own employees who need it for the work?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_129.txt",
+        "nda_558.txt",
+        "nda_8.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_129.txt",
+        "nda_558.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_129 and nda_558 permit internal disclosure to employees/representatives with a need to know who are bound by confidentiality; nda_8 bars sharing the information with any third party under any circumstances and forbids disclosure to any person without the Discloser's express permission.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b29-open-04",
+      "category": "track-b/open",
+      "query": "Can the disclosing party get an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_129.txt",
+        "nda_8.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow injunctive relief for breach; they agree. nda_129 waives proof of actual damages. nda_558 and nda_59 have no injunctive-relief clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b29-open-05",
+      "category": "track-b/open",
+      "query": "Does the recipient have to keep the confidential information secret from third parties?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_129.txt",
+        "nda_558.txt",
+        "nda_59.txt",
+        "nda_8.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four impose a core duty to keep the information confidential and not disclose it to third parties; they agree.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b29-open-06",
+      "category": "track-b/open",
+      "query": "Under the Aldes buyer's agreement, does the buyer have to return the confidential materials when asked?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_59 has no return-or-destruction clause; it only says the materials are 'deemed to be lent' and remain the Seller's/Business's property. nda_558 has a return clause, but it does not speak to the Aldes agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b29-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on how much a party can be made to pay for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b29-open-08",
+      "category": "track-b/open",
+      "query": "Must the buyer deal with the sellers only through the broker, and does the broker still earn its commission if the buyer goes around it?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_59.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_59 contains a non-circumvention clause: the buyer must transact with sellers only via Aldes, and Aldes remains entitled to its brokerage commission if the buyer (or anyone it introduced) concludes a deal anyway. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

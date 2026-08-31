@@ -1,0 +1,121 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b01-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_36.txt",
+        "nda_412.txt",
+        "nda_5.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_36.txt",
+        "nda_412.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_36 says five years from termination; nda_5 says the earlier of three years or completion of the sale; nda_412's non-disclosure covenant is open-ended with no end date. nda_55 also says five years from disclosure. Incompatible durations for the same obligation.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b01-open-02",
+      "category": "track-b/open",
+      "query": "Does information have to be stamped or labelled \"Confidential\" before it counts as protected?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_36.txt",
+        "nda_5.txt",
+        "nda_55.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_36.txt",
+        "nda_5.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_55 protects only written material marked 'Confidential'; nda_36 and nda_5 protect information regardless of form or marking. nda_412 uses a mixed test (marked, or known/assumed confidential).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b01-open-03",
+      "category": "track-b/open",
+      "query": "If we end up in litigation over the agreement, does the loser pay the winner's legal costs?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_412.txt",
+        "nda_55.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both documents that address it award fees and costs to the prevailing party; they agree. nda_36 and nda_5 are silent.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b01-open-04",
+      "category": "track-b/open",
+      "query": "Can a party ask a court to stop a breach by injunction rather than just sue for money?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_36.txt",
+        "nda_412.txt",
+        "nda_5.txt",
+        "nda_55.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four contemplate injunctive relief for breach or threatened breach; they agree. Only nda_412 also waives bond and proof of damages.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b01-open-05",
+      "category": "track-b/open",
+      "query": "Are we allowed to show the confidential information to our outside lawyers and other professional advisers?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_36.txt",
+        "nda_5.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_36 includes professional advisers among the Representatives who may receive information for the Purpose; nda_5 expressly contemplates disclosure to a professional advisor who is first made aware of the agreement. They agree. nda_55 lists only employees, contractors and Affiliates, and nda_412 requires the Buyer's express authorisation, so a reviewer may prefer to narrow sources or reconsider.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b01-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to go to arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None of the four mention arbitration. nda_36 (courts of Ireland), nda_412 (Los Angeles courts), nda_5 (courts of Brussels) and nda_55 (City Court of Copenhagen) all point to litigation in named courts.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b01-open-07",
+      "category": "track-b/open",
+      "query": "If the confidential information includes personal data, are there specific security or data-protection standards the receiving party must meet?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_55 mentions 'personal information' within its definition and nda_5 flags insider-dealing law, but no document sets out a data-protection or information-security standard for handling personal data.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b01-open-08",
+      "category": "track-b/open",
+      "query": "Is the receiving party allowed to reverse-engineer or pull apart the confidential information to work out how it was made?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_55.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_55 addresses reverse engineering, and it prohibits it. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

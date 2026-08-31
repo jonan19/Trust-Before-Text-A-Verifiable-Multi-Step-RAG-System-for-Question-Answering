@@ -16,6 +16,7 @@ qdrant_db_corpus2/
 qdrant_db_c1_copy/
 qdrant_db_c2_copy/
 qdrant_db_c3/
+qdrant_db_c3_copy/
 
 # Retrieval cache (regeneratable)
 _retrieval_cache/

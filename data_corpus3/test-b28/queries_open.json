@@ -1,0 +1,122 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b28-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_225.txt",
+        "nda_289.txt",
+        "nda_521.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_225.txt",
+        "nda_289.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_225's obligation runs 'during and after' the agreement with no end date; nda_289 is three years from the date the information is returned and destruction certified; nda_521 is three years from the date of the agreement. nda_117 states no term. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b28-open-02",
+      "category": "track-b/open",
+      "query": "Does information have to be marked or designated confidential for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_117.txt",
+        "nda_225.txt",
+        "nda_289.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_117.txt",
+        "nda_225.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_225 protects non-trade-secret information only if it is designated confidential; nda_117 makes marking optional and nda_289 protects the other party's Confidential Information regardless of marking. nda_521 protects information regardless of the manner of disclosure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b28-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally compelled to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_117.txt",
+        "nda_289.txt",
+        "nda_521.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice before compelled disclosure; they agree. nda_225 simply carves legally-required disclosure out of the obligation with no notice duty.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b28-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_117.txt",
+        "nda_289.txt",
+        "nda_521.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return or destruction on request; they agree. nda_521 permits limited retained litigation-hold/backup/legal/outside-counsel copies. nda_225 has no return clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b28-open-05",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_117.txt",
+        "nda_289.txt",
+        "nda_521.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three allow injunctive/equitable relief for breach; they agree. nda_521 also waives the bond. nda_225 has no remedies clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b28-open-06",
+      "category": "track-b/open",
+      "query": "Under the Mandarin Trading / ResRequest agreement, what remedy does a party have for a breach of confidentiality?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_225 contains no remedies clause — no injunctive relief, no specific performance, no fee-shifting (it only limits liability for indirect and consequential loss). The other three address remedies but do not speak to the Mandarin agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b28-open-07",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_117 (Colorado), nda_225 (South Africa), nda_289 (Germany courts) and nda_521 (Delaware chancery courts) all point to litigation.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b28-open-08",
+      "category": "track-b/open",
+      "query": "Can the recipient use the finished work as a portfolio example?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_117.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_117 addresses this, permitting portfolio use of the finished work provided it is non-editable and scrubbed of all branding and company/industry-specific content. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

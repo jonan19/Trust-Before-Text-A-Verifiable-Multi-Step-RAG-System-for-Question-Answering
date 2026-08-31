@@ -1,10 +1,71 @@
 # Pre-registration — Corpus 3 (ContractNLI)
 
-**Status: FROZEN 2026-08-25.** The test split has not been run. Track-B
-authoring has not started. Everything below is fixed as of this freeze;
-changing any of it after the test split is opened invalidates the held-out
-claim and must be disclosed rather than quietly amended. See Section 8 for the
-freeze record.
+**Status: FROZEN 2026-08-25. AMENDED 2026-08-28, before the test run.**
+Everything below was fixed as of the freeze; changing any of it after the test
+split is opened invalidates the held-out claim and must be disclosed rather
+than quietly amended. See Section 8 for the freeze record.
+
+> ## AMENDMENT 1 (2026-08-28) — Track B is LLM-authored, not human-authored
+>
+> Recorded **before** the sealed test split was run, per the disclosure clause
+> above. Nothing else in this document was changed.
+>
+> The frozen text below (and `CORPUS3_AUTHORING_PROTOCOL.md`) specifies Track B
+> as authored by three named humans working blind. **That is not what was
+> delivered.** `corpus3_queries_combined.json` (240 questions, 30 bundles × 8)
+> is LLM-generated. Its own `_meta` block reads *"DRAFT for human review …
+> Generated question-by-question against the four NDAs in each bundle"*, and
+> the `author` field is empty on all 30 bundles. No human review or relabelling
+> was performed before the run.
+>
+> The authoring model had **no context of this project** — it never saw this
+> system, its code, its outputs, `CLAUDE.md`, `docs/STATUS.md`, or this
+> pre-registration. So the strongest leakage channel (questions written to
+> flatter or trip a known implementation) is genuinely absent.
+>
+> **Correction (same day, before the run).** An earlier draft of this amendment
+> claimed the authoring model was biased by reading all four NDAs at once, and
+> cited Track B's 26.2% gold-`conflict` share (against Track A's 14.5%) as
+> evidence. **Both halves of that claim were wrong and are withdrawn.**
+>
+> Simultaneous access to all four documents is not an LLM-specific advantage:
+> `CORPUS3_AUTHORING_PROTOCOL.md` hands each human author the same four files
+> at once, and further *instructs* them to spend 2 of 8 questions on cases where
+> "the documents disagree". A human following the protocol would search for
+> conflicts the same way.
+>
+> The class mix is the quota, not a bias signature. The protocol's quota implies
+> a 25.0% conflict share; the observed share is 26.2%. 27 of 30 bundles are
+> exactly (4 answer, 2 conflict, 2 insufficient) — the quota with the free slot
+> spent on `answer`; the other 3 spent it on `conflict`. Track A's lower 14.5%
+> is simply what ContractNLI's label distribution yields under the bundling
+> rule, and carries no quota at all. The two shares are not comparable and their
+> difference is not evidence of anything.
+>
+> **What remains a genuine limitation.** Not the document visibility, but the
+> authorship itself: these questions were not written by a person, so Track B
+> does not test whether the system handles the phrasing, vagueness, and
+> under-specification of real human questions — which was Track B's entire
+> purpose. Whether an LLM's "natural" phrasing differs from a human's in ways
+> that matter here is **untested and unknown**, not assumed in either direction.
+> The conflict class carries the additional caveat that a quota-driven author of
+> any kind is hunting for disagreement, so the conflict share is a design
+> parameter and must never be read as a base rate.
+>
+> **Consequences, binding:**
+>
+> 1. **Track A remains the primary result.** Its labels are Koreeda & Manning's,
+>    authored years before this project existed — genuinely third-party. Track B
+>    is a clearly-labelled secondary arm.
+> 2. Track B must never be described as "independently authored", "blind", or
+>    "human-authored". The accurate phrasing is: *"open-form questions generated
+>    by a language model with no knowledge of the system under test, with full
+>    simultaneous visibility of each document bundle."*
+> 3. The three-human blind protocol remains **unexecuted** and stays open as
+>    future work. `CORPUS3_AUTHORING_PROTOCOL.md` is retained unchanged for that
+>    purpose.
+> 4. Predictions in Section 6 were registered against the dev split and are
+>    unaffected by this amendment.
 
 ---
 

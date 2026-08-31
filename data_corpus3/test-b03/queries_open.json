@@ -1,0 +1,121 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b03-open-01",
+      "category": "track-b/open",
+      "query": "For how long after disclosure must the confidential information be kept secret?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_361.txt",
+        "nda_46.txt",
+        "nda_523.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_361.txt",
+        "nda_46.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_46 is five years from disclosure; nda_523 is two years; nda_361 is open-ended (until VELCO withdraws the designation); nda_444's non-disclosure covenant 'from and after the Closing' has no end date. Incompatible answers to the same question.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b03-open-02",
+      "category": "track-b/open",
+      "query": "Does information have to be marked or labelled \"Confidential\" to be protected?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_361.txt",
+        "nda_523.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_361.txt",
+        "nda_523.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_523 protects information regardless of whether it is marked confidential; nda_361 requires written BCSI/CEII to be labelled and defines business Confidential Information (CI) by reference to marking or identification. nda_46 protects a broad category but singles out material 'marked \"Confidential\"'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b03-open-03",
+      "category": "track-b/open",
+      "query": "Can a party ask a court for an injunction to stop a breach without posting a bond or proving money damages are inadequate?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_361.txt",
+        "nda_444.txt",
+        "nda_46.txt",
+        "nda_523.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four allow injunctive/equitable relief for breach and treat legal remedies as inadequate; they agree. Only nda_523 expressly waives the bond requirement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b03-open-04",
+      "category": "track-b/open",
+      "query": "If we are legally compelled to produce the confidential information, must we notify the disclosing party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_361.txt",
+        "nda_523.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both require immediate notice and cooperation before compelled disclosure; they agree. nda_46 and nda_444 simply carve legally-required disclosure out of the obligation without imposing a notice duty.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b03-open-05",
+      "category": "track-b/open",
+      "query": "Does the recipient have to give the confidential information back or destroy it if asked?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_361.txt",
+        "nda_46.txt",
+        "nda_523.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require prompt return or destruction on request; they agree. nda_444 (an asset-purchase-related covenant) contains no return provision.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b03-open-06",
+      "category": "track-b/open",
+      "query": "Do the parties have to try mediation or negotiation before taking a dispute to court?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None of the four impose a pre-suit mediation or negotiation step. nda_361, nda_444, nda_46 and nda_523 all point straight to litigation in a named forum.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b03-open-07",
+      "category": "track-b/open",
+      "query": "Does the recipient have to notify the other side if the confidential information is accidentally leaked or lost?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document imposes an affirmative duty to report an accidental leak or loss. nda_361 clause 7 requires notice only of a change in the Recipient's employment status, not of a data leak.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b03-open-08",
+      "category": "track-b/open",
+      "query": "Can the recipient bring in a third party as a joint bidder or co-investor without the disclosing party's permission?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_523.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_523 addresses joint bids/co-investors, and it prohibits them without the Company's prior written consent. One document addressing the point is enough for 'answer'. ('third parry' is a typo in the source and is quoted verbatim.)",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

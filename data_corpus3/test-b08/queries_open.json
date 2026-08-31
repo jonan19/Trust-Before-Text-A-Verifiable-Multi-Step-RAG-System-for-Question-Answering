@@ -1,0 +1,121 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b08-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_127.txt",
+        "nda_138.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_127.txt",
+        "nda_138.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_138 releases information after five years from disclosure; nda_127's obligations survive termination with no end date; nda_476 and nda_600 set no term. Incompatible for the two that address it.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b08-open-02",
+      "category": "track-b/open",
+      "query": "Is the recipient allowed to copy the confidential information?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_127.txt",
+        "nda_138.txt",
+        "nda_600.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_127.txt",
+        "nda_138.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_138 flatly prohibits copying; nda_127 allows reproduction to the extent required for the Purpose; nda_600 bars reproduction or transfer to a third party without written authorisation. The nda_138 and nda_127 positions are directly opposed.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b08-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally compelled to disclose the confidential information, must we notify the other party?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_127.txt",
+        "nda_138.txt",
+        "nda_476.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice / an opportunity to seek protection before compelled disclosure; they agree. nda_600 has no compelled-disclosure clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b08-open-04",
+      "category": "track-b/open",
+      "query": "Does signing this force either side to go ahead with a transaction or business relationship?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_127.txt",
+        "nda_138.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both agree the agreement creates no obligation to transact or to form a relationship.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b08-open-05",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information when asked?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_127.txt",
+        "nda_138.txt",
+        "nda_476.txt",
+        "nda_600.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require return or destruction on request; they agree. Only nda_127 sets a deadline (seven days) and a certification requirement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b08-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_127 (NSW courts), nda_138 (courts of the Disclosing Party's territory) and nda_600 (Utah) all point to litigation; nda_476 names only a governing law.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b08-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on the amount of damages a party can recover for breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document caps damages. nda_600 allows recovery of 'such damages as may be sustained'; nda_476 adds an uncapped indemnity; none set a maximum.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b08-open-08",
+      "category": "track-b/open",
+      "query": "Is the recipient barred from starting a competing business using what it learns?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_138.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_138 contains a non-compete restriction (three years, cricket-related business). One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

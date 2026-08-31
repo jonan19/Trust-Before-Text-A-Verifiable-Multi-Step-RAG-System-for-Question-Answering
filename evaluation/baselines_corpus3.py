@@ -74,6 +74,23 @@ def score(records: list, decide) -> dict:
     return metrics(scored)
 
 
+def repoint_stores(qdrant_root: str) -> int:
+    """
+    Point every corpus-3 bundle at a different store root.
+
+    Qdrant's embedded mode holds an exclusive lock per storage folder (see
+    harness.py's note on why Corpus 1 evaluates against a copy), so this arm
+    cannot read the same stores a run_eval_corpus3.py process is using. Given a
+    byte-identical copy, the two can run concurrently.
+    """
+    n = 0
+    for key, cfg in CORPORA.items():
+        if key.startswith("3-"):
+            cfg["qdrant"] = f"{qdrant_root}/{key.removeprefix('3-')}"
+            n += 1
+    return n
+
+
 def retrieval_threshold_decisions(split: str, top_k: int = 5) -> dict:
     """
     Answer iff the best retrieved chunk clears the production score threshold.
@@ -119,6 +136,9 @@ def main() -> None:
     ap.add_argument("--tag", default="baselines")
     ap.add_argument("--skip-retrieval", action="store_true",
                     help="only the two trivial arms; skips the retrieval pass")
+    ap.add_argument("--qdrant-root", default=None,
+                    help="alternate store root (e.g. qdrant_db_c3_copy) so this "
+                         "can run concurrently with an eval using the originals")
     args = ap.parse_args()
 
     records = gold_records(args.split)
@@ -131,6 +151,9 @@ def main() -> None:
     }
 
     if not args.skip_retrieval:
+        if args.qdrant_root:
+            n = repoint_stores(args.qdrant_root)
+            print(f"  (retrieval arm reading {n} stores from {args.qdrant_root})")
         decisions, threshold = retrieval_threshold_decisions(args.split)
         missing = [r["id"] for r in records if r["id"] not in decisions]
         arms["retrieval_threshold"] = score(

@@ -53,10 +53,23 @@ DATA_ROOT = ROOT / "data_corpus3"
 OUT_DIR = Path(__file__).resolve().parent / "results"
 
 
-def load_sidecars(bundle: str) -> tuple[dict, dict]:
-    """(gold_spans, chunk_offsets) for one bundle, keyed as written by the builder."""
+GOLD_SPANS = {
+    "A": "gold_spans.json",       # ContractNLI annotator spans
+    "B": "gold_spans_open.json",  # Track B author quotes, resolved to offsets
+}
+
+
+def load_sidecars(bundle: str, track: str = "A") -> tuple[dict, dict]:
+    """
+    (gold_spans, chunk_offsets) for one bundle, keyed as written by the builder.
+
+    `track` selects which gold file to grade against. Track A uses ContractNLI's
+    own annotator spans; Track B uses the question author's verbatim quotes,
+    resolved to true offsets by evaluation/ingest_track_b.py. Both are graded by
+    identical logic below, so the two tracks are directly comparable.
+    """
     bundle_dir = DATA_ROOT / bundle.removeprefix("3-")
-    gold = json.loads((bundle_dir / "gold_spans.json").read_text(encoding="utf-8"))
+    gold = json.loads((bundle_dir / GOLD_SPANS[track]).read_text(encoding="utf-8"))
     offsets = json.loads((bundle_dir / "chunk_offsets.json").read_text(encoding="utf-8"))
     return gold, offsets
 
@@ -160,7 +173,7 @@ def overlaps(start: int, end: int, spans: list) -> bool:
     return any(start < s_end and s_start < end for s_start, s_end in spans)
 
 
-def grade(records: list) -> dict:
+def grade(records: list, track: str = "A") -> dict:
     """Grade every record that has gold evidence."""
     sidecars: dict = {}
 
@@ -176,7 +189,7 @@ def grade(records: list) -> dict:
         if not bundle:
             continue
         if bundle not in sidecars:
-            sidecars[bundle] = (*load_sidecars(bundle), load_documents(bundle), {})
+            sidecars[bundle] = (*load_sidecars(bundle, track), load_documents(bundle), {})
         gold_spans, offsets, documents, norm_cache = sidecars[bundle]
 
         gold_for_query = gold_spans.get(rec["id"]) or {}
@@ -258,6 +271,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", required=True)
     ap.add_argument("--split", choices=["dev", "test"], default="dev")
+    ap.add_argument("--track", choices=["A", "B"], default="A",
+                    help="A = ContractNLI gold spans; B = Track B author quotes")
     args = ap.parse_args()
 
     path = OUT_DIR / f"{args.tag}_corpus3_{args.split}.json"
@@ -265,12 +280,12 @@ def main() -> None:
         raise SystemExit(f"No result file at {path}. Run run_eval_corpus3.py first.")
 
     payload = json.loads(path.read_text(encoding="utf-8"))
-    result = grade(payload["results"])
+    result = grade(payload["results"], track=args.track)
 
     out = OUT_DIR / f"{args.tag}_corpus3_{args.split}_attribution.json"
     out.write_text(json.dumps(result, indent=2), encoding="utf-8")
 
-    print(f"=== span attribution / {args.tag} / {args.split} ===")
+    print(f"=== span attribution / {args.tag} / {args.split} / track {args.track} ===")
     for key, value in result.items():
         if key == "misattributed_detail":
             continue

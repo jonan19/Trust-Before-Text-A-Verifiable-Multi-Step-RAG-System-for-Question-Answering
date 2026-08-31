@@ -57,6 +57,26 @@ _log = logging.getLogger(__name__)
 # Sentences below this ratio trigger a user-visible caution prefix.
 NLI_FAITHFULNESS_THRESHOLD: float = 0.70
 
+# Per-sentence entailment cutoff used inside _check_faithfulness: an answer
+# sentence counts as supported when some evidence premise scores at or above
+# this. Named rather than inlined because the early-exit scan now tests it
+# per block; the value is unchanged from the original literal.
+_ENTAILMENT_THRESHOLD: float = 0.50
+
+# How many premises _check_faithfulness scores per round. Purely a
+# work-granularity knob -- it cannot change the result, only how early a
+# settled sentence stops being scored. Each round still submits
+# (unresolved sentences x this) pairs in one call, so the batch stays large
+# enough for the cross-encoder to amortise its forward pass.
+_NLI_PREMISE_BLOCK: int = 64
+
+# NOTE on batch size: the sentence-transformers default (32) is kept
+# deliberately. A sweep found 64 ~1.35x faster than 32 at 16 torch threads,
+# but the backend now runs at 4 threads (see docs/PERFORMANCE note in the
+# uvicorn launch env), and at 4 threads 64 measured SLOWER than 32
+# (136.4s vs 110.9s on the same input). Batch size and thread count interact;
+# do not tune one without re-measuring the other.
+
 # Release gate: when enabled, a sentence the evidence does not entail is removed
 # from the answer instead of being shown with a caution prefix.
 #
@@ -326,31 +346,83 @@ def _check_faithfulness(answer: str, chunks: list[dict]) -> dict:
     # is not reopened -- a two-sentence premise is still far too small to
     # smuggle a hijack instruction past its own attribution.
     evidence_texts = _split_evidence_sentences(chunks) + _split_evidence_sentence_pairs(chunks)
+
+    # Deduplicate premises, preserving rank order. A sentence is credited if
+    # ANY premise entails it, so the max over a premise LIST equals the max
+    # over its deduplicated SET — this cannot change the outcome. It matters
+    # because policy corpora repeat boilerplate across chunks, and every
+    # duplicate copy was previously scored again for every answer sentence.
+    evidence_texts = list(dict.fromkeys(evidence_texts))
+
+    # Preserve the previous fail-OPEN behaviour for the degenerate case of
+    # chunks that carry no usable text. The old code built an empty pair list,
+    # and max() over the empty score slice raised ValueError, which the except
+    # below turned into "assume supported". Scanning zero premises would
+    # otherwise mark every sentence unsupported — a silent flip to fail-CLOSED
+    # that this change is not meant to make.
+    if not evidence_texts:
+        return {"faithfulness_score": 1.0, "unsupported_sentences": []}
+
     unsupported: list[str] = []
 
-    # Check every answer sentence against every evidence premise in a single
-    # batched NLI call rather than one model.predict() per answer sentence:
-    # the cross-encoder amortises its forward-pass overhead across the whole
-    # batch, and the pair count (sentences x evidence_texts) is unchanged
-    # either way. A sentence passes if ANY evidence premise entails it.
+    # Score each answer sentence against the premises in rank-ordered blocks,
+    # stopping at the first premise that entails it.
+    #
+    # Exactness: `max_entailment >= 0.50` is logically identical to "some
+    # premise scores >= 0.50", and the raw max is never reported — it is only
+    # thresholded here (faithfulness_score is a COUNT of supported sentences).
+    # So early exit yields the same faithfulness_score and the same
+    # unsupported_sentences as scoring the full cross product did.
+    #
+    # Why it was needed: the previous single call built the entire
+    # sentences x premises product up front, which is uncapped on both sides.
+    # Measured on this corpus, "what is the leave policy?" retains 25 chunks
+    # (~275 premises after splitting into sentences and adjacent pairs) and
+    # produced a ~3,000-pair batch taking ~9.5 minutes on CPU, while a narrow
+    # query retaining 1 chunk answered in ~3s. Evidence-bearing sentences now
+    # exit within the first block or two; only genuinely unsupported sentences
+    # still scan every premise, so this is never slower than before.
+    #
     # NLI label order for nli-deberta-v3-base: [contradiction, entailment, neutral]
     # Citation markers are stripped from the NLI hypothesis only — the
     # original `sentence` (with markers) is what gets recorded/displayed.
     hypotheses = [_strip_citation_markers(s) for s in sentences]
+    supported_flags: list[bool] = [False] * len(sentences)
     try:
-        pairs = [(ev, hyp) for hyp in hypotheses for ev in evidence_texts]
-        scores = model.predict(pairs, apply_softmax=True)
-        n_ev = len(evidence_texts)
-        max_entailments = [
-            max(float(s[1]) for s in scores[i * n_ev:(i + 1) * n_ev])  # index 1 = entailment
-            for i in range(len(sentences))
-        ]
+        # Premise-block-major, not sentence-major: each call scores every
+        # STILL-UNRESOLVED sentence against the current block, so the batch
+        # handed to the cross-encoder stays large (pending x block) while
+        # sentences that are already settled stop costing anything.
+        #
+        # Sentence-major early exit was tried first and measured SLOWER than
+        # the original single call (806s vs 564s on the 17-sentence case):
+        # model.predict length-sorts its input to minimise padding, so
+        # replacing one large call with many small ones loses more to padding
+        # and per-call overhead than early exit recovers.
+        pending = list(range(len(hypotheses)))
+        for i in range(0, len(evidence_texts), _NLI_PREMISE_BLOCK):
+            if not pending:
+                break
+            block = evidence_texts[i:i + _NLI_PREMISE_BLOCK]
+            scores = model.predict(
+                [(ev, hypotheses[j]) for j in pending for ev in block],
+                apply_softmax=True,
+            )
+            n_block = len(block)
+            still_pending: list[int] = []
+            for pos, j in enumerate(pending):
+                window = scores[pos * n_block:(pos + 1) * n_block]
+                if any(float(s[1]) >= _ENTAILMENT_THRESHOLD for s in window):
+                    supported_flags[j] = True
+                else:
+                    still_pending.append(j)
+            pending = still_pending
     except Exception as exc:
         _log.warning("[Synthesis V5] NLI faithfulness error: %s", exc)
-        max_entailments = [1.0] * len(sentences)  # assume supported on error
+        supported_flags = [True] * len(sentences)  # assume supported on error
 
-    for sentence, max_entailment in zip(sentences, max_entailments):
-        if max_entailment < 0.50:
+    for sentence, entailed in zip(sentences, supported_flags):
+        if not entailed:
             unsupported.append(sentence)
 
     supported_count = len(sentences) - len(unsupported)

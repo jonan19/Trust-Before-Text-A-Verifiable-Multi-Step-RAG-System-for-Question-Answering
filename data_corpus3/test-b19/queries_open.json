@@ -1,0 +1,121 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b19-open-01",
+      "category": "track-b/open",
+      "query": "Does information have to be labelled or designated confidential for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_293.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_165.txt",
+        "nda_293.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_165 and nda_310 require information to be designated / labelled confidential (with written confirmation of oral disclosures); nda_546 and nda_293 protect information regardless of marking.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b19-open-02",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_165.txt",
+        "nda_310.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_165 is five years from disclosure; nda_310 runs until the information stops needing protection or a written release is given; nda_546 is eighteen months; nda_293 sets no term. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b19-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally required to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both require prior notice before compelled disclosure; they agree. nda_293 and nda_310 have no compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b19-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_310.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return (or destruction) on request; they agree. nda_546 also permits destruction and limited retained backup/legal copies. nda_293 has no return clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b19-open-05",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt",
+        "nda_546.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow injunctive relief for breach; they agree. nda_546 also waives the bond. nda_293 and nda_310 have no remedies clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b19-open-06",
+      "category": "track-b/open",
+      "query": "What remedy does the National Archives agreement give the disclosing party for a breach of confidentiality?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_310 contains no remedies clause — no injunctive relief, no damages, no fee-shifting. The other three address remedies but do not speak to the National Archives agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b19-open-07",
+      "category": "track-b/open",
+      "query": "Which law governs the P.L. Berry & Associates secrecy agreement and where would a dispute be heard?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_293 has no governing-law or jurisdiction clause. nda_165 (Florida) and nda_546 (New York) name a governing law, but neither speaks to nda_293; nda_310 also names none.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b19-open-08",
+      "category": "track-b/open",
+      "query": "Who ends up owning work or designs that one party pays the other to produce?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_165.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_165 addresses this, assigning paid-for work to the paying party. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

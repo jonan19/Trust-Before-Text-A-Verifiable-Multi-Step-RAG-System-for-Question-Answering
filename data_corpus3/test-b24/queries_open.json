@@ -1,0 +1,121 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b24-open-01",
+      "category": "track-b/open",
+      "query": "Does information have to be marked or identified as confidential for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_301.txt",
+        "nda_395.txt",
+        "nda_451.txt",
+        "nda_58.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_301.txt",
+        "nda_395.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_301 and nda_451 require information to be marked/designated confidential; nda_395 protects a defined category regardless of marking, and nda_58 also protects information whose confidential nature is apparent from the context.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b24-open-02",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_395.txt",
+        "nda_451.txt",
+        "nda_58.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_395.txt",
+        "nda_451.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_395's non-disclosure covenant runs from Closing with no end date; nda_451 is three years from disclosure; nda_58 is a (blank) term with a one-year floor and a longer period for special categories; nda_301 states no term. Incompatible for those that specify one.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b24-open-03",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction or specific performance to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_395.txt",
+        "nda_58.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow injunctive relief and/or specific performance for breach; they agree. nda_301 and nda_451 have no remedies clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b24-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_301.txt",
+        "nda_451.txt",
+        "nda_58.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return or destruction on request; they agree. nda_58 sets a 30-day window and permits one archival copy plus backups; nda_395 has no return clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b24-open-05",
+      "category": "track-b/open",
+      "query": "If a party goes to court over the agreement, can the winner recover its legal fees?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_451.txt",
+        "nda_58.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow recovery of legal costs and fees; they agree. nda_451 uses a prevailing-party standard; nda_58's fee recovery (in its Information Security Addendum) runs in National Grid's favour.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b24-open-06",
+      "category": "track-b/open",
+      "query": "Under the Singapore Art Museum agreement, what remedy does the museum have for a breach of confidentiality?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_301 has no remedies clause — no injunctive relief, no specific performance, no fee-shifting. The other three address remedies but do not speak to the museum agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b24-open-07",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_301 (Singapore courts), nda_395 (Delaware), nda_451 (Utah courts) and nda_58 (Massachusetts/New York/Rhode Island courts) all point to litigation.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b24-open-08",
+      "category": "track-b/open",
+      "query": "How quickly must the recipient report a security breach involving personal data?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_58.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_58 addresses this — within five days of discovery for a Security Breach (and within 24 hours for a security vulnerability). One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

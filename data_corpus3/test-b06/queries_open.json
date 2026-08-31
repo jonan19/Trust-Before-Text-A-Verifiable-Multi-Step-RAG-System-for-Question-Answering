@@ -1,0 +1,118 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b06-open-01",
+      "category": "track-b/open",
+      "query": "How long does the agreement bind the parties?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_336.txt",
+        "nda_53.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_336.txt",
+        "nda_53.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_336 runs one year; nda_53 runs seven years. nda_400 and nda_85 state no duration. Incompatible answers for the two that do.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b06-open-02",
+      "category": "track-b/open",
+      "query": "Is the recipient allowed to make copies of the confidential information?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_53.txt",
+        "nda_85.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_53.txt",
+        "nda_85.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_53 allows copies that are reasonably necessary for the Purpose; nda_85 forbids copying unless the Disclosing Party signs a specific authorisation. nda_400 assumes copies are made but requires them all to be surrendered on request.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b06-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally required to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_400.txt",
+        "nda_53.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both require prior notice and cooperation on compelled disclosure; they agree. nda_336 and nda_85 have no compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b06-open-04",
+      "category": "track-b/open",
+      "query": "Can the disclosing party get specific performance or an injunction for a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_400.txt",
+        "nda_53.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow specific performance and injunctive relief; they agree. nda_336 provides only for removal from the Board, and nda_85 refers only to liability for damages.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b06-open-05",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the material if the disclosing party asks?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_400.txt",
+        "nda_53.txt",
+        "nda_85.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require return or destruction on request; they agree. nda_53 permits one retained archival/legal copy; nda_400 permits none.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b06-open-06",
+      "category": "track-b/open",
+      "query": "Must the parties try to negotiate or mediate a dispute before going to court?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None of the four require a pre-suit negotiation or mediation step.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b06-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on how much a party can be made to pay for breaching the agreement?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability. nda_85 makes the Receiving Party liable for damages without limit; nda_53 clause 9 disclaims the Disclosing Party's liability for the information itself, which is not a cap on breach damages.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b06-open-08",
+      "category": "track-b/open",
+      "query": "Does the recipient have to keep a list of everyone who has seen the confidential information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_85.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_85 requires an access register; it must be kept and made available to the Disclosing Party. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

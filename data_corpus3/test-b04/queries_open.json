@@ -1,0 +1,123 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b04-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_408.txt",
+        "nda_49.txt",
+        "nda_6.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_408.txt",
+        "nda_49.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_49 fixes seven years; nda_6 runs in perpetuity; nda_408 runs 'at all times' after the four-year Restricted Period; nda_99 sets no duration at all. Incompatible answers to the same question.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b04-open-02",
+      "category": "track-b/open",
+      "query": "After being told to return or destroy the information, can we keep a copy for legal or compliance purposes?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_49.txt",
+        "nda_6.txt",
+        "nda_99.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_49.txt",
+        "nda_6.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_49 and nda_99 expressly allow a retained copy for archival/legal/compliance purposes; nda_6 requires all Confidential Information and all copies to be returned or destroyed.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b04-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally required to disclose the information, must we give the other side written notice beforehand?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_49.txt",
+        "nda_99.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both require prompt written notice before compelled disclosure; they agree. nda_408 and nda_6 do not contain a compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b04-open-04",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach of the agreement?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_408.txt",
+        "nda_49.txt",
+        "nda_6.txt",
+        "nda_99.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four allow injunctive/equitable relief for breach; they agree.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b04-open-05",
+      "category": "track-b/open",
+      "query": "Does signing this create a business relationship or oblige either side to go ahead with the deal?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_49.txt",
+        "nda_6.txt",
+        "nda_99.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three state the agreement creates no business relationship, offer or obligation to transact; they agree. (For nda_49 the quoted line introduces sub-clause (a), 'constitutes an offer by or on behalf of the Disclosing Party', which is what is being disclaimed.)",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b04-open-06",
+      "category": "track-b/open",
+      "query": "Must the parties attempt mediation or negotiation before starting court proceedings?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None of the four require a pre-suit mediation or negotiation step; each simply names a governing law and court.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b04-open-07",
+      "category": "track-b/open",
+      "query": "Does the receiving party have to tell the other side if it accidentally discloses or loses the confidential information?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document imposes a duty to notify the other party of an accidental or unauthorised disclosure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b04-open-08",
+      "category": "track-b/open",
+      "query": "Is the receiving party allowed to make copies of the confidential information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_49.txt",
+        "nda_6.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Both that address it allow copies only to the extent necessary for the purpose; they agree. nda_49 adds that copies must be marked confidential.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

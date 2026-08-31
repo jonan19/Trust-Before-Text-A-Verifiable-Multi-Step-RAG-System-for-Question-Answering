@@ -57,6 +57,12 @@ _GEMINI_MODEL: str = "gemini-1.5-flash"
 _MAX_TOKENS:  int   = 1024
 _MAX_RETRIES: int   = 3
 _RETRY_DELAY: float = 1.0   # seconds; doubles on each retry
+# Per-call network timeout. Without this the SDK's own default applies, which
+# is long enough that a stalled connection (not an error — a hang) can block
+# _with_retry's 3 attempts for many minutes combined. Since orchestrator.run()
+# is called synchronously from an async FastAPI route (see api.py), a hang
+# here freezes the whole server, not just this request.
+_REQUEST_TIMEOUT: float = 30.0
 
 # ---------------------------------------------------------------------------
 # System prompts
@@ -138,7 +144,7 @@ def _call_groq(query: str, context: str) -> str:
         raise ImportError("groq package not installed. Run: pip install groq")
 
     def _request() -> str:
-        client = Groq(api_key=_GROQ_KEY)
+        client = Groq(api_key=_GROQ_KEY, timeout=_REQUEST_TIMEOUT)
         user_message = (
             f"Context:\n{context}\n\n"
             f"Question: {query}\n\n"
@@ -166,7 +172,7 @@ def _call_synthesis_groq(prompt: str) -> str:
         raise ImportError("groq package not installed. Run: pip install groq")
 
     def _request() -> str:
-        client = Groq(api_key=_GROQ_KEY)
+        client = Groq(api_key=_GROQ_KEY, timeout=_REQUEST_TIMEOUT)
         response = client.chat.completions.create(
             model=_GROQ_MODEL,
             messages=[

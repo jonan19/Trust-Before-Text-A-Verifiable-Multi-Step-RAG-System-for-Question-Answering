@@ -1,0 +1,125 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b27-open-01",
+      "category": "track-b/open",
+      "query": "How are disputes resolved — in court or by arbitration?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_218.txt",
+        "nda_542.txt",
+        "nda_67.txt",
+        "nda_83.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_218.txt",
+        "nda_542.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_67 requires binding arbitration (AAA), with only temporary injunctive relief left to the courts; nda_218 (Ontario), nda_542 (Massachusetts) and nda_83 (Minnesota) contemplate court litigation. Incompatible on how disputes are resolved.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b27-open-02",
+      "category": "track-b/open",
+      "query": "If a party is legally compelled to disclose the confidential information, must it notify the other side first?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_218.txt",
+        "nda_542.txt",
+        "nda_83.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_218.txt",
+        "nda_542.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_218 and nda_542 require prior notice before a compelled disclosure; nda_83 simply excludes government/court-compelled disclosure from the confidentiality obligation, with no notice duty. Incompatible on the same point. nda_67 has no compelled-disclosure provision.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b27-open-03",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_218.txt",
+        "nda_542.txt",
+        "nda_67.txt",
+        "nda_83.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require return or destruction on request; they agree. nda_67 sets a 15-day window; nda_542 and nda_83 require certification.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b27-open-04",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction or restraining order to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_218.txt",
+        "nda_542.txt",
+        "nda_67.txt",
+        "nda_83.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four allow injunctive relief / a restraining order for breach; they agree. nda_542 waives the bond; nda_83 has the Customer agree not to contest the TRO.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b27-open-05",
+      "category": "track-b/open",
+      "query": "Does disclosing the information grant the recipient any patent, copyright or other IP licence?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_218.txt",
+        "nda_67.txt",
+        "nda_83.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three agree that no IP licence or right is granted by the disclosure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b27-open-06",
+      "category": "track-b/open",
+      "query": "What is the term of the Minnesota Power distributed-generation confidentiality agreement?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_83's term and its post-termination survival period are both left blank ('______ years'). The other agreements' terms do not speak to nda_83.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b27-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on how much a party can be made to pay for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability; nda_542 imposes an uncapped indemnity.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b27-open-08",
+      "category": "track-b/open",
+      "query": "Does the recipient have to keep a record of where the confidential information is stored and who has been given access?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_542.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_542 requires a record of the Confidential Information, its location, and the persons (other than Representatives) given access. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

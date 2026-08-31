@@ -1,0 +1,125 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b12-open-01",
+      "category": "track-b/open",
+      "query": "For how long is the confidential information protected?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_11.txt",
+        "nda_387.txt",
+        "nda_42.txt",
+        "nda_497.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_11.txt",
+        "nda_387.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_387, nda_497 and nda_42 all set three years; nda_11 runs for as long as any Confidential Information exists (effectively indefinite). Incompatible with the three-year documents.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b12-open-02",
+      "category": "track-b/open",
+      "query": "Does the recipient hand over ownership of anything it creates using the confidential information?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_11.txt",
+        "nda_387.txt",
+        "nda_497.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_11.txt",
+        "nda_387.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_11 assigns to VIDAR all intellectual property the Receiver develops in connection with the agreement (works made for hire, plus an assignment of rights); nda_387 and nda_497 grant no rights in either direction and do not take the recipient's own work product. nda_42 similarly grants no implied IP licences.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b12-open-03",
+      "category": "track-b/open",
+      "query": "If a party is legally compelled to disclose the confidential information, must it notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_11.txt",
+        "nda_387.txt",
+        "nda_42.txt",
+        "nda_497.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require notice on compelled disclosure; they agree. nda_42 qualifies it with 'when possible'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b12-open-04",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_11.txt",
+        "nda_387.txt",
+        "nda_42.txt",
+        "nda_497.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four allow injunctive/equitable relief for breach; they agree.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b12-open-05",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_11.txt",
+        "nda_387.txt",
+        "nda_497.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return on request; they agree. nda_42 has no return-of-information clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b12-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be arbitrated?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_11 (Virginia courts), nda_387 (New York law), nda_497 (North Carolina law) and nda_42 (Broward County, Florida courts) all point to litigation.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b12-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on the damages a party can recover for breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability; nda_11 and nda_42 provide for recovery of enforcement costs and fees but no ceiling.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b12-open-08",
+      "category": "track-b/open",
+      "query": "Can the recipient talk about the potential deal with anyone at the disclosing company?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_387.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_387 restricts contact to two named individuals (the CEO and CFO). One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

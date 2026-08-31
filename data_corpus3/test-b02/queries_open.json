@@ -1,0 +1,125 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b02-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations run after the deal or project ends?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_23.txt",
+        "nda_432.txt",
+        "nda_465.txt",
+        "nda_526.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_23.txt",
+        "nda_432.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_526 caps confidentiality at two years from the Effective Date; nda_23 is five years (indefinite for trade secrets); nda_432's non-disclosure covenant has no end date; nda_465's survives termination indefinitely. Incompatible durations for the same obligation.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b02-open-02",
+      "category": "track-b/open",
+      "query": "Does information only count as confidential if it is labelled or identified as such?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_23.txt",
+        "nda_465.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_23.txt",
+        "nda_465.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_23 protects information whether or not it is identified as confidential; nda_465 protects information that is either non-public or labelled confidential, and clause 5.3 also requires written identification within thirty days. nda_526 is form-agnostic and nda_432 uses a common-knowledge carve-out.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b02-open-03",
+      "category": "track-b/open",
+      "query": "Can a party go to court for an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_23.txt",
+        "nda_432.txt",
+        "nda_526.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address remedies allow injunctive relief for breach; they agree. nda_526 and nda_432 add that no proof of actual damages (or bond) is needed.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b02-open-04",
+      "category": "track-b/open",
+      "query": "If we are legally forced to disclose the confidential information, do we have to tell the other side first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_23.txt",
+        "nda_526.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both require prompt notice to the disclosing party before compelled disclosure; they agree.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b02-open-05",
+      "category": "track-b/open",
+      "query": "Does signing this oblige either side to go ahead with the transaction or project?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_23.txt",
+        "nda_526.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both agree signing creates no obligation to proceed.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b02-open-06",
+      "category": "track-b/open",
+      "query": "Which law governs the S-CAM / ANUBIS agreement and where would a dispute be heard?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_465 has no governing-law or jurisdiction clause. The other three specify Denmark (nda_23, with Danish Institute of Arbitration), Delaware (nda_432) and Maryland (nda_526), but none of those speak to the S-CAM/ANUBIS contract.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b02-open-07",
+      "category": "track-b/open",
+      "query": "Is there a ceiling on how much a party can be made to pay in damages for breaching confidentiality?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on liability for breach. nda_23 and nda_526 disclaim warranties and reliance liability for the information itself, but that is not a damages cap for breach of the confidentiality obligations.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b02-open-08",
+      "category": "track-b/open",
+      "query": "Can we share the confidential information with our outside advisors and consultants without asking first?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_23.txt",
+        "nda_465.txt",
+        "nda_526.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_23.txt",
+        "nda_465.txt"
+      ],
+      "expected_answer_or_key_facts": "Free-choice question. nda_23 and nda_526 permit disclosure to advisors/consultants on a need-to-know basis without prior consent; nda_465 forbids disclosure to consultants without the disclosing party's prior written permission, and nda_432 requires the Acquiror's prior written consent for any disclosure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

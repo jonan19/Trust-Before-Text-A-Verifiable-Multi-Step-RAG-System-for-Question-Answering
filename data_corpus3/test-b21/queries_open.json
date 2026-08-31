@@ -1,0 +1,120 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b21-open-01",
+      "category": "track-b/open",
+      "query": "Does information have to be designated \"Confidential\" for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_157.txt",
+        "nda_321.txt",
+        "nda_611.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_157.txt",
+        "nda_321.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_157 protects only information conspicuously designated 'Confidential' (with written confirmation of oral disclosures within 30 days); nda_321 and nda_611 protect information regardless of marking, and nda_321 says marking is optional.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b21-open-02",
+      "category": "track-b/open",
+      "query": "How long does the agreement stay in force?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_157.txt",
+        "nda_611.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_157.txt",
+        "nda_611.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_157 runs two years (with a longer, garbled 'five (2) years' survival period for the confidentiality duty); nda_611 terminates on a fixed short-fuse date (roughly two weeks after signing) or an earlier securities filing. nda_321 and nda_455 state no term. Incompatible for the two that do.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b21-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally required to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_157.txt",
+        "nda_321.txt",
+        "nda_611.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice before compelled disclosure; they agree. nda_611 carves out routine regulatory audits that do not reference CEDC. nda_455 has no compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b21-open-04",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_157.txt",
+        "nda_321.txt",
+        "nda_611.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address remedies allow injunctive/equitable relief for breach; they agree. nda_611 waives proof of damages and bond. nda_455 sends disputes to arbitration and has no injunction clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b21-open-05",
+      "category": "track-b/open",
+      "query": "If a party sues to enforce the agreement, can it recover its legal fees?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_321.txt",
+        "nda_455.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow recovery of legal fees when enforcing the agreement; they agree. nda_157 and nda_611 are silent on fee-shifting.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b21-open-06",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality and non-circumvention obligations in the Consumers On-Line / SportCenter agreement last?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_455 states no term or duration for its obligations. nda_157 and nda_611 have terms, but those do not speak to nda_455.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b21-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on how much a party can be made to pay for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b21-open-08",
+      "category": "track-b/open",
+      "query": "Is the recipient barred from doing business directly with the disclosing party's clients or customers?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_455.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_455 contains a non-circumvention restriction, barring the signatories from contacting or transacting with the disclosed clients, merchants or customers without approval. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b20-open-01",
+      "category": "track-b/open",
+      "query": "Does information have to be marked \"Confidential\" for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_401.txt",
+        "nda_50.txt",
+        "nda_74.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_401.txt",
+        "nda_50.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_401 protects only information conspicuously marked 'Confidential' (or summarised and marked within 30 days); nda_50 and nda_74 protect information regardless of marking. nda_392 asks for marking only 'to the extent practicable'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b20-open-02",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_392.txt",
+        "nda_401.txt",
+        "nda_50.txt",
+        "nda_74.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_392.txt",
+        "nda_401.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_392 is two years; nda_401 is five years from disclosure; nda_50 is two years after the discussions end; nda_74 survives indefinitely. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b20-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally ordered to disclose the confidential information, must we notify the other party?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_392.txt",
+        "nda_401.txt",
+        "nda_74.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice / cooperation before compelled disclosure; they agree. nda_74 goes furthest, requiring the vendor to exhaust its legal remedies first. nda_50 simply carves out legally-required disclosure with no notice duty.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b20-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_392.txt",
+        "nda_401.txt",
+        "nda_50.txt",
+        "nda_74.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require return or destruction on request; they agree. nda_392 and nda_401 permit a single retained legal-archival copy.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b20-open-05",
+      "category": "track-b/open",
+      "query": "Does signing this oblige either party to enter into a transaction or further agreement?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_392.txt",
+        "nda_401.txt",
+        "nda_50.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three agree the NDA creates no obligation to transact or to enter a further agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b20-open-06",
+      "category": "track-b/open",
+      "query": "Under the Ben & Jerry's / Conopco agreement, what remedy does the disclosing party have for a breach of confidentiality?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_392 contains no remedies clause — no injunctive relief, no specific performance, no fee-shifting. nda_401 provides for equitable relief, but that does not speak to the Ben & Jerry's agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b20-open-07",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_392 (New York federal courts), nda_401 (San Diego, California courts), nda_50 (England and Wales) and nda_74 (Arkansas) all point to litigation.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b20-open-08",
+      "category": "track-b/open",
+      "query": "What happens to the vendor if it discloses the protected information without authorisation?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_74.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_74 addresses this specific consequence — the University or the U.S. Department of Education may deny the vendor access to Confidential Information for at least five years. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

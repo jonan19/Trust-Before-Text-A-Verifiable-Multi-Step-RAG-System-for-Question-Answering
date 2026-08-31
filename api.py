@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import shutil
@@ -107,8 +108,12 @@ async def get_stats():
 async def query_pipeline(request: QueryRequest):
     """Query the V4 Trust Before Text RAG pipeline"""
     try:
-        # Run the full V4 orchestration pipeline
-        res = orchestrator.run(request.query, verbose=False)
+        # Run the full V4 orchestration pipeline in a worker thread — this is
+        # a fully synchronous call (retrieval, validation, and the LLM call
+        # all block), and calling it directly here would block the whole
+        # asyncio event loop for its entire duration, freezing every other
+        # request (including unrelated ones like /stats) until it returns.
+        res = await run_in_threadpool(orchestrator.run, request.query, verbose=False)
         
         # Structure the response for the frontend
         # Extract validated evidence chunks from validation_result

@@ -1,0 +1,124 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b26-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_228.txt",
+        "nda_357.txt",
+        "nda_38.txt",
+        "nda_51.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_228.txt",
+        "nda_357.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_228 is a fixed-end agreement plus five years' survival; nda_357 is five years; nda_38 survives indefinitely; nda_51 is ten years from the last signature. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b26-open-02",
+      "category": "track-b/open",
+      "query": "How are disputes under these agreements resolved — in court or by arbitration?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_228.txt",
+        "nda_357.txt",
+        "nda_38.txt",
+        "nda_51.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_228.txt",
+        "nda_357.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_228 and nda_51 send disputes to binding arbitration (ICC Brussels; unspecified rules/place); nda_357 and nda_38 contemplate court litigation (Arkansas; Juneau, Alaska). Incompatible on how disputes are resolved.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b26-open-03",
+      "category": "track-b/open",
+      "query": "Which law governs the Biocidal Products Regulation data-sharing agreement and where would a dispute be heard?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_51's governing-law clause and its arbitration rules/place/language are all left blank ('[ … ]'). The other three name a governing law, but none speak to nda_51.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b26-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_228.txt",
+        "nda_357.txt",
+        "nda_38.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return or destruction on request; they agree. nda_357 permits one retained archival/legal copy; nda_228 allows none. nda_51 has no return clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b26-open-05",
+      "category": "track-b/open",
+      "query": "Does disclosing the information give the recipient any licence or rights to use it?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_228.txt",
+        "nda_357.txt",
+        "nda_51.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three agree that no licence or right in the information is granted beyond the limited permitted use.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b26-open-06",
+      "category": "track-b/open",
+      "query": "Do the people who receive the confidential information have to be bound in writing?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_357.txt",
+        "nda_38.txt",
+        "nda_51.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require recipients' personnel/representatives to be committed to the confidentiality obligations before receiving the information; they agree. The precise mechanism differs (read-and-acknowledge / written agreement / policies and procedures).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b26-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on how much a party can be made to pay for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability. nda_38 imposes an uncapped indemnity (including breach-notification costs); none set a ceiling.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b26-open-08",
+      "category": "track-b/open",
+      "query": "How quickly must the recipient report a breach of the confidential information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_38.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_38 sets a breach-reporting deadline (48 hours from discovery, with detailed content requirements). One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}
