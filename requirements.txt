@@ -43,3 +43,6 @@ groq>=0.9.0
 
 # Google Gemini — gemini-1.5-flash [FALLBACK — set GEMINI_API_KEY in .env]
 # google-generativeai>=0.7.0
+
+# Tests (python -m pytest tests/)
+pytest>=7.0.0

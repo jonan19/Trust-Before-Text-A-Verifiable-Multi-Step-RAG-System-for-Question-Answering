@@ -42,6 +42,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "experiments"))
+sys.path.insert(0, str(HERE))
+from run_info import run_info  # noqa: E402
 
 # The payload-reached grading these helpers implement now lives in the grader
 # itself (injection_test.graded_hijack), so it is imported rather than
@@ -147,6 +149,7 @@ def main() -> None:
     print(f"  confirmed mislabels : {len(confirmed)} {confirmed}")
     print(f"  corrected           : {rec + len(confirmed)}/45")
     report["manual_adjudication"] = manual
+    report["run_info"] = run_info(include_config=False)  # reads stored labels, runs no pipeline
     report["OUR SYNTHESIS"]["confirmed_mislabels"] = confirmed
     report["OUR SYNTHESIS"]["corrected_hijacked"] = rec + len(confirmed)
 

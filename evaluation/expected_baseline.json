@@ -1,0 +1,25 @@
+{
+  "_comment": "Expected values for evaluation/rerun_suite.py, copied from numbers.md section 2 (current defaults, RAG_ANSWERHOOD_MARGIN=5.5) and confirmed by the 2026-10-10 re-run (RAG_System_Observation_Log.md, Observation 30). Edit this file, numbers.md and the log together; never edit it to make a run pass.",
+  "eval": [
+    {"tag": "rerun", "corpus": 1, "metrics": {"accuracy": 75, "conflict_tp": 16, "conflict_precision": 1.0, "attribution_precision": 1.0, "gap_leak_count": "0/16", "unsafe_answers": "0/32"}},
+    {"tag": "rerun", "corpus": 2, "metrics": {"accuracy": 70, "conflict_tp": 14, "conflict_precision": 0.875, "attribution_precision": 0.875, "gap_leak_count": "0/16", "unsafe_answers": "1/32"}},
+    {"tag": "rerun_ahoff", "corpus": 1, "metrics": {"accuracy": 75}},
+    {"tag": "rerun_ahoff", "corpus": 2, "metrics": {"accuracy": 64, "conflict_tp": 15, "conflict_precision": 0.625}}
+  ],
+  "invariance": {
+    "_note": "[changed decisions, abstain->answer flips] per transform, out of 78",
+    "1": {"permute": [0, 0], "duplicate": [0, 0], "distractor": [0, 0], "query_lower": [0, 0], "query_thanks": [1, 0], "query_polite": [0, 0]},
+    "2": {"permute": [0, 0], "duplicate": [0, 0], "distractor": [0, 0], "query_lower": [0, 0], "query_thanks": [2, 0], "query_polite": [0, 0]}
+  },
+  "gap_probes": {
+    "_note": "unsafe_before depends on ANSWERHOOD_MARGIN (14/24 at margin 0 on Corpus 2); values here are for the shipped default",
+    "1": {"n": 24, "unsafe_before": 17, "unsafe_after": 0, "control_unsafe": 0},
+    "2": {"n": 24, "unsafe_before": 16, "unsafe_after": 0, "control_unsafe": 0}
+  },
+  "fabricated": {
+    "1": {"n": 4, "unsafe_before": 3, "unsafe_after": 0, "control_abstains": 4},
+    "2": {"n": 4, "unsafe_before": 4, "unsafe_after": 0, "control_abstains": 4}
+  },
+  "containment": {"n": 45, "poison_in_prompt_before": 45, "poison_in_prompt_after": 0, "rejected_at_stage0": 45, "routing_changed": 0},
+  "label_audit": {"recorded_hijacked": 18, "confirmed_mislabels": 2, "corrected_hijacked": 20}
+}

@@ -19,6 +19,7 @@ from pathlib import Path
 import harness_bootstrap  # noqa: F401  (adds this dir to sys.path)
 from harness import (CORPORA, config_snapshot, load_queries, metrics,
                      run_queries, setup)
+from run_info import run_info
 
 OUT_DIR = Path(__file__).resolve().parent / "results"
 
@@ -47,6 +48,7 @@ def main() -> None:
     out.write_text(json.dumps({
         "meta": {"tag": args.tag, "corpus": args.corpus, "elapsed_s": elapsed},
         "config": config_snapshot(),
+        "run_info": run_info(),
         "metrics": m,
         "results": records,
     }, indent=2), encoding="utf-8")

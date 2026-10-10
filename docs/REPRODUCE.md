@@ -196,10 +196,40 @@ RAG_MIN_CHUNK_SCORE_THRESHOLD=0 python evaluation/run_eval.py --corpus 1 --tag n
 python -m pytest tests/
 ```
 
-58 fast tests (about a minute, nearly all of it importing the ML libraries; no
+70 fast tests (about a minute, nearly all of it importing the ML libraries; no
 model is loaded, no vector store is touched, no LLM is called). They cover the
 mechanism, not the corpus behaviour: the provenance fingerprint and Stage 0
 rejection of fabricated evidence, the abstention truth table, the absence of any
 LLM import in `validation.py`, numeric-contradiction rules, de-duplication, the
-sparse encoder, rank fusion and score calibration. Accuracy and safety on the
-two corpora are measured by the harnesses above, not by `pytest`.
+sparse encoder, rank fusion and score calibration, the run-provenance stamp, and
+the re-run runner's comparison logic (it must never report a false MATCH).
+Accuracy and safety on the two corpora are measured by the harnesses above, not
+by `pytest`.
+
+---
+
+## Re-run everything and compare (one command)
+
+```bash
+python evaluation/rerun_suite.py            # start or resume; zero LLM tokens
+python evaluation/rerun_suite.py --status   # progress
+```
+
+Runs setup, both corpora (gate on and gate off), invariance, containment, gap
+probes, fabricated evidence, the label audit and `pytest` in order, saves every
+step's log under `evaluation/results/rerun_<date>/`, then compares **every**
+printed headline number with `evaluation/expected_baseline.json` (the
+machine-readable copy of `numbers.md` section 2). Read `RERUN_SUMMARY.md` in
+the run folder: it ends with "N MATCH, M DIFF, K missing or stale". A file that
+this run did not write counts as stale, never as a match. The process exits
+non-zero on any failed step, DIFF or missing file, and refuses to start if a
+`RAG_*` variable is set in the shell. It is resumable: relaunch the same command
+after a crash. Never run it alongside another harness (one process per Qdrant
+store).
+
+**Every result file records which system made it.** Each harness output now
+carries a `run_info` block (UTC time, git commit and branch, whether tracked
+files were modified, SHA-256 of `validation.py` and `qdrant_retrieval.py`, every
+effective switch, and any `RAG_*` overrides; see `evaluation/run_info.py`). Use
+it to answer "what produced this number?" instead of guessing; files written
+before 2026-10-10 have no such block.

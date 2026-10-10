@@ -46,6 +46,7 @@
 | 33 | 2026-10-10 | Corpus 2 gap-probe "before provenance" 14/24 -> 16/24 explained | Safety / adversarial | Diagnosed, no code change | Committed file predated `ANSWERHOOD_MARGIN`; safety result (0/24 after) unchanged |
 | 34 | 2026-10-10 | Remaining `numbers.md` section 7 items worked: 4, 5, 9, 10 closed or narrowed; 8 not measured | Docs / provenance of numbers | Partly done | README and STATUS probe counts match raw files; Q-ID rule; tracked hash manifest |
 | 35 | 2026-10-10 | Order of the sufficiency fix and Stage 4 preconditions measured (2x2) | Evaluation / attribution of effects | Measured, no code change | Effects are independent and order-insensitive; closes `numbers.md` section 7 item 8 |
+| 36 | 2026-10-10 | Result files did not say which system made them; the re-run was compared to expectations by hand | Evaluation tooling | Implemented (harness scripts only) | Every harness output carries `run_info`; the runner compares all 64 headline numbers itself |
 
 ---
 
@@ -294,6 +295,22 @@
 - **Limit.** Only these switchable changes are separated. Other changes made in the same period (chunking, sentence-level comparison, Stage 3 split, anchor test) have no switch here and stay inside the "neither" state, which is why it still reads 82.1% rather than an older number.
 - **Cost / regressions.** None; no code or default changed, no RAG variable left set (checked).
 - **Numbers updated.** `numbers.md` section 2 History (new 4-row table replacing the "order not stated" note); section 7 item 8 closed.
+
+## Observation 36: Result files stamped with their provenance; the re-run runner now compares everything
+
+*Added 2026-10-10. Commit/branch: on top of `12178d8`, `jonan`. Follows Observations 30 and 33 (the 14/24 vs 16/24 puzzle and the by-hand comparison).*
+
+- **Issue.** (a) Only `run_eval.py` recorded the settings it ran under, and even that omitted the Stage 4/5 switches; probe, invariance, fabricated-evidence, containment and label-audit files said nothing about commit or settings, which is why a stale gap-probe file took a replay to explain. (b) `rerun_suite.py` compared only part of the numbers; the rest (invariance, probes, fabricated, containment, label audit) I compared by reading logs. Its manifest also listed `collect` as "not run".
+- **Fix (evaluation tooling only; no pipeline code, threshold or default changed).**
+  - New `evaluation/run_info.py`: `run_info()` returns UTC time, git commit and branch, whether tracked files are modified, SHA-256 of `validation.py` and `qdrant_retrieval.py`, the effective switches (including `MIN_FOCUS_PRESENCE`, `REQUIRE_ASSERTIVE_SPANS`, `DIMENSIONAL_VETO`) and any `RAG_*` overrides. Added as a `run_info` key to the output of `run_eval.py`, `invariance_harness.py`, `adversarial_gap_probes.py`, `fabricated_evidence_test.py`, `synthesis_containment_test.py` and `label_audit.py` (that one without config, it runs no pipeline). Existing keys are unchanged, so earlier files and the runner still read them.
+  - New `evaluation/expected_baseline.json` (all expected values, mirrored from `numbers.md` section 2). `rerun_suite.py` now compares 64 numbers across every harness output, treats an absent or pre-run file as "NO FILE" / "STALE" rather than a match, prints "N MATCH, M DIFF, K missing or stale", and exits non-zero on any failed step, DIFF or missing file. `collect` now marks itself done before writing the manifest.
+  - Tests: `tests/test_run_info.py` (4) and `tests/test_rerun_expected.py` (8). Suite is now 70 tests.
+  - Housekeeping: `pytest>=7.0.0` added to `requirements.txt` (tests import it; REPRODUCE tells people to run it); `.gitignore` ignores `experiments/_*_log*.txt` (throwaway console logs; cited result JSONs are tracked); `docs/REPRODUCE.md`, `docs/HOW_IT_WORKS.md` and `numbers.md` rule 4 updated.
+- **Effect.** The new comparison run on the existing 2026-10-10 result files: 64 MATCH, 0 DIFF, 0 missing. A 2-question `run_eval.py` run (tag `stampcheck`, throwaway) wrote the stamp correctly (commit `12178d8`, `tracked_files_modified` true because of these edits, margin 5.5). Not yet exercised end to end: a full `rerun_suite.py` run after these edits (only `compare_rows`, `collect`, `write_summary` and the stamp were run), and the stamp inside the other five harnesses beyond import and unit test; the first full re-run will show it.
+- **Correction.** My earlier remark that `requirements.txt` had mojibake was wrong: the file is valid UTF-8 and the garbling was my console's display encoding.
+- **Cost / regressions.** None known. `rerun_suite.py` now exits 1 on a DIFF where it used to exit 0; that is intended. Result files written before today have no `run_info`.
+- **Evidence.** `python -m pytest tests -q` (70 passed); `evaluation/results/stampcheck_corpus1.json` (gitignored scratch).
+- **Numbers updated.** None. `numbers.md` rule 4 now points at `run_info` and `expected_baseline.json`.
 
 ---
 

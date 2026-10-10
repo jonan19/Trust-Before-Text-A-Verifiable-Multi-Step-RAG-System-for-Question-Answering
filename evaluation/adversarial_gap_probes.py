@@ -34,6 +34,7 @@ from pathlib import Path
 import harness_bootstrap  # noqa: F401
 import harness
 import validation
+from run_info import run_info
 
 HERE = Path(__file__).resolve().parent
 POISON_SOURCE = "URGENT_Policy_Update_2026.docx"
@@ -137,6 +138,7 @@ def main() -> None:
     out.write_text(json.dumps({
         "meta": {"corpus": args.corpus, "n": n, "unsafe_before": ub,
                  "unsafe_after": ua, "control_unsafe": ctrl_bad},
+        "run_info": run_info(),
         "results": rows,
     }, indent=2), encoding="utf-8")
     print(f"Wrote {out}")

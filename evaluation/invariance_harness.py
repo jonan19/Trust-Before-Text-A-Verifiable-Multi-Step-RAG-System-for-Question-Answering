@@ -48,6 +48,7 @@ from pathlib import Path
 
 import harness_bootstrap  # noqa: F401  (adds this dir to sys.path)
 from harness import CORPORA, decision_of, load_queries, setup
+from run_info import run_info
 
 OUT_DIR = Path(__file__).resolve().parent / "results"
 SEED = 20260819
@@ -183,7 +184,8 @@ def main() -> None:
     baseline = run_one(orchestrator, queries, transform_name="__none__",
                        base_retrieve=base_retrieve, ctx=ctx)
 
-    report = {"corpus": args.corpus, "n": len(queries), "transforms": {}}
+    report = {"corpus": args.corpus, "n": len(queries), "run_info": run_info(),
+              "transforms": {}}
 
     for name in wanted:
         print(f"transform {name} ...", flush=True)

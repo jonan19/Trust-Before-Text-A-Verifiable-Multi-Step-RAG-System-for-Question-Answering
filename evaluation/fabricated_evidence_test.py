@@ -29,6 +29,7 @@ from pathlib import Path
 import harness_bootstrap  # noqa: F401
 import harness
 import validation
+from run_info import run_info
 
 OUT = Path(__file__).resolve().parent / "results"
 
@@ -130,6 +131,7 @@ def main() -> None:
         "meta": {"corpus": args.corpus, "n": n,
                  "unsafe_before": unsafe_before, "unsafe_after": unsafe_after,
                  "control_abstains": control_ok},
+        "run_info": run_info(),
         "results": records,
     }, indent=2), encoding="utf-8")
     print(f"Wrote {path}")

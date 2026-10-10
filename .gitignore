@@ -44,3 +44,6 @@ uploaded_docs/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Throwaway experiment console logs (not results; the cited JSON results are tracked elsewhere)
+experiments/_*_log*.txt

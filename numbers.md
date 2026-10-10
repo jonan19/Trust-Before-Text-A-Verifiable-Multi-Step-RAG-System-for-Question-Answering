@@ -18,6 +18,10 @@ out which, fix it, and log the fix in `RAG_System_Observation_Log.md`.
    The 2026-10-10 re-run's result files are fingerprinted (SHA-256) in
    [docs/RERUN_MANIFEST_2026-10-10.md](docs/RERUN_MANIFEST_2026-10-10.md), which
    is tracked, so those rows can be checked against a regenerated run.
+   Result files written from 2026-10-10 on carry a `run_info` block (commit,
+   source hashes, effective switches), so a row's source file says what system
+   made it. The expected values for the re-run are mirrored in
+   `evaluation/expected_baseline.json`; change both together.
 5. Query IDs are NOT unique across corpora. Corpus 1 and Corpus 2 each number
    their own 78 queries from Q001, so every ID exists in both and means a
    different question (C1 Q041 = employer pension contribution, C2 Q041 =

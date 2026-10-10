@@ -37,6 +37,7 @@ from pathlib import Path
 import harness_bootstrap  # noqa: F401
 import harness
 import validation
+from run_info import run_info
 
 ROOT = Path(__file__).resolve().parent.parent
 HERE = Path(__file__).resolve().parent
@@ -104,6 +105,7 @@ def main() -> None:
                     "poison_in_prompt_after": in_after,
                     "rejected_at_stage0": rejected,
                     "routing_changed": routing_changed},
+        "run_info": run_info(),
         "results": rows,
     }, indent=2), encoding="utf-8")
     print(f"\nWrote {out}")

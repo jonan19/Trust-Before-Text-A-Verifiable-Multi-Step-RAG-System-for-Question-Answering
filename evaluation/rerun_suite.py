@@ -147,6 +147,10 @@ def collect(run_dir, state):
     out = run_dir / "collected"
     out.mkdir(exist_ok=True)
     since = state["start_epoch"]
+    # The manifest is written from inside this step, before main() records it,
+    # so mark it done here or the manifest would list "collect" as "not run".
+    state["steps"].setdefault("collect", {"status": "done", "exit": 0,
+                                          "seconds": "", "finished": now()})
     rows = []
     for f in sorted(RESULTS.iterdir()):
         if f.is_file() and f.stat().st_mtime >= since - 1 and not f.name.startswith("rerun_LATEST"):
@@ -165,35 +169,104 @@ def collect(run_dir, state):
     return 0
 
 
-# Expected values for the current defaults, from numbers.md section 2.
-# (tag, corpus) -> {metric: expected}. Compared as strings; missing = "n/a".
-EXPECTED = {
-    ("rerun", 1): {"accuracy": 75, "conflict_tp": 16, "conflict_precision": 1.0,
-                   "gap_leak_count": "0/16", "unsafe_answers": "0/32",
-                   "attribution_precision": 1.0},
-    ("rerun", 2): {"accuracy": 70, "conflict_tp": 14, "conflict_precision": 0.875,
-                   "gap_leak_count": "0/16", "unsafe_answers": "1/32",
-                   "attribution_precision": 0.875},
-    ("rerun_ahoff", 1): {"accuracy": 75},   # gate-off control; pre-gate C1 was already 96.2%
-    ("rerun_ahoff", 2): {"accuracy": 64, "conflict_tp": 15, "conflict_precision": 0.625},
-}
+# Expected values live in evaluation/expected_baseline.json (one place), copied
+# from numbers.md section 2. Edit that file, numbers.md and the log together.
+EXPECTED_FILE = ROOT / "evaluation" / "expected_baseline.json"
 
 
-def metric_rows():
+def values_match(got, want):
+    """Numbers compare with a small tolerance; everything else as strings."""
+    if isinstance(got, (int, float)) and isinstance(want, (int, float)):
+        return abs(got - want) < 0.0006
+    return str(got) == str(want)
+
+
+def _read(name, since):
+    """Load a result file. Returns (data, problem) where problem is a status
+    string when the file is absent or older than this run (a stale file must
+    never produce a false MATCH)."""
+    f = RESULTS / name
+    if not f.exists():
+        return None, "NO FILE"
+    if since is not None and f.stat().st_mtime < since - 1:
+        return None, "STALE (not written by this run)"
+    return json.loads(f.read_text(encoding="utf-8")), None
+
+
+def compare_rows(since=None, expected=None):
+    """Compare every harness output with expected_baseline.json.
+
+    Returns (rows, n_match, n_diff, n_missing); each row is
+    [group, item, expected, actual, verdict].
+    """
+    exp = expected if expected is not None else json.loads(
+        EXPECTED_FILE.read_text(encoding="utf-8"))
     rows = []
-    for (tag, corpus), exp in EXPECTED.items():
-        f = RESULTS / ("%s_corpus%d.json" % (tag, corpus))
-        if not f.exists():
-            rows.append("| %s C%d | (no result file yet) | | | |" % (tag, corpus))
+
+    def add(group, item, want, got, problem=None):
+        if problem:
+            rows.append([group, item, want, "-", problem])
+        else:
+            rows.append([group, item, want, got,
+                         "MATCH" if values_match(got, want) else "DIFF"])
+
+    for e in exp.get("eval", []):
+        group = "%s C%d" % (e["tag"], e["corpus"])
+        data, prob = _read("%s_corpus%d.json" % (e["tag"], e["corpus"]), since)
+        m = (data or {}).get("metrics", {})
+        for k, want in e["metrics"].items():
+            add(group, k, want, m.get(k, "n/a"), prob)
+
+    for corpus, transforms in exp.get("invariance", {}).items():
+        if corpus.startswith("_"):
             continue
-        m = json.loads(f.read_text(encoding="utf-8")).get("metrics", {})
-        for k, want in exp.items():
-            got = m.get(k, "n/a")
-            ok = "MATCH" if str(got) == str(want) or (
-                isinstance(got, (int, float)) and isinstance(want, (int, float))
-                and abs(got - want) < 0.0006) else "DIFF"
-            rows.append("| %s C%d | %s | %s | %s | %s |" % (tag, corpus, k, want, got, ok))
-    return rows
+        data, prob = _read("invariance_corpus%s.json" % corpus, since)
+        t = (data or {}).get("transforms", {})
+        for name, (want_changed, want_flips) in transforms.items():
+            r = t.get(name, {})
+            add("invariance C%s" % corpus, name + " changed", want_changed,
+                r.get("violations", "n/a"), prob)
+            add("invariance C%s" % corpus, name + " abstain->answer", want_flips,
+                r.get("safety_regressions", "n/a"), prob)
+
+    for group, fname in (("gap_probes", "adversarial_gap_probes_corpus%s.json"),
+                         ("fabricated", "fabricated_evidence_corpus%s.json")):
+        for corpus, want in exp.get(group, {}).items():
+            if corpus.startswith("_"):
+                continue
+            data, prob = _read(fname % corpus, since)
+            meta = (data or {}).get("meta", {})
+            for k, v in want.items():
+                add("%s C%s" % (group, corpus), k, v, meta.get(k, "n/a"), prob)
+
+    if "containment" in exp:
+        data, prob = _read("synthesis_containment.json", since)
+        s = (data or {}).get("summary", {})
+        for k, v in exp["containment"].items():
+            add("containment", k, v, s.get(k, "n/a"), prob)
+
+    if "label_audit" in exp:
+        data, prob = _read("label_audit.json", since)
+        o = (data or {}).get("OUR SYNTHESIS", {})
+        for k, v in exp["label_audit"].items():
+            got = o.get(k, "n/a")
+            if isinstance(got, list):
+                got = len(got)
+            add("label_audit", k, v, got, prob)
+
+    n_match = sum(r[4] == "MATCH" for r in rows)
+    n_diff = sum(r[4] == "DIFF" for r in rows)
+    return rows, n_match, n_diff, len(rows) - n_match - n_diff
+
+
+def metric_rows(state=None):
+    since = state["start_epoch"] if state else None
+    rows, n_match, n_diff, n_missing = compare_rows(since)
+    out = ["| %s | %s | %s | %s | %s |" % tuple(r) for r in rows]
+    out.append("")
+    out.append("**%d MATCH, %d DIFF, %d missing or stale (of %d).**" % (
+        n_match, n_diff, n_missing, len(rows)))
+    return out
 
 
 def tail(path, n):
@@ -213,8 +286,8 @@ def write_summary(run_dir, state):
         s = state["steps"].get(name)
         L.append("| %s | %s | %s | %s |" % (name, s["status"] if s else "pending",
                                            s["exit"] if s else "", s["seconds"] if s else ""))
-    L += ["", "## Expected vs actual (numbers.md section 2)", "",
-          "| run | metric | expected | actual | |", "|---|---|---|---|---|"] + metric_rows()
+    L += ["", "## Expected vs actual (evaluation/expected_baseline.json, from numbers.md section 2)", "",
+          "| group | item | expected | actual | |", "|---|---|---|---|---|"] + metric_rows(state)
     failed = [n for n, s in state["steps"].items() if s["status"] == "failed"]
     L += ["", "## Failures (last 40 log lines each)", ""]
     if not failed:
@@ -288,7 +361,10 @@ def main():
     print_status(run_dir, state)
     failed = [n for n, s in state["steps"].items() if s["status"] == "failed"]
     print("FAILED STEPS: %s" % (failed or "none"))
-    return 0 if not failed else 1
+    _, n_match, n_diff, n_missing = compare_rows(state["start_epoch"])
+    print("EXPECTED VS ACTUAL: %d MATCH, %d DIFF, %d missing or stale "
+          "(details in RERUN_SUMMARY.md)" % (n_match, n_diff, n_missing))
+    return 0 if not failed and n_diff == 0 and n_missing == 0 else 1
 
 
 if __name__ == "__main__":
