@@ -6,6 +6,38 @@
     "unsafe_after": 0,
     "control_unsafe": 0
   },
+  "run_info": {
+    "utc": "2026-10-10T14:25:22+00:00",
+    "git_commit": "9efb792117ae47553ee93d7a25d4f0626b4782fe",
+    "git_branch": "jonan",
+    "tracked_files_modified": false,
+    "core_sha256": {
+      "validation.py": "a9ef6b76f960e0009872a0aa1f43babce66ae8636e7ae5a4d41017e6feab5329",
+      "qdrant_retrieval.py": "907ce236f5a1a2e00db4e54bbe501820c10c11a5a1afaa47437427f0e78d83c8"
+    },
+    "env_overrides": {},
+    "config": {
+      "MIN_CHUNK_SCORE_THRESHOLD": 0.6,
+      "MIN_AVG_SCORE_FOR_SUFFICIENCY": 0.65,
+      "MIN_QUERY_COVERAGE": 0.55,
+      "MIN_CHUNKS_FOR_SUFFICIENCY": 1,
+      "CONFLICT_SIM_THRESHOLD": 0.68,
+      "NLI_SIM_FLOOR": 0.15,
+      "NLI_CONFLICT_THRESHOLD": 0.94,
+      "MIN_CONFLICT_RELEVANCE": 0.25,
+      "QUERY_SPAN_RELEVANCE": 0.35,
+      "ANSWERHOOD_MARGIN": 5.5,
+      "env_overrides": {},
+      "MIN_FOCUS_PRESENCE": 0.5,
+      "REQUIRE_ASSERTIVE_SPANS": true,
+      "DIMENSIONAL_VETO": true,
+      "ANCHOR_REQUIRE_BOTH": true,
+      "ANCHOR_ASYMMETRIC_QSPAN": 0.0,
+      "MAX_CONFLICT_EVIDENCE_RANK": 0,
+      "KNEE_GAP_MULTIPLE": 0.0,
+      "RANK_TIE_EPSILON": 0.005
+    }
+  },
   "results": [
     {
       "id": "Q049|assert",

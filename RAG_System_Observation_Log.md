@@ -47,6 +47,7 @@
 | 34 | 2026-10-10 | Remaining `numbers.md` section 7 items worked: 4, 5, 9, 10 closed or narrowed; 8 not measured | Docs / provenance of numbers | Partly done | README and STATUS probe counts match raw files; Q-ID rule; tracked hash manifest |
 | 35 | 2026-10-10 | Order of the sufficiency fix and Stage 4 preconditions measured (2x2) | Evaluation / attribution of effects | Measured, no code change | Effects are independent and order-insensitive; closes `numbers.md` section 7 item 8 |
 | 36 | 2026-10-10 | Result files did not say which system made them; the re-run was compared to expectations by hand | Evaluation tooling | Implemented (harness scripts only) | Every harness output carries `run_info`; the runner compares all 64 headline numbers itself |
+| 37 | 2026-10-10 | Full self-checking re-run at `5b26a62` after the tooling change | Evaluation / reproducibility | Measured, all steps passed | 64/64 MATCH; `pytest` 70 passed; one stamp flaw found and fixed (`9efb792`) |
 
 ---
 
@@ -311,6 +312,17 @@
 - **Cost / regressions.** None known. `rerun_suite.py` now exits 1 on a DIFF where it used to exit 0; that is intended. Result files written before today have no `run_info`.
 - **Evidence.** `python -m pytest tests -q` (70 passed); `evaluation/results/stampcheck_corpus1.json` (gitignored scratch).
 - **Numbers updated.** None. `numbers.md` rule 4 now points at `run_info` and `expected_baseline.json`.
+
+## Observation 37: Full self-checking re-run after the tooling change
+
+*Added 2026-10-10. Commit/branch: run at `5b26a62` (stamp fix `9efb792` after), `jonan`. Closes the "not yet exercised end to end" caveat of Observation 36.*
+
+- **What ran.** `python evaluation/rerun_suite.py --fresh` (no `RAG_*` variable set), run folder `evaluation/results/rerun_2026-10-10_2/`, manifest copied to the tracked `docs/RERUN_MANIFEST_2026-10-10_run2.md`. All 17 steps exited 0 (invariance steps took 16 to 19 min each, this machine was slower than the first run); the answerhood-gate warning appears in 0 logs.
+- **Result.** The runner's own comparison: **64 MATCH, 0 DIFF, 0 missing or stale** against `evaluation/expected_baseline.json`. `pytest` step: 70 passed. Manifest now lists `collect` as done. Numbers are identical to Observation 30, so `numbers.md` has no changed row; this run is a second, independent confirmation on the new code.
+- **Stamp check.** All 12 collected outputs carry `run_info` (commit `5b26a62`, margin 5.5; the two gate-off files record `RAG_ANSWERHOOD_MARGIN=0` and margin 0.0).
+- **Flaw found and fixed.** Four of the 12 stamps (gap probes C2, fabricated C1 and C2, label audit) said `tracked_files_modified=True` although no source file had changed: a run rewrites two tracked result files (`adversarial_gap_probes_corpus{1,2}.json`), which then differ from the committed copies, so every later stamp in the run read as modified. `run_info.py` now excludes `evaluation/results/` from that check (`9efb792`, test added). The two tracked probe files were regenerated afterwards with the fixed stamp; their numbers are unchanged (17/24 and 16/24 before provenance, 0/24 after, control 0/24) and the diff is only the added `run_info` block. The other three stamps showing `True` (fabricated C1 and C2, label audit) are in untracked, gitignored files from this run, and the flag there reflects the artifact, not the system.
+- **Cost / regressions.** None. No pipeline code, threshold or default changed.
+- **Numbers updated.** None.
 
 ---
 
