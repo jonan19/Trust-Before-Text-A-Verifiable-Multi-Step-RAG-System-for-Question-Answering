@@ -1,0 +1,68 @@
+Attachment I. Non-Disclosure Agreement (Contractor)
+THIS NON-DISCLOSURE AGREEMENT (“Agreement”) is made by and between the State of Maryland (the “State”), acting by and through _______________________________________ (Issuing Agency Name) (the “Department” or “Agency” or “Authority” or “Commission”), and _____________________________________________ (the “Contractor”).
+RECITALS
+WHEREAS, the Contractor has been awarded a contract (the “Contract”) following the solicitation for ________________________________________________________ (Solicitation Title) Solicitation # ____________________; and
+WHEREAS, in order for the Contractor to perform the work required under the Contract, it will be necessary for the State at times to provide the Contractor and the Contractor’s employees, agents, and subcontractors (collectively the “Contractor’s Personnel”) with access to certain information the State deems confidential information (the “Confidential Information”).
+NOW, THEREFORE, in consideration of being given access to the Confidential Information in connection with the solicitation and the Contract, and for other good and valuable consideration, the receipt and sufficiency of which the parties acknowledge, the parties do hereby agree as follows:
+1. Regardless of the form, format, or media on or in which the Confidential Information is provided and regardless of whether any such Confidential Information is marked as such, “Confidential Information” means (1) any and all information provided by or made available by the State to the Contractor in connection with the Contract and (2) any and all personally identifiable information (PII) (including but not limited to personal information as defined in Md. Ann. Code, General Provisions §4-101(h) and Md. Ann. Code, State Govt. § 10-1301(c)) and protected health information (PHI) as defined in 45 CFR 160.103 that is provided by a person or entity to the Contractor in connection with this Contract. Confidential Information includes, by way of example only, information that the Contractor views, takes notes from, copies (if the State agrees in writing to permit copying), possesses or is otherwise provided access to and use of by the State in relation to the Contract.
+2. The Contractor shall not, without the State’s prior written consent, copy, disclose, publish, release, transfer, disseminate, use, or allow access for any purpose or in any form, any Confidential Information except for the sole and exclusive purpose of performing under the Contract. The Contractor shall limit access to the Confidential Information to the Contractor’s Personnel who have a demonstrable need to know such Confidential Information in order to perform under the Contract and who are bound by confidentiality obligations at least as restrictive as those set forth in this Agreement. Contractor shall provide copies of such agreements to the State. The names of such personnel are attached hereto and made a part hereof as Attachment I-2. Contractor shall update Attachment I-2 by adding additional names (whether Contractor’s Personnel or a subcontractor’s personnel) as needed, from time to time.
+3. If the Contractor intends to disseminate any portion of the Confidential Information to non-employee agents who are assisting in the Contractor’s performance of the Contract or will otherwise have a role in performing any aspect of the Contract, the Contractor shall first obtain the written consent of the State to any such dissemination. The State may grant, deny, or condition any such consent, as it may deem appropriate in its sole and absolute subjective discretion.
+4. The Contractor hereby agrees to hold the Confidential Information in trust and in strictest confidence, adopt or establish operating procedures and physical security measures, and take all other measures necessary to protect the Confidential Information from inadvertent release or disclosure to unauthorized third parties and to prevent all or any portion of the Confidential Information from falling into the public domain or into the possession of persons not bound to maintain the confidentiality of the Confidential Information.
+5. The Contractor shall promptly advise the State in writing if it learns of any unauthorized use, misappropriation, or disclosure of the Confidential Information by any of the Contractor’s Personnel or the Contractor’s former Personnel. Contractor shall, at its own expense, cooperate with the State in seeking injunctive or other equitable relief against any such person(s).
+6. The Contractor shall, at its own expense, return to the State all Confidential Information in its care, custody, control or possession upon request of the State or on termination of the Contract.
+7. A breach of this Agreement by the Contractor or the Contractor’s Personnel shall constitute a breach of the Contract between the Contractor and the State.
+8. Contractor acknowledges that any failure by the Contractor or the Contractor’s Personnel to abide by the terms and conditions of use of the Confidential Information may cause irreparable harm to the State and that monetary damages may be inadequate to compensate the State for such breach. Accordingly, the Contractor agrees that the State may obtain an injunction to prevent the disclosure, copying or improper use of the Confidential Information. The Contractor consents to personal jurisdiction in the Maryland State Courts. The State’s rights and remedies hereunder are cumulative and the State expressly reserves any and all rights, remedies, claims and actions that it may have now or in the future to protect the Confidential Information and seek damages from the Contractor and the Contractor’s Personnel for a failure to comply with the requirements of this Agreement. In the event the State suffers any losses, damages, liabilities, expenses, or costs (including, by way of example only, attorneys’ fees and disbursements) that are attributable, in whole or in part to any failure by the Contractor or any of the Contractor’s Personnel to comply with the requirements of this Agreement, the Contractor shall hold harmless and indemnify the State from and against any such losses, damages, liabilities, expenses, and costs.
+9. The parties further agree that:
+a. This Agreement shall be governed by the laws of the State of Maryland;
+b. The rights and obligations of the Contractor under this Agreement may not be assigned or delegated, by operation of law or otherwise, without the prior written consent of the State;
+c. The State makes no representations or warranties as to the accuracy or completeness of any Confidential Information;
+d. The invalidity or unenforceability of any provision of this Agreement shall not affect the validity or enforceability of any other provision of this Agreement;
+e. Signatures exchanged by facsimile are effective for all purposes hereunder to the same extent as original signatures;
+f. The Recitals are not merely prefatory but are an integral part hereof; and
+g. The effective date of this Agreement shall be the same as the effective date of the Agreement entered into by the parties.
+IN WITNESS WHEREOF, the parties have, by their duly authorized representatives, executed this Agreement as of the day and year first above written.
+Contractor: Department
+By: By:
+(seal)
+Printed Name:
+Printed Name:
+Title: Title:
+Date: Date:
+I-2 NON-DISCLOSURE AGREEMENT
+LIST OF CONTRACTOR’S EMPLOYEES AND AGENTS WHO WILL BE GIVEN ACCESS TO THE CONFIDENTIAL INFORMATION
+Printed Name and Employee (E) Signature Date
+Address of
+Individual/Agent or Agent (A)
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+_______________________ __________ ____________________________ _________
+I-3 NON-DISCLOSURE AGREEMENT
+CERTIFICATION TO ACCOMPANY RETURN OR DELETION OF CONFIDENTIAL INFORMATION
+I AFFIRM THAT:
+To the best of my knowledge, information, and belief, and upon due inquiry, I hereby certify that: (i) all Confidential Information which is the subject matter of that certain Non-Disclosure Agreement by and between the State of Maryland and __________________________ (“Contractor”) dated __________________, 20_____ (“Agreement”) is attached hereto and is hereby returned to the State in accordance with the terms and conditions of the Agreement; and (ii) I am legally authorized to bind the Contractor to this affirmation. Any and all Confidential Information that was stored electronically by me has been permanently deleted from all of my systems or electronic storage devices where such Confidential Information may have been stored.
+I DO SOLEMNLY DECLARE AND AFFIRM UNDER THE PENALTIES OF PERJURY THAT THE CONTENTS OF THIS AFFIDAVIT ARE TRUE AND CORRECT TO THE BEST OF MY KNOWLEDGE, INFORMATION, AND BELIEF, HAVING MADE DUE INQUIRY.
+DATE: ______________________________
+NAME OF CONTRACTOR: __________________________
+BY: _____________________________________________________________
+(Signature)
+TITLE: ____________________________________________________
+(Authorized Representative and Affiant)

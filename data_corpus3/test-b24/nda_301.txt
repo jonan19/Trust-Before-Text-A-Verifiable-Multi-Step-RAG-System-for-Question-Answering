@@ -1,0 +1,47 @@
+NON-DISCLOSURE AGREEMENT
+This Agreement is made on day of , 20
+PARTIES:
+SINGAPORE ART MUSEUM, a company registered in Singapore under UEN No.: 201330746G having its office at 61 Stamford Road, #02-02, Stamford Court, Singapore 178892. (the Discloser)
+and
+Recipient Company, a company registered in Singapore under UEN No.: having its office at . (the Recipient)
+WHEREAS
+The Discloser has engaged the Recipient for the purpose of Invitation to Tender: Managed Website Hosting Environment for Singapore Art Museum (SAM/ITT/2019/0002) . The Recipient would receive information from the Discloser during the course of their work via the Recipient’s corporate email address ___________________________________________________. (the Purpose)
+NOW IT IS AGREED AS FOLLOWS:
+1. Definitions – In this Agreement the following words are to have the following meanings:
+1.1 “Confidential Information” refers to:
+1.1.1 In respect of Information provided in documentary form or in other electronic form, Information which at the time of provision is marked or otherwise designated to show expressly or by necessary implication that is imparted in confidence;
+1.1.2 In respect of Information that is imparted orally, any Information that the Discloser or its representatives informed the Recipient at the time of disclosure was imparted in confidence;
+1.2 “Information” means but is not limited to information and data whether concerning commercial, financial, technical or any matter provided directly or indirectly by the Discloser to the Recipient in documentary form, orally, or other electronic form.
+1.3 “Permitted Purpose” or “the Purpose” means any such purposes which the Discloser has sought the services of the Recipient and includes but is not limited to the reviewing of contracts and documents.
+2. Confidentiality
+2.1 The Recipient undertakes to the Discloser to:
+2.1.1 Receive and keep the Confidential Information secret and confidential and not disclose such Confidential Information to any third party;
+2.1.2 Use the Confidential Information only for the Permitted Purpose; and
+2.1.3 Not disclose the Confidential Information to any other person without the Discloser’s written consent.
+2.1.4
+3. Exceptions
+3.1 The undertakings in clauses 2 above apply to all of the information disclosed by the Discloser to the Recipient, regardless of the way or form in which it is disclosed or recorded but they do not apply to:
+3.1.1 any information which is or in future comes into the public domain (unless as a result of the breach of this Agreement); or
+3.1.2 any information which is already known to the Recipient and which was not subject to any obligation of confidence before it was disclosed to the Recipient by the Discloser.
+4. Terminations of Services
+4.1 Upon the termination of the Recipient for the Purpose;
+4.1.1 The Recipient will, on request from the Discloser, return all copies and records of the Confidential Information to the Discloser and will not retain any copies or records of the Confidential Information; and
+4.1.2 The Recipient shall make no further use of the Confidential Information.
+5. Intellectual Property in the Confidential Information
+5.1 The Recipient acknowledges and agrees that the intellectual property and in particular, the
+copyright in the Confidential Information disclosed by the Discloser, including any documents, files and other items containing any Confidential Information belongs to the Discloser.
+5.2 This Agreement is neither to prejudice nor limit the rights of the Discloser in respect of any intellectual property rights in the Confidential Information.
+5.3 This Agreement is not to be construed to:
+5.3.1 Grant the Recipient any licence or rights other than as expressly set out in this Agreement in respect of the Confidential Information; nor
+5.3.2 Require the Discloser to disclose any Confidential Information to the Recipient.
+6. Variations
+6.1 Any variations to this Agreement are to be made in writing and signed by both the Discloser and the Recipient.
+7. Governing Law and Disputes
+7.1 The validity, construction and performance of this Agreement are to be governed by the laws of the Republic of Singapore. Any dispute arising under or in connection with this Agreement is to be subject to the exclusive jurisdiction of the Singapore courts to which the Discloser and the Recipient submit.
+8. Third Parties
+8.1 This Agreement does not create any right enforceable by any person who is not a party to it under the Contracts (Rights of Third Parties) Act (Cap 53B, 202 Rev. Ed).
+AGREED BY THE PARTIES:
+For and on behalf of Singapore Art Museum For and on behalf of the Recipient
+Name: Name:
+Designation: Designation:
+Signature and Company Stamp Signature and Company Stamp

@@ -1,0 +1,126 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b13-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_52.txt",
+        "nda_585.txt",
+        "nda_591.txt",
+        "nda_60.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_52.txt",
+        "nda_585.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_52 runs indefinitely; nda_585 one year; nda_591 two years; nda_60 three years (indefinite for technical / personal data). Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b13-open-02",
+      "category": "track-b/open",
+      "query": "After being told to return or destroy the information, can the recipient keep one copy for legal or compliance purposes?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_585.txt",
+        "nda_591.txt",
+        "nda_60.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_585.txt",
+        "nda_591.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_591 expressly permits one retained copy for archival/legal/compliance use; nda_585 and nda_60 require all copies to be returned or destroyed.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b13-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally required to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_585.txt",
+        "nda_591.txt",
+        "nda_60.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice to the disclosing party before compelled disclosure; they agree. nda_52 (a government-access agreement) has no such procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b13-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_52.txt",
+        "nda_585.txt",
+        "nda_591.txt",
+        "nda_60.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require return or destruction on request; they agree. The deadlines differ (30 days / 10 business days / 20 days for a destruction confirmation / on demand).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b13-open-05",
+      "category": "track-b/open",
+      "query": "Can the disclosing party get a court order or injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_52.txt",
+        "nda_585.txt",
+        "nda_591.txt",
+        "nda_60.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four allow injunctive/equitable relief (or a court order) for breach; they agree.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b13-open-06",
+      "category": "track-b/open",
+      "query": "Under the Mohican North Star Casino agreement, which law governs and where would a dispute be heard?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_60 contains no governing-law or venue clause. nda_585 and nda_591 name New York and Delaware respectively, but those do not speak to the Casino agreement, and nda_52 (a federal government form) also names no state law.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b13-open-07",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_585 and nda_591 point to court litigation; nda_52 and nda_60 name no dispute procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b13-open-08",
+      "category": "track-b/open",
+      "query": "Is the recipient restricted from contacting third parties, such as lenders or officials, about the deal?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_591.txt",
+        "nda_60.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Both restrict contact with third parties about the deal without prior written consent; they agree (though the categories of third party named differ). nda_52 and nda_585 do not contain a comparable no-contact restriction.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

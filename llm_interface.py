@@ -7,7 +7,7 @@ Per README:
   * LLM usage happens ONLY during final answer generation.
 
 Backend priority (first key found wins):
-  1. Groq          — llama-3.3-70b-versatile  (set GROQ_API_KEY)
+  1. Groq          — openai/gpt-oss-120b      (set GROQ_API_KEY)
   2. OpenAI        — gpt-4o-mini              (set OPENAI_API_KEY)
   3. Google Gemini — gemini-1.5-flash         (set GEMINI_API_KEY)
   4. Mock          — deterministic, no key needed
@@ -16,7 +16,7 @@ Environment variables are loaded from the .env file in the project root
 (via python-dotenv). Hard-coded env vars still take precedence.
 
 V4 changes:
-  - Added Groq backend (llama-3.3-70b-versatile) as the primary real LLM.
+  - Added Groq backend (openai/gpt-oss-120b) as the primary real LLM.
   - Added python-dotenv support so a .env file is auto-loaded.
   - Added exponential-backoff retry on all real API calls (max 3 attempts).
   - max_tokens raised to 1024 for richer answers.
@@ -25,6 +25,7 @@ V4 changes:
 from __future__ import annotations
 
 import os
+import re
 import time
 
 # ── Load .env file if present ────────────────────────────────────────────────
@@ -49,13 +50,19 @@ _USE_GEMINI: bool = bool(_GEMINI_KEY)  and not _USE_GROQ and not _USE_OPENAI
 _USE_MOCK:   bool = not _USE_GROQ and not _USE_OPENAI and not _USE_GEMINI
 
 # Model names
-_GROQ_MODEL:   str = "llama-3.3-70b-versatile"
+_GROQ_MODEL:   str = "openai/gpt-oss-120b"
 _OPENAI_MODEL: str = "gpt-4o-mini"
 _GEMINI_MODEL: str = "gemini-1.5-flash"
 
 _MAX_TOKENS:  int   = 1024
 _MAX_RETRIES: int   = 3
 _RETRY_DELAY: float = 1.0   # seconds; doubles on each retry
+# Per-call network timeout. Without this the SDK's own default applies, which
+# is long enough that a stalled connection (not an error — a hang) can block
+# _with_retry's 3 attempts for many minutes combined. Since orchestrator.run()
+# is called synchronously from an async FastAPI route (see api.py), a hang
+# here freezes the whole server, not just this request.
+_REQUEST_TIMEOUT: float = 30.0
 
 # ---------------------------------------------------------------------------
 # System prompts
@@ -108,8 +115,25 @@ def _with_retry(fn, *args, **kwargs) -> str:
     ) from last_exc
 
 
+# Reasoning models (e.g. qwen/qwen3.6-27b on Groq) prepend a <think>...</think>
+# block containing their chain-of-thought before the actual answer. Left in,
+# that block is indistinguishable from "the answer" to every caller downstream
+# — most importantly synthesis.py's post-generation faithfulness check, which
+# runs NLI entailment for every ANSWER sentence against every EVIDENCE
+# sentence. A 30-60 sentence reasoning trace turns that into thousands of
+# extra cross-encoder calls, stretching a normally sub-minute pipeline run to
+# several minutes. Stripped here, once, so every backend hands synthesis.py
+# the same shape of thing: a final answer only.
+_THINK_BLOCK_RE = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
+
+
+def _strip_reasoning(text: str) -> str:
+    """Remove a leading <think>...</think> reasoning block, if present."""
+    return _THINK_BLOCK_RE.sub("", text).strip()
+
+
 # ===========================================================================
-# Groq backend  (llama-3.3-70b-versatile)
+# Groq backend  (openai/gpt-oss-120b)
 # ===========================================================================
 
 def _call_groq(query: str, context: str) -> str:
@@ -120,7 +144,7 @@ def _call_groq(query: str, context: str) -> str:
         raise ImportError("groq package not installed. Run: pip install groq")
 
     def _request() -> str:
-        client = Groq(api_key=_GROQ_KEY)
+        client = Groq(api_key=_GROQ_KEY, timeout=_REQUEST_TIMEOUT)
         user_message = (
             f"Context:\n{context}\n\n"
             f"Question: {query}\n\n"
@@ -135,7 +159,7 @@ def _call_groq(query: str, context: str) -> str:
             temperature=0.0,
             max_tokens=_MAX_TOKENS,
         )
-        return response.choices[0].message.content.strip()
+        return _strip_reasoning(response.choices[0].message.content.strip())
 
     return _with_retry(_request)
 
@@ -148,7 +172,7 @@ def _call_synthesis_groq(prompt: str) -> str:
         raise ImportError("groq package not installed. Run: pip install groq")
 
     def _request() -> str:
-        client = Groq(api_key=_GROQ_KEY)
+        client = Groq(api_key=_GROQ_KEY, timeout=_REQUEST_TIMEOUT)
         response = client.chat.completions.create(
             model=_GROQ_MODEL,
             messages=[
@@ -158,7 +182,7 @@ def _call_synthesis_groq(prompt: str) -> str:
             temperature=0.0,
             max_tokens=_MAX_TOKENS,
         )
-        return response.choices[0].message.content.strip()
+        return _strip_reasoning(response.choices[0].message.content.strip())
 
     return _with_retry(_request)
 

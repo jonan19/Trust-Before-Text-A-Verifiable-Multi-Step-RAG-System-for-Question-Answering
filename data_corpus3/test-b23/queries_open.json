@@ -1,0 +1,122 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b23-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_389.txt",
+        "nda_555.txt",
+        "nda_68.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_389.txt",
+        "nda_555.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_389 is seven years from disclosure; nda_555 is eighteen months (or consummation); nda_68 runs indefinitely; nda_40 sets no term. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b23-open-02",
+      "category": "track-b/open",
+      "query": "After a request to return or destroy the confidential information, can the recipient keep any of it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_40.txt",
+        "nda_555.txt",
+        "nda_68.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_40.txt",
+        "nda_555.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_555 lets the recipient keep information required by law or internal compliance policy; nda_40 requires all documents and copies returned; nda_68 forbids retaining any copies (though a separate clause exempts secure automated backups).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b23-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally compelled to disclose the confidential information, must we notify the other side or give it a chance to intervene?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_389.txt",
+        "nda_555.txt",
+        "nda_68.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three condition compelled disclosure on giving the disclosing party notice / an opportunity to seek protection; they agree. nda_40 has no compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b23-open-04",
+      "category": "track-b/open",
+      "query": "Can the disclosing party get an injunction or court order to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_40.txt",
+        "nda_555.txt",
+        "nda_68.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three allow an injunction / court order for breach; they agree. nda_68 waives the bond. nda_389 has no remedies clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b23-open-05",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_40.txt",
+        "nda_555.txt",
+        "nda_68.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return (or destruction) on request; they agree. nda_389 has no return clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b23-open-06",
+      "category": "track-b/open",
+      "query": "Which law governs the CAO / U.S. House of Representatives NDA and where would a dispute be heard?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_40 has no governing-law or venue clause. nda_389 (Massachusetts), nda_555 (California) and nda_68 (Alberta) name a governing law, but none speak to nda_40.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b23-open-07",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_389 (Massachusetts), nda_555 (California) and nda_68 (Alberta courts) point to litigation; nda_40 names no forum.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b23-open-08",
+      "category": "track-b/open",
+      "query": "Can the recipient act as a joint bidder or co-venturer with a third party for the transaction?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_68.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_68 addresses this, barring the recipient from acting as agent, partner or co-venturer for a third party without the Receiver's written consent. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

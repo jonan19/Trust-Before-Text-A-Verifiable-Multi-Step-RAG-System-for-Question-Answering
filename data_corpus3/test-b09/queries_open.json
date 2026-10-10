@@ -1,0 +1,120 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b09-open-01",
+      "category": "track-b/open",
+      "query": "Does information have to be marked \"confidential\" for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_429.txt",
+        "nda_66.txt",
+        "nda_78.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_429.txt",
+        "nda_66.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_429 protects only information described in a CITR and marked with a confidential legend; nda_66 and nda_78 protect information regardless of form or marking.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b09-open-02",
+      "category": "track-b/open",
+      "query": "For how long does the duty of confidentiality run?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_429.txt",
+        "nda_66.txt",
+        "nda_78.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_429.txt",
+        "nda_66.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_429 is five years from the disclosure (CITR) date; nda_66 is the agreement term (five years) plus five years after it ends; nda_78 is until mutual written termination plus one year; nda_549's confidentiality covenant survives indefinitely. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b09-open-03",
+      "category": "track-b/open",
+      "query": "Does signing this force either party to share information or to enter into a further deal?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_429.txt",
+        "nda_66.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both agree there is no obligation to disclose information or to enter a further contract.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b09-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_429.txt",
+        "nda_66.txt",
+        "nda_78.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return or destruction on request; they agree. nda_429 and nda_78 add a certification requirement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b09-open-05",
+      "category": "track-b/open",
+      "query": "Can the harmed party get an injunction or specific performance for a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_549.txt",
+        "nda_78.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow injunctive relief and specific performance; they agree. nda_549 adds that no showing of actual damage and no bond are required. nda_429 and nda_66 have no remedies clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b09-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be arbitrated?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_549 (Vigo County, Indiana courts), nda_66 (courts of Paris) and nda_78 (Utah law) all point to litigation; nda_429 names only a governing law.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b09-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on how much a party can be required to pay for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b09-open-08",
+      "category": "track-b/open",
+      "query": "Does the volunteer give up the right to sue the organisation for injury?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_78.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_78 contains a personal-injury release (the volunteer waives injury claims against Kitty Haven). One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

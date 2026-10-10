@@ -10,9 +10,26 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Vector Databases and Storage
+# Vector Databases and Storage (regeneratable from data*/ via ingestion)
 qdrant_db/
 qdrant_db_corpus2/
+qdrant_db_c1_copy/
+qdrant_db_c2_copy/
+qdrant_db_c3/
+qdrant_db_c3_copy/
+
+# Retrieval cache (regeneratable)
+_retrieval_cache/
+
+# evaluation/ is the project's test suite and is tracked in full, including the
+# one-off diagnostics: each documents how a design conclusion was reached, and
+# reviewers ask "did you try X?". Only regenerable output is ignored.
+evaluation/results/
+evaluation/_retrieval_cache/
+
+# Documentation is always tracked.
+!docs/
+!docs/**
 
 # Uploaded Files
 uploaded_docs/

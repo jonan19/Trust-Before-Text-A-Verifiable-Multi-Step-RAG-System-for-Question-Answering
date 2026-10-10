@@ -1,0 +1,84 @@
+CONFIDENTIALITY AND NON-DISCLOSURE AGREEMENT (“CNDA”)
+This Agreement made effective as of the _______ day of _________, 2015
+BETWEEN:
+CANADIAN PACIFIC RAILWAY COMPANY (“CPR”)
+– and –
+[INSERT LEGAL NAME OF SUPPLIER] (“Supplier”)
+WHEREAS:
+A. CPR and Supplier are engaged in discussion and negotiating for the provision of certain services; and
+B. CPR and Supplier have agreed to a process which includes the CNDA by reference to its URL; and
+C. CPR and Supplier agree to protect each of its respective Confidential Information, as defined hereunder, and both parties agree that disclosure and use of the other party’s Confidential Information shall be subject to the terms and conditions of this CNDA.
+NOW THEREFORE, in consideration of the mutual premises and the covenants and agreements set forth in this CNDA and for other good and valuable consideration, the receipt and sufficiency of which is hereby acknowledged, the Parties agree as follows:
+ARTICLE 1 - DEFINITIONS AND INTERPRETATION
+1.01 Definitions
+Definitions can be found at URL: http://www.cpr.ca/en/about-cp/selling-to-cp/information-technology/definitions
+1.02 Interpretation
+For all purposes of this CNDA, except as otherwise expressly provided or unless the context otherwise requires:
+(a) all references in this CNDA to designated sections, paragraphs or other subdivisions are to the designated sections, paragraphs or other subdivisions of this CNDA;
+(b) within the CNDA the words “herein,” “hereof” and “hereunder” and other words of similar import refer to this CNDA as a whole and not to any particular section, paragraph or other subdivision;
+(c) the headings used herein are for convenience only and do not form a part of this CNDA, nor are they intended to interpret, define or limit the scope, extent or intent of this CNDA or any of its provisions;
+(d) the word “including” when following any general statement, term or matter, shall not be construed to limit such general statement, term or matter to the specific items or matters set forth immediately following such word or to similar items or matters, whether or not non-limiting language (such as “without limitation” or “but not limited to” or words of similar import) is used with reference thereto but rather shall be deemed to refer to all other items or matters that could reasonably fall within the broadest possible scope of such general statement, term or matter;
+(e) any reference to any entity shall include and shall be deemed to be a reference to any entity that is a successor to such entity; and
+(f) words importing gender include all genders and words importing the singular include the plural and vice versa.
+ARTICLE 2- CONFIDENTIAL INFORMATION
+2.01 Confidential Information
+"Confidential Information" means, subject to section 2.02 below any additional information requested by the Supplier and provided by CPR, or any information supplied by either party that is clearly marked “Confidential” or clearly intended to be disclosed in confidence.
+2.02 Not Confidential Information
+The following shall not, for the purposes of this CNDA, constitute Confidential Information:
+(a) information relating to the Disclosing Party that is obtained or was previously obtained by the Receiving Party from a third Person who, insofar as is known to the Receiving Party after reasonable inquiry, is not obligated to keep such information confidential;
+(b) information already known to the Receiving Party at the time of disclosure, as shown by prior written evidence or other evidence satisfactory to the Disclosing Party;
+(c) information that is or becomes generally available to the public other than as a result of disclosure by the Receiving Party’s violation of this CNDA; and
+(d) information that the Disclosing Party authorizes the Receiving Party to disclose.
+2.03 Kept in Confidence
+The Receiving Party agrees to use the same degree of care to prevent disclosure of the Confidential Information received by it as the Receiving Party uses to prevent disclosure of its own confidential information, but in no case less than a reasonable degree of care. In addition, except as set forth in section 2.06, without the prior written consent of the Disclosing Party, neither the Receiving Party nor its Representatives will disclose to any other Person the fact that Confidential Information has been made available to the Receiving Party by the Disclosing Party, or any of the terms, conditions or other facts relating to the Parties’ business relationship.
+2.04 No Benefit, Restricted Use
+The Receiving Party shall not, in any manner, derive any benefit, directly or indirectly, from the Confidential Information or the use of such Confidential Information, for any purpose. The Receiving Party agrees not to appropriate for his or her own use or exploit in any way whatsoever any of the Confidential Information disclosed to it by the Disclosing Party.
+2.05 No Disclosure
+Except as set forth in Section 2.06, the Receiving Party shall not disclose any of the Confidential Information or other facts directly related to the Confidential Information to any Person other than its Representatives who have a need to know such Confidential Information and who have been informed of the confidential nature of the Confidential Information. The Receiving Party will also ensure that its Representatives comply with the terms of this CNDA.
+2.06 Disclosure Required by Law
+The Receiving Party will not disclose to any Person the Confidential Information or other facts directly related to the Confidential Information unless, in the reasonable opinion of the Receiving Party’s legal counsel, disclosure is required by legal process or regulatory demands, in which event the Receiving Party will, prior to such disclosure, promptly provide the Disclosing Party with written notice of the intended disclosure so that the Disclosing Party may seek a protective order or other appropriate protection.
+2.07 Return of Confidential Information
+Upon the Disclosing Party’s written request, the Receiving Party shall promptly return to the Disclosing Party all Confidential Information in its possession or control, and promptly destroy or erase all notes, memoranda and other material prepared by the Receiving Party which reflect, interpret, evaluate, include or are derived from any Confidential Information and the Receiving Party shall certify such destruction in writing to the Disclosing Party.
+2.08 Responsibility for Others
+The Receiving Party agrees that it shall be responsible for any breach of this CNDA by any of its Representatives.
+ARTICLE 3 - GENERAL PROVISIONS
+3.01 Remedies
+The Receiving Party acknowledges and agrees that it has entered into this CNDA on the understanding that any breach hereof by it will cause the Disclosing Party irreparable harm and expressly agrees that, in addition to all other remedies that the Disclosing Party may be entitled to as a matter of law, the Disclosing Party shall be entitled to specific performance and any form of equitable relief to enforce the provisions of this CNDA.
+3.02 Continuing Obligations Regarding Confidentiality
+The obligations of confidentiality contained herein shall survive the expiration or termination of the Contract, SOW, Amendments, or RFP Terms.
+3.03 Notices
+All disclosures, notices or other documents required or permitted to be given pursuant to this CNDA shall be in writing and delivered by hand or courier service or by fax to the address
+(a) of the Supplier to the address provided by the Supplier with its request for additional information or to such other address as may be provided from time to time:
+(b) CPR
+Address: Attn: Office of the CIO
+Canadian Pacific Railway
+Building 1, 7550 Ogden Dale Road
+Calgary, Alberta T2C 4X9
+3.04 Entire Agreement
+This CNDA, in respect of additional information, constitutes the entire agreement between the Parties relating to the subject matter hereof and supersedes all previous discussions, understandings and negotiations and it is agreed between the parties that there are no oral statements, representations, warranties, undertakings or agreements between the Parties modifying the provisions of this CNDA.
+3.05 Amendments
+This CNDA shall not be amended except if in writing and signed by the Parties.
+3.06 Offer and Acceptance
+This CNDA shall be deemed offered upon a request by the Supplier for additional information and shall be deemed accepted upon CPR providing the requested additional information. No physical execution of this CNDA is required or expected.
+3.07 Provisions Severable
+If any provision of this CNDA is held to be invalid, unenforceable or illegal, such provision shall be deemed to be independent and severable from the remaining provisions of this CNDA, and the remaining provisions of this CNDA shall not be affected and shall be valid and enforceable to the full extent permitted by law.
+3.08 Binding Nature of Agreement
+This CNDA shall enure to the benefit of and shall be binding upon the Parties hereto together with their respective heirs, legal personal representatives, successors and permitted assigns. No Party hereto shall assign in whole or in part its rights or obligations under this CNDA without the express written consent of the other Party.
+3.09 Termination
+This agreement continues in effect for three years. Either party may terminate this CNDA for any reason by providing the other with 30 days’ advance written notice. The termination of this CNDA, or the completion or abandonment of the Permitted Purpose, shall not affect the survival of the non-disclosure obligations under this CNDA, which obligations shall survive for a period of 3 years.
+3.09 Governing Law
+This CNDA shall be construed and enforced in accordance with, and the rights of the Parties shall be governed by, the laws of the Province of Alberta. The Parties irrevocably submit and attorn to the non-exclusive jurisdiction of the courts of the Province of Alberta for all matters arising out of or relating to this CNDA, or any of the transactions contemplated herein.
+3.10 No Implied Waiver
+The failure by any Party at any time to require performance by the other Party of any provision of this CNDA shall in no way affect the right to require performance at any time thereafter, nor shall the waiver of any breach of any provision of this CNDA constitute a waiver of any succeeding breach of the same
+3.11 Residuals
+Notwithstanding the confidentiality obligations contained in Article 2 hereof, the receiving party may, during and after the term hereof, use in its business any Residual Information. “Residual Information” means the ideas, know-how and techniques that would be retained in the unaided memory of an ordinary person skilled in the art, not intent on appropriating the proprietary information of the disclosing party, as a result of such person’s access to, use, review, evaluation, or testing of the Confidential Information of the disclosing party for the purposes described herein. An employee's memory is unaided if the employee has not intentionally memorized the confidential information for the purpose of retaining and subsequently using or disclosing it. Nothing in this paragraph, however, shall be deemed to grant to the receiving party a license under the disclosing party’s intellectual property rights
+3.12 No Implied Partnership
+This CNDA is intended to provide for the protection of the Confidential Information from unauthorized disclosure and use, and does not constitute an agreement to cooperate in a joint venture, partnership, or other arrangement, or for CP to retain Supplier in respect of any particular project. Additionally, nothing in this CNDA constitutes a warranty by the Disclosing Party of the accuracy of any Confidential Information.
+3.13 Language Laws
+The parties have requested and agreed that these terms and conditions be drafted in the English language. Les parties reconnaissent qu’elles ont exigé que la présente convention soit rédigée en langue anglaise seulement.
+In Witness whereof the parties have executed this Confidentiality and Non-Disclosure Agreement by its respective duly appointed officer.
+CANADIAN PACIFIC RAILWAY COMPANY [INSERT SUPPLIER’S LEGAL NAME]
+Per: _____________________________ Per: _____________________________
+Name: _____________________________ Name: _____________________________
+Title: _____________________________ Title: _____________________________
+Date: _____________________________ Date: _____________________________

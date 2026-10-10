@@ -1,0 +1,55 @@
+NON-DISCLOSURE AND NON-USE AGREEMENT (First Amendment, January 2008)
+This Non-Disclosure and Non-Use Agreement (the “Agreement”) is made and entered into by and among
+THE UNDERSIGNED INDIVIDUAL COMPANIES (each of them being referred to as “Receiving Party”).
+WHEREAS the Receiving Party intends to become party to the REACH Consortium Agreement of 1 January 2007 (the “Consortium Agreement”);
+WHEREAS, pursuant to the provisions of the Consortium Agreement, the Receiving Party will be provided with Materials for registration under Regulation of the European Parliament and of the Council concerning the Registration, Evaluation, Authorisation and Restriction of Chemicals (“REACH”);
+WHEREAS, Section 14 of the Consortium Agreement requires the signature by each Member of the Consortium of the present Non-Disclosure and Non-Use Agreement;
+NOW, THEREFORE, for and in consideration of the premises and covenants herein contained, it is agreed as follows:
+1. Definitions
+For the purpose of the present Agreement, “Material” is defined as any data, test, study or any information in support of the Registration under REACH made available to the Consortium or generated or determined or used in any way by the Consortium to comply with the requirements of REACH and provided to the Receiving Party for the purpose of registration under REACH. This Material shall include, without limitation: (i) Data and/or Studies acquired, licensed, developed or contracted or obligated for by the Consortium pursuant to Section 10 of the Consortium Agreement; (ii) Registration Dossier - technical dossier comprising studies, including test results; study summaries; proposals for testing; classification and labelling; guidance on safe use; plus a chemical safety report; and (iii) draft Registration Dossier, interim and working documents related to the preparation of the Registration Dossier, know-how, technical information, researches, methods, practices, procedures, processes, formulas and more generally any information with respect to substances that is made available, in written or oral form, to the Receiving Party by the Consortium and/or the Consortium Members. Unless defined herein, the definitions in this Agreement shall be the same as those set forth in the Consortium Agreement.
+2. Non-disclosure and Restriction on Use
+The Receiving Party agrees to retain the Material in confidence and not to use the Material for any purpose other than in accordance with the terms of this Agreement and of the Consortium Agreement.
+In Particular, the Receiving Party undertakes (in addition and without prejudice to any commitments under the Consortium Agreement), that:
+a. the Receiving Party shall not disclose the Material to any Third Party except with the Steering Committee’s prior written consent and provided that no other legal disclosure requirement applies;
+b. the Material shall neither be copied, nor otherwise reproduced nor duplicated in whole or in part where such copying, reproduction or duplication have not been specifically authorized by the Consortium Agreement or otherwise approved in writing by the Steering Committee;
+The Receiving Party acknowledges that the covenants of non-disclosure and non-use in this Agreement shall be effective in every country in the world.
+The Receiving Party shall take all reasonable measures to protect the secrecy of and avoid disclosure or improper use of the Material, to prevent the material from falling into the public domain, and to protect it from falling into the possession of Third Parties. Such measures include, but shall not be limited to, the highest degree of care that the Receiving Party utilises to protect its own confidential information. In the event of loss or theft of any documents, items of work in progress, or any work products embodying Material, the Consortium Secretariat must be notified immediately by the Receiving Party, who shall cooperate fully in remedying same.
+3. Permitted Disclosure of Material
+a. The Receiving Party shall solely disclose the Material to its affiliates, employees and persons in the Receiving Party’s organization who (i) have responsibility for or are directly concerned with the purposes of this Agreement and of the Consortium Agreement; (ii) are subject to non-disclosure or confidentiality obligations to the Receiving Party (the Material constituting protected information for purposes of such obligations); and (iii) have been informed and are fully aware of the Receiving Party’s obligations under this agreement and under the Consortium Agreement.
+b. The Receiving Party may provide its customers with (i) Safety Data Sheets as defined in Article 31 of REACH, (ii) relevant exposure scenarios, or (iii) other available and relevant information about the substance that is necessary to enable appropriate risk management measures to be identified and applied.
+c. The Receiving Party may disclose the Material if and to the extent that such disclosure is required by law or court order, provided that the Receiving Party notifies the Disclosing Party. Any disclosure of Data and/or Studies that could result in public disclosure of the Data and/or Studies shall only be permissible after prior approval from the Steering Committee or the IMOA Executive Committee.
+d. The Receiving Party and its Affiliates may use the Material for compliance with laws and regulations in other non-EU jurisdictions provided that the confidentiality of the Material is guaranteed and in compliance with the NDA. Any disclosure of the Data and/or Studies for the purposes of compliance with non-EU regulatory requirements that could result in public disclosure of the Data and/or Studies shall only be permissible after prior approval from the Steering Committee or the IMOA Executive Committee.
+e. For the avoidance of doubt, nothing in this Non-Disclosure Agreement shall prevent an Individual Member from supplying Data and/or Studies in its possession or control to a Governmental Authority where required to do so by law or regulation and where refusing to do so would require the Individual Member to violate that law or regulation and subject the Individual Member to fines or other sanction by the Governmental Authority.
+4. Exceptions to Non-Disclosure
+The Receiving Party shall not be subject to the obligations of this Agreement with respect to Material which:
+a. is or becomes known publicly through no wrongful act of the Receiving Party; or
+b. was already known to the Receiving Party at the time of disclosure hereunder as shown by the Receiving Party’s prior written records; or
+c. is learned by the Receiving Party from a third party under no obligation to the Consortium; or
+d. is independently developed by an employee, agent, or consultant of the Receiving Party with no knowledge of disclosure hereunder;
+e. is approved for release by the Consortium Committee in compliance with Article 119 of REACH on electronic public access with the decision for submission of a Registration Dossier;
+f. is approved for release by written authorisation of the Steering Committee or the IMOA Executive Committee; or
+g. is publicly disclosed in accordance with the provisions of Section 15 of the Consortium Agreement.
+5. Term
+This Agreement shall survive until the earlier of (i) such time as all the material disclosed hereunder becomes publicly known pursuant to Section 15 of the Consortium Agreement and made generally available without violation of this Agreement, or (ii) twelve (12) years from date of Registration.
+6. No Licence
+Nothing in this Agreement is intended to grant any rights to the Receiving Party under any patent, copyright or any other intellectual property right, nor shall this Agreement grant the Receiving Party any rights in or to the material except as expressly set forth herein and in the Consortium Agreement.
+7. Indemnity
+The Receiving Party acknowledges and agrees that any breach of this Agreement would cause immediate and irreparable injury to the Consortium and its Members. Should the Receiving Party violate any of the terms and conditions of this Agreement, the Consortium Members shall be entitled, in addition to any other remedies that maybe available, in law, in equity or otherwise, to obtain injunctive relief against the threatened breach of this Agreement or the continuation of any such breach, without the necessity of proving actual damages.
+In addition, in case of violation of this Agreement, the Receiving Party may be expelled from the Consortium in accordance with the conditions provided in Section 4 of the Consortium Agreement.
+8. Waiver
+No failure or delay by either party in exercising any right hereunder shall operate as a waiver thereof, nor shall any single or partial exercise thereof preclude any other or further exercise thereof or the exercise of any other right hereunder.
+9. Severability
+If any one or more of the provisions of this Agreement shall for any reason be invalid, illegal or unenforceable, such circumstance shall not affect any other provision of the Agreement and the Agreement shall continue in full force and effect and be construed as if such provision, to the extent that it is invalid, illegal or unenforceable, had never been contained herein or therein.
+10. Governing Law and disputes
+This Agreement shall be governed by, and all disputes arising under or in connection with this Agreement shall be resolved in accordance with the laws of England and Wales.
+11. Amendment
+No modifications, change, or waiver of this Agreement shall be valid unless made in writing and signed by authorised representatives of the Individual Members.
+12. Counterparts
+This Agreement will be executed in a number of counterparts, which shall together constitute a single agreement. Each undersigned Receiving Party shall execute two (2) signature pages, retain one for its file and communicate the other to the Consortium Secretariat.
+IN WITNESS WHEREOF, the undersigned, by their duly authorised representative(s), have executed and delivered this Agreement.
+COMPANY NAME:
+By:
+(Signature)
+(Name)
+TITLE:
+DATE:

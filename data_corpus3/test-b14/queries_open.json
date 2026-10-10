@@ -1,0 +1,123 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b14-open-01",
+      "category": "track-b/open",
+      "query": "Does information have to be identified or marked as confidential for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_354.txt",
+        "nda_452.txt",
+        "nda_564.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_354.txt",
+        "nda_452.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_354 protects only information identified as confidential (with written confirmation of oral disclosures within 30 days); nda_452 and nda_564 protect information whether or not it is identified or marked.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b14-open-02",
+      "category": "track-b/open",
+      "query": "If a party is legally compelled to disclose the information, must it notify the other party first?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_31.txt",
+        "nda_354.txt",
+        "nda_452.txt",
+        "nda_564.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_31.txt",
+        "nda_354.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_354, nda_452 and nda_564 all require the recipient to notify the disclosing party before a compelled disclosure; nda_31 permits disclosure to the extent legally required with no notice obligation at all. Incompatible on the same point.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b14-open-03",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_354.txt",
+        "nda_452.txt",
+        "nda_564.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return or destruction; they agree. nda_354 permits one retained archival copy; nda_31 has no return clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b14-open-04",
+      "category": "track-b/open",
+      "query": "Can the disclosing party get an injunction or specific performance for a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_31.txt",
+        "nda_354.txt",
+        "nda_452.txt",
+        "nda_564.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four allow injunctive/equitable relief for breach; they agree. nda_564 adds no proof of actual damages and a bond waiver.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b14-open-05",
+      "category": "track-b/open",
+      "query": "Does signing this oblige either party to enter into the transaction or a further agreement?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_354.txt",
+        "nda_564.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both agree the NDA creates no obligation to transact or to enter a further agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b14-open-06",
+      "category": "track-b/open",
+      "query": "Which law governs the Company / Independent Contractor non-disclosure requirements and where would a dispute be heard?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_452 (the Exhibit B non-disclosure requirements) has no governing-law or venue clause. nda_31 (New York), nda_354 (Ontario) and nda_564 (Illinois) name a governing law, but none speak to nda_452.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b14-open-07",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_31, nda_354 and nda_564 point to court litigation; nda_452 names no forum.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b14-open-08",
+      "category": "track-b/open",
+      "query": "Are the borrower's trading desks allowed to see the information about the lending clients?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_31.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_31 addresses this, barring the borrower's trading desks from the information except when performing risk-management functions. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

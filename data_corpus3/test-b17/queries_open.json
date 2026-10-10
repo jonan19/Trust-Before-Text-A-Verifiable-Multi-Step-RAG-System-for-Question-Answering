@@ -1,0 +1,123 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b17-open-01",
+      "category": "track-b/open",
+      "query": "How long does the confidentiality obligation last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_1.txt",
+        "nda_227.txt",
+        "nda_596.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_1.txt",
+        "nda_227.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_1, nda_227 (and nda_24, whose obligations survive with no end date) impose an indefinite duty; nda_596's non-disclosure covenant runs only one year. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b17-open-02",
+      "category": "track-b/open",
+      "query": "Who owns improvements or customised work the recipient creates using the confidential information?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_1.txt",
+        "nda_227.txt",
+        "nda_24.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_1.txt",
+        "nda_227.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_1 assigns to the Discloser the recipient's own modifications, improvements and customised code/configuration created during the engagement; nda_227 and nda_24 only confirm the Discloser keeps its existing rights and grant no rights either way — they do not take the recipient's work product.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b17-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally compelled to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_1.txt",
+        "nda_227.txt",
+        "nda_24.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice before compelled disclosure; they agree. nda_596 has no compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b17-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_1.txt",
+        "nda_227.txt",
+        "nda_24.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return or destruction; they agree. nda_1 permits a copy retained for statutory record-retention. nda_596 has no return clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b17-open-05",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach, without posting a bond or proving special damages?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_1.txt",
+        "nda_227.txt",
+        "nda_24.txt",
+        "nda_596.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four allow injunctive relief for breach; they agree. nda_227 waives proof of special damages and nda_596 waives the bond requirement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b17-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_1 (Duval County, Florida), nda_227 and nda_24 (England and Wales) and nda_596 (Cook County, Illinois) all point to litigation.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b17-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on how much a party can be made to pay for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap. nda_227 imposes an uncapped indemnity that expressly extends to consequential and punitive damages; none set a ceiling.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b17-open-08",
+      "category": "track-b/open",
+      "query": "Is the party that provided the information barred from competing with the other's business?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_596.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_596 contains a non-compete (one year, tied to the stock purchase). One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}
