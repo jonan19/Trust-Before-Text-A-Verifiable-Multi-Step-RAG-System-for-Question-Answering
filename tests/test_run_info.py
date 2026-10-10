@@ -30,6 +30,19 @@ def test_stamp_records_effective_switches():
         assert key in cfg
 
 
+def test_modified_flag_ignores_the_runs_own_result_files(monkeypatch):
+    seen = []
+    real = ri._git
+
+    def spy(*args):
+        seen.append(args)
+        return real(*args)
+    monkeypatch.setattr(ri, "_git", spy)
+    ri.run_info(include_config=False)
+    status_calls = [a for a in seen if a and a[0] == "status"]
+    assert status_calls and ":(exclude)evaluation/results" in status_calls[0]
+
+
 def test_stamp_never_raises_if_git_is_missing(monkeypatch):
     def boom(*a, **k):
         raise OSError("no git")

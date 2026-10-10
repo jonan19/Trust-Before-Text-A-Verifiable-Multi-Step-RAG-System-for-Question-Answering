@@ -52,8 +52,11 @@ def run_info(include_config: bool = True) -> dict:
         "utc": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "git_commit": _git("rev-parse", "HEAD"),
         "git_branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
-        # tracked files changed since the commit (untracked files ignored)
-        "tracked_files_modified": bool(_git("status", "--porcelain", "--untracked-files=no")),
+        # tracked SOURCE files changed since the commit. Untracked files and
+        # evaluation/results are ignored: a run rewrites tracked result files
+        # itself, which would otherwise mark every later stamp in the run modified.
+        "tracked_files_modified": bool(_git("status", "--porcelain", "--untracked-files=no",
+                                            "--", ".", ":(exclude)evaluation/results")),
         "core_sha256": {name: _sha256(ROOT / name) for name in CORE_FILES},
         "env_overrides": {k: v for k, v in os.environ.items() if k.startswith("RAG_")},
     }
