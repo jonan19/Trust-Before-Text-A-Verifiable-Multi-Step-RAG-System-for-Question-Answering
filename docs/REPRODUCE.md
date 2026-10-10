@@ -195,3 +195,11 @@ RAG_MIN_CHUNK_SCORE_THRESHOLD=0 python evaluation/run_eval.py --corpus 1 --tag n
 ```bash
 python -m pytest tests/
 ```
+
+58 fast tests (about a minute, nearly all of it importing the ML libraries; no
+model is loaded, no vector store is touched, no LLM is called). They cover the
+mechanism, not the corpus behaviour: the provenance fingerprint and Stage 0
+rejection of fabricated evidence, the abstention truth table, the absence of any
+LLM import in `validation.py`, numeric-contradiction rules, de-duplication, the
+sparse encoder, rank fusion and score calibration. Accuracy and safety on the
+two corpora are measured by the harnesses above, not by `pytest`.

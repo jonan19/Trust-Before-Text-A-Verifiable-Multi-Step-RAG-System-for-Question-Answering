@@ -31,7 +31,14 @@ established before text is generated.**
 | 2 | **[docs/STATUS.md](docs/STATUS.md)** | What currently works, what is broken, and the one big unsolved problem. All current numbers live here. |
 | 3 | **[docs/REPRODUCE.md](docs/REPRODUCE.md)** | Every command needed to regenerate every number in `STATUS.md`. |
 
-Those three files are the **only** current documentation. Everything under
+Two living files at the repo root track the work as it happens:
+
+| File | What it is |
+|---|---|
+| **[numbers.md](numbers.md)** | Every headline number, once, with its source file, plus a list of known inconsistencies. Update it first when a number changes. |
+| **[RAG_System_Observation_Log.md](RAG_System_Observation_Log.md)** | Append-only log of every change: issue, cause, fix, measured effect. |
+
+Those three docs plus the two files above are the **only** current documentation. Everything under
 [docs/archive/](docs/archive/) is a historical record kept for the paper's audit
 trail — it contains superseded numbers and should not be used as a reference.
 See [docs/archive/README.md](docs/archive/README.md) for what each archived file was.
@@ -67,10 +74,14 @@ LLM to answer — including asking it to notice contradictions or to refuse when
 evidence is missing. That means **the same model that writes the answer also
 decides whether answering is safe**, and it can be talked out of that decision.
 
-Measured here: a defended LLM baseline, explicitly told the passages are
-untrusted data, answered an attacker's fabricated policy on **every single one
-of 48 adversarial probes**. This system abstained on all 48, because the
-abstention is a deterministic routing decision made before any prompt exists.
+Measured here: defended LLM baselines, explicitly told the passages are
+untrusted data, answered an attacker's fabricated policy on **every probe they
+were given: 12/12 in each of three runs** (llama-3.3-70b on Corpus 1;
+gpt-oss-120b on Corpus 1 and on Corpus 2; the two hardest attack styles only).
+This system abstained on **all 48 of its own probes** (four styles, both
+corpora), because the abstention is a deterministic routing decision made
+before any prompt exists. The two counts are not the same set of probes; see
+`numbers.md` section 5.
 
 The trade is honest and documented: the decision layer is more cautious than an
 LLM and over-abstains on some answerable questions. See
@@ -82,9 +93,9 @@ LLM and over-abstains on some answerable questions. See
 
 | | Corpus 1 (HR policies) | Corpus 2 (university policies) |
 |---|---|---|
-| Decision accuracy | 92.3% | 82.1% |
-| Contradictions found | 16/16 | 15/16 |
-| Answered when it should have refused | 1/32 | 2/32 |
+| Decision accuracy | 96.2% | 89.7% |
+| Contradictions found | 16/16 | 14/16 |
+| Answered when it should have refused | 0/32 | 1/32 |
 | Adversarial probes leaked | see [STATUS](docs/STATUS.md) | 0/24 |
 
 **The one big unsolved problem** is false conflicts: the system sometimes reports

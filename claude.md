@@ -71,6 +71,11 @@ Always provide:
 - Possible edge cases.
 - Any recommended follow-up work.
 
+Then record it, every time, before calling the task done:
+
+- Append an entry to `RAG_System_Observation_Log.md` (template at its end).
+- If any number changed, update `numbers.md` first, then make other files match it.
+
 ## Project Goal
 
 Every architectural decision should improve one or more of:

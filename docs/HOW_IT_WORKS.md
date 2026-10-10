@@ -295,7 +295,7 @@ be measured.
 | `evaluation/synthesis_containment_test.py` | Checks injected text never reaches the LLM prompt. |
 | `evaluation/*_lab.py`, `*_diag.py`, `*_sweep.py` | Single-purpose diagnostics from specific investigations. Not part of routine testing. |
 | `evaluation/results/` | JSON output from every run. |
-| `tests/` | Unit tests (pytest). |
+| `tests/` | Unit tests (pytest, 58 fast tests of the mechanism; see `REPRODUCE.md`). |
 
 ### Everything else
 
@@ -305,7 +305,6 @@ be measured.
 | `experiments_corpus2/` | The original Corpus 2 transfer study. Historical. |
 | `paper_assets/` | The LaTeX paper, figures, bibliography. |
 | `docs/archive/` | Superseded documentation. See its README. |
-| `examples/` | Usage examples. |
 | `claude.md` | Instructions for AI coding assistants working in this repo. |
 
 ## 7. A caution about the numbers

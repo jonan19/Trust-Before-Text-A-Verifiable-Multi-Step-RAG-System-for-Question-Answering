@@ -19,7 +19,7 @@ alongside it for comparison, not as the current state.
 
 > **False conflicts.** The system reports contradictions that are real in the
 > corpus but irrelevant to the question asked. With the `ANSWERHOOD_MARGIN`
-> gate now shipped (δ=5.5), Corpus 2 is down to 2 wrong reports out of 17
+> gate now shipped (δ=5.5), Corpus 2 is down to 2 wrong reports out of 16
 > (precision 0.875), from 9 of 24 (0.625) before. Corpus 1 is clean (precision
 > 1.000). The mechanism behind Corpus 2's remaining two — its two hardest known
 > false-conflict pairs — is untouched; see "Standing Decision" in `claude.md`
@@ -121,9 +121,13 @@ insufficient):
 
 | Corpus 2 | Answer | Conflict | Insuff. |
 |---|---|---|---|
-| Answer (46) | 35 | 7 | 4 |
-| Conflict (16) | **1** | 15 | 0 |
+| Answer (46) | 42 | 0 | 4 |
+| Conflict (16) | **1** | 14 | 1 |
 | Insufficient (16) | 0 | 2 | 14 |
+
+(Re-measured 2026-10-10, 70/78 = 89.7%. The previous matrix here, 35 / 7 / 4,
+1 / 15 / 0, 0 / 2 / 14, summed to 64/78 = 82.1% and was the pre-margin one;
+it is what `RAG_ANSWERHOOD_MARGIN=0` still produces.)
 
 Corpus 1's conflict column is now exactly the gold conflict set: 16 flagged, 16
 correct, 0 spurious, and every one citing the pair the gold file names. Its three
@@ -180,9 +184,11 @@ says 2.0). Both of those sentences are about GPA, so both are retrieved as stron
 evidence, so the system reports a conflict — even though neither sentence
 mentions the Dean's List and your question had a perfectly good answer.
 
-**Scale.** 0 false conflicts on Corpus 1, 9 on Corpus 2 (was 3 and 10 before the
-two Stage-4 preconditions described under "Current measurements"). All nine
-remaining are the query-relevance class described here; the boilerplate and
+**Scale.** 0 false conflicts on Corpus 1, 9 on Corpus 2 before the
+`ANSWERHOOD_MARGIN` gate shipped (2 now; the 9 reproduce with
+`RAG_ANSWERHOOD_MARGIN=0`). Before the two Stage-4 preconditions described under
+"Current measurements" they were 3 and 10. All nine pre-margin
+are the query-relevance class described here; the boilerplate and
 incommensurable-unit classes are gone.
 
 **Why it is hard.** The NLI model is being asked *"do these two sentences
@@ -452,7 +458,7 @@ independently and earlier than Corpus 2 did.
 |---|---|
 | Prompt injection via retrieved content reaching the LLM | **Solved** at the input boundary — 45/45 → 0/45 |
 | Fabricated evidence accepted as real | **Solved** by the fingerprint registry — origin, not truth |
-| No demonstrated separation from a defended LLM | **Solved** — 48 adversarial probes: this system 0/48 unsafe, two defended LLM baselines 12/12 unsafe each |
+| No demonstrated separation from a defended LLM | **Solved** — 48 adversarial probes: this system 0/48 unsafe; defended LLM baselines (run on the two hardest styles only, 12 probes per run) 12/12 unsafe in each of three runs (llama-3.3-70b on Corpus 1, gpt-oss-120b on Corpus 1 and Corpus 2) |
 | Conflict threshold was a finely-tuned constant | **Largely dissolved** — F1 is flat across 0.80–0.97 |
 | Three of four gap leaks on Corpus 2 | **Fixed** — the average-score branch was averaging a single passage |
 | Pronouns counted as question content (`"i"` scored as a topic word) | **Fixed** |

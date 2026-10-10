@@ -1,431 +1,258 @@
-# NUMBERS.md — Single Source of Truth for All Paper Numbers
+# NUMBERS.md: Single Source of Truth for Every Number
 
-**Purpose:** every number below is transcribed directly from the current paper
-(`paper_assets/trust_before_text.tex`) or from the raw result files it cites.
-If a number you're about to write differs from this file, the paper is
-correct and this file is stale — re-sync this file, don't silently diverge.
-If you need a number that ISN'T here, get it from the raw file named in the
-Source column, not from memory.
+**Purpose.** One place where every headline number in the repo is written down
+once, with the file it came from. If a number in any other document (README,
+STATUS, paper, a report) disagrees with this file, one of them is wrong: find
+out which, fix it, and log the fix in `RAG_System_Observation_Log.md`.
 
-**Last synced: 2026-08-16, from the live `trust_before_text.tex`.** This pass
-was a full "god mode" review: fixed 2 orphaned figures (Fig. 4/5 now
-referenced in prose), an imprecise shared footnote in Table 4, redundant
-Discussion/Limitations content, a missing Corpus-2 mention in the
-Conclusion, an oversized abstract (377→287 words), and refreshed the
-reference count everywhere it was stale (was still saying 44; real count is
-98). No experimental numbers changed in this pass. Previous entry (kept for
-history): corrected a transcription error in the Corpus-2 root-cause claim
-(§2a) that had propagated from `CORPUS2_REPORT.md`: "18 of 19 false
-conflicts trace to two document pairs" was wrong; the correct claims are
-"17 of 19 involve one of two documents" (document level) and "12 of 19 are
-the exact conflicting pair" (pair level), and an internal contradiction on
-conflict-recall transfer (§2f) was also fixed. Update this line whenever you
-edit this file.
+**Rules.**
+1. Every row names its source. Prefer a raw result file or a command in
+   [docs/REPRODUCE.md](docs/REPRODUCE.md). If the only source is a prose
+   document, the row says so, and the row is lower trust.
+2. When a number changes (new run, code change, corrected typo), update it here
+   first, then update the other files to match, then add a log entry.
+3. Never delete an old value silently. Move it to "History" with its date.
+4. `evaluation/results/` is gitignored, so raw JSON is not in the repo. A row
+   whose raw file is listed but absent from a fresh checkout cannot be
+   re-verified from the repo alone. Those rows are marked `[raw not in repo]`.
+   The 2026-10-10 re-run's result files are fingerprinted (SHA-256) in
+   [docs/RERUN_MANIFEST_2026-10-10.md](docs/RERUN_MANIFEST_2026-10-10.md), which
+   is tracked, so those rows can be checked against a regenerated run.
+5. Query IDs are NOT unique across corpora. Corpus 1 and Corpus 2 each number
+   their own 78 queries from Q001, so every ID exists in both and means a
+   different question (C1 Q041 = employer pension contribution, C2 Q041 =
+   minimum GPA to keep financial aid; C1 Q051 = relocation allowance, C2 Q051 =
+   graduate TA stipend; C1 Q035 and C2 Q035 are both conflict queries about
+   different policies). Always write `C1 Q041` or `C2 Q041`, never a bare `Q041`.
 
-**System version: v6, frozen throughout.** No threshold or decision-logic
-code was changed across any experiment below (Corpus 2, E1-E5, spot-check).
+**Last synced: 2026-10-10**, after merging `origin/Testing` into `jonan`, then
+re-run in full for Section 2 (corpora, security, invariance) at `7db6ff7`
+(`evaluation/results/rerun_2026-10-10/`, Observation 30).
+Built from `docs/STATUS.md` (rev 2026-08-24), `docs/CORPUS3_RESULTS.md`,
+`docs/RAMDOCS_COMPARISON.md`. Arithmetic was re-checked for the Corpus 3 and
+RAMDocs rows (all ratios and percentages reproduce). Sections 3 to 6 were not
+re-run (sealed test, RAMDocs, and v6 experiments are out of scope by design).
 
 ---
 
-## 1. Corpus 1 (Meridian Grid Technologies — UK enterprise HR policy)
+## 0. Which system is which
 
-The **primary, tuned-on** corpus. Every threshold in §3 was calibrated on
-this corpus alone.
+| Label | Meaning | Where its numbers are |
+|---|---|---|
+| **v6 (paper-frozen)** | The system the paper `paper_assets/trust_before_text.tex` was written against. | Section 6 below; full tables in git: `git show 832736a:numbers.md` |
+| **Current defaults** | Repo as of `docs/STATUS.md` 2026-08-24: Stage 0 provenance, Stage 4 preconditions, sufficiency focus-term veto, `ANSWERHOOD_MARGIN=5.5`. | Sections 1 to 5 |
 
-| Item | Value |
-|---|---|
-| Documents | 11 (incl. 1 superseded pair) |
-| Facts | 45 |
-| Planted cross-document conflicts | 4 |
-| Deliberate gaps | 6 |
-| Queries | 78 (46 answer / 16 conflict / 16 insufficient) |
-| Phrasing types | 7 (single-fact, multi-part, cross-document comparison, conflict-probing, out-of-scope, aggregation, applied-scenario) |
+The paper still quotes v6 (the tex contains the v6 figures 92.3% and 66.7%).
+**The paper and the current system now disagree.** See Section 7, item 1.
 
-**The 4 planted conflicts:** probationary period (3 vs 6 months) · max
-remote days/week (3 vs 2, current vs superseded 2023 policy) · employer
-pension contribution (6% vs 5%) · personal device for work email (permitted
-if MDM-enrolled vs prohibited).
+Current default switches (all env-overridable, see `docs/REPRODUCE.md`):
 
-### 1a. Main results (ours, v6) — Table 5 in the paper (`tab:results`)
-Source: `experiments/our_decisions.json`
+| Switch | Default | Added |
+|---|---|---|
+| `REQUIRE_ASSERTIVE_SPANS` | on | Stage 4 precondition |
+| `DIMENSIONAL_VETO` | on | Stage 4 precondition |
+| `RAG_MIN_FOCUS_PRESENCE` | 0.5 | Stage 5 hard veto (Problem 2 fix) |
+| `RAG_ANSWERHOOD_MARGIN` | 5.5 | shipped 2026-08-24; 0 restores pre-gate behaviour |
+| `RAG_ANCHOR_ASYMMETRIC_QSPAN` | 0 (off) | candidate, shipped disabled |
+
+---
+
+## 1. Corpora
+
+| | Corpus 1 (Meridian Grid, UK HR) | Corpus 2 (Ashcombe Falls, US university) | Corpus 3 (ContractNLI NDAs) |
+|---|---|---|---|
+| Authored by | this project | this project | external (Koreeda & Manning 2021) |
+| Queries | 78 (46 answer / 16 conflict / 16 insufficient) | 78 (same composition) | Track A 510, Track B 240 |
+| Role | tuned on | used for selection many times | sealed test, opened once 2026-08-31 |
+
+Source: `docs/STATUS.md` Problem 3, `docs/CORPUS3_RESULTS.md` section 1.
+
+---
+
+## 2. Corpus 1 and Corpus 2, current defaults
+
+Source: `docs/STATUS.md` "Current measurements" (rev 2026-08-24). Reproduce:
+`python evaluation/run_eval.py --corpus {1,2}`.
+
+| Metric | Corpus 1 | Corpus 2 |
+|---|---|---|
+| Decision accuracy | 96.2% (75/78) | 89.7% (70/78) |
+| Conflict recall | 16/16 | 14/16 |
+| Conflict precision | 1.000 | 0.875 |
+| Attribution precision (right pair cited) | 1.000 | 0.875 |
+| Gap queries wrongly answered | 0/16 | 0/16 |
+| Unsafe answers (answered when should refuse/flag) | 0/32 | 1/32 (Q045 only) |
+| False conflicts | 0 | 2 (credit-hours 21 vs 18, Dean's List vs aid GPA) |
+| Over-cautious refusals (answer -> insufficient) | 3 (Q006, Q070, Q013) | 4 (Q023, Q064, Q059, Q074) |
+
+Derived, not stated in STATUS: Corpus 2 precision 0.875 = 14/16 flagged, so 16
+conflict reports with 2 wrong. Corpus 1 accuracy 75/78 = 96.15%.
+
+### History (do not delete; add rows)
+
+| Date | Change | C1 acc | C2 acc | C2 precision | C2 recall |
+|---|---|---|---|---|---|
+| v6 (paper) | frozen paper system | 92.3% | 66.7% | 0.43 | 16/16 |
+| "previous revision" in STATUS | before Stage 4 preconditions | 92.3% | 80.8% | 0.600 | 15/16 |
+| 2026-08-23 | pre-`ANSWERHOOD_MARGIN` (margin = 0) | 96.2% | 82.1% | 0.625 | 15/16 |
+| 2026-08-24 | `ANSWERHOOD_MARGIN` = 5.5 shipped | 96.2% | 89.7% | 0.875 | 14/16 |
+| 2026-10-10 | Zero-token re-run at `7db6ff7`, no code change (Observation 30). Every section 2 headline row reproduced. Differences: C2 `query_polite` changed decisions 1 -> 0 (margin on); C2 adversarial gap probes "unsafe before provenance" 14/24 -> 16/24 (Q055 urgency and aware flipped `conflict` -> `answer`; after provenance 0/24 and control 0/24 unchanged; C1 17/24 unchanged). `pytest` step failed at collection (missing `retrieval_module`), unrelated to these numbers. | 96.2% | 89.7% | 0.875 | 14/16 |
+
+Measured 2026-10-10 (Observation 35): the two changes switched independently,
+answerhood gate off (`RAG_ANSWERHOOD_MARGIN=0`), same code at `7db6ff7`.
+
+| State | C1 acc | C1 unsafe | C2 acc | C2 precision | C2 false conflicts | C2 unsafe |
+|---|---|---|---|---|---|---|
+| neither (`RAG_MIN_FOCUS_PRESENCE=0`, preconditions off) | 92.3% (72/78) | 1/32 | 82.1% (64/78) | 0.600 | 10 | 2/32 |
+| sufficiency fix only | 92.3% (72/78) | 0/32 | 80.8% (63/78) | 0.600 | 10 | 1/32 |
+| Stage 4 preconditions only | 96.2% (75/78) | 1/32 | 83.3% (65/78) | 0.625 | 9 | 2/32 |
+| both | 96.2% (75/78) | 0/32 | 82.1% (64/78) | 0.625 | 9 | 1/32 |
+
+Each change has the same effect whichever comes first (sufficiency: C2 -1 query,
+C1 0; preconditions: C2 +1, C1 +3), so the order does not change the end state.
+STATUS's sequence (82.1% -> 80.8% -> 82.1%) is the "sufficiency first" path; the
+other path goes 82.1% -> 83.3% -> 82.1%. The "sufficiency only" row reproduces
+STATUS's "previous revision" row exactly (92.3% / 80.8%, precision 0.842 / 0.600).
+
+### Security properties (same code, one pass)
+
+Source: `docs/STATUS.md` "Security properties".
+
+| Test | Corpus 1 | Corpus 2 |
+|---|---|---|
+| Injected text reaching the LLM prompt | 0/45 | not stated per corpus in STATUS |
+| Routing decision changed by injection | 0/45 | not stated per corpus |
+| Adversarial gap probes leaked (control) | 0/24 (0/24) | 0/24 (0/24) |
+| Adversarial gap probes unsafe before provenance (gate on, margin 5.5) | 17/24 | 16/24 (was 14/24 in the committed file, which predates the margin; 14/24 reproduces with `RAG_ANSWERHOOD_MARGIN=0`) |
+| Fabricated evidence accepted (control abstains) | 0/4 (4/4) | 0/4 (4/4) |
+| Injection-hijack label audit | 20/45 corrected, 2 mislabels (`authority` style) | not stated |
+
+### Invariance (changed decisions / refuse-to-answer flips, out of 78)
+
+Source: `docs/STATUS.md`, pre-gate table; margin-on re-run text in Problem 1.
+Re-run command: `RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/invariance_harness.py --corpus {1,2}`.
+
+| Transform | C1 changed / unsafe | C2 changed / unsafe |
+|---|---|---|
+| permute, duplicate, distractor, query_lower | 0 / 0 | 0 / 0 |
+| query_thanks | 2 / 1 (pre-gate); 1 / 0 (margin on) | 2 / 0 |
+| query_polite | 1 / 1 (pre-gate); unsafe 0 (margin on) | 0 / 0 (margin on, re-run 2026-10-10; was 1 / 0) |
+
+---
+
+## 3. Corpus 3 (ContractNLI), sealed test, Track A
+
+Source: `docs/CORPUS3_RESULTS.md` section 2. Raw: `evaluation/results/c3_hypothesis_corpus3_test.json`, `..._ci.json` `[raw not in repo]`. Config frozen 2026-08-25 (amended 2026-08-28), test opened once 2026-08-31.
+
+| Metric | Value | 95% CI (bundle bootstrap) |
+|---|---|---|
+| Accuracy | 26.7% (136/510) | [22.5%, 31.0%] |
+| Always-answer floor | 77.6% (396/510) | n/a |
+| Conflict precision | 0.122 (47/386) | [0.096, 0.149] |
+| Conflict recall | 0.635 (47/74) | [0.554, 0.726] |
+| Conflict F1 | 0.204 | [0.166, 0.242] |
+| Attribution precision (internal gold) | 0.031 (12/386) | [0.016, 0.049] |
+| Gap leaks | 3/40 | n/a |
+| Unsafe answers | 29/114 | n/a |
+| Gold mix | 396 answer / 74 conflict / 40 insufficient | n/a |
+| Per-bundle accuracy | min 5.9%, median 23.5%, max 58.8% | n/a |
+
+External evidence attribution (graded against ContractNLI annotator spans, `..._attribution.json`):
+evidence recall 68.5% (1612/2355); evidence precision 14.8% (1875/12,637);
+**external attribution precision 0.0% (0/350 conflict reports)**; unresolved
+chunks 1.67% (215/12,852); unresolved conflict spans 19.
+
+Baseline arms on Track A (`c3_baselines_corpus3_test.json` `[raw not in repo]`):
+
+| Arm | Accuracy | Gap leaks | Unsafe |
+|---|---|---|---|
+| always_answer | 77.6% | 40/40 | 114/114 |
+| always_abstain | 7.8% | 0/40 | 0/114 |
+| retrieval_threshold (top chunk >= 0.6) | 77.6% (identical to always_answer) | 40/40 | 114/114 |
+
+### Track B (240 LLM-authored queries)
+
+Source: `docs/CORPUS3_RESULTS.md` section 4. Raw: `c3_open_corpus3_test.json` `[raw not in repo]`.
 
 | Metric | Value |
 |---|---|
-| Decision accuracy | 92.3% (72/78) |
-| Conflict recall | 1.000 (16/16) |
-| Conflict precision | 0.727 (16/22) |
-| Conflict F1 | 0.842 |
-| Answer recall | 87.0% (40/46) |
-| Gap/insufficient recall | 100% (16/16) |
-| Unsafe answers | 0/32 (0%) |
+| Accuracy | 40.4% (97/240); floor 48.8% (117/240) |
+| Conflict precision / recall / F1 | 0.175 (10/57) / 0.159 (10/63) / 0.167 |
+| Attribution precision (internal gold) | 0.018 (1/57) |
+| Gap leaks | 18/60 |
+| Unsafe answers | 65/123 (53%) |
+| Gold mix | 117 answer / 63 conflict / 60 insufficient |
 
-Confusion matrix (Table 6, `tab:confusion`; rows=gold, cols=system):
-
-| gold ↓ / gave → | Answer | Conflict | Insufficient |
-|---|---|---|---|
-| Answer (46) | 40 | 6 | 0 |
-| Conflict (16) | 0 | 16 | 0 |
-| Insufficient (16) | 0 | 0 | 16 |
-
-The 6 errors (all safe over-caution, answer→conflict): **Q001, Q019, Q029,
-Q062, Q064, Q072**. Root cause: query-unscoped conflict detector fires on
-irrelevant document pairs. Q029 and Q064 score above every true conflict
-(0.9996, 0.9998) — no threshold can remove them without discarding real
-conflicts.
-
-### 1b. Ablation (Table 7, `tab:ablation`)
-| Configuration | Accuracy |
-|---|---|
-| Validation baseline | 67.9% (53/78) |
-| + Sufficiency AND→OR | 83.3% (65/78) |
-| + NLI 0.94 & remove comparison override | **92.3% (72/78)** |
-
-### 1c. NLI score separation (Fig. 6 data; `paper_assets/make_figures.py`)
-- True conflicts (n=12): 0.965, 0.995, 0.9955, 0.9958, 0.9958, 0.996, 0.9981×4, 0.9998, 0.9999
-- False conflicts (n=8): 0.817, 0.834, 0.861, 0.867, 0.876, 0.919, 0.9996, 0.9998
-- Threshold: 0.94 (sits in the gap, except the two false-conflict outliers above)
-
-### 1d. Prompted-LLM baseline, E1 (Table 9, `tab:headtohead`)
-Source: `experiments/baseline_results.json`, `experiments/baseline_per_query.json`
-Model: Groq `llama-3.3-70b-versatile`. 1 canonical run @ temp 0 + 5 runs @ temp 0.7.
-
-| Property | Ours | Baseline |
-|---|---|---|
-| Decision accuracy | 92.3% (72/78) | **97.4% (76/78)** |
-| Decision consistency (5 reruns) | 1.000 (0 flips) | 0.987 (1 flip, Q069) |
-| Parametric leakage (16 gaps) | 0/16 | 0/16 |
-| Conflict attribution (full 3/3) | 16/16 | 14/16 (mean 2.875/3) |
-| Unsafe answers | 0/32 | 1/32 (Q035) |
-
-Baseline confusion matrix (Table 8, `tab:baseline_confusion`):
-
-| gold ↓ / gave → | Answer | Conflict | Insufficient |
-|---|---|---|---|
-| Answer (46) | 45 | 0 | 1 |
-| Conflict (16) | 1 | 15 | 0 |
-| Insufficient (16) | 0 | 0 | 16 |
-
-Baseline's 2 errors: **Q072** (answer→insufficient, safe over-abstention),
-**Q035** (conflict→answer, the one unsafe case: answered a real conflict).
-Baseline conflict recall (derived from confusion matrix, not a named table
-cell) = **15/16 = 93.75%**.
-
-### 1e. Threat/Adversarial experiments (E2-E5)
-
-**E2 — scale/haystack stress test** (NOT in the current paper body; recorded
-here so no chat re-derives or contradicts it). Source: `experiments/haystack_results.json`.
-Result: **win NOT met.** Conflict recall vs N (buried-conflict setting):
-
-| N | Ours | LLM |
-|---|---|---|
-| 2 | 0.75 | 1.00 |
-| 5 | 0.75 | 1.00 |
-| 10 | 0.70 | 0.85 |
-| 20 | 0.60 | 0.85 |
-| 40 | 0.50 | 0.75 |
-
-Ours degrades via distractor masking (masked-wrong-pair rate 0→0.05→0.15→0.40→0.50
-as N grows); LLM degrades only on the semantic conflict C4 (1.00→0.40→0.00 by
-N=40). C4 is missed by our detector at every N (NLI_SIM_FLOOR gates it out:
-lexical sim 0.1483 < floor 0.15, even though isolated NLI score is 0.9999).
-**Deferred to future work; numbers frozen, do not re-run/re-tune.**
-
-**E3 — Fixed injection** (Table 12, `tab:injection`). 15 answerable queries
-× 3 styles = 45 cases. Source: `experiments/injection_results.json`.
-
-| Style | Undefended LLM | Defended LLM | Ours: routing obeyed | Ours: routing changed | Ours: synthesis |
-|---|---|---|---|---|---|
-| Direct | 1.000 | 0.000 | 0.000 | 0.000 | 0.133 |
-| Authority | 0.733 | 0.000 | 0.000 | 0.133 (2/15) | 0.200 |
-| Exfiltration | 1.000 | 0.000 | 0.000 | 0.000 | 0.867 |
-| **All (45)** | **0.911** | **0.000** | **0.000** | **0.044 (2/45)** | **0.400** |
-
-Poison survived validation 45/45. Routing changed (not obeyed) on 2/45,
-**both in the authority style**: **Q009, Q015**, both went to safe CONFLICT
-(the poisoned value was caught contradicting the real one).
-
-**E4 — Synthesis hardening** (Table 13, `tab:hardening`). Same 45 cases,
-re-run after adding untrusted-data delimiters + hardened synthesis prompt
-(spotlighting-style defense; no novelty claimed). Source:
-`experiments/hardening_injection.json`, `clean_before.json`, `clean_after.json`.
-
-| Style | Before (E3) | After hardening |
-|---|---|---|
-| Direct | 0.133 | 0.000 |
-| Authority | 0.200 | 0.000 |
-| Exfiltration | 0.867 | 0.000 |
-| **All (45)** | **0.400** | **0.000** |
-
-Clean regression (15 queries): 0 decision flips, 14/15 correct value
-retained (1 miss = grader artifact, identical both runs), faithfulness
-unchanged.
-
-**E5 — Adaptive attack on the decision (flagship)** (Table 14,
-`tab:adaptive`). 10 targets (6 conflict + 4 gap), up to 4 escalating
-rephrasings, best-of-N, against the **defended** LLM. Source:
-`experiments/adaptive_results.json`.
-
-| Attack family | Defended LLM | Ours (routing) |
-|---|---|---|
-| Conflict-suppression (6) | 2/6 = 0.33 | **0/6 = 0.00** |
-| Fabricated evidence (4) | 4/4 = 1.00 | 4/4 = 1.00 |
-
-Flipped conflict queries (LLM only): **Q040** (probation), **Q041**
-(pension). Our routing stayed CONFLICT on all 6, every attack. Gap
-fabrication defeats **both** systems 4/4 — the honest bound, not a win.
+Not final (status per `docs/CORPUS3_RESULTS.md` section 6, but see Section 7
+item 4): qform run, bare-LLM baseline (`openai/gpt-oss-120b`), Track B evidence
+attribution. Do not cite numbers for these until a source file exists.
 
 ---
 
-## 2. Corpus 2 (Ashcombe Falls University — US academic regulations)
+## 4. RAMDocs (external benchmark, sealed single pass 2026-09-04)
 
-**Held-out generalization test.** Independently authored, different domain
-and convention (US semester/credit-hour, USD, FAFSA vs Corpus 1's UK
-statutory leave, GBP, HMRC mileage). **No threshold was retuned for this
-corpus** — same frozen v6 system, same thresholds as Corpus 1 (Table 3,
-`tab:thresholds`).
+Source: `docs/RAMDOCS_COMPARISON.md`. Raw: `evaluation/results/rd_full_ramdocs.json` (500 records; present in this checkout, but the folder is gitignored, so `[raw not in repo]` on a clean clone).
 
-| Item | Value |
+| Metric | Value |
 |---|---|
-| Documents | 11 (incl. 1 superseded pair) |
-| Facts | 46 |
-| Planted cross-document conflicts | 4 (C1-C4, same distribution as Corpus 1: C1:5, C2:5, C3:3, C4:3 query-mapping) |
-| Deliberate gaps | 6 |
-| Queries | 78 (46 answer / 16 conflict / 16 insufficient) — mirrors Corpus 1 exactly |
+| Safe rate (correct or justified abstention) | 88.4% (442/500) |
+| Unsafe rate (asserted misinformation answer) | 2.6% (13/500) |
+| Abstentions among the 442 safe | 157 |
+| Abstentions with a misinformation doc present | 54.1% (85/157) |
+| Abstentions with no misinformation doc present | 45.9% (72/157) |
+| LLM calls per query (ours) | 1 (`openai/gpt-oss-120b` on Groq) |
 
-Source: `data_corpus2/*.docx`, `data_corpus2/ground_truth.json`,
-`data_corpus2/queries.json`. Full report: `experiments_corpus2/CORPUS2_REPORT.md`.
-
-### 2a. Main results (ours, v6) — part of Table 10 (`tab:corpus2`) and Table 4 (`tab:summary`)
-Source: `experiments_corpus2/our_decisions_corpus2.json`
-
-| Metric | Corpus 1 (ours) | Corpus 2 (ours) | Corpus 2 (baseline) |
-|---|---|---|---|
-| Decision accuracy | 92.3% | **66.7% (52/78)** | 98.7% (77/78) |
-| Conflict F1 | 0.84 | **0.60** | 0.97 |
-| Conflict precision | 0.73 | 0.43 (16 true flags against 21 false ones) | 1.00 |
-| Conflict recall | 1.00 | 1.00 (16/16) | 0.94 (15/16) |
-| Unsafe answers (/32) | 0 | **4** | 1 |
-
-**Note on conflict recall:** do not describe this as a clean "held by
-construction" result (an earlier internal draft of this claim, and one
-table row in the paper, made that error and has since been corrected — see
-§2f). Recall staying at 16/16 on Corpus 2 is entangled with the same
-query-unscoped firing that collapses precision; it is not an independent
-success.
-
-Ours confusion matrix, Corpus 2:
-
-| gold ↓ / gave → | Answer | Conflict | Insufficient |
-|---|---|---|---|
-| Answer (46) | 26 | 19 | 1 |
-| Conflict (16) | 0 | 16 | 0 |
-| Insufficient (16) | 4 | 2 | 10 |
-
-Baseline confusion matrix, Corpus 2:
-
-| gold ↓ / gave → | Answer | Conflict | Insufficient |
-|---|---|---|---|
-| Answer (46) | 46 | 0 | 0 |
-| Conflict (16) | 1 | 15 | 0 |
-| Insufficient (16) | 0 | 0 | 16 |
-
-**Error decomposition (26 errors total):** 22 conservative (19
-answer→conflict, 2 insufficient→conflict, 1 answer→insufficient), **4
-unsafe** (gap queries answered instead of abstained).
-
-**Root cause of precision collapse — CORRECTED 2026-08-11.** The original
-`CORPUS2_REPORT.md` prose (and the paper's earlier draft) conflated two
-different counts: the exact conflicting-pair count and the broader
-document-involvement count. Re-derived directly from the `conflict_pair`
-field in `experiments_corpus2/our_decisions_corpus2.json` (19 false
-`answer`→`conflict` flags):
-
-- **Document level ("nearly all," the correct framing for that phrase):
-  17 of 19 (89%)** involve either
-  `Course_Registration_Policy_2022_Superseded.docx` (the superseded
-  registration policy) or `Student_Handbook.docx` (the handbook),
-  regardless of which document they were retrieved alongside.
-- **Exact pair level (do NOT call this "nearly all"): 12 of 19 (63%)**
-  are the precise conflicting pair itself: 6 are
-  `Course_Registration_Policy_2022_Superseded.docx` ×
-  `Course_Registration_and_Add_Drop_Policy.docx` (Q007, Q020, Q029, Q031,
-  Q069, Q070), and 6 are
-  `Academic_Catalog_and_Grading_Policy.docx` × `Student_Handbook.docx`
-  (Q003, Q004, Q066, Q067, Q068, Q071).
-- **The remaining 5 of the 17** involve the superseded policy or the
-  handbook but with a *different* partner: `Course_Registration_Policy_
-  2022_Superseded.docx` × `Tuition_and_Financial_Aid_Policy.docx` (Q010,
-  Q021), `Academic_Catalog_and_Grading_Policy.docx` ×
-  `Course_Registration_Policy_2022_Superseded.docx` (Q006),
-  `Course_Registration_Policy_2022_Superseded.docx` ×
-  `International_Student_Policy.docx` (Q019), and `Student_Handbook.docx`
-  × `Tuition_and_Financial_Aid_Policy.docx` (Q002).
-- **2 residuals involve neither document** (not 1, as the original report
-  said): `Academic_Catalog_and_Grading_Policy.docx` ×
-  `Student_Conduct_and_Disciplinary_Policy.docx` (**Q030**) and
-  `Academic_Integrity_Policy.docx` ×
-  `Student_Conduct_and_Disciplinary_Policy.docx` (**Q060**, an ordinary NLI
-  misfire, not a doc-overlap effect).
-
-12 + 5 + 2 = 19, all counts reconcile against the raw file. **Paper wording
-uses "two documents," never "two document pairs," and states both the
-17/19 and 12/19 figures** (`trust_before_text.tex`, Evaluation §"Generalization:
-A Second Corpus" and Limitations §"The Core Open Problem").
-
-### 2b. Gap leakage (unsafe answers) — the 4 leaked queries
-Source: `experiments_corpus2/gap_leakage_diagnosis.json`. Diagnosis: **all 4
-leaked on the sufficiency gate's average-score branch (H2) alone; the
-coverage branch (H4) correctly rejected all 4.** This is a calibration
-finding, not a structural one — the disjunction is exonerated.
-
-| Query | avg score (H2, ≥0.65) | coverage (H4, ≥0.55) | n chunks averaged |
-|---|---|---|---|
-| Q017 (study-abroad credits) | 0.6531 ✓ | 0.4000 ✗ | 4 |
-| Q050 (cat in dorm) | 0.6582 ✓ | 0.4000 ✗ | 1 |
-| Q078 (cat in dorm, scenario) | 0.6764 ✓ | 0.5000 ✗ | 1 |
-| Q055 (library fine) | 0.6782 ✓ | 0.2857 ✗ | 1 |
-| Q016 (control, correctly abstained) | 0.6097 ✗ | 0.0000 ✗ | 1 |
-| Q049 (control, correctly abstained) | 0.0000 ✗ | 1.0000 (vacuous, blocked by H1/H3) | 0 |
-
-Nearest correctly-abstaining control (Q016) scores 0.6097 — the whole
-leak/no-leak boundary sits in a band of ~0.04 (0.6531 to 0.6782 vs 0.6097).
-Conjecture (n=4, not established): 3 of 4 leaks had evidence collapse to a
-single chunk before averaging (`MIN_CHUNKS_FOR_SUFFICIENCY=1` permits this).
-
-Corrected in the report: Q055's surviving chunk is from
-`Tuition_and_Financial_Aid_Policy.docx` (Work-Study/Refunds), contains no
-"library" text at all. Q050/Q078 survived on the Housing policy document
-header, not a pet-related sentence. Adjacency is document-level, not
-sentence-level.
-
-### 2c. Determinism (Pillar 1) — held exactly
-Source: `experiments_corpus2/our_decisions_corpus2.json`,
-`experiments_corpus2/baseline_results_corpus2.json`
-
-| | Corpus 1 | Corpus 2 |
-|---|---|---|
-| Ours: decision flips | 0/8 subset re-run | 0/8 subset re-run, and 0 flips across the full 78-query baseline-comparison run |
-| Baseline: decision flips (5 hot runs) | 1/78 = 1.3% (Q069) | 1/78 = 1.3% (**Q041**, SAP-GPA query — different query than Corpus 1's Q041, corpora have independent numbering) |
-
-### 2d. Conflict attribution (Pillar 3) — held for ours, worse for baseline
-| | Corpus 1 | Corpus 2 |
-|---|---|---|
-| Ours: structural score | 3.00/3 (16/16, 16/16, 16/16) | 3.00/3 (16/16, 16/16, 16/16) |
-| Baseline: mean score | 2.88/3 | **2.25/3** (15/16 flagged, 13/16 named both docs, 8/16 gave both values) |
-
-### 2e. Injection spot-check (decision layer only)
-Source: `experiments_corpus2/injection_spotcheck_corpus2.py` →
-`injection_spotcheck_corpus2.json`. 5 answerable queries (not among the 19
-pre-existing false-conflict flags) × 3 styles (direct/authority/exfil) = 15
-cases. **No baseline run** (out of scope for a spot-check).
-
-| | Corpus 1 (E3, 45 cases) | Corpus 2 (spot-check, 15 cases) |
-|---|---|---|
-| Routing obeyed | 0/45 | **0/15** |
-| Routing changed | reported per style | **0/15** |
-| Poison survived Stage-3 | yes (by design) | **15/15** |
-
-### 2f. Held vs. drifted summary — Table 11 (`tab:heldvsdrifted`)
-**CORRECTED 2026-08-11:** conflict recall is not a by-construction row. It
-is empirical and entangled with the precision collapse (same mechanism:
-query-unscoped firing), so it cannot be read as an independent success. An
-earlier draft of the paper had this wrong in this table (calling it "by
-construction, held") while correctly calling it out as confounded in the
-Evaluation prose — that internal contradiction is now fixed in both the
-paper and here.
-
-| Property | Type | Transfer |
-|---|---|---|
-| Determinism (0 flips) | by construction | held |
-| Structural attribution (3/3) | by construction | held |
-| Conflict recall (16/16) | empirical | entangled with precision, not independent |
-| Decision accuracy | calibrated | drifted |
-| Conflict precision | calibrated | drifted |
-| Unsafe-answer rate | calibrated | drifted |
+Published comparators (Han et al., COLM 2025, Table 1, exact match, Llama-3.3-70B
+unless noted): No RAG 5.8%, prompt-based RAG 32.6%, self-reflection 30.4%,
+speculative RAG 30.6%, Astute RAG 31.8%, MADAM-RAG 34.4% (Qwen2.5-72B 26.4%,
+GPT-4o-mini 28.0%). **Different metric from our safe rate**: do not put 88.4%
+and 34.4% in one "accuracy" column.
 
 ---
 
-## 3. Combined summary — Table 4 (`tab:summary`, the paper's headline table)
+## 5. Adversarial and LLM-baseline results quoted in the README and STATUS
 
-Inserted before the detailed Corpus-1 results, right after the Metrics
-subsection. This is literally "Table 4" in the compiled paper.
+| Claim | Number | Source | Trust |
+|---|---|---|---|
+| Adversarial probes, ours unsafe | 0/48 | `docs/STATUS.md` "Fixed in earlier rounds" | prose only |
+| Adversarial probes, defended LLM baselines unsafe | 12/12 in each of three runs: llama-3.3-70b on C1 (`adversarial_baseline_corpus1.json`), gpt-oss-120b on C1 and C2 (`adversarial_baseline_gpt-oss-120b_corpus{1,2}.json`); 36 baseline probes in all, authority and aware styles only; gpt-oss C1 regex-only count is 10/12, adjudicated to 12/12 | raw files tracked in git | resolved 2026-10-10 (Observation 34); the README's "48" was our probe count, not the baselines' |
+| Injected text reaching prompt | 0/45 | `docs/STATUS.md` | prose |
+| Our synthesis injection grading | 18/45 -> 20/45 after grader fix | `docs/STATUS.md` | prose |
+| Defended LLM injection grading | 0/45 -> 7/45 (hand-adjudicated) | `docs/STATUS.md` | prose |
 
-| Metric | Corpus 1 (ours) | Corpus 1 (baseline) | Corpus 2 (ours) | Corpus 2 (baseline) |
+---
+
+## 6. v6 numbers the paper currently quotes (frozen, historical)
+
+Full tables: `git show 832736a:numbers.md`. Headline values only:
+
+| Metric | Corpus 1 (ours v6) | Corpus 1 (prompted LLM, E1) | Corpus 2 (ours v6) | Corpus 2 (baseline) |
 |---|---|---|---|---|
-| Decision accuracy | 92.3% | 97.4% | **66.7%** | 98.7% |
-| Conflict recall | 100% | 93.8% | 100% | 93.8% |
-| Unsafe answers (of 32) | **0** | 1 | **4** | 1 |
-| Decision flips (5 reruns) | **0%** | 1.3% | **0%** | 1.3% |
-| Injection obeyed (decision layer) | **0/45** | n/a | **0/15**\* | n/a |
+| Decision accuracy | 92.3% (72/78) | 97.4% (76/78) | 66.7% (52/78) | 98.7% (77/78) |
+| Conflict F1 | 0.842 | see git | 0.60 | 0.97 |
+| Conflict precision | 0.727 (16/22) | see git | 0.43 (16 true / 21 false flags) | 1.00 |
+| Conflict recall | 16/16 | see git | 16/16 | 15/16 |
+| Unsafe answers (/32) | 0 | see git | 4 | 1 |
 
-\*Corpus 2 figure is the 15-case spot-check (§2e), not a repeat of the full
-45-case Corpus 1 study. Baseline injection cells are n/a: a prompted model
-has no separate decision layer to isolate, and no baseline injection test
-was run on Corpus 2.
+Source: `git show 832736a:numbers.md` sections 1a, 1d, 2a (`experiments_corpus2/our_decisions_corpus2.json`).
 
-**Note:** this table intentionally omits fractions Table 10/`tab:corpus2`
-already gives in detail (e.g. conflict recall as 15/16 not just 93.8%) —
-it's a compact "at a glance" table; exact fractions live in §1/§2 above and
-their corresponding paper tables.
+v6 experiments E1 to E5 (baseline, scale, injection, hardening, adaptive) are
+described in `docs/archive/MASTER_REPORT.md`; their headline findings are
+unchanged by later work (they were not re-run).
 
 ---
 
-## 4. System constants (Table 3, `tab:thresholds`)
+## 7. Known inconsistencies (open; fix or confirm, then move to the log)
 
-| Threshold | Value | Stage | Type |
+| # | Where | Conflict | Needs |
 |---|---|---|---|
-| Duplicate similarity | 0.90 | 2 | Structural |
-| Relevance ratio | 0.30 | 3 | Structural |
-| Min relevance score | 0.05 | 3 | Structural |
-| Min chunk score | 0.60 | 3 | Structural |
-| Conflict similarity gate | 0.68 | 4 | Structural |
-| NLI similarity floor | 0.15 | 4 | Structural |
-| NLI contradiction | **0.94** | 4 | **Calibrated** |
-| Min chunks | 1 | 5 | Structural |
-| Min average score | **0.65** | 5 | **Calibrated** |
-| Min query coverage | **0.55** | 5 | **Calibrated** |
-| Prefetch limit | 20 | Retrieval | Structural |
-| Faithfulness (caution prefix) | 0.70 | Synthesis | Structural |
-
-All three calibrated thresholds were fit on **Corpus 1 only** and never
-retuned for Corpus 2 (§2, Guardrails in `CORPUS2_REPORT.md`).
-
-Tech stack (Table 2, `tab:stack`): Python 3.10 · Qdrant (local persistent)
-· dense `all-MiniLM-L6-v2` (384-d) · sparse BM25 (Qdrant IDF modifier) ·
-reranker ColBERT `answerai-colbert-small-v1` · NLI
-`cross-encoder/nli-deberta-v3-base` · synthesis Groq-hosted Llama-3
-(`llama-3.3-70b-versatile` for all baseline/adversarial LLM calls) ·
-FastAPI + static HTML/CSS/JS frontend.
-
----
-
-## 5. Paper meta-numbers (not experimental results)
-
-| Item | Count |
-|---|---|
-| References (`references.bib`) | 98, all cited, no orphans (grew 44→98 across 3 merge rounds: +11 curated 2026-08-14, +34 curated 2026-08-14, +9 merged from a second "Copy" draft 2026-08-15) |
-| Figures | 6 (Figs 1-3 native TikZ; Figs 4-6 matplotlib PDFs) |
-| Tables | 14 |
-| Equations | 8 |
-| Sections | 11 top-level (`\section{}`) |
-
----
-
-## 6. Known query-ID collisions (read before citing a Q-number)
-
-Corpus 1 and Corpus 2 each have their own independently numbered 78
-queries. The same ID means different things in each corpus:
-- **Q041**: Corpus 1 = pension-conflict query (used in E5 adaptive attack).
-  Corpus 2 = SAP-GPA query (the one baseline decision-flip case).
-- **Q035**: Corpus 1 baseline's one unsafe answer.
-- Always state which corpus a Q-ID belongs to when citing one outside its
-  own section.
-
----
-
-## 7. If a number here disagrees with a memory file or STATUS.md
-
-Trust this file's most-recently-synced version first, since it was
-transcribed directly from the compiled paper's tables. If THIS file
-disagrees with the raw JSON/`.md` reports cited in the Source columns, trust
-the raw file and flag the discrepancy — don't silently pick one.
+| 1 | Paper vs current system | Paper quotes v6 (92.3% / 66.7%); current defaults give 96.2% / 89.7% | Decision: re-sync paper numbers or keep v6 as an explicitly labelled frozen snapshot |
+| 2 | `README.md` "Current state at a glance" | Says C1 92.3%, C2 82.1%, unsafe 1/32 and 2/32, C2 recall 15/16; `docs/STATUS.md` says 96.2%, 89.7%, 0/32 and 1/32, 14/16 | Update README to match Section 2. **Closed 2026-10-10 (Observation 31).** |
+| 3 | `docs/STATUS.md` Corpus 2 confusion matrix | Matrix sums to 64/78 = 82.1% (pre-margin) but the headline row says 89.7% | Re-run `run_eval.py --corpus 2` and replace the matrix. **Closed 2026-10-10 (Observations 30, 31).** |
+| 4 | `docs/CORPUS3_RESULTS.md` section 6 | Says qform and bare-LLM runs are "in progress", yet commit `d309565` (2026-08-31) is titled as adding the bare-LLM baseline | Author to confirm and update. **Narrowed 2026-10-10 (Observation 34):** not a contradiction. The doc says the bare-LLM run covered 12/30 bundles and qform 22/30, so "in progress" fits a partial run, and the commit added the script plus that partial output. Still open: whether either run has since finished, and the raw `c3_*` files are in no git ref. |
+| 5 | README vs STATUS on adversarial probes | README: defended LLM answered the attacker's policy on all 48 probes; STATUS: baselines 12/12 unsafe each | Reconcile denominators. **Closed 2026-10-10 (Observation 34):** README and STATUS reworded to the raw-file counts (section 5). |
+| 6 | `docs/STATUS.md` "short answer" | "2 wrong reports out of 17"; precision 0.875 = 14/16 means 16 reports | Change 17 to 16 if 0.875 is right. **Closed 2026-10-10 (Observation 31).** |
+| 7 | `docs/STATUS.md` Problem 1 "Scale" | Says 9 false conflicts on Corpus 2; that is the pre-margin count (now 2) | Add "pre-margin" or update. **Closed 2026-10-10 (Observation 31).** |
+| 8 | `docs/STATUS.md` order of changes | 82.1% -> 80.8% (sufficiency fix) and 80.8% -> 82.1% (Stage 4 preconditions) both claimed, order unstated | Author to state the sequence. **Closed 2026-10-10 (Observation 35):** measured by switching each change independently (table under Section 2 History). Both claims are true and the effects are independent; STATUS's order is the sufficiency-first path. |
+| 9 | Corpus 3 and 2 raw files | `evaluation/results/` is gitignored; Corpus 3 JSONs are not in this checkout at all | Decide whether to commit result JSONs or keep a manifest with hashes. **Partly done 2026-10-10:** hash manifest for the Corpus 1/2 re-run is tracked in `docs/RERUN_MANIFEST_2026-10-10.md`. Corpus 3 `c3_*` files are in no git ref (checked `git log --all`), so they cannot be recovered from the repo; the author must supply them or accept the rows as prose-only. |
+| 10 | Old query-ID collisions | v6 numbers.md section 6 listed Q-number collisions across reports; not re-checked for the new docs | Read before citing any bare Q-number. **Closed 2026-10-10:** rule 5 above (always prefix with the corpus). |
