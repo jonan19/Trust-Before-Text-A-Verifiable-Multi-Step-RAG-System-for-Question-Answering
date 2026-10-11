@@ -49,6 +49,7 @@
 | 36 | 2026-10-10 | Result files did not say which system made them; the re-run was compared to expectations by hand | Evaluation tooling | Implemented (harness scripts only) | Every harness output carries `run_info`; the runner compares all 64 headline numbers itself |
 | 37 | 2026-10-10 | Full self-checking re-run at `5b26a62` after the tooling change | Evaluation / reproducibility | Measured, all steps passed | 64/64 MATCH; `pytest` 70 passed; one stamp flaw found and fixed (`9efb792`) |
 | 38 | 2026-10-11 | Sealed Corpus 3 (Track A and B) replicated under the frozen configuration | Generalisation / reproducibility | Measured; qform pending | Same picture, small drift: A 26.7% -> 26.1%, gap leaks 3 -> 4/40, B conflict reports 57 -> 59; external attribution still 0 |
+| 39 | 2026-10-11 | Run-to-run determinism check on one Corpus 3 bundle | Reproducibility | Measured, no code change | Fully deterministic on this machine; the August drift is environment or state, not instability |
 
 ---
 
@@ -338,6 +339,18 @@
 - **Not run.** qform (510 questions; pending, about 2.3 h); `llm_baseline_corpus3.py` (needs an API key); dev split. The runner's `collect` step has not yet written the hash manifest.
 - **Cost / regressions.** None. No system code changed.
 - **Numbers updated.** `numbers.md` section 3: new "Replication" subsection (original rows kept); section 7 item 9 annotated.
+
+## Observation 39: Run-to-run determinism on one Corpus 3 bundle
+
+*Added 2026-10-11. Commit/branch: `d52af92` on `jonan`, clean for decision-layer files. Zero LLM tokens. Follows Observation 38, whose "cause not established" it narrows.*
+
+- **Question.** Is the small drift between the August sealed run and the replication (Observation 38) run-to-run instability, or a difference in environment or state?
+- **Method.** Bundle `test-b00` (17 Track A queries, the smallest bundle), frozen configuration, no `RAG_*` variable. Two independent fresh processes (A at 14:11, B at 14:14, about 3 minutes each) through the project's own `run_eval_corpus3.run_bundle`, each with `harness.CACHE_DIR` redirected to an empty folder so retrieval was recomputed and the real retrieval cache was neither read nor modified (otherwise a rerun would only replay cached retrieval and test validation alone). Compared: per-query decisions, `coverage` and `avg_score`, and every retrieved chunk and score, A vs B, each vs the stored Track A part 1 file, and each fresh retrieval vs the retrieval cache written during the replication. Scripts were session scratch (`det_run.py`, `det_compare.py`), not added to the repo.
+- **Result.** 0 of 17 decisions differ between A and B, between A and the stored batch, and between B and the stored batch. `coverage` and `avg_score` are bit-identical in all three comparisons (max difference 0.000000). Retrieval: 27 files per run, identical chunk sets, identical ranking and identical scores to full precision (max difference 0.000000) between A, B and the replication cache.
+- **Reading.** On this machine, with these stores, the pipeline is deterministic end to end (embeddings, retrieval, validation), so the Observation 38 drift is not noise. It must come from something that differs from August: library or model versions, hardware numerics, or the rebuilt stores, none of which was recorded in August. This does not say which; and it does not show that bundles with the largest drift behave identically (one bundle only, and the August per-query records are lost, so b00's own drift is unknown).
+- **Not run.** A version-pinning test (rebuild the environment as of August) is impossible without the August package list; a second machine would test hardware numerics.
+- **Cost / regressions.** None. Real retrieval cache untouched; no repo file changed except this log and `numbers.md`.
+- **Numbers updated.** `numbers.md` section 3 replication note.
 
 ---
 
