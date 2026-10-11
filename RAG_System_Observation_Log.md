@@ -50,6 +50,7 @@
 | 37 | 2026-10-10 | Full self-checking re-run at `5b26a62` after the tooling change | Evaluation / reproducibility | Measured, all steps passed | 64/64 MATCH; `pytest` 70 passed; one stamp flaw found and fixed (`9efb792`) |
 | 38 | 2026-10-11 | Sealed Corpus 3 (Track A and B) replicated under the frozen configuration | Generalisation / reproducibility | Measured; qform pending | Same picture, small drift: A 26.7% -> 26.1%, gap leaks 3 -> 4/40, B conflict reports 57 -> 59; external attribution still 0 |
 | 39 | 2026-10-11 | Run-to-run determinism check on one Corpus 3 bundle | Reproducibility | Measured, no code change | Fully deterministic on this machine; the August drift is environment or state, not instability |
+| 40 | 2026-10-11 | qform (preregistered rewording) run on the sealed Corpus 3 | Generalisation / invariance | Measured, no code change | Rewording changes 118/510 decisions (23.1%); conflict reports -90, accuracy 26.1% -> 37.5%, unsafe answers 29 -> 43/114 |
 
 ---
 
@@ -351,6 +352,30 @@
 - **Not run.** A version-pinning test (rebuild the environment as of August) is impossible without the August package list; a second machine would test hardware numerics.
 - **Cost / regressions.** None. Real retrieval cache untouched; no repo file changed except this log and `numbers.md`.
 - **Numbers updated.** `numbers.md` section 3 replication note.
+
+## Observation 40: qform (rewording) on the sealed Corpus 3; replication run completed
+
+*Added 2026-10-11. Commit/branch: `938d018` plus the runner commit `d52af92` on `jonan`. Zero LLM tokens. Completes the run of Observation 38 (all steps exit 0; collect wrote `docs/RERUN_C3_MANIFEST_2026-10-11.md`, 24 hashed result files).*
+
+- **Question.** Preregistered prediction 6 (`docs/PREREGISTRATION_CORPUS3.md` section 6): the frozen interrogative rewrite of the same 17 hypotheses, same gold, changes more than 5% of decisions because focus-term selection is surface-form sensitive. qform was never completed before, so this is the first measurement.
+- **Method.** `rerun_corpus3.py` steps `qform_part1..6` (`run_eval_corpus3.py --queries queries_qform.json`, frozen configuration, margin 5.5, no `RAG_*` override) and `qform_merge`; 510 queries, 30 bundles. Decisions compared with Track A at the same query position within each bundle (same positions, same bundles, 0 misalignments). Total compute 7,725 s.
+- **Result.** 118 of 510 decisions change (23.1%), against the preregistered threshold of 5%: prediction 6 holds.
+
+  | | Track A (statements) | qform (questions) |
+  |---|---|---|
+  | accuracy | 133/510 = 26.1% | 191/510 = 37.5% |
+  | conflict flagged / true positives | 386 / 47 | 296 / 37 |
+  | conflict precision / recall | 0.122 / 0.635 | 0.125 / 0.500 |
+  | gap leaks | 4/40 | 9/40 |
+  | unsafe answers | 29/114 | 43/114 |
+  | always-answer floor | 77.6% | 77.6% |
+
+  Transitions (Track A -> qform): conflict -> answer 86, conflict -> insufficient 18, answer -> conflict 13, insufficient -> conflict 1; answer -> insufficient and insufficient -> answer: 0. By gold label, the changes are: gold `answer` 68 conflict -> answer, 9 answer -> conflict, 7 conflict -> insufficient; gold `conflict` 12 conflict -> answer, 3 answer -> conflict, 2 conflict -> insufficient, 1 insufficient -> conflict; gold `insufficient` 9 conflict -> insufficient, 6 conflict -> answer, 1 answer -> conflict.
+- **Reading.** Every changed decision involves a conflict report: rewording moves where the conflict detector fires, not the sufficiency gate. Statements fire it on 386 queries, questions on 296. That removes 68 false conflicts on answerable queries (accuracy +11.4 points) and 9 on gaps, but it also lets 12 true conflicts and 6 gaps be answered, so unsafe answers rise by 14 and gap leaks by 5. Neither phrasing reaches the 77.6% floor. This is Failure Pattern 1 (`claude.md`: the decision changes when the query is reworded without changing its meaning) measured on text the project did not write, and it means the project's invariance result (0/78 on case, ordering, duplication, distractor chunks) does not extend to paraphrase.
+- **Caveats.** The 17 rewrites are one frozen table, not a sample of paraphrases, and the question form also changes how the answerhood and focus-term gates read the query, so this measures that table, not "paraphrase" in general. Whether each rewrite preserves the gold label is the preregistration's assumption; it was not audited here. Each phrasing was run once; Observation 39 shows the pipeline is deterministic here, so one run is the same as many.
+- **Not run.** `llm_baseline_corpus3.py` (needs an API key); the dev split.
+- **Cost / regressions.** None; no code changed. Nothing was tuned or selected on this result, and under the Five-Line Rule it is a measurement, not a candidate for a fix.
+- **Numbers updated.** `numbers.md` section 3 (qform rows, prediction-6 paragraph, header text) and section 7 items 4 and 9.
 
 ---
 

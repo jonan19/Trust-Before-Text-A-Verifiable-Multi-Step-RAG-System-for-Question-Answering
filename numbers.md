@@ -201,8 +201,9 @@ at commit `3cb2e27` plus uncommitted runner code (no decision-layer change).
 The raw `c3_*` files from 2026-08-31 are lost, so the left column is the
 prose-only reported value; the right column is the first set of Corpus 3 numbers
 with raw files and `run_info` behind them. Raw: `evaluation/results/c3_*_corpus3_test*.json`
-(local, gitignored). zero LLM tokens. qform and the bare-LLM baseline were not run
-(qform pending; bare-LLM needs a key).
+(local, gitignored; hashes in `docs/RERUN_C3_MANIFEST_2026-10-11.md`). Zero LLM
+tokens. The bare-LLM baseline was not run (needs a key). qform was run (table
+below), so it now has a value but no earlier one to compare with.
 
 | Metric | Reported 2026-08-31 | Replicated | |
 |---|---|---|---|
@@ -225,6 +226,10 @@ with raw files and `run_info` behind them. Raw: `evaluation/results/c3_*_corpus3
 | Track B precision / recall / F1 | 0.175 / 0.159 / 0.167 | 0.2034 / 0.1905 / 0.1967 | DIFF |
 | Track B attribution (internal gold) | 0.018 (1/57) | 0.0339 (2/59) | DIFF |
 | Track B gap leaks / unsafe | 18/60 / 65/123 | 20/60 / 65/123 | gap leaks DIFF +2, unsafe same |
+| qform (frozen interrogative rewrite of the 510 Track A queries) accuracy | not reported | 37.5% (191/510) | new; Track A 26.1% |
+| qform conflict flagged / true positives / precision / recall | not reported | 296 / 37 / 0.125 / 0.500 | new; Track A 386 / 47 / 0.122 / 0.635 |
+| qform gap leaks / unsafe answers | not reported | 9/40 / 43/114 | new; Track A 4/40 / 29/114 |
+| qform decisions changed vs Track A (same query position) | not reported | 118 of 510 (23.1%) | new; prediction 6 (> 5%) held |
 
 Reading: the structural picture is unchanged (far below the floor, precision near
 0.12, external attribution zero, unsafe count identical). The differences are a
@@ -238,7 +243,13 @@ results. A same-machine check (Observation 39) found the system fully
 deterministic here (one bundle, two fresh processes plus the stored batch: 0
 differing decisions, bit-identical retrieval scores), so the drift from August is
 a difference in environment or state, not run-to-run instability.
-Pre-registered qform effect (prediction 6) is not yet measured.
+Pre-registered prediction 6 (rewording changes more than 5% of decisions) held:
+118 of 510 changed. By direction (Track A -> qform): conflict -> answer 86,
+conflict -> insufficient 18, answer -> conflict 13, insufficient -> conflict 1;
+no answer <-> insufficient flips. Conflict reports fell by 90, accuracy rose 11.4
+points, and unsafe answers rose by 14 (29 -> 43 of 114): rewording the same
+questions moves the answer / conflict boundary, a surface-form sensitivity on
+external text, with no accuracy gain reaching the 77.6% floor.
 
 ## 4. RAMDocs (external benchmark, sealed single pass 2026-09-04)
 
@@ -300,10 +311,10 @@ unchanged by later work (they were not re-run).
 | 1 | Paper vs current system | Paper quotes v6 (92.3% / 66.7%); current defaults give 96.2% / 89.7% | Decision: re-sync paper numbers or keep v6 as an explicitly labelled frozen snapshot |
 | 2 | `README.md` "Current state at a glance" | Says C1 92.3%, C2 82.1%, unsafe 1/32 and 2/32, C2 recall 15/16; `docs/STATUS.md` says 96.2%, 89.7%, 0/32 and 1/32, 14/16 | Update README to match Section 2. **Closed 2026-10-10 (Observation 31).** |
 | 3 | `docs/STATUS.md` Corpus 2 confusion matrix | Matrix sums to 64/78 = 82.1% (pre-margin) but the headline row says 89.7% | Re-run `run_eval.py --corpus 2` and replace the matrix. **Closed 2026-10-10 (Observations 30, 31).** |
-| 4 | `docs/CORPUS3_RESULTS.md` section 6 | Says qform and bare-LLM runs are "in progress", yet commit `d309565` (2026-08-31) is titled as adding the bare-LLM baseline | Author to confirm and update. **Narrowed 2026-10-10 (Observation 34):** not a contradiction. The doc says the bare-LLM run covered 12/30 bundles and qform 22/30, so "in progress" fits a partial run, and the commit added the script plus that partial output. Still open: whether either run has since finished, and the raw `c3_*` files are in no git ref. |
+| 4 | `docs/CORPUS3_RESULTS.md` section 6 | Says qform and bare-LLM runs are "in progress", yet commit `d309565` (2026-08-31) is titled as adding the bare-LLM baseline | Author to confirm and update. **Narrowed 2026-10-10 (Observation 34):** not a contradiction. The doc says the bare-LLM run covered 12/30 bundles and qform 22/30, so "in progress" fits a partial run, and the commit added the script plus that partial output. Still open: whether either run has since finished, and the raw `c3_*` files are in no git ref. **Update 2026-10-11 (Observation 40):** qform and Tracks A and B were replicated; only the bare-LLM baseline (needs an API key) has never been run to completion. |
 | 5 | README vs STATUS on adversarial probes | README: defended LLM answered the attacker's policy on all 48 probes; STATUS: baselines 12/12 unsafe each | Reconcile denominators. **Closed 2026-10-10 (Observation 34):** README and STATUS reworded to the raw-file counts (section 5). |
 | 6 | `docs/STATUS.md` "short answer" | "2 wrong reports out of 17"; precision 0.875 = 14/16 means 16 reports | Change 17 to 16 if 0.875 is right. **Closed 2026-10-10 (Observation 31).** |
 | 7 | `docs/STATUS.md` Problem 1 "Scale" | Says 9 false conflicts on Corpus 2; that is the pre-margin count (now 2) | Add "pre-margin" or update. **Closed 2026-10-10 (Observation 31).** |
 | 8 | `docs/STATUS.md` order of changes | 82.1% -> 80.8% (sufficiency fix) and 80.8% -> 82.1% (Stage 4 preconditions) both claimed, order unstated | Author to state the sequence. **Closed 2026-10-10 (Observation 35):** measured by switching each change independently (table under Section 2 History). Both claims are true and the effects are independent; STATUS's order is the sufficiency-first path. |
-| 9 | Corpus 3 and 2 raw files | `evaluation/results/` is gitignored; Corpus 3 JSONs are not in this checkout at all | Decide whether to commit result JSONs or keep a manifest with hashes. **Partly done 2026-10-10:** hash manifest for the Corpus 1/2 re-run is tracked in `docs/RERUN_MANIFEST_2026-10-10.md`. Corpus 3 `c3_*` files are in no git ref (checked `git log --all`), so they cannot be recovered from the repo; the author must supply them or accept the rows as prose-only. **Update 2026-10-11 (Observation 38):** the sealed Track A and Track B were replicated and the files regenerated locally (hash manifest follows when the run's `collect` step finishes); the 2026-08-31 originals remain lost. |
+| 9 | Corpus 3 and 2 raw files | `evaluation/results/` is gitignored; Corpus 3 JSONs are not in this checkout at all | Decide whether to commit result JSONs or keep a manifest with hashes. **Partly done 2026-10-10:** hash manifest for the Corpus 1/2 re-run is tracked in `docs/RERUN_MANIFEST_2026-10-10.md`. Corpus 3 `c3_*` files are in no git ref (checked `git log --all`), so they cannot be recovered from the repo; the author must supply them or accept the rows as prose-only. **Update 2026-10-11 (Observation 38):** the sealed Track A and Track B were replicated and the files regenerated locally (hash manifest: `docs/RERUN_C3_MANIFEST_2026-10-11.md`, 24 files); the 2026-08-31 originals remain lost. |
 | 10 | Old query-ID collisions | v6 numbers.md section 6 listed Q-number collisions across reports; not re-checked for the new docs | Read before citing any bare Q-number. **Closed 2026-10-10:** rule 5 above (always prefix with the corpus). |
