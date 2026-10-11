@@ -234,7 +234,11 @@ Cause not established: the August environment was never recorded, and this
 machine runs sentence-transformers 5.2.2, transformers 5.0.0, torch 2.10.0
 (`docs/RERUN_MANIFEST_2026-10-10*.md`). Use the replicated column for anything
 that needs a raw file behind it; treat both as the same experiment, not two
-results. Pre-registered qform effect (prediction 6) is not yet measured.
+results. A same-machine check (Observation 39) found the system fully
+deterministic here (one bundle, two fresh processes plus the stored batch: 0
+differing decisions, bit-identical retrieval scores), so the drift from August is
+a difference in environment or state, not run-to-run instability.
+Pre-registered qform effect (prediction 6) is not yet measured.
 
 ## 4. RAMDocs (external benchmark, sealed single pass 2026-09-04)
 
