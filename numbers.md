@@ -193,6 +193,49 @@ attribution. Do not cite numbers for these until a source file exists.
 
 ---
 
+### Replication of the sealed test, 2026-10-10/11 (Observation 38)
+
+Same frozen configuration (margin 5.5, no `RAG_*` override), same 30 bundles and
+query files, stores rebuilt from `data_corpus3/`, run by `evaluation/rerun_corpus3.py`
+at commit `3cb2e27` plus uncommitted runner code (no decision-layer change).
+The raw `c3_*` files from 2026-08-31 are lost, so the left column is the
+prose-only reported value; the right column is the first set of Corpus 3 numbers
+with raw files and `run_info` behind them. Raw: `evaluation/results/c3_*_corpus3_test*.json`
+(local, gitignored). zero LLM tokens. qform and the bare-LLM baseline were not run
+(qform pending; bare-LLM needs a key).
+
+| Metric | Reported 2026-08-31 | Replicated | |
+|---|---|---|---|
+| Track A accuracy | 26.7% (136/510) | 26.1% (133/510) | DIFF -3 queries |
+| Always-answer floor | 77.6% | 77.6% | same |
+| Conflict flagged / true positives / gold | 386 / 47 / 74 | 386 / 47 / 74 | same |
+| Conflict precision / recall / F1 | 0.122 / 0.635 / 0.204 | 0.1218 / 0.6351 / 0.2043 | same |
+| Unsafe answers | 29/114 | 29/114 | same |
+| Gap leaks | 3/40 | 4/40 | DIFF +1 |
+| Attribution (internal gold) | 0.031 (12/386) | 0.0337 (13/386) | DIFF +1 |
+| External attribution precision | 0.0% (0/350) | 0.0% (0/351) | still zero |
+| Evidence recall | 68.5% (1612/2355) | 69.4% (1634/2355) | DIFF |
+| Evidence precision | 14.8% (1875/12,637) | 15.1% (1898/12,577) | DIFF (60 fewer validated chunks) |
+| Unresolved chunks / conflict spans | 215 / 19 | 214 / 18 | DIFF -1 each |
+| Bundle bootstrap CI, accuracy | [22.5, 31.0] | [22.2, 30.0] | DIFF |
+| Per-bundle accuracy min / median / max | 5.9 / 23.5 / 58.8 | 5.9 / 23.5 / 58.8 | same |
+| Baselines (always answer / abstain / retrieval threshold) | 77.6 / 7.8 / 77.6 | 77.6 / 7.8 / 77.6 | same |
+| Track B accuracy | 40.4% (97/240) | 40.8% (98/240) | DIFF +1 |
+| Track B conflict flagged / true positives | 57 / 10 | 59 / 12 | DIFF +2 / +2 |
+| Track B precision / recall / F1 | 0.175 / 0.159 / 0.167 | 0.2034 / 0.1905 / 0.1967 | DIFF |
+| Track B attribution (internal gold) | 0.018 (1/57) | 0.0339 (2/59) | DIFF |
+| Track B gap leaks / unsafe | 18/60 / 65/123 | 20/60 / 65/123 | gap leaks DIFF +2, unsafe same |
+
+Reading: the structural picture is unchanged (far below the floor, precision near
+0.12, external attribution zero, unsafe count identical). The differences are a
+few queries wide, concentrated at the answer / insufficient boundary on Track A
+(conflict counts identical) and including two extra conflict reports on Track B.
+Cause not established: the August environment was never recorded, and this
+machine runs sentence-transformers 5.2.2, transformers 5.0.0, torch 2.10.0
+(`docs/RERUN_MANIFEST_2026-10-10*.md`). Use the replicated column for anything
+that needs a raw file behind it; treat both as the same experiment, not two
+results. Pre-registered qform effect (prediction 6) is not yet measured.
+
 ## 4. RAMDocs (external benchmark, sealed single pass 2026-09-04)
 
 Source: `docs/RAMDOCS_COMPARISON.md`. Raw: `evaluation/results/rd_full_ramdocs.json` (500 records; present in this checkout, but the folder is gitignored, so `[raw not in repo]` on a clean clone).
@@ -258,5 +301,5 @@ unchanged by later work (they were not re-run).
 | 6 | `docs/STATUS.md` "short answer" | "2 wrong reports out of 17"; precision 0.875 = 14/16 means 16 reports | Change 17 to 16 if 0.875 is right. **Closed 2026-10-10 (Observation 31).** |
 | 7 | `docs/STATUS.md` Problem 1 "Scale" | Says 9 false conflicts on Corpus 2; that is the pre-margin count (now 2) | Add "pre-margin" or update. **Closed 2026-10-10 (Observation 31).** |
 | 8 | `docs/STATUS.md` order of changes | 82.1% -> 80.8% (sufficiency fix) and 80.8% -> 82.1% (Stage 4 preconditions) both claimed, order unstated | Author to state the sequence. **Closed 2026-10-10 (Observation 35):** measured by switching each change independently (table under Section 2 History). Both claims are true and the effects are independent; STATUS's order is the sufficiency-first path. |
-| 9 | Corpus 3 and 2 raw files | `evaluation/results/` is gitignored; Corpus 3 JSONs are not in this checkout at all | Decide whether to commit result JSONs or keep a manifest with hashes. **Partly done 2026-10-10:** hash manifest for the Corpus 1/2 re-run is tracked in `docs/RERUN_MANIFEST_2026-10-10.md`. Corpus 3 `c3_*` files are in no git ref (checked `git log --all`), so they cannot be recovered from the repo; the author must supply them or accept the rows as prose-only. |
+| 9 | Corpus 3 and 2 raw files | `evaluation/results/` is gitignored; Corpus 3 JSONs are not in this checkout at all | Decide whether to commit result JSONs or keep a manifest with hashes. **Partly done 2026-10-10:** hash manifest for the Corpus 1/2 re-run is tracked in `docs/RERUN_MANIFEST_2026-10-10.md`. Corpus 3 `c3_*` files are in no git ref (checked `git log --all`), so they cannot be recovered from the repo; the author must supply them or accept the rows as prose-only. **Update 2026-10-11 (Observation 38):** the sealed Track A and Track B were replicated and the files regenerated locally (hash manifest follows when the run's `collect` step finishes); the 2026-08-31 originals remain lost. |
 | 10 | Old query-ID collisions | v6 numbers.md section 6 listed Q-number collisions across reports; not re-checked for the new docs | Read before citing any bare Q-number. **Closed 2026-10-10:** rule 5 above (always prefix with the corpus). |
