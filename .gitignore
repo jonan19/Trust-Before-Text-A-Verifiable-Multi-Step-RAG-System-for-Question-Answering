@@ -47,3 +47,6 @@ Thumbs.db
 
 # Throwaway experiment console logs (not results; the cited JSON results are tracked elsewhere)
 experiments/_*_log*.txt
+data_merged/
+qdrant_db_merged/
+data_ramdocs/
