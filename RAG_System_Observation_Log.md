@@ -55,6 +55,7 @@
 | 42 | 2026-10-11 | Zero-key verification of NLPIR claims: merged-corpora index and hand adjudication of the flagged injection answers | Verification | Measured, no pipeline change | Merged-index claim reproduces exactly for Corpus 1; Corpus 2 side shows unsafe 1 -> 2; defended-LLM injection count is 4 (strict) to 9 (generous), not 0 and not demonstrably 7 |
 | 43 | 2026-10-11 | Owner decision: Corpus 1 and 2 results accepted as they are; Tables 4 and 5 sweep stopped at 24 of 57 runs | Verification scope | Decision recorded; sweep discontinued | All 24 completed sweep runs match NLPIR exactly; the rest of Tables 4 and 5 is ACCEPTED_AS_IS |
 | 44 | 2026-10-14 | RAMDocs recalculated on a clean (no label leak) protocol, four runs | External validation / provenance of numbers | Measured, no pipeline change | NLPIR Table 6 reproduces: ours 85.2% safe (NLPIR 84.6%), baseline 94.8% (94.2%); all four preregistered predictions held |
+| 45 | 2026-10-14 | Number ledger and checker: every number in `main.tex` traced to a source | Paper / provenance of numbers | Implemented (evaluation tooling only) | 480 rows; 1,175/1,175 main.tex numbers covered; 6 DIFFs and 1 RULE break found (see entry) |
 
 ---
 
@@ -424,6 +425,37 @@
 - **Cost / what this does not show.** The baseline is safer by refusing three quarters of queries, not by better judgement. Justified refusals are near the 48.6% base rate of queries containing a misinformation document for both systems (ours 54.1%, p = 0.175; baseline 54.4%, p = 0.025, a marginal excess). The primary grader is lenient: if any wrong value counts as unsafe, ours falls to 71.6% safe / 15.8% unsafe (baseline 94.2% / 1.6%). In shuffled order ours asserts misinformation slightly more often (14 -> 20, p = 0.07): a synthesis effect, since the decision layer is order-invariant.
 - **Evidence.** `evaluation/results/rdc_{ours,base}_{orig,shuf}_ramdocs_clean.json` (with `run_info`), console logs beside them; pilot `rdc_pilot_ramdocs_clean.json`.
 - **Numbers updated.** `numbers.md` section 4 (new subsection "Clean recalculation", marked CURRENT) and the "Last synced" note.
+
+## Observation 45: Number ledger and checker for the paper
+
+*Added 2026-10-14. Commit/branch: on top of `fb61f12`, `jonan`. Zero LLM tokens, no harness run, no key used. No pipeline code, threshold, default or `main.tex` text changed.*
+
+- **Issue.** Numbers in `main.tex`, the NLPIR PDF and the docs had no per-number record of where they came from or whether anyone had checked them, so the owner's rule (a number that is not about Corpus 1 or 2 must be tested, or left out of `main.tex`) could not be enforced.
+- **Fix.** New `docs/NUMBERS_LEDGER.csv`: 480 rows, one per claim in each place it appears (main.tex 400, NLPIR PDF 50, README 6, STATUS 12, RAMDOCS_COMPARISON 3, numbers.md 9). Each row names its source; 386 rows carry an expression over a saved file (`V(file, path)`, plus Wilson, Clopper-Pearson, exact McNemar, binomial and Fisher helpers) that the checker re-evaluates. New `evaluation/check_ledger.py` (read-only) runs five checks: (a) recompute, (b) each string is still in its file near its line, (c) every number in the body of `main.tex` is covered by a row, (d) non-C1/C2 rows must be REPRODUCED, RECOMPUTED, DERIVED or EXTERNAL, (e) stale strings (88.4%, 82.1%, 92.3%, "Han et al.", "10 of 25") outside sections marked historical. New `tests/test_ledger.py` (15 tests); the suite is 146 passed.
+- **Effect.** Status counts: RECOMPUTED 336, ACCEPTED_AS_IS 71, UNVERIFIABLE 29, DERIVED 18, REPRODUCED 15, EXTERNAL 11. Checker: (a) 368 match, 6 DIFF; (b) 480 of 480 found; (c) 1,175 of 1,175 numbers in `main.tex` covered; (d) 1 RULE break in `main.tex`; (e) 0 stale. The DIFFs and the RULE break are findings, listed next. The checker exits 1 until they are resolved.
+- **Findings (not fixed: main.tex was out of scope; each needs an owner decision).**
+  1. `main.tex:1616` quotes NLPIR's earlier clean run (84.6% and 94.2%), which has no raw file. That is a non-C1/C2 number that is UNVERIFIABLE, so it breaks the RULE. The clean rerun gives 85.2% and 94.8%.
+  2. `main.tex:1602` and `numbers.md:340`: misinformation McNemar p = 0.023. Exact McNemar on 11 vs 2 discordant pairs gives 0.02246, which rounds to 0.022.
+  3. `main.tex:1643`: p = 0.18. The exact binomial test gives 0.17498 (0.175 to three places, 0.17 to two), so the 0.18 comes from rounding twice.
+  4. NLPIR p11: "with provenance disabled, 31 of 48". The current files give 33 (17 + 16); the 31 uses the pre-margin Corpus 2 value 14/24 (Observation 33).
+  5. `docs/STATUS.md:168-169` shows pre-gate invariance values (C1 query_thanks 2/78 with 1 refuse-to-answer, query_polite 1/78 with 1, C2 query_polite 1/78) under "Current measurements". The current files give 1/78, 0/78 and 0/78 with no refuse-to-answer flips.
+  6. Not DIFFs, but recorded in the ledger notes:
+     - NLPIR p5 says both corpora have 45 facts; Corpus 2's `ground_truth.json` has 46.
+     - `main.tex` calls the query-intent gate "Structural"; NLPIR Table 9 says it was selected on Corpora 1 and 2.
+     - `main.tex:1167` cites an "8-query replay" as determinism evidence; NLPIR cites two full 78/78 runs.
+     - The security table's "In-corpus poisoning accepted 0/4" is the retrieval-time fabricated-evidence test, while `sec:adv-adaptive` says in-corpus poisoning defeats both systems (4/4).
+     - The 46.0% to 62.1% interval at `main.tex:1642` is Clopper-Pearson, not Wilson.
+     - NLPIR's haystack claim ("all 20 haystacks at every N") contradicts the only tracked haystack file, the v6 run (ours recall 0.75 at N=2, 0.60 at N=20).
+- **UNVERIFIABLE (29).**
+  - In `main.tex`, one row: finding 1 above.
+  - The other 28 are NLPIR PDF rows, which are not in `main.tex`:
+    - all of MultiHop-RAG (abstract, section 4.8, Table 7);
+    - the haystack claim and its LLM arm;
+    - the NLPIR RAMDocs values that the clean rerun does not reproduce exactly: 84.6, 94.2, 76.2, 1.4, 53.8, 205/381, 75.6/5.9/119, the p-values below 1e-10, 0.039 and below 1e-13, and the 59 re-queried empty replies;
+    - the August Corpus 3 values (26.7%, 0/350, 40.4%).
+- **Cost / regressions.** None; read-only tooling. `tested_after_merge` is "yes" only when the source file was written on or after 2026-10-10. It is "n/a" for EXTERNAL rows and for counts read from input files (`data/`, code constants).
+- **Evidence.** `python evaluation/check_ledger.py -v`; `python -m pytest tests -q` (146 passed).
+- **Numbers updated.** None changed. Findings 2 to 5 were added to `numbers.md` section 7 as items 11 to 14.
 
 ---
 
