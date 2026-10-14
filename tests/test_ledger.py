@@ -124,6 +124,18 @@ def test_presence_missing_fails_and_moved_warns(repo):
     assert [rid for rid, _ in rep.fails["b"]] == ["T-003"]
 
 
+def test_repeated_values_stay_on_their_own_lines_after_a_shift(repo):
+    body = "\n".join(["filler"] * 3 + [r"& 0/78 & 0/78 \\"] * 3)
+    (repo / "main.tex").write_text("\\begin{document}\n" + body + "\n\\end{document}\n", encoding="utf-8")
+    # ledger recorded lines 2, 3, 4 before three filler lines pushed the table down
+    rows = [{"value_as_written": "& 0/78 & 0/78", "line": str(n)} for n in (2, 3, 4)]
+    rep = run(repo, rows, checks="bc")
+    assert rep.fails["c"] == [] and rep.passes["c"] == 12
+    ledger = repo / "ledger.csv"
+    assert cl.sync_lines(ledger, repo) == 3
+    assert [r["line"] for r in cl.load_ledger(ledger)] == ["5", "6", "7"]
+
+
 # ── (c) coverage ────────────────────────────────────────────────────────────
 def test_coverage_flags_only_uncovered_claims(repo):
     rep = run(repo, [{"value_as_written": r"96.2\% (75/78)", "line": "4"}], checks="c")

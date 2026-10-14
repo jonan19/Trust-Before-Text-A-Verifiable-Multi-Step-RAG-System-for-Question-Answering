@@ -56,6 +56,7 @@
 | 43 | 2026-10-11 | Owner decision: Corpus 1 and 2 results accepted as they are; Tables 4 and 5 sweep stopped at 24 of 57 runs | Verification scope | Decision recorded; sweep discontinued | All 24 completed sweep runs match NLPIR exactly; the rest of Tables 4 and 5 is ACCEPTED_AS_IS |
 | 44 | 2026-10-14 | RAMDocs recalculated on a clean (no label leak) protocol, four runs | External validation / provenance of numbers | Measured, no pipeline change | NLPIR Table 6 reproduces: ours 85.2% safe (NLPIR 84.6%), baseline 94.8% (94.2%); all four preregistered predictions held |
 | 45 | 2026-10-14 | Number ledger and checker: every number in `main.tex` traced to a source | Paper / provenance of numbers | Implemented (evaluation tooling only) | 480 rows; 1,175/1,175 main.tex numbers covered; 6 DIFFs and 1 RULE break found (see entry) |
+| 46 | 2026-10-14 | Owner decisions on the ledger findings; misinformation p corrected 0.023 -> 0.022 (correction to 44) | Paper / provenance of numbers | Done (`main.tex`, numbers.md, ledger) | main.tex rule breaks 0; haystack claim added as ACCEPTED_AS_IS, flagged |
 
 ---
 
@@ -456,6 +457,29 @@
 - **Cost / regressions.** None; read-only tooling. `tested_after_merge` is "yes" only when the source file was written on or after 2026-10-10. It is "n/a" for EXTERNAL rows and for counts read from input files (`data/`, code constants).
 - **Evidence.** `python evaluation/check_ledger.py -v`; `python -m pytest tests -q` (146 passed).
 - **Numbers updated.** None changed. Findings 2 to 5 were added to `numbers.md` section 7 as items 11 to 14.
+
+## Observation 46: Owner decisions on the ledger findings; p-values corrected (correction to Observation 44)
+
+*Added 2026-10-14. Commit/branch: on top of `a0fa913`, `jonan`. Zero LLM tokens, nothing run except the checker and the tests. `main.tex` was edited (backup `D:\Major Project_paper_backups\main_2026-10-14_before_ledger_fixes.tex`); no pipeline code, threshold or default changed.*
+
+- **Correction to Observation 44.** Observation 44 (and `numbers.md` section 4) gave the paired test for misinformation asserted, ours vs baseline in the original order, as p = 0.023. The exact McNemar test on the 11 vs 2 discordant pairs gives 0.02246, so the correct value is **p = 0.022**. The shuffled-order value (0.0075) and every other p-value in that entry recompute correctly. Observation 44 itself is left unedited, as the log rules require.
+- **Owner decisions (answers to Observation 45's questions).**
+  1. MultiHop-RAG: there are no raw files. It stays out of `main.tex`, its ledger rows stay UNVERIFIABLE, and the owner will run Part 3b later.
+  2. Haystack: there is no current-system file. NLPIR's claim was added to `main.tex` (sec:retrieval_recall, one sentence in NLPIR's own wording) as ACCEPTED_AS_IS (Corpus 1) and flagged in the ledger, because the only tracked file (v6) contradicts it. Recorded as `numbers.md` section 7 item 15.
+  3. RAMDocs baseline: there is no NLPIR baseline file. `main.tex:1616` no longer quotes 84.6% and 94.2%. It now says every baseline figure comes from the recalculated run with the E1 prompt (94.8% safe), and that the earlier run is not reported because its prompt and per-query results are unavailable.
+  4. p-values in `main.tex` and `numbers.md`, each now with its test named:
+     - misinformation asserted: p = 0.022, exact McNemar;
+     - justified refusals: p = 0.175, exact binomial test against the 48.6% base rate.
+- **Checker.** Inserting lines into `main.tex` exposed a weakness: rows whose value text repeats on nearby lines (the invariance table's "& 0/78 & 0/78") could pick the wrong occurrence after a shift. `check_ledger.py` now matches such rows to occurrences in order, choosing the assignment with the least total drift. New option `--sync-lines` writes each row's current line back to the ledger; it updated 216 rows after these edits. One test was added; `tests/test_ledger.py` now has 16.
+- **Effect.** The ledger has 485 rows: RECOMPUTED 338, ACCEPTED_AS_IS 77, UNVERIFIABLE 26, DERIVED 18, REPRODUCED 15, EXTERNAL 11.
+  - (b) presence: 485 of 485 found.
+  - (c) coverage: 1,182 of 1,182 numbers in `main.tex` covered.
+  - (d) rule: 0 breaks in `main.tex`.
+  - (e) stale strings: 0.
+  - (a) recompute: three DIFFs remain, all outside `main.tex`: NLPIR p11 "31 of 48" (item 13) and the STATUS invariance rows (item 14). They are left for the docs pass.
+- **Cost / regressions.** The haystack sentence puts into `main.tex` a Corpus 1 number that the repo cannot reproduce, and the only tracked file contradicts it. That is the owner's accepted risk, flagged in the ledger notes.
+- **Evidence.** `python evaluation/check_ledger.py -v`; `python -m pytest tests/test_ledger.py -q` (16 passed); the `main.tex` backup above.
+- **Numbers updated.** `numbers.md` section 4: misinformation p 0.023 -> 0.022, test names added. Section 7: items 11 and 12 closed, item 15 added.
 
 ---
 

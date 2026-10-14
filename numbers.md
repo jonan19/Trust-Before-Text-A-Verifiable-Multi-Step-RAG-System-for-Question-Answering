@@ -307,7 +307,7 @@ all 500 outcomes reproduce; 45 are unscored; 22 answers contain both a gold and 
 wrong answer (scored safe because gold wins; if a wrong answer counts against the
 system the file gives 84.0% safe / 7.0% unsafe); 243 of 500 queries (48.6%) contain
 a misinformation document, so the 54.1% justified fraction (95% CI 46.0% to 62.1%)
-is not distinguishable from chance (p = 0.175); the running ratio is 54.5% at
+is not distinguishable from chance (exact binomial test against 48.6%, p = 0.175); the running ratio is 54.5% at
 n=207 and 54.1% at n=500 and varies between 48.7% and 56.9% in between, so the
 claim "stable to within 0.1 points from n=207" is not supported by this file.
 
@@ -331,13 +331,13 @@ Wilson 95% intervals; n = 500 in every run; 0 errors, 0 empty baseline replies.
 | Safe rate (primary grader) | 85.2% [81.8, 88.0] (426) | 94.8% [92.5, 96.4] (474) | 85.4% [82.0, 88.2] (427) | 93.6% [91.1, 95.4] (468) |
 | Unscored | 60 | 21 | 53 | 24 |
 | Strict grader: safe / unsafe | 71.6% / 15.8% | 94.2% / 1.6% | 72.8% / 16.6% | 93.2% / 2.0% |
-| Refusals justified (base rate 48.6%) | 54.1% (85/157), p = 0.175 | 54.4% (209/384), p = 0.025 | 54.1% (85/157) | 53.3% (200/375), p = 0.071 |
+| Refusals justified (base rate 48.6%; exact binomial p vs 48.6%) | 54.1% (85/157), p = 0.175 | 54.4% (209/384), p = 0.025 | 54.1% (85/157) | 53.3% (200/375), p = 0.071 |
 | Answered: contains gold / contains any wrong | 78.4% / 23.0% (of 343) | 77.6% / 6.9% (of 116) | 78.7% / 24.2% (of 343) | 74.4% / 8.0% (of 125) |
 | Answered: misinformation asserted | 4.1% (14/343) | 4.3% (5/116) | 5.8% (20/343) | 6.4% (8/125) |
 
 Paired exact McNemar tests, ours vs baseline, original order (shuffled in brackets): safe
 p = 2.4e-9 (9.6e-8), baseline safer; EM p = 9.1e-13 (1.2e-13), ours higher; misinformation
-asserted p = 0.023 (0.0075), baseline lower. Gold share of answered queries does not differ
+asserted p = 0.022 (0.0075), baseline lower (corrected 2026-10-14 from 0.023, Observation 46: 11 vs 2 discordant pairs give 0.02246). Gold share of answered queries does not differ
 (Fisher p = 0.90; 0.32). Order effect within an arm: ours makes the identical refuse/answer
 decision on 500/500 queries in both orders; safe p = 1.0, misinformation 14 -> 20 (p = 0.07);
 baseline differs on 39/500 refusals, safe p = 0.24.
@@ -448,7 +448,8 @@ unchanged by later work (they were not re-run).
 | 8 | `docs/STATUS.md` order of changes | 82.1% -> 80.8% (sufficiency fix) and 80.8% -> 82.1% (Stage 4 preconditions) both claimed, order unstated | Author to state the sequence. **Closed 2026-10-10 (Observation 35):** measured by switching each change independently (table under Section 2 History). Both claims are true and the effects are independent; STATUS's order is the sufficiency-first path. |
 | 9 | Corpus 3 and 2 raw files | `evaluation/results/` is gitignored; Corpus 3 JSONs are not in this checkout at all | Decide whether to commit result JSONs or keep a manifest with hashes. **Partly done 2026-10-10:** hash manifest for the Corpus 1/2 re-run is tracked in `docs/RERUN_MANIFEST_2026-10-10.md`. Corpus 3 `c3_*` files are in no git ref (checked `git log --all`), so they cannot be recovered from the repo; the author must supply them or accept the rows as prose-only. **Update 2026-10-11 (Observation 38):** the sealed Track A and Track B were replicated and the files regenerated locally (hash manifest: `docs/RERUN_C3_MANIFEST_2026-10-11.md`, 24 files); the 2026-08-31 originals remain lost. |
 | 10 | Old query-ID collisions | v6 numbers.md section 6 listed Q-number collisions across reports; not re-checked for the new docs | Read before citing any bare Q-number. **Closed 2026-10-10:** rule 5 above (always prefix with the corpus). |
-| 11 | `main.tex:1602`, this file section 4 (line 340) | Misinformation McNemar p written 0.023; exact McNemar on 11 vs 2 discordant pairs gives 0.02246 (0.022) | Change 0.023 to 0.022 in both (owner decision; Observation 45, ledger MT-171, NU-008) |
-| 12 | `main.tex:1643` | Justified-abstention p written 0.18; the binomial test gives 0.17498 (0.175, or 0.17 to two places) | Write 0.17 or 0.175 (Observation 45, MT-192) |
+| 11 | `main.tex:1602`, this file section 4 (line 340) | Misinformation McNemar p written 0.023; exact McNemar on 11 vs 2 discordant pairs gives 0.02246 (0.022) | Change 0.023 to 0.022 in both (owner decision; Observation 45, ledger MT-171, NU-008) **Closed 2026-10-14 (Observation 46):** 0.022 in both, test named. |
+| 12 | `main.tex:1643` | Justified-abstention p written 0.18; the binomial test gives 0.17498 (0.175, or 0.17 to two places) | Write 0.17 or 0.175 (Observation 45, MT-192) **Closed 2026-10-14 (Observation 46):** owner chose 0.175, test named. |
 | 13 | NLPIR PDF p11 | "with provenance disabled, 31 of 48 are answered"; current files give 33 (17 + 16); 31 uses the pre-margin Corpus 2 value 14/24 | Use 33 if the sentence is ported (Observation 45, NL-048) |
 | 14 | `docs/STATUS.md` lines 168-169 | Invariance table under "Current measurements" shows the pre-gate values (C1 query_thanks 2/78 with 1 refuse-to-answer, query_polite 1/78 with 1, C2 query_polite 1/78); current files give 1/78, 0/78, 0/78, no refuse-to-answer flips | Update STATUS (Observation 45, ST-010, ST-011) |
+| 15 | `main.tex` sec:retrieval_recall (haystack sentence, added 2026-10-14) | NLPIR's haystack claim (all 20 haystacks at every N, 95% interval [84, 100]%; gpt-oss-120b up to N=40) has no current-system file; the only tracked file, `experiments/haystack_results.json`, is the v6 run and gives ours recall 0.75 at N=2 and 0.60 at N=20 | Owner decision: kept as ACCEPTED_AS_IS and flagged in the ledger (MT-402 to MT-406, NL-017, NL-018). Rerun the haystack test on the current system to settle it (Observation 46) |

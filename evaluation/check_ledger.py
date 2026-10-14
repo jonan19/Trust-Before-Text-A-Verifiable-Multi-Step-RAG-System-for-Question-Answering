@@ -45,6 +45,7 @@ direct pass or fail. Tolerance is half a unit in the last printed digit.
     python evaluation/check_ledger.py            # all checks, summary
     python evaluation/check_ledger.py -v         # also list every finding
     python evaluation/check_ledger.py --checks a,b
+    python evaluation/check_ledger.py --sync-lines   # after editing a file: store new lines
 
 Exit status 1 if any check fails, 0 otherwise.
 """
@@ -444,7 +445,54 @@ def _line_no(s: str) -> int:
         return 0
 
 
+def _assign(lines_wanted: list[int], occ: list[tuple[int, int]]) -> list:
+    """Order-preserving match of rows (by recorded line) to occurrences, least total drift.
+
+    Several rows can share one value string (for example "& 0/78 & 0/78" in a table);
+    matching them in order keeps each row on its own line when the file shifts.
+    """
+    k, m = len(lines_wanted), len(occ)
+    if k > m:  # more rows than occurrences: each takes its nearest
+        return [nearest(occ, ln) for ln in lines_wanted]
+    inf = float("inf")
+    cost = [[inf] * (m + 1) for _ in range(k + 1)]
+    for j in range(m + 1):
+        cost[0][j] = 0.0
+    for i in range(1, k + 1):
+        for j in range(i, m + 1):
+            take = cost[i - 1][j - 1] + abs(occ[j - 1][0] - lines_wanted[i - 1])
+            cost[i][j] = min(cost[i][j - 1], take)
+    out, j = [None] * k, m
+    for i in range(k, 0, -1):
+        while cost[i][j] == cost[i][j - 1] and j > i:
+            j -= 1
+        out[i - 1] = occ[j - 1]
+        j -= 1
+    return out
+
+
+def locate(rows: list[dict], root: Path) -> dict:
+    """Row id -> (line, column) of its value in its (text) file, or None if absent."""
+    groups: dict[tuple, list[dict]] = {}
+    for r in rows:
+        path = _resolve(r["file"], root)
+        if path.suffix.lower() == ".pdf" or not path.exists():
+            continue
+        groups.setdefault((str(path), r["value_as_written"]), []).append(r)
+    found = {}
+    for (path, value), rs in groups.items():
+        occ = find_occurrences(file_lines(Path(path)), value)
+        if not occ:
+            found.update({r["id"]: None for r in rs})
+            continue
+        rs = sorted(rs, key=lambda r: _line_no(r["line"]))
+        for r, o in zip(rs, _assign([_line_no(r["line"]) for r in rs], occ)):
+            found[r["id"]] = o
+    return found
+
+
 def check_presence(rows: list[dict], root: Path, rep: Report) -> None:
+    where = locate(rows, root)
     for r in rows:
         path = _resolve(r["file"], root)
         if not path.exists():
@@ -466,9 +514,8 @@ def check_presence(rows: list[dict], root: Path, rep: Report) -> None:
             else:
                 rep.passes["b"] += 1
             continue
-        occ = find_occurrences(file_lines(path), r["value_as_written"])
         line = _line_no(r["line"])
-        best = nearest(occ, line)
+        best = where.get(r["id"])
         if best is None:
             rep.fails["b"].append((r["id"], f"MISSING in {r['file']}: {r['value_as_written']!r}"))
         elif abs(best[0] - line) > MOVE_TOLERANCE:
@@ -513,13 +560,13 @@ def masked_body(lines: list[str]) -> list[str]:
     return out
 
 
-def covered_spans(rows: list[dict], lines: list[str], paper: str) -> dict[int, list[tuple[int, int]]]:
+def covered_spans(rows: list[dict], where: dict, paper: str) -> dict[int, list[tuple[int, int]]]:
     spans: dict[int, list[tuple[int, int]]] = {}
     for r in rows:
         if r["file"] != paper:
             continue
         value = r["value_as_written"]
-        best = nearest(find_occurrences(lines, value), _line_no(r["line"]))
+        best = where.get(r["id"])
         if best is None:
             continue
         ln, col = best
@@ -539,7 +586,7 @@ def check_coverage(rows: list[dict], root: Path, rep: Report, paper: str = PAPER
         return
     lines = file_lines(path)
     body = masked_body(lines)
-    spans = covered_spans(rows, lines, paper)
+    spans = covered_spans(rows, locate(rows, root), paper)
     for ln, text in enumerate(body, start=1):
         for n in tokenize(text):
             if any(a <= n.start and n.end <= b for a, b in spans.get(ln, [])):
@@ -603,10 +650,11 @@ def check_stale(rows: list[dict], root: Path, rep: Report, files=STALE_FILES) ->
         hist = historical_lines(path, lines)
         mask = masked_body(lines) if rel.endswith(".tex") else lines
         ok_spans: dict[int, list[tuple[int, int]]] = {}
+        where = locate([r for r in rows if r["file"] == rel], root)
         for r in rows:
             if r["file"] != rel or not _stale_ok(r["notes"]):
                 continue
-            best = nearest(find_occurrences(lines, r["value_as_written"]), _line_no(r["line"]))
+            best = where.get(r["id"])
             if best:
                 ok_spans.setdefault(best[0], []).append((best[1], best[1] + len(r["value_as_written"])))
         for pat, why in STALE_PATTERNS:
@@ -644,13 +692,42 @@ def run(ledger: Path = LEDGER, root: Path = ROOT, checks: str = "abcde") -> tupl
     return rep, rows
 
 
+def sync_lines(ledger: Path, root: Path = ROOT) -> int:
+    """Rewrite the line column from where each value is found now; returns rows changed."""
+    _TEXT_CACHE.clear()
+    rows = load_ledger(ledger)
+    where = locate(rows, root)
+    changed = 0
+    for r in rows:
+        path = _resolve(r["file"], root)
+        new = None
+        if path.suffix.lower() == ".pdf" and path.exists():
+            hits = [i + 1 for i, t in enumerate(pdf_pages(path)) if _norm_ws(r["value_as_written"]) in t]
+            new = f"p{hits[0]}" if hits and r["line"] not in {f"p{h}" for h in hits} else None
+        elif where.get(r["id"]):
+            new = str(where[r["id"]][0])
+        if new and new != r["line"]:
+            r["line"] = new
+            changed += 1
+    with ledger.open("w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=COLUMNS)
+        w.writeheader()
+        w.writerows({c: r.get(c, "") for c in COLUMNS} for r in rows)
+    _TEXT_CACHE.clear()
+    return changed
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--ledger", type=Path, default=LEDGER)
     ap.add_argument("--checks", default="abcde", help="subset of a,b,c,d,e")
     ap.add_argument("-v", "--verbose", action="store_true", help="list every finding")
+    ap.add_argument("--sync-lines", action="store_true",
+                    help="write each row's current line (or PDF page) back to the ledger, then check")
     args = ap.parse_args(argv)
     checks = args.checks.replace(",", "")
+    if args.sync_lines:
+        print(f"synced {sync_lines(args.ledger, ROOT)} line number(s)")
     rep, rows = run(args.ledger, ROOT, checks)
 
     status = Counter(r.get("status", "?") for r in rows)
