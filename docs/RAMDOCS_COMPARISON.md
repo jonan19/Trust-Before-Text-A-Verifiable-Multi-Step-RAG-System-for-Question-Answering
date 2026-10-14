@@ -1,7 +1,22 @@
 # Trust-Before-Text on RAMDocs: A Comparison Against a Published External Benchmark
 
-**Status:** sealed single-pass result, n = 500/500, 2026-09-04.
-**Data:** Han et al., *Retrieval-Augmented Generation with Conflicting Evidence*, COLM 2025 (`HanNight/RAMDocs`, MIT license, arXiv:2504.13079).
+> **SUPERSEDED, 2026-10-14. Read this first.** The 88.4% / 2.6% result below came from a
+> label-leaky run: `evaluation/run_eval_ramdocs.py` put each document's type (`correct`,
+> `misinfo`, `noise`) into its source and section names, and `synthesis.py` prints both into
+> the prompt, so the LLM saw the labels. The current numbers come from a clean rerun of the
+> unchanged system (`evaluation/run_eval_ramdocs_clean.py`, neutral names, preregistered in
+> `docs/PREREGISTRATION_RAMDOCS_RERUN.md`; `numbers.md` section 4, Observation 44):
+> ours 85.2% safe [81.8, 88.0], 2.8% misinformation asserted, EM 18.0%, 31.4% refusals;
+> a prompted `gpt-oss-120b` baseline on the same documents 94.8% safe, 1.0% misinformation,
+> EM 7.6%, 76.8% refusals. The baseline is safer (p = 2.4e-9) by refusing far more; ours
+> answers correctly far more often. The decision-layer counts (157 abstentions, 85
+> justified) are identical in every run. The §4 claim that the justified ratio "held within
+> 0.1 points from n = 207" is not supported (it varies between 48.7% and 56.9%), and 54.1%
+> is not distinguishable from the 48.6% base rate (p = 0.175). The rest of this document is
+> kept as the historical record of the leaky run.
+
+**Status:** sealed single-pass result, n = 500/500, 2026-09-04 (superseded, see above).
+**Data:** Wang et al. (first author Han Wang), *Retrieval-Augmented Generation with Conflicting Evidence*, arXiv:2504.13079 (`HanNight/RAMDocs`, MIT license). An earlier version of this line said "Han et al." (a first-name citation error) and "COLM 2025" (venue not confirmed).
 **Preregistration:** `docs/PREREGISTRATION_RAMDOCS.md` — grading rules fixed before this run; no threshold or filter was adjusted after seeing the result.
 
 ---
@@ -22,7 +37,7 @@
 
 This project also evaluates against ContractNLI (real NDAs, `data_corpus3/`) as a second externally-authored, non-synthetic corpus. That comparison is documented separately (`evaluation/results/c3_hypothesis_corpus3_test.json`, `docs/PREREGISTRATION_CORPUS3.md`) and is intentionally **not** included below: ContractNLI's own published benchmark scores a different task (single-document, single-hypothesis NLI classification) than the one this system performs on it (bundled multi-document conflict detection), so there is no published number to compare against on equal footing — only a self-computed always-answer floor (77.6%), against which this system's accuracy (26.7%) does not lead. Reporting it here as a "comparison" would misstate what the number means.
 
-RAMDocs is included because it is the one candidate benchmark that clears three bars simultaneously: peer-reviewed at a real venue (COLM 2025), publicly downloadable with a permissive license, and — critically — its authors report a directly interpretable **safety-relevant baseline number for an undefended system on the same data**. That is the one number this document compares against.
+RAMDocs is included because it is the one candidate benchmark that clears three bars simultaneously: published by an independent group (arXiv:2504.13079; the venue is not confirmed), publicly downloadable with a permissive license, and — critically — its authors report a directly interpretable **safety-relevant baseline number for an undefended system on the same data**. That is the one number this document compares against.
 
 ## 2. Task correspondence
 
@@ -35,7 +50,7 @@ RAMDocs is included because it is the one candidate benchmark that clears three 
 
 ## 3. Metrics that matter
 
-Every system in RAMDocs' own published table uses an LLM — this is not "LLM vs. no LLM." The published table (Han et al. 2025, Table 1) reports exact match (EM: correct iff the output contains every gold answer and no wrong one) for several methods on Llama-3.3-70B-Instruct, plus MADAM-RAG (their own multi-round debate method) on three different backbone models:
+Every system in RAMDocs' own published table uses an LLM — this is not "LLM vs. no LLM." The published table (Wang et al. 2025, Table 1) reports exact match (EM: correct iff the output contains every gold answer and no wrong one) for several methods on Llama-3.3-70B-Instruct, plus MADAM-RAG (their own multi-round debate method) on three different backbone models:
 
 | Method | Backbone | LLM calls/query | RAMDocs EM |
 |---|---|---:|---:|
@@ -83,4 +98,4 @@ This ratio was checked at every checkpoint from n = 207 through n = 500 and held
 
 - `evaluation/results/rd_full_ramdocs.json` — full 500-record result set.
 - `docs/PREREGISTRATION_RAMDOCS.md` — grading rules, fixed before the run.
-- Han et al., *Retrieval-Augmented Generation with Conflicting Evidence*, arXiv:2504.13079, COLM 2025.
+- Wang et al. (first author Han Wang), *Retrieval-Augmented Generation with Conflicting Evidence*, arXiv:2504.13079 (venue not confirmed).
