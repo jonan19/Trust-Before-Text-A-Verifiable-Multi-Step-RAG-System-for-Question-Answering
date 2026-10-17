@@ -62,6 +62,7 @@
 | 49 | 2026-10-15 | Owner's root `references.bib` checked; 7 cite keys renamed; 4 wrong author fields found via Crossref | Paper bibliography | Done (`main.tex` cite keys only) | 98/99 cited keys resolve; honovich2022true left to the owner |
 | 50 | 2026-10-17 | MultiHop-RAG: new preregistered measurement, 300 paired queries | External validation | Measured, no pipeline change | Gap leak 56/150 vs 2/150; over-abstention 52.0% vs 73.3%; strict correctness 41.7% vs 62.7% (P4 failed) |
 | 51 | 2026-10-17 | Every number-bearing doc made to agree with the ledger | Documentation | Done (docs, ledger, checker print fix; no pipeline change) | ledger 549 -> 570 rows, check passes (was 3 DIFFs); 169 tests pass; numbers.md s7 items 1, 13, 14, 18 closed |
+| 53 | 2026-10-17 | Paper review (Part 6): 29 ACCURACY and CLAIM fixes applied to `main.tex` | Paper wording / provenance of numbers | Done (`main.tex`, ledger; no pipeline change) | haystack sentence removed; "by construction" kept only for flips and routing; ledger 597 rows, check passes; 169 tests pass |
 
 ---
 
@@ -731,3 +732,65 @@ Add the new row to the master timeline above and set `Last synced` in `numbers.m
 - **Ledger.** 27 new `main.tex` rows (MH-001 to MH-027). Items recomputed from the checkpoint files on 2026-10-17: 38/60 and 72/90 baseline refusals, 41 null-query conflicts, lenient p = 0.055 (49 vs 71 discordant pairs); status RECOMPUTED, literal values noted.
 - **Effect.** `check_ledger.py` passes: 1,356+ body numbers covered, 0 fails; 169 tests pass.
 - **Not done.** No citation for the MultiHop-RAG paper (no key in `references.bib`; not invented). The paper text names the public release only.
+
+---
+
+## Observation 53: Paper review; 29 accuracy and claim fixes applied to `main.tex`
+
+*Added 2026-10-17. Commit/branch: on top of `a5b2421`, `jonan`. Zero LLM tokens, nothing run except the ledger checker and `pytest`; no sealed set opened, `.env` not read. `main.tex` edited (backup `D:\Major Project_paper_backups\main_2026-10-17_before_part6_review.tex`); no pipeline code, threshold or default changed.*
+
+- **Issue.** A read-only review (`docs/PAPER_REVIEW_2026-10-17.md`) recomputed 72 numbers from raw files (no measured value wrong) and audited every claim. Its findings:
+  - one wrong explanation of a baseline score;
+  - two differences computed from rounded percentages;
+  - a word-number miscount;
+  - the haystack sentence, which no current-system file supports;
+  - several sentences that called safety or attribution "by construction" against the paper's own data and the NLPIR text;
+  - wrong labels for the synthesis model, the Python version and the determinism evidence.
+- **Cause.**
+  - Text carried over from the v6 draft and never re-checked against later results.
+  - The checker compares numbers, not wording, and does not see numbers written as words.
+  - Two ledger rows subtracted rounded percentages.
+- **Fix (owner approved P1 to P29; STRUCTURE, CUT and STYLE items left).**
+  - **Accuracy:**
+    - haystack sentence deleted (P1, option a);
+    - baseline attribution loss explained correctly: Q035 one point, Q046 one point, re-graded from the stored replies with the experiment's own grader (P2);
+    - synthesis model named by experiment (llama-3.3-70b-versatile for Corpora 1/2, gpt-oss-120b on external benchmarks; P3);
+    - "Python 3.10" removed (P4);
+    - determinism footnote now cites two full runs per corpus, 78/78 identical (P5);
+    - "seven" -> "five" (P6);
+    - 3.9 -> 3.8 and 23.0 -> 23.1 points, from counts (P7);
+    - fixed-injection routing in the summary table 0.044 -> 0.000, attack success, with the routing-changed rate and the defended-LLM grading in footnotes (P8);
+    - threshold provenance and the Discussion's calibrated list and cross-reference (P9, P10);
+    - invariance paragraph no longer says the sensitivity was eliminated (P11);
+    - "exactly" and "six limitations" removed (P12, P13).
+  - **Claims:**
+    - summary-table caption and prose now say only zero flips and the absence of an instruction-following component hold by construction (P14);
+    - "0 of 32 by construction" -> "on this corpus" (P15);
+    - "cannot ... worst-case safety guarantee" -> detected conflicts only, Corpus 2 Q045 named (P16);
+    - attribution split into a by-construction format row and an empirical gold-pair row (16/16 -> 15/16) (P17);
+    - "practical meaning of the safety guarantee" (P18);
+    - parametric leakage (P19);
+    - "independently authored" Corpus 2 -> "written separately by this project", five places (P20);
+    - miscalibration (P21);
+    - "unbreakable" and the unqualified "0 of 45" (P22);
+    - conclusion root-cause and external-data sentences (P23, P24);
+    - contributions 1 and 5, MultiHop added (P25);
+    - the related-work gap (P26);
+    - focus-presence scope, which also removes one em dash (P27);
+    - "slightly" (P28);
+    - NLI sweep range (P29).
+- **Effect.**
+  - `python evaluation/check_ledger.py --sync-lines -v`: PASSED, 597 rows; (a) 482 ok, (b) 597 ok, (c) 1,368 ok, (e) 31 ok; the 26 (d) warnings are the NLPIR rows, as before.
+  - `python -m pytest tests -q`: 169 passed.
+  - Braces balance, environments match, every `\ref` resolves.
+- **Ledger.**
+  - Updated with their real sources: MT-068 (now recomputes the two-run agreement), MT-119, MT-145 (gold-pair counts from the frozen files and the query files, replacing the hard-coded 3/3), MT-224 and MT-227 (from counts), MT-228, MT-271, MT-272, MT-373, MT-424, MT-430.
+  - Added: MT-456 to MT-461.
+  - Retired with their text: MT-358 and the haystack rows MT-402 to MT-406. The NLPIR rows NL-017 and NL-018 stay as the record of NLPIR's claim.
+- **Cost / regressions.** None to the system. The paper now reports less: the haystack claim is gone.
+- **Not done.**
+  - STRUCTURE, CUT and STYLE items (P30 to P50), including the em dashes at the former lines 1841 and 1849, the `---` table cells, and the figure path (`\graphicspath`): with the current layout the three matplotlib figures still print as placeholders.
+  - `honovich2022true` and the four wrong author fields in `references.bib`.
+  - The MultiHop-RAG citation.
+- **Evidence.** `docs/PAPER_REVIEW_2026-10-17.md`; `git diff main.tex docs/NUMBERS_LEDGER.csv`; the backup above.
+- **Numbers updated.** `numbers.md` section 7 item 15 closed (haystack sentence removed from `main.tex`); no measured value changed.

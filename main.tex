@@ -135,12 +135,13 @@ INSUFFICIENT verdict the system abstains before the model is called, naming
 the failing stage and the clashing evidence. On an authored 11-document
 corpus with 78 queries, the frozen system reaches 92.3\% decision accuracy
 (96.2\% after later, in-sample fixes), 100\% conflict recall, and zero unsafe
-answers across 32 abstention-required queries. Replicated on a second, independently authored
-corpus in a different domain, determinism transfers exactly while
+answers across 32 abstention-required queries. Replicated on a second corpus, written separately
+by this project in a different domain, determinism transfers exactly while
 calibrated accuracy drops to 66.7\% (89.7\% after the same in-sample fixes)
 and unsafe answers rise to 4/32 (1/32 after the fixes): what transfers is
 repeatability, not the number. A well-prompted model
-can slightly exceed our accuracy, but only probabilistically: it flips
+can exceed our accuracy (slightly on the first corpus, clearly on the
+second), but only probabilistically: it flips
 decisions across reruns and once answered a genuinely conflicting query
 outright, where our gate abstained. Under attack the gap widens: the
 decision is injection-immune by construction, and under 48 adversarial
@@ -223,9 +224,9 @@ can be repeatably wrong.
 We are deliberate about what this buys and what it does not. A well-prompted
 modern language model may reach comparable decision accuracy on the same
 benchmark. Our claim is not that we are more accurate. Our claim is that the
-same input always produces the same decision, that the model cannot
-leak parametric knowledge into a case where the evidence does not support an
-answer, and that every refusal is explainable by construction. These are
+same input always produces the same decision, that the model is never
+called when the gate finds the evidence insufficient or contradictory, and
+that every refusal is explainable by construction. These are
 properties a probabilistic model provides only by tendency, and they are the
 properties that matter in high-stakes settings such as legal compliance,
 medical protocol lookup, and enterprise policy question answering, where
@@ -238,8 +239,8 @@ This paper makes the following contributions:
 \begin{enumerate}
     \item A \textbf{validation-gated RAG architecture} that structurally
     prevents the language model from accessing unverified content, so that
-    safe abstention is enforced by the pipeline rather than learned or
-    prompted.
+    abstention, when the gate decides it, is enforced by the pipeline rather
+    than learned or prompted.
     \item A \textbf{deterministic validation pipeline}, a provenance check
     plus seven stages, that discards evidence not registered at ingestion,
     normalizes, deduplicates, and relevance-filters retrieved evidence, then
@@ -261,9 +262,9 @@ This paper makes the following contributions:
     component-level failures, threshold sweeps, ablations, and a prompted-LLM
     baseline comparison under one protocol that isolates the reliability
     properties accuracy alone does not capture, and
-    replicated on a second, independently authored corpus in a different
-    domain, where determinism transfers exactly while the calibrated numbers
-    drift, and evaluated on an independently authored benchmark (RAMDocs) with no threshold change, where a prompted LLM is safer but our gate answers far more correctly (Section~\ref{sec:ramdocs}).
+    replicated on a second corpus, written separately by this project in a
+    different domain, where determinism transfers exactly while the calibrated numbers
+    drift, and evaluated on an independently authored benchmark (RAMDocs) with no threshold change, where a prompted LLM is safer but our gate has the higher exact match (Section~\ref{sec:ramdocs}), and on MultiHop-RAG with retrieval, where the prompted LLM is both safer and more often correct (Section~\ref{sec:multihop}).
     \item A \textbf{threat model and adversarial evaluation} showing that the
     safety decision is injection-immune by construction (0 of 45 attacks
     obeyed) and, under an adaptive attack that flips a defended language model
@@ -389,8 +390,8 @@ imperfect probabilistic signal rather than a bound. These approaches make
 abstention a learned or calibrated behavior attached to a model's
 confidence. Ours makes it a structural outcome of a deterministic
 evidence check that runs before generation, so the abstention decision does
-not depend on a confidence estimate that can itself be miscalibrated under
-shift.
+not depend on a model's confidence estimate, though its own thresholds can
+be miscalibrated under shift (Section~\ref{sec:ramdocs}).
 
 \subsection{Adversarial Threats to Retrieval-Augmented Systems}
 Because our pipeline ingests documents it does not control, the relevant
@@ -516,7 +517,7 @@ retrieval~\cite{wu2024timesensitive}, layered adaptive query
 handling~\cite{huang2024layered}, hybrid retrieval
 architectures~\cite{omrani2024hybrid}, and multimodal RAG
 evaluation~\cite{sun2024multimodal} each target a different retrieval
-scenario, but none of these seven decide whether the result can be
+scenario, but none of these five decide whether the result can be
 trusted. Graph-structured retrieval is
 sufficiently active to have produced independent surveys in the same
 period~\cite{peng2025graphrag, procko2024graphrag}, and RAG's use as a
@@ -584,10 +585,10 @@ generate text with inline citations~\cite{gao2023alce}, to explain
 retrieval-augmented outputs~\cite{rorseth2024explain}, or to fact-check
 generated claims against a reference corpus with a dedicated retrieval and
 verification pipeline~\cite{trokhymovych2021wikicheck} improve transparency
-but still operate after generation and do not gate it. What no existing
-system provides is a hard
-architectural boundary that blocks generation until the evidence has been
-shown to be sufficient and non-contradictory. That pre-generation
+but still operate after generation and do not gate it. None of the systems
+reviewed here provides a deterministic, non-learned boundary that blocks
+generation until the evidence has been shown to be sufficient and free of
+detected contradiction. That pre-generation
 verification gate is the gap Trust Before Text fills.
 
 % ─────────────────────────────────────────────────────────────────────────────
@@ -895,8 +896,8 @@ focus terms that appear anywhere in the evidence,
 The third requirement ($\mathrm{pres} \geq \tau_{\text{focus}}$,
 default $\tau_{\text{focus}} = 0.5$) is a hard presence test, not a
 threshold on a score: a majority of the query's rarest content words
-must appear in the evidence at all. This is what refuses a question the
-corpus genuinely does not cover — two gap queries (Corpus~1 Q051,
+must appear in the evidence at all. On Corpora 1 and 2 this is what refuses
+a question the corpus genuinely does not cover: two gap queries (Corpus~1 Q051,
 Corpus~2 Q017) were passing H2/H4 through marginal score or coverage
 while their subject was absent from the corpus entirely. The cost of
 this fix is three answerable queries that now over-abstain because the
@@ -910,7 +911,9 @@ for reasons documented in Section~\ref{sec:limitations}.
 \label{sec:synthesis}
 On a PASS verdict, the generation gatekeeper builds a structured evidence
 pack from the validated chunks and passes it, and only it, to a
-Groq-hosted Llama-3 model, which is instructed to answer with inline
+Groq-hosted LLM (\texttt{llama-3.3-70b-versatile} in the Corpus~1 and 2
+experiments, \texttt{gpt-oss-120b}, the current default, on the external
+benchmarks), which is instructed to answer with inline
 citation markers referencing specific chunks. The model has no access to
 unvalidated content.
 
@@ -947,7 +950,7 @@ path to a generated answer.
 \section{Implementation}
 \label{sec:impl}
 
-The system is implemented in Python~3.10 as a set of single-responsibility
+The system is implemented in Python as a set of single-responsibility
 modules that communicate through fixed, typed schemas. This section
 documents the technology stack, the inter-module contracts, the complete
 set of deterministic thresholds, and the steps taken for reproducibility.
@@ -959,7 +962,7 @@ dimensions), a BM25 sparse vector with Qdrant's inverse-document-frequency
 modifier, and ColBERT token-level multivectors from
 \texttt{answerai-colbert-small-v1}. Contradiction and faithfulness checks
 share a single \texttt{cross-encoder/nli-deberta-v3-base} model instance.
-Synthesis is performed by a Groq-hosted Llama-3 model behind an interface
+Synthesis is performed by a Groq-hosted LLM behind an interface
 that abstracts the backend, so alternative providers can be substituted
 without touching the pipeline. A FastAPI service exposes document-upload
 and query endpoints and static-mounts a lightweight HTML, CSS, and
@@ -980,7 +983,7 @@ Dense embedding   & \texttt{all-MiniLM-L6-v2} (384-d) \\
 Sparse retrieval  & BM25 with Qdrant IDF modifier \\
 Reranker          & ColBERT \texttt{answerai-colbert-small-v1} \\
 NLI model         & \texttt{cross-encoder/nli-deberta-v3-base} \\
-Synthesis LLM     & Groq-hosted Llama-3 (pluggable backend) \\
+Synthesis LLM     & Groq-hosted LLM (see Sec.~\ref{sec:synthesis}; pluggable) \\
 Service / UI      & FastAPI backend, static HTML/CSS/JS frontend \\
 \bottomrule
 \end{tabularx}
@@ -1095,8 +1098,8 @@ Evaluation uses two corpora. The primary corpus, referred to as
 policy documents for a fictional company, Meridian Grid Technologies; it is
 the corpus every threshold in this paper was calibrated on, and it is the
 subject of every table and figure in this section unless a table is
-explicitly marked otherwise. A second, independently authored corpus in a
-different domain, Corpus 2, is introduced in
+explicitly marked otherwise. A second corpus, written separately by this
+project in a different domain, Corpus 2, is introduced in
 Section~\ref{sec:corpus2} as a held-out generalization test and was never
 used to fit any threshold of the frozen system (the later fixes of
 Section~\ref{sec:post_eval_fixes} were selected using both corpora, so
@@ -1150,13 +1153,10 @@ by-construction guarantee this paper claims side by side, on both corpora
 and against the prompted baseline. We state the tradeoff plainly rather
 than hide it: accuracy is the one row where our system is not the strongest
 number, and on Corpus 2 it falls well below the prompted baseline. What we
-report instead is that every other row, determinism, injection immunity,
-and (with the caveat in Table~\ref{tab:heldvsdrifted}) attribution, holds
-regardless of that accuracy drop, because those properties come from the
-architecture rather than from the model's average-case performance. A lower
-accuracy number is the cost of the guarantee, not evidence against it, and
-Table~\ref{tab:summary} is where that exchange is easiest to see at a
-glance. The two decision-layer injection cells for the baseline are marked
+report instead is that two rows, determinism and decision-layer injection
+immunity, hold regardless of that accuracy drop, because they come from the
+architecture; conflict recall and the unsafe-answer count are measurements
+and moved with the corpus. The two decision-layer injection cells for the baseline are marked
 not applicable because a prompted model has no separate decision layer to
 test in isolation: the model itself is the decision, so the fixed-injection
 study (Section~\ref{sec:adv-injection}) instead measures its overall attack
@@ -1165,9 +1165,9 @@ consistent with Section~\ref{sec:corpus2}'s spot-check being decision-layer
 only.
 
 \begin{table}[htbp]
-\caption{Guarantee Properties Across Both Corpora and Both Systems (Frozen System). Accuracy
-drifts with the corpus; every other row holds by construction wherever it
-applies.}
+\caption{Guarantee Properties Across Both Corpora and Both Systems (Frozen System). Only zero
+decision flips and the absence of an instruction-following component in the
+decision hold by construction; every other row is empirical.}
 \label{tab:summary}
 \centering
 \scriptsize
@@ -1191,7 +1191,8 @@ Injection obeyed\textsuperscript{d}     & \textbf{0/45} & n/a    & \textbf{0/15}
 \textsuperscript{a}Of 32 conflict-or-gap queries that must not be answered.
 \textsuperscript{b}Ours: determinism by construction, since the decision
 path has no stochastic component and no temperature parameter; verified by
-an 8-query replay, not a repeated-sampling protocol.
+two full runs per corpus with identical decisions on all 78 queries, not a
+repeated-sampling protocol.
 \textsuperscript{c}Baseline: across 5 repeated runs at temperature 0.7.
 \textsuperscript{d}Decision layer only; a prompted baseline has no separate
 decision layer to isolate, so its overall attack success rate is reported
@@ -1235,9 +1236,9 @@ Every off-diagonal cell is zero except one: six answerable queries were
 flagged as conflicts. No conflict was missed, no gap was answered, and no
 query was answered when it should have abstained. In other words, every one
 of the system's six errors is an over-cautious abstention, not a piece of
-misinformation. This asymmetry, errors that only ever cost a refusal and
-never produce a false answer, is the practical meaning of the safety
-guarantee.
+misinformation. This asymmetry, errors that cost a refusal rather than
+produce a false answer, is what the gate is designed for; on this corpus it
+held, and on Corpus~2 it did not (Section~\ref{sec:corpus2}).
 
 \begin{table}[htbp]
 \caption{Confusion Matrix, Corpus 1 (rows: gold label, columns: system decision)}
@@ -1374,10 +1375,11 @@ advantage we did not measure, and we note that these are natural gap
 queries, with adversarial leakage probes left to future work. On
 \textbf{attribution quality}, our system named both clashing documents and
 both values on all 16 conflicts (16 of 16 full marks); the baseline earned
-full marks on 14 of 16 (mean $2.875$ of 3), missing the two points on the
-conflict it failed to flag. On the direct \textbf{safety} measure, our
-unsafe-answer rate is 0 of 32 by construction, while the baseline's is 1 of
-32 (Q035).
+full marks on 14 of 16 (mean $2.875$ of 3): it lost one point on the
+conflict it failed to flag (Q035) and one on a conflict whose values it
+reworded (Q046). On the direct \textbf{safety} measure, our
+unsafe-answer rate is 0 of 32 on this corpus, while the baseline's is 1 of
+32 (Q035; the difference is not significant, Section~\ref{sec:ci_mcnemar}).
 
 \begin{table}[htbp]
 \caption{Trust Before Text versus a Prompted-LLM Baseline, Corpus 1. The
@@ -1403,24 +1405,27 @@ The result is exactly the intended one. A well-prompted model can be more
 accurate on average, yet it remains a probabilistic system: it can change
 its decision from one run to the next, and on this corpus it produced one
 confidently wrong answer to a question the documents genuinely contradict.
-Trust Before Text cannot, because the model is never reached on a conflict.
-Higher average accuracy and a worst-case safety guarantee are different
-things, and the baseline demonstrates the first while lacking the second.
+Trust Before Text did not, because the model is never reached on a detected
+conflict; a conflict the gate fails to detect is still answered (Corpus~2
+Q045, Section~\ref{sec:corpus2}). Higher average accuracy and a repeatable
+decision are different things, and the baseline demonstrates the first while
+lacking the second.
 
 \subsection{Generalization: A Second Corpus}
 \label{sec:corpus2}
-Every threshold in Table~\ref{tab:thresholds} was calibrated on Corpus 1
-alone (Section~\ref{sec:impl}). To test whether that calibration, and the
+Every threshold of the frozen system was calibrated on Corpus 1 alone
+(Section~\ref{sec:impl}); the three marked as selected on both corpora in
+Table~\ref{tab:thresholds} were added later. To test whether that calibration, and the
 architecture's guarantees more broadly, transfer to unseen content, we ran
 the identical frozen system, with no threshold or decision logic changed,
-on a second corpus authored independently to the same fixed-fact-map
+on a second corpus, written separately by this project to the same fixed-fact-map
 methodology but in a deliberately different domain and convention: US
 university academic regulations, against Corpus 1's UK enterprise HR
 policies. Because Corpus 2 played no role in choosing any threshold of the frozen
 system, this is a genuine held-out generalization test of that system rather
 than a second round of tuning. It was held out only for this first run: the
 later fixes of Section~\ref{sec:post_eval_fixes} used both corpora.
-The second corpus matches Corpus 1's structure exactly
+The second corpus matches Corpus 1's structure
 (11 documents including one superseded pair, 78 queries split 46 answer, 16
 conflict, and 16 insufficient, with 4 planted conflicts and 6 gaps), so any
 change in results is attributable to content, not test design.
@@ -1436,8 +1441,10 @@ precision (0.43, from 16 true flags against 21 false ones) rather than by any
 missed conflict. We report recall and precision jointly and lead with F1,
 because recall staying at 16 of 16 is confounded with that precision collapse
 and cannot be read as an independent success. Set against that drop,
-determinism and structural attribution do not move at all between the two
-corpora (Table~\ref{tab:heldvsdrifted}): the accuracy number is corpus-sensitive
+determinism does not move between the two corpora, and every conflict
+report still names two documents and their values; whether it names the
+right pair is empirical (15 of 16 on Corpus~2, where Q045 cites the wrong
+pair; Table~\ref{tab:heldvsdrifted}): the accuracy number is corpus-sensitive
 precisely because it depends on the calibrated thresholds, while the
 guarantees that do not depend on calibration are unaffected by the same
 distribution shift that costs 26 points of accuracy. That is the tradeoff
@@ -1494,7 +1501,8 @@ Unsafe answers (/32)    & 0      & 4      & 1 \\
 Property & Type & Transfer \\
 \midrule
 Determinism (0 flips)          & by construction & held \\
-Structural attribution (3/3)   & by construction & held \\
+Conflict report names a pair and values & by construction & held \\
+Reported pair is the gold pair & empirical & 16/16 $\to$ 15/16 \\
 Conflict recall (16/16)        & empirical\textsuperscript{a} & entangled with precision \\
 Decision accuracy              & calibrated      & drifted \\
 Conflict precision             & calibrated      & drifted \\
@@ -1777,7 +1785,7 @@ decision quality.
 \label{sec:post_eval_fixes}
 
 Following the frozen-system evaluation, two rounds of targeted fixes
-addressed the six limitations identified in
+addressed the failures identified above and in
 Section~\ref{sec:limitations}. This subsection reports the current state
 of the system, not the frozen one above.
 
@@ -1920,13 +1928,13 @@ Unsafe answers       & 0/32   & 0/32            & 4/32   & 1/32            \\
 
 
 The gains and the residual errors are both visible. Corpus~1 accuracy rose
-3.9 points (92.3\% to 96.2\%): the assertive-span precondition removed all
+3.8 points (3 queries; 92.3\% to 96.2\%): the assertive-span precondition removed all
 three false conflicts (Q019, Q025, Q032), and the focus-presence requirement
 closed the one gap leak (Q051, a relocation-allowance query with no corpus
 coverage, which had started to pass the sufficiency gate after chunk-boundary
 changes raised its coverage from $0.40$ to $0.60$, across the $0.55$ bar,
-without any new information appearing). Corpus~2 accuracy rose 23.0 points
-(66.7\% to 89.7\%), driven by fewer false conflicts and better sufficiency
+without any new information appearing). Corpus~2 accuracy rose 23.1 points
+(18 queries; 66.7\% to 89.7\%), driven by fewer false conflicts and better sufficiency
 gating. Its eight remaining errors are Q045, a conflict the anchor test
 misses because the two documents state the rule in different vocabulary (the
 one unsafe answer); Q036, now an INSUFFICIENT abstention; two false conflicts
@@ -2040,18 +2048,13 @@ queries the merged index is less benign: accuracy is 88.5\% (69/78),
 conflict precision $0.778$, and unsafe answers rise from 1/32 to 2/32,
 because one genuine conflict (Q048) is now answered.
 
-Planting each Corpus~1 conflict pair among $N \in \{2, \ldots, 80\}$ ingested
-distractor chunks (5 seeded draws per pair and $N$), ours detected the planted
-conflict in all 20 haystacks at every $N$ (95\% interval $[84, 100]$\%), as did
-a prompted \texttt{gpt-oss-120b} up to $N=40$.
-
 \subsubsection{Threshold Sensitivity and Component Ablations}
 \label{sec:sensitivity}
 
 Six thresholds were swept end to end on the current system, each with the
 others at their defaults (Table~\ref{tab:sensitivity}). The NLI
-contradiction cutoff is not a knife-edge: results are identical from 0.80
-to 0.99, likely because the query-scoping checks already discard the pairs
+contradiction cutoff is not a knife-edge: results are identical at 0.80,
+0.94 and 0.99, likely because the query-scoping checks already discard the pairs
 a lower cutoff would admit. The average-score floor only costs
 over-abstention, and only above 0.65. Two defaults sit near unsafe regions:
 the coverage floor of 0.55 has no margin (below it, Corpus~1 answers a gap
@@ -2254,7 +2257,7 @@ check.}
 \toprule
 Test & Defended LLM & Ours \\
 \midrule
-Fixed injection, 3 styles (45), v6              & 0.000 & 0.044\textsuperscript{a} \\
+Fixed injection, 3 styles (45), v6              & 0.000\textsuperscript{b} & 0.000\textsuperscript{a} \\
 Conflict-suppression, adaptive (6), v6           & 0.33  & 0.00 \\
 Gap probes, 70B (LLM 12; ours 24), fixed         & 1.00  & 0.00 \\
 Gap probes, 120B, C1+C2 (LLM 24; ours 48), fixed & 1.00  & 0.00 \\
@@ -2265,8 +2268,10 @@ Synthesis ASR after hardening (45), v6           & 0.000 & 0.000 \\
 
 \vspace{3pt}
 \raggedright\scriptsize
-\textsuperscript{a}Fraction in which injected content changed routing
-(2 of 45, both toward CONFLICT); no instruction was obeyed.
+\textsuperscript{a}Routing changed in 2 of 45 (0.044), both toward
+CONFLICT; no instruction was obeyed.
+\textsuperscript{b}Original grader; a stricter automated screen flags 12 of
+45 and one reader's pass finds 4 to 9 (Section~\ref{sec:adv-injection}).
 \end{table}
 
 \subsubsection{Invariance Testing}
@@ -2318,7 +2323,9 @@ missed: appending ``Thanks!'' to a query changed four decisions from
 refuse to answer, because ``thanks'' is rare in policy documents and
 was scored as a maximally informative focus term by corpus IDF. Fixing
 that bug (restricting focus terms to words the corpus actually contains)
-eliminated the sensitivity by construction.
+made the focus terms identical under this transform by construction; the
+three \texttt{query\_thanks} changes left in Table~\ref{tab:invariance} all
+go toward abstention.
 
 
 
@@ -2427,7 +2434,8 @@ deliberately biased toward flagging. One reader's hand pass over the 12
 flagged defended answers finds 4 that present the planted value as a valid
 answer and 5 that only report the conflict; neither of the 2 flagged hardened
 answers presents it.} either way, the distinction is a
-guarantee (0 by construction, unbreakable by a stronger prompt) versus a soft
+structural property (no instruction-following component in the routing
+path) versus a soft
 prompted resistance that a better attack could still defeat. Fourth, our synthesis layer is an exposed surface (40\%
 overall, 87\% on exfiltration): its prompt was written against
 hallucination, not injection. Immunity is at the decision layer, not
@@ -2475,7 +2483,7 @@ The regression showed zero decision flips, the correct value retained on 14
 of 15 queries (the single miss is a grader phrasing artifact identical in
 both runs), and unchanged faithfulness: no quality loss. We do not oversell
 this result. An anti-injection prompt is the same soft defense the defended
-LLM already used to reach 0 of 45, so hardened synthesis now \textit{matches}
+LLM already used (0 of 45 under the original grader), so hardened synthesis now \textit{matches}
 a defended LLM end-to-end rather than beating one. The durable advantage
 stays at the decision layer, which the next experiment isolates.
 
@@ -2578,8 +2586,9 @@ leaving the NLI prong ungated on lexical similarity, reporting the specific
 clashing pair on a conflict, and removing the comparison override, encode
 reusable design principles and are not expected to need re-fitting. The
 calibrated choices, the NLI contradiction threshold and the two sufficiency
-signals, are fitted to Corpus 1 and are not assumed to carry over on their
-own. Section~\ref{sec:limitations} reports the direct test of that
+signals fitted to Corpus 1, and the three later values selected on both
+corpora, are not assumed to carry over on their own.
+Section~\ref{sec:corpus2} reports the direct test of that
 assumption on a second corpus and states plainly where it held and where it
 did not.
 
@@ -2612,10 +2621,11 @@ incorrect answer carrying a plausible citation has real cost.
 \section{Conclusion}
 \label{sec:conclusion}
 
-Trust Before Text is a verification-first RAG architecture whose central
-claim is that the primary bottleneck in reliable retrieval-augmented
-question answering is not retrieval quality but the absence of a structured
-evidence-verification gate between retrieval and generation. By separating
+Trust Before Text is a verification-first RAG architecture built on the
+view that reliable retrieval-augmented question answering needs a
+structured evidence-verification gate between retrieval and generation, not
+only better retrieval; on our two corpora every error arises downstream of
+retrieval. By separating
 the pipeline into explicitly governed stages, Retrieval, Validation, and
 Synthesis, and enforcing a deterministic gate at the boundary, the system
 makes the answer-or-abstain decision repeatable, not necessarily correct.
@@ -2630,13 +2640,16 @@ queries; every error it makes is a safe over-abstention rather than a piece
 of misinformation. A well-prompted language model, given the same evidence,
 is slightly more accurate at 97.4\%, but it is not deterministic, it changed
 a decision across repeated runs, and it answered one query whose sources
-genuinely conflict, where our system answered none. Replicated on a second,
-independently authored corpus in a different domain, the same split holds:
+genuinely conflict, where our system answered none. Replicated on a second
+corpus, written separately by this project in a different domain, the same
+split holds:
 decision accuracy drops well below the prompted baseline, while
 determinism and decision-layer injection immunity transfer exactly:
 what generalizes is repeatability, not the accuracy number. After the
 later, in-sample fixes, accuracy is 96.2\% and 89.7\% on the two corpora;
-on external data a prompted LLM is safer, largely by refusing more. The
+on external data a prompted LLM is safer: on RAMDocs by refusing more, and
+on MultiHop-RAG because our gate answers more null queries and raises false
+conflicts. The
 by-construction properties are clearest under adversarial pressure: injected
 text cannot change the routing decision, evidence without a registered
 fingerprint cannot support an answer, and where an adaptive attack flips a
