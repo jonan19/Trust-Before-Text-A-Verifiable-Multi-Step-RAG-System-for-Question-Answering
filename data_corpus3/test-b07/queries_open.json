@@ -1,0 +1,121 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b07-open-01",
+      "category": "track-b/open",
+      "query": "Does information have to be marked or designated \"confidential\" for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_181.txt",
+        "nda_212.txt",
+        "nda_565.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_181.txt",
+        "nda_212.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_212 requires information to be expressly marked or designated in writing; nda_181 and nda_565 protect information regardless of form or marking.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b07-open-02",
+      "category": "track-b/open",
+      "query": "How long does the confidentiality obligation last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_181.txt",
+        "nda_212.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_181.txt",
+        "nda_212.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_181 applies with no time limit; nda_212 terminates at the earliest of one year, return/destruction, or closing. nda_565 and nda_90 do not fix a clear end date. Incompatible for the two that address it.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b07-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally required to disclose the confidential information, must we notify the other party beforehand?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_181.txt",
+        "nda_212.txt",
+        "nda_565.txt",
+        "nda_90.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require advance notice before compelled disclosure; they agree. Only nda_181 fixes a period (two business days).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b07-open-04",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_181.txt",
+        "nda_212.txt",
+        "nda_565.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address remedies allow injunctive/equitable relief; they agree. nda_90 has no such clause (it refers instead to criminal penalties under applicable law).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b07-open-05",
+      "category": "track-b/open",
+      "query": "Does signing this oblige either side to enter into the deal?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_212.txt",
+        "nda_565.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both agree the NDA creates no obligation to transact.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b07-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to go to arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration; nda_181 (English courts), nda_212 (New York courts) and nda_565 (Georgia courts) all point to litigation, and nda_90 names no forum at all.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b07-open-07",
+      "category": "track-b/open",
+      "query": "Is there a ceiling on the damages a party can be made to pay for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document caps breach liability. nda_181 imposes an uncapped indemnity; nda_565 allows recovery of enforcement costs and fees; none set a maximum.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b07-open-08",
+      "category": "track-b/open",
+      "query": "Does the recipient have to report a suspected leak or misuse of the information, and how quickly?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_90.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_90 imposes a breach-reporting duty, with a ten-business-day deadline. nda_181, nda_212 and nda_565 contain no such duty. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

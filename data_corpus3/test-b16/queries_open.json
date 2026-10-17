@@ -1,0 +1,120 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b16-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_21.txt",
+        "nda_57.txt",
+        "nda_76.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_21.txt",
+        "nda_57.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_21 runs a three-year term plus two years' survival; nda_57 continues indefinitely; nda_76 releases information seven years after disclosure; nda_446 sets no term. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b16-open-02",
+      "category": "track-b/open",
+      "query": "After a request to return the information, can the recipient keep a copy for its own internal purposes?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_21.txt",
+        "nda_57.txt",
+        "nda_76.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_21.txt",
+        "nda_57.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_57 lets PwC keep a copy 'for internal purposes' (a broad carve-out); nda_76 requires return or destruction of all copies with no retention; nda_21 permits retention only of un-retrievable archive/backup copies and copies required by law.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b16-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally required to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_21.txt",
+        "nda_76.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both require prior notice before compelled disclosure; they agree. nda_76 fixes a two-business-day notice period. nda_57 and nda_446 have no compelled-disclosure notice procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b16-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_21.txt",
+        "nda_57.txt",
+        "nda_76.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address it require return or destruction on request; they agree. nda_446 has no return clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b16-open-05",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_21.txt",
+        "nda_76.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Both allow injunctive relief for breach; they agree. nda_57 and nda_446 have no injunction clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b16-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements restrict soliciting or hiring the other party's employees?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None of the four contain a non-solicitation or no-hire clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b16-open-07",
+      "category": "track-b/open",
+      "query": "What remedy does the PricewaterhouseCoopers agreement give the disclosing party for a breach of confidentiality?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_57 contains no remedies clause of any kind — no injunctive relief, no damages, no fee-shifting. The other three address remedies but do not speak to the PwC agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b16-open-08",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_446.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_446 requires arbitration; nda_21 and nda_57 point to the English courts and nda_76 to the courts of Graz. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

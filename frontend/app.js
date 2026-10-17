@@ -3,8 +3,6 @@ const API_BASE_URL = 'http://localhost:8000';
 // DOM Elements
 const queryInput = document.getElementById('query-input');
 const queryBtn = document.getElementById('query-btn');
-const resultsContainer = document.getElementById('results-container');
-const resultsCount = document.getElementById('results-count');
 const totalChunksEl = document.getElementById('total-chunks');
 const uniqueDocsEl = document.getElementById('unique-docs');
 const dropZone = document.getElementById('drop-zone');
@@ -12,52 +10,148 @@ const fileInput = document.getElementById('file-input');
 const resetBtn = document.getElementById('reset-btn');
 const notificationContainer = document.getElementById('notification-container');
 
+const traceState = document.getElementById('trace-state');
+const traceNodes = document.getElementById('trace-nodes');
+const traceDetail = document.getElementById('trace-detail');
+const outcomeBay = document.getElementById('outcome-bay');
+const evidenceBay = document.getElementById('evidence-bay');
+const rawBay = document.getElementById('raw-bay');
+const rawToggle = document.getElementById('raw-toggle');
+const rawJson = document.getElementById('raw-json');
+const emptyState = document.getElementById('empty-state');
+
 // State
 let isSearching = false;
-let apiOnline = true;
+let lastData = null;
+let selectedStage = null;
 
-// Initialize
+// ---------------------------------------------------------------------
+// Pipeline stage definitions — the signature "trace" element.
+// Each stage reads its own metric + pass/warn/fail status straight off
+// the API response, so the trace always reflects what actually happened,
+// never a canned animation.
+// ---------------------------------------------------------------------
+const STAGES = [
+    {
+        id: 'preprocess', label: 'Preprocess',
+        metric: (d) => d.preprocessed && d.preprocessed !== d.query ? 'normalized' : 'unchanged',
+        status: () => 'pass',
+        facts: (d) => [
+            ['Raw query', d.query, null],
+            ['Normalized', d.preprocessed, null],
+        ],
+        note: 'Strips punctuation runs, expands contractions, collapses whitespace before anything else touches the query.',
+    },
+    {
+        id: 'classify', label: 'Classify',
+        metric: (d) => d.query_type || 'simple',
+        status: (d) => d.query_type === 'complex' ? 'warn' : 'pass',
+        facts: (d) => [
+            ['Query type', (d.query_type || 'simple').toUpperCase(), d.query_type === 'complex' ? 'warn' : 'pass'],
+        ],
+        note: 'Rule-based only — no LLM. A complexity-signal keyword (compare, versus, also, both…) routes the query to decomposition.',
+    },
+    {
+        id: 'decompose', label: 'Decompose',
+        metric: (d) => (d.sub_queries && d.sub_queries.length > 1) ? `${d.sub_queries.length} sub-queries` : 'single query',
+        status: (d) => (d.sub_queries && d.sub_queries.length > 1) ? 'warn' : 'pass',
+        facts: (d) => (d.sub_queries || []).map((sq, i) => [`Sub-query ${i + 1}`, sq, null]),
+        note: 'Complex queries are split on conjunctions/comparators into focused sub-queries, each retrieved independently and merged.',
+    },
+    {
+        id: 'retrieve', label: 'Retrieve',
+        metric: (d) => `${d.raw_chunk_count ?? 0} chunks`,
+        status: (d) => (d.raw_chunk_count ?? 0) > 0 ? 'pass' : 'fail',
+        facts: (d) => [
+            ['Candidates fetched', d.raw_chunk_count ?? 0, null],
+            ['Target document', d.target_source || 'none (semantic search)', d.target_source ? 'warn' : null],
+        ],
+        note: 'Hybrid similarity search maximizes recall — filtering for relevance happens later, in validation, not here.',
+    },
+    {
+        id: 'validate', label: 'Validate',
+        metric: (d) => `${d.relevant_count ?? 0} relevant`,
+        status: (d) => d.conflict_flag ? 'fail' : (d.sufficiency_flag === false ? 'warn' : 'pass'),
+        facts: (d) => [
+            ['Stage 3 — relevant chunks', d.relevant_count ?? 0, null],
+            ['Stage 4 — conflict flag', d.conflict_flag ? 'DETECTED' : 'none', d.conflict_flag ? 'fail' : 'pass'],
+            ['Stage 5 — sufficiency flag', d.sufficiency_flag ? 'sufficient' : 'insufficient', d.sufficiency_flag ? 'pass' : 'warn'],
+            ['Stage 5 — query coverage', `${((d.query_coverage_score ?? 0) * 100).toFixed(0)}%`, null],
+            ['Confidence', `${d.confidence_tier} · ${((d.confidence_score ?? 0) * 100).toFixed(1)}%`,
+                d.confidence_tier === 'HIGH' ? 'pass' : d.confidence_tier === 'MEDIUM' ? 'warn' : 'fail'],
+            ['Stage 0 — unverifiable evidence discarded', d.unverified_count ?? 0, (d.unverified_count ?? 0) > 0 ? 'warn' : 'pass'],
+        ],
+        note: 'The seven-stage validation pipeline: provenance → normalize → dedup → relevance filter → conflict detection → sufficiency check → structuring. Deterministic throughout — no LLM judgement.',
+    },
+    {
+        id: 'decide', label: 'Decide',
+        metric: (d) => (d.decision || 'abstain').toUpperCase(),
+        status: (d) => d.decision === 'proceed' ? 'pass' : 'fail',
+        facts: (d) => [
+            ['Decision', (d.decision || 'abstain').toUpperCase(), d.decision === 'proceed' ? 'pass' : 'fail'],
+            ['Abstention reason', d.abstention_reason || 'n/a (proceeded)', d.abstention_reason ? 'warn' : null],
+        ],
+        note: 'Deterministic routing: a conflict retries retrieval once with wider recall; insufficient evidence abstains; otherwise the pipeline proceeds to synthesis.',
+    },
+    {
+        id: 'synthesize', label: 'Synthesize',
+        metric: (d) => d.decision === 'proceed'
+            ? (d.faithfulness_score != null ? `faithfulness ${(d.faithfulness_score * 100).toFixed(0)}%` : 'synthesized')
+            : 'skipped',
+        status: (d) => d.decision !== 'proceed' ? 'warn'
+            : (d.faithfulness_score == null || d.faithfulness_score >= 0.9) ? 'pass' : 'warn',
+        facts: (d) => [
+            ['Status', d.decision === 'proceed' ? 'synthesized from validated evidence' : 'skipped — no synthesis without a proceed decision', null],
+            ['Faithfulness score', d.faithfulness_score != null ? `${(d.faithfulness_score * 100).toFixed(1)}%` : 'n/a', null],
+            ['Unsupported sentences', (d.unsupported_sentences || []).length, (d.unsupported_sentences || []).length > 0 ? 'warn' : 'pass'],
+        ],
+        note: 'The LLM only ever synthesizes prose from evidence that already passed validation — it never decides what counts as evidence.',
+    },
+];
+
+// ---------------------------------------------------------------------
+// Init
+// ---------------------------------------------------------------------
 async function init() {
+    renderTraceSkeleton();
     await updateStats();
 
-    // Event Listeners
     queryBtn.addEventListener('click', handleQuery);
     queryInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleQuery();
     });
 
     fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length > 0) {
-            uploadFile(e.target.files[0]);
-        }
+        if (e.target.files.length > 0) uploadFile(e.target.files[0]);
     });
 
     resetBtn.addEventListener('click', async () => {
-        if (confirm('Are you sure you want to reset the index? This will delete all indexed documents.')) {
+        if (confirm('Reset the index? This deletes all indexed documents.')) {
             await resetIndex();
         }
     });
 
-    // Drag and Drop
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropZone.classList.add('active');
     });
-
-    dropZone.addEventListener('dragleave', () => {
-        dropZone.classList.remove('active');
-    });
-
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('active'));
     dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
         dropZone.classList.remove('active');
-        if (e.dataTransfer.files.length > 0) {
-            uploadFile(e.dataTransfer.files[0]);
-        }
+        if (e.dataTransfer.files.length > 0) uploadFile(e.dataTransfer.files[0]);
+    });
+
+    rawToggle.addEventListener('click', () => {
+        const open = rawJson.hasAttribute('hidden');
+        rawJson.toggleAttribute('hidden', !open);
+        rawToggle.classList.toggle('open', open);
     });
 }
 
-// API Calls
+// ---------------------------------------------------------------------
+// API calls
+// ---------------------------------------------------------------------
 async function updateStats() {
     try {
         const response = await fetch(`${API_BASE_URL}/stats`);
@@ -74,21 +168,13 @@ async function updateStats() {
 }
 
 function setApiStatus(online) {
-    apiOnline = online;
-    let badge = document.getElementById('api-status-badge');
-    if (!badge) {
-        badge = document.createElement('div');
-        badge.id = 'api-status-badge';
-        badge.className = 'api-status-badge';
-        const statsContainer = document.getElementById('stats-container');
-        statsContainer.parentNode.insertBefore(badge, statsContainer.nextSibling);
-    }
+    const badge = document.getElementById('api-status-badge');
     if (online) {
         badge.className = 'api-status-badge online';
-        badge.textContent = '● API online';
+        badge.innerHTML = '<span class="pulse-dot"></span>API online';
     } else {
         badge.className = 'api-status-badge offline';
-        badge.textContent = '● API offline — start api.py';
+        badge.innerHTML = '<span class="pulse-dot"></span>API offline — start api.py';
         totalChunksEl.textContent = '—';
         uniqueDocsEl.textContent = '—';
     }
@@ -104,7 +190,7 @@ async function updateDocumentList() {
 }
 
 function renderDocumentList(docs) {
-    let listEl = document.getElementById('document-list');
+    const listEl = document.getElementById('document-list');
     if (!listEl) return;
     listEl.innerHTML = '';
     if (docs.length === 0) {
@@ -119,7 +205,7 @@ function renderDocumentList(docs) {
         name.textContent = doc.filename;
         const chunks = document.createElement('span');
         chunks.className = 'doc-chunks';
-        chunks.textContent = doc.chunks ? `${doc.chunks} chunks` : '';
+        chunks.textContent = doc.chunks ? `${doc.chunks}` : '';
         li.appendChild(name);
         li.appendChild(chunks);
         listEl.appendChild(li);
@@ -131,6 +217,9 @@ async function handleQuery() {
     if (!query || isSearching) return;
 
     setLoading(true);
+    emptyState.setAttribute('hidden', '');
+    animateTraceRunning();
+
     try {
         const response = await fetch(`${API_BASE_URL}/query`, {
             method: 'POST',
@@ -139,13 +228,14 @@ async function handleQuery() {
         });
         const data = await response.json();
         if (!response.ok) {
-            // Backend returned an error (e.g. 500) — surface the message
             const detail = data.detail || `HTTP ${response.status}`;
             showNotification(`Search error: ${detail}`, 'error');
-            console.error('Backend error:', detail);
+            traceState.textContent = 'error';
+            traceState.className = 'trace-state';
             return;
         }
-        renderResults(data);
+        lastData = data;
+        renderAll(data);
     } catch (error) {
         showNotification(`Error performing search: ${error.message}`, 'error');
         console.error('Search error:', error);
@@ -164,37 +254,30 @@ async function uploadFile(file) {
     const formData = new FormData();
     formData.append('file', file);
 
-    // Show a persistent "indexing" notification — ingestion can take ~60s
     const indexingNote = showNotification(
-        `⏳ Indexing ${file.name} — this may take up to a minute…`,
-        'info',
-        0   // 0 = don't auto-dismiss
+        `Indexing ${file.name} — this may take up to a minute…`, 'info', 0
     );
     dropZone.style.pointerEvents = 'none';
     dropZone.style.opacity = '0.5';
 
     try {
-        const response = await fetch(`${API_BASE_URL}/upload`, {
-            method: 'POST',
-            body: formData
-        });
+        const response = await fetch(`${API_BASE_URL}/upload`, { method: 'POST', body: formData });
         const data = await response.json();
         if (response.ok) {
             const chunkInfo = data.num_chunks ? ` (${data.num_chunks} chunks indexed)` : '';
-            showNotification(`✅ ${file.name} uploaded successfully${chunkInfo}`, 'success');
+            showNotification(`${file.name} uploaded successfully${chunkInfo}`, 'success');
         } else {
-            showNotification(`❌ Upload failed: ${data.detail || 'Unknown error'}`, 'error');
+            showNotification(`Upload failed: ${data.detail || 'Unknown error'}`, 'error');
         }
         await updateStats();
     } catch (error) {
-        showNotification('❌ Upload failed — is the API server running?', 'error');
+        showNotification('Upload failed — is the API server running?', 'error');
         console.error('Upload error:', error);
     } finally {
-        // Always remove the indexing spinner and restore the drop zone
         if (indexingNote && indexingNote.parentNode) indexingNote.remove();
         dropZone.style.pointerEvents = '';
         dropZone.style.opacity = '';
-        fileInput.value = '';  // allow re-uploading the same file
+        fileInput.value = '';
     }
 }
 
@@ -204,131 +287,251 @@ async function resetIndex() {
         const data = await response.json();
         showNotification(data.message, 'success');
         await updateStats();
-        resultsContainer.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">🔍</div>
-                <h3>No evidence retrieved yet</h3>
-                <p>Ask a question or upload a document to get started.</p>
-            </div>
-        `;
-        resultsCount.textContent = '0 Results';
+        lastData = null;
+        outcomeBay.setAttribute('hidden', '');
+        evidenceBay.setAttribute('hidden', '');
+        rawBay.setAttribute('hidden', '');
+        traceDetail.setAttribute('hidden', '');
+        emptyState.removeAttribute('hidden');
+        renderTraceSkeleton();
     } catch (error) {
         showNotification('Reset failed', 'error');
     }
 }
 
-// UI Helpers
-function renderResults(data) {
-    const chunks = data.chunks || [];
-    const similarity_scores = data.similarity_scores || [];
-    const raw_scores = data.raw_scores || [];
+// ---------------------------------------------------------------------
+// Trace rendering
+// ---------------------------------------------------------------------
+function renderTraceSkeleton() {
+    traceNodes.innerHTML = '';
+    STAGES.forEach((stage, i) => {
+        if (i > 0) {
+            const connector = document.createElement('div');
+            connector.className = 'trace-node-connector';
+            traceNodes.appendChild(connector);
+        }
+        const li = document.createElement('li');
+        li.className = 'trace-node';
+        const btn = document.createElement('button');
+        btn.className = 'trace-node-btn status-pending';
+        btn.dataset.stageId = stage.id;
+        btn.innerHTML = `
+            <span class="trace-node-index">0${i + 1}</span>
+            <span class="trace-node-label">${stage.label}</span>
+            <span class="trace-node-metric">awaiting query</span>
+        `;
+        btn.addEventListener('click', () => selectStage(stage.id));
+        li.appendChild(btn);
+        traceNodes.appendChild(li);
+    });
+    traceState.textContent = 'idle';
+    traceState.className = 'trace-state';
+}
 
-    resultsCount.textContent = `${chunks.length} Results`;
+function animateTraceRunning() {
+    traceState.textContent = 'running';
+    traceState.className = 'trace-state running';
+    document.querySelectorAll('.trace-node-btn').forEach(btn => {
+        btn.className = 'trace-node-btn status-active';
+        btn.querySelector('.trace-node-metric').textContent = 'processing…';
+    });
+    document.querySelectorAll('.trace-node-connector').forEach(c => c.classList.remove('lit'));
+}
+
+function renderTrace(data) {
+    traceState.textContent = 'complete';
+    traceState.className = 'trace-state done';
+
+    STAGES.forEach((stage, i) => {
+        const btn = traceNodes.querySelector(`[data-stage-id="${stage.id}"]`);
+        if (!btn) return;
+        const status = stage.status(data);
+        btn.className = `trace-node-btn status-${status}`;
+        btn.querySelector('.trace-node-metric').textContent = stage.metric(data);
+    });
+    document.querySelectorAll('.trace-node-connector').forEach(c => c.classList.add('lit'));
+
+    selectStage(selectedStage || 'validate');
+}
+
+function selectStage(stageId) {
+    selectedStage = stageId;
+    document.querySelectorAll('.trace-node-btn').forEach(b => b.classList.toggle('selected', b.dataset.stageId === stageId));
+
+    if (!lastData) return;
+    const stage = STAGES.find(s => s.id === stageId);
+    if (!stage) return;
+
+    const facts = stage.facts(lastData);
+    let html = `<div class="trace-detail-title">${stage.label} — stage detail</div><div class="trace-detail-grid">`;
+    if (facts.length === 0) {
+        html += `<div class="trace-detail-note">No sub-queries were needed — the query was routed straight through as a single unit.</div>`;
+    } else {
+        facts.forEach(([k, v, tone]) => {
+            html += `<div class="trace-fact"><span class="trace-fact-k">${escapeHtml(String(k))}</span><span class="trace-fact-v${tone ? ' tone-' + tone : ''}">${escapeHtml(String(v))}</span></div>`;
+        });
+    }
+    if (stage.note) {
+        html += `<div class="trace-detail-note">${escapeHtml(stage.note)}</div>`;
+    }
+    html += `</div>`;
+    traceDetail.innerHTML = html;
+    traceDetail.removeAttribute('hidden');
+}
+
+// ---------------------------------------------------------------------
+// Outcome + evidence + raw rendering
+// ---------------------------------------------------------------------
+function renderAll(data) {
+    renderTrace(data);
+    renderOutcome(data);
+    renderEvidence(data);
+    renderRaw(data);
+}
+
+function renderOutcome(data) {
+    const isProceed = data.decision === 'proceed';
+    const tier = (data.confidence_tier || 'LOW').toLowerCase();
+    const pct = Math.round((data.confidence_score || 0) * 100);
+
+    let html = `
+    <div class="outcome-head">
+        <div class="outcome-title">
+            <h2>Decision</h2>
+            <span class="status-pill ${isProceed ? 'proceed' : 'abstain'}">${isProceed ? 'Proceed' : 'Abstain'}</span>
+        </div>
+        <div class="confidence-meter">
+            <span class="confidence-meter-label">Confidence</span>
+            <div class="confidence-meter-track"><div class="confidence-meter-fill tier-${tier}" style="width:${pct}%"></div></div>
+            <span class="confidence-meter-value">${data.confidence_tier} · ${pct}%</span>
+        </div>
+    </div>
+    <div class="outcome-body">
+        <div class="answer-text"></div>
+    `;
+
+    if (!isProceed && data.abstention_reason) {
+        html += `<div class="faithfulness-row">Reason for abstention: <strong style="color:var(--coral)">${escapeHtml(data.abstention_reason)}</strong></div>`;
+    }
+
+    if (isProceed && data.faithfulness_score != null) {
+        html += `<div class="faithfulness-row">Faithfulness to evidence: ${(data.faithfulness_score * 100).toFixed(1)}%</div>`;
+    }
+
+    if (isProceed && data.unsupported_sentences && data.unsupported_sentences.length > 0) {
+        html += `<ul class="unsupported-list">` +
+            data.unsupported_sentences.map(s => `<li>Unsupported by evidence: "${escapeHtml(s)}"</li>`).join('') +
+            `</ul>`;
+    }
+
+    if (data.abstention_reason === 'conflict' && data.conflict_detail && data.conflict_detail.chunks) {
+        html += `<div class="conflict-panel"><div class="conflict-panel-title">Conflicting evidence pair</div><div class="conflict-pair">`;
+        data.conflict_detail.chunks.forEach(c => {
+            html += `<div class="conflict-chunk"><span class="conflict-chunk-source">${escapeHtml(c.source || 'unknown')}</span><span class="conflict-chunk-text"></span></div>`;
+        });
+        html += `</div></div>`;
+    }
+
+    html += `</div>`;
+
+    outcomeBay.innerHTML = html;
+    outcomeBay.className = `outcome-bay status-${isProceed ? 'proceed' : 'abstain'}`;
+    outcomeBay.removeAttribute('hidden');
+
+    // set text content safely (avoid HTML injection from model/document text)
+    outcomeBay.querySelector('.answer-text').textContent = data.answer || '(no answer)';
+    if (data.abstention_reason === 'conflict' && data.conflict_detail && data.conflict_detail.chunks) {
+        const nodes = outcomeBay.querySelectorAll('.conflict-chunk-text');
+        data.conflict_detail.chunks.forEach((c, i) => { if (nodes[i]) nodes[i].textContent = c.text || ''; });
+    }
+}
+
+function renderEvidence(data) {
+    const chunks = data.chunks || [];
+    const similarity = data.similarity_scores || [];
+    const raw = data.raw_scores || [];
 
     let html = '';
 
-    // Render synthesized answer if present
-    if (data.answer) {
-        const isAbstain = data.status === 'abstain';
-        const statusClass = isAbstain ? 'abstain' : 'success';
-        const statusLabel = isAbstain ? 'ABSTAINED' : 'RESOLVED';
-
-        let reasonLabel = '';
-        if (isAbstain && data.abstention_reason) {
-            reasonLabel = `<span class="abstain-reason-badge">Reason: ${data.abstention_reason}</span>`;
-        }
-
-        // Build conflict citations block if sources are available
-        let citationsBlock = '';
-        if (isAbstain && data.abstention_reason === 'conflict' && data.citations && data.citations.length > 0) {
-            const citationItems = data.citations.map(c =>
-                `<li><span class="citation-source">${c.source}</span> <span class="citation-score">(score: ${(c.score * 100).toFixed(1)}%)</span></li>`
-            ).join('');
-            citationsBlock = `
-            <div class="conflict-citations">
-                <span class="conflict-label">⚠️ Conflicting sources:</span>
-                <ul class="citation-list">${citationItems}</ul>
-            </div>`;
-        }
-
-        html += `
-        <div class="answer-card ${statusClass}">
-            <div class="answer-card-header">
-                <div class="answer-header-left">
-                    <span class="answer-title">Synthesized Answer</span>
-                    ${reasonLabel}
-                </div>
-                <span class="status-badge ${statusClass}">${statusLabel}</span>
-            </div>
-            <div class="answer-text">${data.answer.replace(/\n/g, '<br>')}</div>
-            ${citationsBlock}
+    html += `<div class="evidence-group open" id="group-accepted">
+        <div class="evidence-group-head" data-group="group-accepted">
+            <h3>Accepted evidence <span class="evidence-count">${chunks.length} chunk${chunks.length === 1 ? '' : 's'}</span></h3>
+            <span class="evidence-group-chevron">&rsaquo;</span>
         </div>
-        `;
+        <div class="evidence-group-body" id="accepted-body"></div>
+    </div>`;
+
+    const unverifiedCount = data.unverified_count || 0;
+    html += `<div class="evidence-group" id="group-rejected">
+        <div class="evidence-group-head" data-group="group-rejected">
+            <h3>Filtered out <span class="evidence-count">${unverifiedCount} unverifiable</span></h3>
+            <span class="evidence-group-chevron">&rsaquo;</span>
+        </div>
+        <div class="evidence-group-body" id="rejected-body"></div>
+    </div>`;
+
+    evidenceBay.innerHTML = html;
+    evidenceBay.removeAttribute('hidden');
+
+    const acceptedBody = document.getElementById('accepted-body');
+    if (chunks.length === 0) {
+        acceptedBody.innerHTML = '<div class="unverified-note">No evidence cleared validation for this query.</div>';
+    } else {
+        chunks.forEach((chunk, i) => {
+            const card = document.createElement('div');
+            card.className = 'evidence-card';
+            const sim = (similarity[i] * 100).toFixed(1);
+            const rw = raw[i] != null ? (raw[i] * 100).toFixed(1) : null;
+            card.innerHTML = `
+                <div class="evidence-card-head">
+                    <span class="evidence-source"><span class="evidence-rank-badge">#${chunk.rank ?? i + 1}</span> ${escapeHtml(chunk.source_document || 'unknown')} <span class="evidence-section">/ ${escapeHtml(chunk.section || '')}</span></span>
+                    <span class="evidence-scores">score ${sim}% ${rw ? `<span class="raw">raw ${rw}%</span>` : ''}</span>
+                </div>
+                <div class="evidence-text"></div>
+            `;
+            card.querySelector('.evidence-text').textContent = chunk.text || '';
+            acceptedBody.appendChild(card);
+        });
     }
 
-    if (chunks.length === 0 && !data.answer) {
-        resultsContainer.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">❓</div>
-                <h3>No relevant evidence found</h3>
-                <p>Try rephrasing your question or adding more context.</p>
-            </div>
-        `;
-        return;
+    const rejectedBody = document.getElementById('rejected-body');
+    if (unverifiedCount > 0) {
+        rejectedBody.innerHTML = `<div class="unverified-note">
+            <strong>${unverifiedCount}</strong> retrieved chunk${unverifiedCount === 1 ? '' : 's'} could not be traced back to the ingested corpus
+            (provenance check, Stage 0) and were discarded before relevance filtering ever ran.
+            Source${(data.unverified_sources || []).length === 1 ? '' : 's'} involved:
+            ${(data.unverified_sources || []).map(s => escapeHtml(s)).join(', ') || 'n/a'}.
+        </div>`;
+    } else {
+        rejectedBody.innerHTML = '<div class="unverified-note">Nothing was discarded at the provenance stage for this query.</div>';
     }
 
-    // Safely build evidence cards using DOM API to avoid XSS from chunk text
-    const fragment = document.createDocumentFragment();
-
-    // Prepend the answer/abstain card if present
-    if (html) {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = html;
-        fragment.appendChild(wrapper);
-    }
-
-    chunks.forEach((chunk, i) => {
-        const calibrated = (similarity_scores[i] * 100).toFixed(1);
-        const raw = (raw_scores && raw_scores[i]) ? (raw_scores[i] * 100).toFixed(1) : null;
-
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        card.style.animationDelay = `${i * 0.1}s`;
-
-        const header = document.createElement('div');
-        header.className = 'result-card-header';
-
-        const sourceTag = document.createElement('span');
-        sourceTag.className = 'source-tag';
-        sourceTag.textContent = chunk.source_document || chunk.source || 'unknown';
-
-        const scoreTag = document.createElement('span');
-        scoreTag.className = 'score-tag';
-        scoreTag.innerHTML = raw
-            ? `Score: ${calibrated}% <span class="raw-score">(raw: ${raw}%)</span>`
-            : `Similarity: ${calibrated}%`;
-
-        header.appendChild(sourceTag);
-        header.appendChild(scoreTag);
-
-        const textEl = document.createElement('div');
-        textEl.className = 'result-text';
-        textEl.textContent = chunk.text;  // safe: no HTML injection
-
-        card.appendChild(header);
-        card.appendChild(textEl);
-        fragment.appendChild(card);
+    evidenceBay.querySelectorAll('.evidence-group-head').forEach(head => {
+        head.addEventListener('click', () => {
+            document.getElementById(head.dataset.group).classList.toggle('open');
+        });
     });
-
-    resultsContainer.innerHTML = '';
-    resultsContainer.appendChild(fragment);
 }
 
+function renderRaw(data) {
+    rawJson.textContent = JSON.stringify(data, null, 2);
+    rawBay.removeAttribute('hidden');
+}
+
+// ---------------------------------------------------------------------
+// UI helpers
+// ---------------------------------------------------------------------
 function setLoading(isLoading) {
     isSearching = isLoading;
     queryBtn.disabled = isLoading;
-    queryBtn.innerHTML = isLoading ? '<span class="loader"></span>' : 'Search';
+    queryBtn.innerHTML = isLoading ? '<span>Tracing…</span>' : '<span>Run query</span>';
     queryInput.disabled = isLoading;
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
 }
 
 function showNotification(message, type = 'success', duration = 3000) {
@@ -343,8 +546,6 @@ function showNotification(message, type = 'success', duration = 3000) {
             setTimeout(() => note.remove(), 300);
         }, duration);
     }
-
-    // Return the element so callers can remove persistent notifications manually
     return note;
 }
 

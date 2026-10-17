@@ -43,6 +43,60 @@ class BaseChunker(ABC):
         return f"{doc_name}_chunk_{chunk_index:04d}"
 
 
+    @staticmethod
+    def _align_to_word_start(text: str, pos: int) -> int:
+        """
+        Move *pos* forward to the start of the next whole word.
+
+        Fallback for when no sentence boundary is available in range.
+        """
+        if pos <= 0 or pos >= len(text):
+            return pos
+        if not (text[pos - 1].isalnum() and text[pos].isalnum()):
+            return pos
+        while pos < len(text) and text[pos].isalnum():
+            pos += 1
+        while pos < len(text) and text[pos].isspace():
+            pos += 1
+        return pos
+
+    @classmethod
+    def _align_to_sentence_start(cls, text: str, pos: int, floor: int) -> int:
+        """
+        Move *pos* BACK to the start of the sentence it falls inside.
+
+        Chunk ends already break on a sentence boundary, but the overlap
+        backstep did not, so every following chunk opened with the tail of a
+        sentence whose subject and verb stayed behind in the previous chunk:
+        "the grade being posted.", "hours per semester.". Such a fragment
+        asserts nothing on its own, yet it is embedded, indexed, and — the
+        expensive part — handed to the Stage-4 contradiction checks as though
+        it were a claim. Corpus-2 Q030, Q068 and Q070 are false conflicts in
+        which one side is exactly such a remnant.
+
+        Backward rather than forward on purpose: aligning forward to the *next*
+        sentence would collapse the overlap to nothing, since chunk ends
+        already sit on sentence boundaries. Going back yields a whole-sentence
+        overlap, which is what the overlap was for.
+
+        *floor* is the previous chunk's start; never step back to or past it,
+        so progress is guaranteed. Falls back to word alignment when no
+        sentence boundary sits in range.
+        """
+        if pos <= 0 or pos >= len(text):
+            return pos
+        i = pos
+        while i > floor + 1:
+            if text[i - 1] in ".!?" and (i >= len(text) or text[i].isspace() or text[i].isupper()):
+                while i < len(text) and text[i].isspace():
+                    i += 1
+                if i > floor:
+                    return i
+                break
+            i -= 1
+        return cls._align_to_word_start(text, pos)
+
+
 class FixedChunker(BaseChunker):
     """Fixed-size chunking with overlap"""
     def chunk_document(self, text: str, source_document: str, metadata: Optional[Dict[str, Any]] = None) -> List[DocumentChunk]:
@@ -73,8 +127,23 @@ class FixedChunker(BaseChunker):
             )
             chunks.append(chunk)
             
-            # Move to next chunk with overlap
-            start = end - self.chunk_overlap
+            # Move to next chunk with overlap.
+            #
+            # The backstep is realigned BACK to a sentence boundary. A raw
+            # `start = end - chunk_overlap` lands mid-word roughly half the time
+            # (measured: 39/84 chunks on `data/`, 15/31 on `data_corpus2/`), so
+            # the overlap region opened every following chunk with a word
+            # fragment -- "inancial aid", "uate course load", "it hours per
+            # semester", and — even once words are whole — with the tail of a
+            # sentence whose subject stayed in the previous chunk. Those
+            # fragments are not cosmetic: they are embedded,
+            # BM25-indexed, substring-matched by query coverage, and compared by
+            # the Stage-4 contradiction checks. Two Corpus-2 false conflicts
+            # (Q030, Q070) are truncation artifacts alone, and `focus.matches`
+            # carries a containment workaround that exists only for this bug.
+            # Chunk *ends* were already clean via the sentence-boundary break
+            # above; only starts were broken.
+            start = self._align_to_sentence_start(text, end - self.chunk_overlap, start)
             chunk_index += 1
         
         return chunks

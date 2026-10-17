@@ -1,0 +1,1511 @@
+{
+  "meta": {
+    "corpus": "1",
+    "top_k": 30
+  },
+  "summary": {
+    "all": {
+      "n": 62,
+      "recall_at_k": {
+        "1": 0.8468,
+        "3": 0.9839,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold_at_k": {
+        "1": 44,
+        "3": 60,
+        "5": 62,
+        "10": 62,
+        "30": 62
+      },
+      "mrr": 0.9919,
+      "no_gold_retrieved": []
+    },
+    "answer": {
+      "n": 46,
+      "recall_at_k": {
+        "1": 0.9783,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold_at_k": {
+        "1": 44,
+        "3": 46,
+        "5": 46,
+        "10": 46,
+        "30": 46
+      },
+      "mrr": 1.0,
+      "no_gold_retrieved": []
+    },
+    "conflict": {
+      "n": 16,
+      "recall_at_k": {
+        "1": 0.4688,
+        "3": 0.9375,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold_at_k": {
+        "1": 0,
+        "3": 14,
+        "5": 16,
+        "10": 16,
+        "30": 16
+      },
+      "mrr": 0.9688,
+      "no_gold_retrieved": []
+    }
+  },
+  "results": [
+    {
+      "id": "Q001",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q002",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q003",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q004",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q005",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q006",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q007",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q008",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q009",
+      "expected": "answer",
+      "gold": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q010",
+      "expected": "answer",
+      "gold": [
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q011",
+      "expected": "answer",
+      "gold": [
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q012",
+      "expected": "answer",
+      "gold": [
+        "Health_and_Safety_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q013",
+      "expected": "answer",
+      "gold": [
+        "Health_and_Safety_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q014",
+      "expected": "answer",
+      "gold": [
+        "Performance_Management_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q015",
+      "expected": "answer",
+      "gold": [
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q019",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q020",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q021",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q022",
+      "expected": "answer",
+      "gold": [
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q023",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q024",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q025",
+      "expected": "answer",
+      "gold": [
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q026",
+      "expected": "answer",
+      "gold": [
+        "Health_and_Safety_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q027",
+      "expected": "answer",
+      "gold": [
+        "Performance_Management_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q029",
+      "expected": "answer",
+      "gold": [
+        "Employee_Handbook.docx",
+        "Flexible_and_Remote_Work_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q030",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q031",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q032",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q033",
+      "expected": "answer",
+      "gold": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Performance_Management_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q034",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q035",
+      "expected": "conflict",
+      "gold": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q036",
+      "expected": "conflict",
+      "gold": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.0,
+        "3": 0.5,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 2
+    },
+    {
+      "id": "Q037",
+      "expected": "conflict",
+      "gold": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q038",
+      "expected": "conflict",
+      "gold": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 0.5,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": false,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q039",
+      "expected": "conflict",
+      "gold": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q040",
+      "expected": "conflict",
+      "gold": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q041",
+      "expected": "conflict",
+      "gold": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q042",
+      "expected": "conflict",
+      "gold": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q043",
+      "expected": "conflict",
+      "gold": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q044",
+      "expected": "conflict",
+      "gold": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q045",
+      "expected": "conflict",
+      "gold": [
+        "Compensation_and_Benefits_Policy.docx",
+        "Employee_Handbook.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q046",
+      "expected": "conflict",
+      "gold": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx",
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q047",
+      "expected": "conflict",
+      "gold": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q048",
+      "expected": "conflict",
+      "gold": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q059",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q060",
+      "expected": "answer",
+      "gold": [
+        "IT_and_Acceptable_Use_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q061",
+      "expected": "answer",
+      "gold": [
+        "Compensation_and_Benefits_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q062",
+      "expected": "answer",
+      "gold": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q063",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q064",
+      "expected": "answer",
+      "gold": [
+        "Health_and_Safety_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q065",
+      "expected": "answer",
+      "gold": [
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q066",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q067",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q068",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q069",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q070",
+      "expected": "answer",
+      "gold": [
+        "Code_of_Conduct_and_Disciplinary_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q071",
+      "expected": "answer",
+      "gold": [
+        "Leave_and_Time_Off_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q072",
+      "expected": "answer",
+      "gold": [
+        "Performance_Management_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q073",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q074",
+      "expected": "answer",
+      "gold": [
+        "Travel_and_Expense_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": true,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q075",
+      "expected": "conflict",
+      "gold": [
+        "Employee_Handbook.docx",
+        "Recruitment_and_Onboarding_Policy.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    },
+    {
+      "id": "Q076",
+      "expected": "conflict",
+      "gold": [
+        "Flexible_and_Remote_Work_Policy.docx",
+        "Remote_Working_Policy_2023_Superseded.docx"
+      ],
+      "n_retrieved": 30,
+      "recall": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0,
+        "30": 1.0
+      },
+      "all_gold": {
+        "1": false,
+        "3": true,
+        "5": true,
+        "10": true,
+        "30": true
+      },
+      "first_gold_rank": 1
+    }
+  ]
+}

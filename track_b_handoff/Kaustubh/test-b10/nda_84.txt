@@ -1,0 +1,51 @@
+Haldex Non-disclosure Agreement
+May 2015. REG NO: HDX4-51-130
+This non-disclosure agreement (the “Agreement”) is entered into by and between _______________________, with company registration number ___________________, address at __________________________________ and fax number ________________ hereinafter referred to as “Haldex”, and
+______________________, with company registration number ___________________ , address at __________________________________ and fax number_____________________ hereinafter referred to as the Supplier.
+Haldex and Supplier are hereinafter jointly referred to as Parties and individually as Party.
+1. Purpose
+Haldex and the Supplier will evaluate the possibility to enter into an agreement regarding ________________ ________________________. For this purpose, the Parties need to exchange Confidential Information.
+2. Confidential Information
+2.1 Confidential Information shall mean:
+i) all technical, financial and business information disclosed by one Party to the other Party or by another Haldex Group entity to the Supplier including, but not limited to, documents, data, information, prototypes or components relating to devices, methods, materials, apparatus, designs, research, yields and specifications; and
+ii) information relating to the existence of this Agreement;
+2.2 Confidential Information shall not include:
+i) information which was known by a Party prior to receiving it from the other Party if this can be demonstrated by written record;
+ii) information which at the time of disclosure is in the public domain or which is published after disclosure or otherwise becomes part of the public domain without breach of this Agreement;
+iii) information which the Party can show was received from a third party who did not to the best knowledge of the Party receive the information, directly or indirectly, from the other Party under any obligation of confidentiality; iv) information developed or created by one Party independently of the other, without any part thereof having been developed or created with assistance or information received from the other Party; and
+v) information which is disclosed due to any requirement under mandatory law.
+3. Undertakings of the Parties
+The Parties undertake:
+i) to treat all Confidential Information as absolutely secret, private and confidential;
+ii) to take all steps necessary to preserve such confidentiality and secrecy;
+iii) to prevent disclosure of any such Confidential Information to any third party;
+iv) to use the Confidential Information solely for the purpose set out in Section 1;
+v) to disclose the Confidential Information only to those of its directors, employees and consultants who need the Confidential Information to conduct tasks in relation to the purpose set out in Section 1;
+vi) to ascertain that each person who receives Confidential Information is made aware of and comply with this Agreement; and
+vii) to immediately upon request deliver to the other Party all Confidential Information that belong to that Party in any form without retaining any copies thereof, or, at the other Party’s option, certify in writing that all copies of such information have been destroyed.
+4. Disclosure under mandatory law
+If either Party due to mandatory law is forced to disclose information which would otherwise be considered as Confidential Information, the Party shall prior to the disclosure inform the other Party hereof and the Parties shall mutually decide how to minimize the negative consequences thereof.
+5. Indemnification
+The Parties undertake to reimburse, indemnify and hold the other Party harmless from any damages, loss or expense incurred by it as a result of either Party violating the terms of this Agreement.
+6. No license
+Nothing in this Agreement shall be deemed to constitute or to imply the granting of any license, immunity or other right under any intellectual property right of either Party, or to provide a commitment of any kind by either Party to enter into further agreements with the other Party.
+7. Disputes and Governing Law
+7.1 Any and all disputes, controversies and claims arising out of or in connection with this Agreement, or the breach, termination or invalidity hereof, shall be settled by arbitration in accordance with the Rules of the Arbitration Institute of the Stockholm Chamber of Commerce. The arbitral tribunal shall be composed of three arbitrators. The place of arbitration including the making of the award shall be Stockholm, Sweden. The language to be used in the arbitral proceedings shall be English.
+7.2 This Agreement shall be governed by the substantive laws of Sweden.
+8. Term and termination
+8.1 This Agreement enters into force when signed by both Parties. The initial term of the Agreement is three (3) years. If the Agreement is not terminated by notice six (6) months prior to the end of each term, it shall be extended with twelve (12) months with the same notice period until terminated as aforesaid by any Party. However, all obligations of confidentiality and non-use will survive the termination of this Agreement.
+8.2 The obligations under this Agreement shall apply retroactively to any information exchanged prior to the effectiveness of this Agreement.
+8.3 Should the Parties enter into an agreement of the type referred in Section 1 the confidentiality provisions in such agreement will prevail over this Agreement.
+______________
+This Agreement has been executed in two (2) identical copies of which the Parties have taken one (1) each.
+Place: Place:
+Date: Date:
+_____________________________ _____________________________
+Name of Haldex company Supplier
+_____________________________ _____________________________
+Signature Signature
+_____________________________ _____________________________
+Name (print) Name (print)
+____________________________ _____________________________
+Title Title
+DOCUMENT NO. HDX4-51-130 Replaces SCM-0021 LEGAL#1597040V1

@@ -1,0 +1,123 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b18-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_18.txt",
+        "nda_498.txt",
+        "nda_584.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_18.txt",
+        "nda_498.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_18 is perpetual; nda_498 is five years from execution; nda_584 is one year (or earlier on a definitive agreement); nda_2 leaves the 'Period of Confidentiality' blank. Incompatible for those that specify one.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b18-open-02",
+      "category": "track-b/open",
+      "query": "After a request to return or destroy the information, can the recipient keep a copy for legal or record-retention purposes?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_2.txt",
+        "nda_498.txt",
+        "nda_584.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_2.txt",
+        "nda_498.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_2 and nda_584 permit a retained legal/record-retention copy; nda_498 requires return or destruction of all copies with certification and no retention, and nda_18 requires return within one week with no retention.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b18-open-03",
+      "category": "track-b/open",
+      "query": "If a party is legally compelled to disclose the confidential information, must it notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_2.txt",
+        "nda_498.txt",
+        "nda_584.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice before compelled disclosure; they agree. nda_18 has no compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b18-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_18.txt",
+        "nda_2.txt",
+        "nda_498.txt",
+        "nda_584.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require return or destruction on request; they agree. The deadlines differ (one week / 30 days / promptly).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b18-open-05",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction or specific performance for a breach, without posting a bond?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_2.txt",
+        "nda_498.txt",
+        "nda_584.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address remedies allow injunctive relief and/or specific performance; they agree. Only nda_498 expressly waives the bond requirement. nda_18 has no remedies clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b18-open-06",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be resolved by arbitration?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None mention arbitration. nda_18 (England and Wales), nda_2 (Michigan), nda_498 (Delaware) and nda_584 (New York) all use a governing law and/or court forum.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b18-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on the damages a party can recover for a breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b18-open-08",
+      "category": "track-b/open",
+      "query": "Does the buyer have to pay a deposit or a fee if they withdraw from the purchase?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_18.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_18 addresses this: a 5% deposit (minimum £5,000), the client's legal costs up to £2,500 for withdrawal without good reason, and a £695 + VAT agent's fee for withdrawal after Heads of Terms. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

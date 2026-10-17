@@ -1,0 +1,926 @@
+% ============================================================================
+% Trust Before Text - references.bib
+% 31 tightly-curated, verified entries. Every entry is cited in the paper.
+% First authors and venues checked against the team citation file where present.
+% ============================================================================
+
+% ---- Foundational RAG + failure modes ----
+@inproceedings{lewis2020rag,
+  author    = {Lewis, Patrick and Perez, Ethan and Piktus, Aleksandra and Petroni, Fabio and Karpukhin, Vladimir and Goyal, Naman and K{\"u}ttler, Heinrich and Lewis, Mike and Yih, Wen-tau and Rockt{\"a}schel, Tim and Riedel, Sebastian and Kiela, Douwe},
+  title     = {Retrieval-Augmented Generation for Knowledge-Intensive {NLP} Tasks},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2020}
+}
+
+@article{gao2023rag_survey,
+  author  = {Gao, Yunfan and Xiong, Yun and Gao, Xinyu and Jia, Kangxiang and Pan, Jinliu and Bi, Yuxi and Dai, Yi and Sun, Jiawei and Wang, Meng and Wang, Haofen},
+  title   = {Retrieval-Augmented Generation for Large Language Models: A Survey},
+  journal = {arXiv preprint arXiv:2312.10997},
+  year    = {2023}
+}
+
+@article{shuster2021retrieval,
+  author  = {Shuster, Kurt and Poff, Spencer and Chen, Moya and Kiela, Douwe and Weston, Jason},
+  title   = {Retrieval Augmentation Reduces Hallucination in Conversation},
+  journal = {arXiv preprint arXiv:2104.07567},
+  year    = {2021}
+}
+
+@article{wu2024ragtruth,
+  author  = {Niu, Cheng and Wu, Yuanhao and Zhu, Juno and Xu, Siliang and Shum, Kashun and Zhong, Randy and Song, Juntong and Zhang, Tong},
+  title   = {{RAGTruth}: A Hallucination Corpus for Developing Trustworthy Retrieval-Augmented Language Models},
+  journal = {arXiv preprint arXiv:2401.00396},
+  year    = {2024}
+}
+
+@article{rakin2024rag,
+  author  = {Rakin, Salman and Shibly, Md. A. R. and Hossain, Zahin M. and Khan, Zeeshan and Akbar, Md. Mostofa},
+  title   = {Leveraging the Domain Adaptation of Retrieval Augmented Generation Models for Question Answering and Reducing Hallucination},
+  journal = {arXiv preprint arXiv:2410.17783},
+  year    = {2024}
+}
+
+@article{siriwardhana2023rag,
+  author  = {Siriwardhana, Shamane and Weerasekera, Rivindu and Wen, Elliott and Kaluarachchi, Tharindu and Rana, Rajib and Nanayakkara, Suranga},
+  title   = {Improving the Domain Adaptation of Retrieval Augmented Generation ({RAG}) Models for Open Domain Question Answering},
+  journal = {Transactions of the Association for Computational Linguistics},
+  volume  = {11},
+  pages   = {1--17},
+  year    = {2023}
+}
+
+@article{wolk2025clinical,
+  author  = {Wo{\l}k, Krzysztof},
+  title   = {Evaluating Retrieval-Augmented Generation Variants for Clinical Decision Support: Hallucination Mitigation and Secure On-Premises Deployment},
+  journal = {Electronics},
+  volume  = {14},
+  number  = {21},
+  pages   = {4227},
+  year    = {2025}
+}
+
+@article{mala2025hybrid,
+  author  = {Mala, Chandana Sree and Gezici, Gizem and Giannotti, Fosca},
+  title   = {Hybrid Retrieval for Hallucination Mitigation in Large Language Models: A Comparative Analysis},
+  journal = {arXiv preprint arXiv:2504.05324},
+  year    = {2025}
+}
+
+% ---- Retrieval-side improvements / correction ----
+@article{yan2024crag,
+  author  = {Yan, Shi-Qi and Gu, Jia-Chen and Zhu, Yun and Ling, Zhen-Hua},
+  title   = {Corrective Retrieval Augmented Generation},
+  journal = {arXiv preprint arXiv:2401.15884},
+  year    = {2024}
+}
+
+@article{yu2024evaluation,
+  author  = {Yu, Hao and Gan, Aoran and Zhang, Kai and Tong, Shiwei and Liu, Qi and Liu, Zhaofeng},
+  title   = {Evaluation of Retrieval-Augmented Generation: A Survey},
+  journal = {arXiv preprint arXiv:2405.07437},
+  year    = {2024}
+}
+
+@article{yu2023reeval,
+  author  = {Yu, Xiaodong and Cheng, Hao and Liu, Xiaodong and Roth, Dan and Gao, Jianfeng},
+  title   = {{ReEval}: Automatic Hallucination Evaluation for Retrieval-Augmented Large Language Models via Transferable Adversarial Attacks},
+  journal = {arXiv preprint arXiv:2310.12516},
+  year    = {2023}
+}
+
+@inproceedings{mao2024ragstudio,
+  author    = {Mao, Kelong and Liu, Zheng and Qian, Hongjin and Mo, Fengran and Deng, Chenlong and Dou, Zhicheng},
+  title     = {{RAG-Studio}: Towards In-Domain Adaptation of Retrieval Augmented Generation Through Self-Alignment},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2024},
+  pages     = {725--735},
+  year      = {2024}
+}
+
+% ---- Post-hoc hallucination detection / evaluation ----
+@article{manakul2023selfcheck,
+  author  = {Manakul, Potsawee and Liusie, Adian and Gales, Mark J. F.},
+  title   = {{SelfCheckGPT}: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models},
+  journal = {arXiv preprint arXiv:2303.08896},
+  year    = {2023}
+}
+
+@article{farquhar2024semantic,
+  author  = {Farquhar, Sebastian and Kossen, Jannik and Kuhn, Lorenz and Gal, Yarin},
+  title   = {Detecting Hallucinations in Large Language Models Using Semantic Entropy},
+  journal = {Nature},
+  volume  = {630},
+  pages   = {625--630},
+  year    = {2024}
+}
+
+@article{dhuliawala2023cov,
+  author  = {Dhuliawala, Shehzaad and Komeili, Mojtaba and Xu, Jing and Raileanu, Roberta and Li, Xian and Celikyilmaz, Asli and Weston, Jason},
+  title   = {Chain-of-Verification Reduces Hallucination in Large Language Models},
+  journal = {arXiv preprint arXiv:2309.11495},
+  year    = {2023}
+}
+
+@article{min2023factscore,
+  author  = {Min, Sewon and Krishna, Kalpesh and Lyu, Xinxi and Lewis, Mike and Yih, Wen-tau and Koh, Pang Wei and Iyyer, Mohit and Zettlemoyer, Luke and Hajishirzi, Hannaneh},
+  title   = {{FActScore}: Fine-Grained Atomic Evaluation of Factual Precision in Long Form Text Generation},
+  journal = {arXiv preprint arXiv:2305.14251},
+  year    = {2023}
+}
+
+@article{sun2024redeep,
+  author  = {Sun, Zhongxiang and Zang, Xiaoxue and Zheng, Kai and Song, Yang and Xu, Jun and Zhang, Xiao and Yu, Weijie and Song, Yang and Li, Han},
+  title   = {{ReDeEP}: Detecting Hallucination in Retrieval-Augmented Generation via Mechanistic Interpretability},
+  journal = {arXiv preprint arXiv:2410.11414},
+  year    = {2024}
+}
+
+@article{es2023ragas,
+  author  = {Es, Shahul and James, Jithin and Espinosa-Anke, Luis and Schockaert, Steven},
+  title   = {{RAGAS}: Automated Evaluation of Retrieval Augmented Generation},
+  journal = {arXiv preprint arXiv:2309.15217},
+  year    = {2023}
+}
+
+% ---- Learned / in-generation signals and reasoning ----
+@article{asai2023selfrag,
+  author  = {Asai, Akari and Wu, Zeqiu and Wang, Yizhong and Sil, Avirup and Hajishirzi, Hannaneh},
+  title   = {{Self-RAG}: Learning to Retrieve, Generate, and Critique Through Self-Reflection},
+  journal = {arXiv preprint arXiv:2310.11511},
+  year    = {2023}
+}
+
+@inproceedings{wei2022cot,
+  author    = {Wei, Jason and Wang, Xuezhi and Schuurmans, Dale and Bosma, Maarten and Ichter, Brian and Xia, Fei and Chi, Ed and Le, Quoc and Zhou, Denny},
+  title     = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2022}
+}
+
+@inproceedings{wang2023selfconsistency,
+  author    = {Wang, Xuezhi and Wei, Jason and Schuurmans, Dale and Le, Quoc and Chi, Ed and Narang, Sharan and Chowdhery, Aakanksha and Zhou, Denny},
+  title     = {Self-Consistency Improves Chain of Thought Reasoning in Language Models},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2023}
+}
+
+% ---- Attribution / citation grounding / explainability ----
+@article{rashkin2023attribution,
+  author  = {Rashkin, Hannah and Nikolaev, Vitaly and Lamm, Matthew and Aroyo, Lora and Collins, Michael and Das, Dipanjan and Petrov, Slav and Tomar, Gaurav Singh and Turc, Iulia and Reitter, David},
+  title   = {Measuring Attribution in Natural Language Generation Models},
+  journal = {Computational Linguistics},
+  volume  = {49},
+  number  = {4},
+  pages   = {777--840},
+  year    = {2023}
+}
+
+@inproceedings{gao2023alce,
+  author    = {Gao, Tianyu and Yen, Howard and Yu, Jiatong and Chen, Danqi},
+  title     = {Enabling Large Language Models to Generate Text with Citations},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pages     = {6465--6488},
+  year      = {2023}
+}
+
+@inproceedings{rorseth2024explain,
+  author    = {Rorseth, Joel and Godfrey, Parke and Golab, Lukasz and Srivastava, Divesh and Szlichta, Jaroslaw},
+  title     = {Towards Explainability in Retrieval-Augmented {LLMs}},
+  booktitle = {2024 IEEE 40th International Conference on Data Engineering (ICDE)},
+  pages     = {5669--5670},
+  year      = {2024}
+}
+
+% ---- Intent-filtered retrieval (motivates future work) ----
+@inproceedings{nguyen2024intent,
+  author    = {Nguyen, Huy-Trung and Ngo, Quoc-Dung and Dang, Quang-Dung},
+  title     = {An Intent-Filtered Retrieval-Augmented Generation Chatbot for University Admissions in Vietnam},
+  booktitle = {2024 International Conference on Advanced Technologies for Communications (ATC)},
+  pages     = {928--933},
+  year      = {2024}
+}
+
+% ---- Review anchor ----
+@article{zhang2025review,
+  author  = {Zhang, Wan and Zhang, Jing},
+  title   = {Hallucination Mitigation for Retrieval-Augmented Large Language Models: A Review},
+  journal = {Mathematics},
+  volume  = {13},
+  number  = {5},
+  pages   = {856},
+  year    = {2025}
+}
+
+% ---- Models / tools used by the system ----
+@inproceedings{reimers2019sbert,
+  author    = {Reimers, Nils and Gurevych, Iryna},
+  title     = {{Sentence-BERT}: Sentence Embeddings Using Siamese {BERT}-Networks},
+  booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2019}
+}
+
+@article{robertson2009bm25,
+  author  = {Robertson, Stephen and Zaragoza, Hugo},
+  title   = {The Probabilistic Relevance Framework: {BM25} and Beyond},
+  journal = {Foundations and Trends in Information Retrieval},
+  volume  = {3},
+  number  = {4},
+  pages   = {333--389},
+  year    = {2009}
+}
+
+@inproceedings{khattab2020colbert,
+  author    = {Khattab, Omar and Zaharia, Matei},
+  title     = {{ColBERT}: Efficient and Effective Passage Search via Contextualized Late Interaction over {BERT}},
+  booktitle = {Proceedings of the 43rd International ACM SIGIR Conference on Research and Development in Information Retrieval},
+  pages     = {39--48},
+  year      = {2020}
+}
+
+@inproceedings{he2021deberta,
+  author    = {He, Pengcheng and Liu, Xiaodong and Gao, Jianfeng and Chen, Weizhu},
+  title     = {{DeBERTa}: Decoding-Enhanced {BERT} with Disentangled Attention},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2021}
+}
+
+@misc{qdrant,
+  author       = {{Qdrant}},
+  title        = {{Qdrant}: Vector Database for the Next Generation of {AI} Applications},
+  howpublished = {\url{https://qdrant.tech}},
+  note         = {Accessed: 2026}
+}
+
+% ---- Adversarial: prompt injection and instruction/data separation ----
+@inproceedings{greshake2023injection,
+  author    = {Greshake, Kai and Abdelnabi, Sahar and Mishra, Shailesh and Endres, Christoph and Holz, Thorsten and Fritz, Mario},
+  title     = {Not What You've Signed Up For: Compromising Real-World {LLM}-Integrated Applications with Indirect Prompt Injection},
+  booktitle = {Proceedings of the 16th ACM Workshop on Artificial Intelligence and Security (AISec)},
+  pages     = {79--90},
+  publisher = {ACM},
+  year      = {2023},
+  doi       = {10.1145/3605764.3623985}
+}
+
+@article{wallace2024hierarchy,
+  author  = {Wallace, Eric and Xiao, Kai and Leike, Reimar and Weng, Lilian and Heidecke, Johannes and Beutel, Alex},
+  title   = {The Instruction Hierarchy: Training {LLMs} to Prioritize Privileged Instructions},
+  journal = {arXiv preprint arXiv:2404.13208},
+  year    = {2024}
+}
+
+@article{hines2024spotlighting,
+  author  = {Hines, Keegan and Lopez, Gary and Hall, Matthew and Zarfati, Federico and Zunger, Yonatan and Kiciman, Emre},
+  title   = {Defending Against Indirect Prompt Injection Attacks with Spotlighting},
+  journal = {arXiv preprint arXiv:2403.14720},
+  year    = {2024}
+}
+
+@inproceedings{zou2025poisonedrag,
+  author    = {Zou, Wei and Geng, Runpeng and Wang, Binghui and Jia, Jinyuan},
+  title     = {{PoisonedRAG}: Knowledge Corruption Attacks to Retrieval-Augmented Generation of Large Language Models},
+  booktitle = {34th USENIX Security Symposium (USENIX Security 25)},
+  pages     = {3827--3844},
+  publisher = {USENIX Association},
+  address   = {Seattle, WA},
+  year      = {2025}
+}
+
+% ---- Knowledge conflict between sources ----
+@inproceedings{xie2024conflict,
+  author    = {Xie, Jian and Zhang, Kai and Chen, Jiangjie and Lou, Renze and Su, Yu},
+  title     = {Adaptive Chameleon or Stubborn Sloth: Revealing the Behavior of Large Language Models in Knowledge Conflicts},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024}
+}
+
+@inproceedings{longpre2021conflict,
+  author    = {Longpre, Shayne and Perisetla, Kartik and Chen, Anthony and Ramesh, Nikhil and DuBois, Chris and Singh, Sameer},
+  title     = {Entity-Based Knowledge Conflicts in Question Answering},
+  booktitle = {Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pages     = {7052--7063},
+  publisher = {Association for Computational Linguistics},
+  year      = {2021},
+  doi       = {10.18653/v1/2021.emnlp-main.565}
+}
+
+% ---- Abstention and selective prediction ----
+@inproceedings{rajpurkar2018squad2,
+  author    = {Rajpurkar, Pranav and Jia, Robin and Liang, Percy},
+  title     = {Know What You Don't Know: Unanswerable Questions for {SQuAD}},
+  booktitle = {Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (ACL), Volume 2: Short Papers},
+  pages     = {784--789},
+  publisher = {Association for Computational Linguistics},
+  year      = {2018},
+  doi       = {10.18653/v1/P18-2124}
+}
+
+@inproceedings{kamath2020selective,
+  author    = {Kamath, Amita and Jia, Robin and Liang, Percy},
+  title     = {Selective Question Answering under Domain Shift},
+  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  pages     = {5684--5696},
+  publisher = {Association for Computational Linguistics},
+  year      = {2020},
+  doi       = {10.18653/v1/2020.acl-main.503}
+}
+
+@article{perez2022ignore,
+  author  = {Perez, F{\'a}bio and Ribeiro, Ian},
+  title   = {Ignore Previous Prompt: Attack Techniques for Language Models},
+  journal = {arXiv preprint arXiv:2211.09527},
+  year    = {2022},
+  note    = {NeurIPS 2022 ML Safety Workshop}
+}
+
+@inproceedings{chen2025struq,
+  author    = {Chen, Sizhe and Piet, Julien and Sitawarin, Chawin and Wagner, David},
+  title     = {{StruQ}: Defending Against Prompt Injection with Structured Queries},
+  booktitle = {34th USENIX Security Symposium (USENIX Security 25)},
+  pages     = {2383--2400},
+  publisher = {USENIX Association},
+  address   = {Seattle, WA},
+  year      = {2025}
+}
+
+@inproceedings{zhong2023poisoning,
+  author    = {Zhong, Zexuan and Huang, Ziqing and Wettig, Alexander and Chen, Danqi},
+  title     = {Poisoning Retrieval Corpora by Injecting Adversarial Passages},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pages     = {13764--13775},
+  publisher = {Association for Computational Linguistics},
+  address   = {Singapore},
+  year      = {2023},
+  doi       = {10.18653/v1/2023.emnlp-main.849}
+}
+
+@inproceedings{yoran2024making,
+  author    = {Yoran, Ori and Wolfson, Tomer and Ram, Ori and Berant, Jonathan},
+  title     = {Making Retrieval-Augmented Language Models Robust to Irrelevant Context},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024}
+}
+
+@article{kadavath2022language,
+  author  = {Kadavath, Saurav and Conerly, Tom and Askell, Amanda and Henighan, Tom and Drain, Dawn and Perez, Ethan and Schiefer, Nicholas and Bowman, Samuel R. and Ganguli, Deep and Olah, Christopher and Kaplan, Jared},
+  title   = {Language Models (Mostly) Know What They Know},
+  journal = {arXiv preprint arXiv:2207.05221},
+  year    = {2022}
+}
+
+% ============================================================================
+% Added 2026-08-14. Curated from a 50-entry candidate list the user sourced;
+% every author list below was independently verified against the publisher
+% record or a search of the paper's actual page (the source file's author
+% fields were truncated/garbled throughout, e.g. missing first names and
+% co-authors - do not trust that file's author fields for any future entry).
+% The other ~37 candidates were excluded as topically tangential (narrow
+% domain applications, redundant surveys, or techniques outside this paper's
+% scope) or exact duplicates of entries already above (StruQ, BM25/Robertson).
+% ============================================================================
+
+@inproceedings{ding2025rowen,
+  author    = {Ding, Hanxing and Pang, Liang and Wei, Zihao and Shen, Haihong and Cheng, Xueqi},
+  title     = {Rowen: Adaptive Retrieval-Augmented Generation for Hallucination Mitigation in {LLMs}},
+  booktitle = {Proceedings of the 2025 Annual International ACM SIGIR Conference on Research and Development in Information Retrieval in the Asia Pacific Region (SIGIR-AP)},
+  pages     = {2--11},
+  publisher = {ACM},
+  year      = {2025}
+}
+
+@article{huang2025hallucination,
+  author  = {Huang, Lei and Yu, Weijiang and Ma, Weitao and Zhong, Weihong and Feng, Zhangyin and Wang, Haotian and Chen, Qianglong and Peng, Weihua and Feng, Xiaocheng and Qin, Bing and Liu, Ting},
+  title   = {A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions},
+  journal = {ACM Transactions on Information Systems},
+  volume  = {43},
+  number  = {2},
+  year    = {2025}
+}
+
+@inproceedings{hsu2021wikicontradiction,
+  author    = {Hsu, Cheng and Li, Cheng-Te and Saez-Trumper, Diego and Hsu, Yi-Zhan},
+  title     = {{WikiContradiction}: Detecting Self-Contradiction Articles on {W}ikipedia},
+  booktitle = {2021 IEEE International Conference on Big Data (Big Data)},
+  pages     = {427--436},
+  publisher = {IEEE},
+  year      = {2021}
+}
+
+@inproceedings{chen2025secalign,
+  author    = {Chen, Sizhe and Zharmagambetov, Arman and Mahloujifar, Saeed and Chaudhuri, Kamalika and Wagner, David and Guo, Chuan},
+  title     = {{SecAlign}: Defending Against Prompt Injection with Preference Optimization},
+  booktitle = {Proceedings of the 2025 ACM SIGSAC Conference on Computer and Communications Security (CCS)},
+  pages     = {2833--2847},
+  publisher = {ACM},
+  year      = {2025}
+}
+
+@inproceedings{yi2025bipia,
+  author    = {Yi, Jingwei and Xie, Yueqi and Zhu, Bin and Kiciman, Emre and Sun, Guangzhong and Xie, Xing and Wu, Fangzhao},
+  title     = {Benchmarking and Defending Against Indirect Prompt Injection Attacks on Large Language Models},
+  booktitle = {Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD)},
+  publisher = {ACM},
+  year      = {2025}
+}
+
+@inproceedings{trokhymovych2021wikicheck,
+  author    = {Trokhymovych, Mykola and Saez-Trumper, Diego},
+  title     = {{WikiCheck}: An End-to-End Open Source Automatic Fact-Checking {API} Based on {W}ikipedia},
+  booktitle = {Proceedings of the 30th ACM International Conference on Information and Knowledge Management (CIKM)},
+  publisher = {ACM},
+  year      = {2021}
+}
+
+@inproceedings{pedro2025promptsql,
+  author    = {Pedro, Rodrigo and Coimbra, Miguel and Castro, Daniel and Carreira, Paulo and Santos, Nuno},
+  title     = {Prompt-to-{SQL} Injections in {LLM}-Integrated Web Applications: Risks and Defenses},
+  booktitle = {2025 IEEE/ACM 47th International Conference on Software Engineering (ICSE)},
+  publisher = {IEEE},
+  year      = {2025}
+}
+
+@inproceedings{zhang2026knowfc,
+  author    = {Zhang, Yue and Li, Xiaopeng and Zhou, Shicheng and Tian, Zhiliang and Gao, Yifu and Zhang, Shiyi and Hou, Wenqing and Liu, Yuying and Zhou, Bin},
+  title     = {{KnowFC}: Navigating Knowledge Conflicts in Large Language Model-Based Fact-Checking},
+  booktitle = {Proceedings of the 19th ACM International Conference on Web Search and Data Mining (WSDM)},
+  publisher = {ACM},
+  year      = {2026}
+}
+
+@inproceedings{wallat2025correctness,
+  author    = {Wallat, Jonas and Heuss, Maria and de Rijke, Maarten and Anand, Avishek},
+  title     = {Correctness is not Faithfulness in Retrieval Augmented Generation Attributions},
+  booktitle = {Proceedings of the 2025 ACM SIGIR International Conference on the Theory of Information Retrieval (ICTIR)},
+  publisher = {ACM},
+  year      = {2025}
+}
+
+@article{shan2024certifying,
+  author  = {Shan, Richard},
+  title   = {Certifying Generative {AI}: Retrieval-Augmented Generation Chatbots in High-Stakes Environments},
+  journal = {Computer},
+  volume  = {57},
+  number  = {9},
+  pages   = {35--44},
+  year    = {2024}
+}
+
+@inproceedings{samarinas2020latent,
+  author    = {Samarinas, Chris and Hsu, Wynne and Lee, Mong Li},
+  title     = {Latent Retrieval for Large-Scale Fact-Checking and Question Answering with {NLI} Training},
+  booktitle = {2020 IEEE 32nd International Conference on Tools with Artificial Intelligence (ICTAI)},
+  publisher = {IEEE},
+  year      = {2020}
+}
+
+% ============================================================================
+% Added 2026-08-14, batch 2 (34 entries). The remaining candidates from the
+% same 50-entry source file, added at the user's explicit direction
+% ("just add it all"). Every author list independently verified against the
+% publisher page or a corroborating search (same policy as batch 1); 2
+% candidates from the source file (a weighted-cross-entropy ICASSP paper and
+% a hierarchical-semantic-piece hallucination paper) were excluded because
+% their author lists could not be verified through any accessible source,
+% not because they were judged irrelevant.
+% ============================================================================
+
+@article{yang2025metamorphic,
+  author  = {Yang, Borui and Al Mamun, Md Afif and Zhang, Jie M. and Uddin, Gias},
+  title   = {Hallucination Detection in Large Language Models with Metamorphic Relations},
+  journal = {Proceedings of the ACM on Software Engineering},
+  year    = {2025}
+}
+
+@inproceedings{quinn2025accelerating,
+  author    = {Quinn, Derrick and Nouri, Mohammad and Patel, Neel and Salihu, John and Salemi, Alireza and Lee, Sukhan and Zamani, Hamed and Alian, Mohammad},
+  title     = {Accelerating Retrieval-Augmented Generation},
+  booktitle = {Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS), Volume 1},
+  pages     = {15--32},
+  publisher = {ACM},
+  year      = {2025}
+}
+
+@inproceedings{signe2025substring,
+  author    = {Sign{\'e}, Quentin and Boughanem, Mohand and Moreno, Jose G. and Belkacem, Thiziri},
+  title     = {A Substring Extraction-Based {RAG} Method for Minimising Hallucinations in Aircraft Maintenance Question Answering},
+  booktitle = {Proceedings of the 2025 ACM SIGIR International Conference on the Theory of Information Retrieval (ICTIR)},
+  publisher = {ACM},
+  year      = {2025}
+}
+
+@inproceedings{macdonald2025pyterrier,
+  author    = {Macdonald, Craig and Fang, Jinyuan and Parry, Andrew and Meng, Zaiqiao},
+  title     = {Constructing and Evaluating Declarative {RAG} Pipelines in {PyTerrier}},
+  booktitle = {Proceedings of the 48th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR)},
+  publisher = {ACM},
+  year      = {2025}
+}
+
+@inproceedings{wang2024topology,
+  author    = {Wang, Yu and Lipka, Nedim and Zhang, Ruiyi and Siu, Alexa and Zhao, Yuying and Ni, Bo and Wang, Xin and Rossi, Ryan and Derr, Tyler},
+  title     = {Topology-Aware Retrieval Augmentation for Text Generation},
+  booktitle = {Proceedings of the 33rd ACM International Conference on Information and Knowledge Management (CIKM)},
+  publisher = {ACM},
+  year      = {2024}
+}
+
+@inproceedings{wu2024timesensitive,
+  author    = {Wu, Feifan and Liu, Lingyuan and He, Wentao and Liu, Ziqi and Zhang, Zhiqiang and Wang, Haofen and Wang, Meng},
+  title     = {Time-Sensitive Retrieval-Augmented Generation for Question Answering},
+  booktitle = {Proceedings of the 33rd ACM International Conference on Information and Knowledge Management (CIKM)},
+  publisher = {ACM},
+  year      = {2024}
+}
+
+@article{wang2025factuality,
+  author  = {Wang, Cunxiang and Liu, Xiaoze and Yue, Yuanhao and Guo, Qipeng and Hu, Xiangkun and Tang, Xiangru and Zhang, Tianhang and Cheng, Jiayang and Yao, Yunzhi and Hu, Xuming and Qi, Zehan and Gao, Wenyang and Wang, Yidong and Yang, Linyi and Wang, Jindong and Xie, Xing and Zhang, Zheng and Zhang, Yue},
+  title   = {Survey on Factuality in Large Language Models},
+  journal = {ACM Computing Surveys},
+  year    = {2025}
+}
+
+@article{peng2025graphrag,
+  author  = {Peng, Boci and Zhu, Yun and Liu, Yongchao and Bo, Xiaohe and Shi, Haizhou and Hong, Chuntao and Zhang, Yan and Tang, Siliang},
+  title   = {Graph Retrieval-Augmented Generation: A Survey},
+  journal = {ACM Transactions on Information Systems},
+  year    = {2025}
+}
+
+@inproceedings{cheung2023factllama,
+  author    = {Cheung, Tsun-Hin and Lam, Kin-Man},
+  title     = {{FactLLaMA}: Optimizing Instruction-Following Language Models with External Knowledge for Automated Fact-Checking},
+  booktitle = {2023 Asia Pacific Signal and Information Processing Association Annual Summit and Conference (APSIPA ASC)},
+  publisher = {IEEE},
+  year      = {2023}
+}
+
+@inproceedings{omrani2024hybrid,
+  author    = {Omrani, Pouria and Hosseini, Alireza and Hooshanfar, Kiana and Ebrahimian, Zahra and Toosi, Ramin and Akhaee, Mohammad Ali},
+  title     = {Hybrid Retrieval-Augmented Generation Approach for {LLMs} Query Response Enhancement},
+  booktitle = {2024 10th International Conference on Web Research (ICWR)},
+  publisher = {IEEE},
+  year      = {2024}
+}
+
+@inproceedings{li2025mixhd,
+  author    = {Li, Chuang and Xing, Bingnan and Huo, Dongdong and Zhou, Qihui and Xu, Zhen and Wang, Yu},
+  title     = {{MixHD}: A Method for Detecting Hallucinations Based on the Internal State and Output Probability of Large Language Models},
+  booktitle = {2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  publisher = {IEEE},
+  year      = {2025}
+}
+
+@inproceedings{procko2024graphrag,
+  author    = {Procko, Tyler Thomas and Ochoa, Omar},
+  title     = {Graph Retrieval-Augmented Generation for Large Language Models: A Survey},
+  booktitle = {2024 Conference on AI, Science, Engineering, and Technology (AIxSET)},
+  pages     = {166--169},
+  publisher = {IEEE},
+  year      = {2024}
+}
+
+@inproceedings{sun2024multimodal,
+  author    = {Sun, Tienlan and Somalwar, Anaiy and Chan, Hinson},
+  title     = {Multimodal Retrieval Augmented Generation Evaluation Benchmark},
+  booktitle = {2024 IEEE 99th Vehicular Technology Conference (VTC2024-Spring)},
+  publisher = {IEEE},
+  year      = {2024}
+}
+
+@article{rahman2026hallucination,
+  author  = {Rahman, Subhey Sadi and Islam, Md. Adnanul and Alam, Md. Mahbub and Zeba, Musarrat and Rahman, Md. Abdur and Chowa, Sadia Sultana and Raiaan, Mohaimenul Azam Khan and Azam, Sami},
+  title   = {Hallucination to Truth: A Review of Fact-Checking and Factuality Evaluation in Large Language Models},
+  journal = {Artificial Intelligence Review},
+  volume  = {59},
+  number  = {2},
+  year    = {2026}
+}
+
+@article{lin2024trustworthy,
+  author  = {Lin, Zichao and Guan, Shuyan and Zhang, Wending and Zhang, Huiyan and Li, Yugang and Zhang, Huaping},
+  title   = {Towards Trustworthy {LLMs}: A Review on Debiasing and Dehallucinating in Large Language Models},
+  journal = {Artificial Intelligence Review},
+  year    = {2024}
+}
+
+@article{klesel2025rag,
+  author  = {Klesel, Michael and Wittmann, H. Felix},
+  title   = {Retrieval-Augmented Generation ({RAG})},
+  journal = {Business \& Information Systems Engineering},
+  year    = {2025}
+}
+
+@article{zhao2026aigc,
+  author  = {Zhao, Penghao and Zhang, Hailin and Yu, Qinhan and Wang, Zhengren and Geng, Yunteng and Fu, Fangcheng and Yang, Ling and Zhang, Wentao and Jiang, Jie and Cui, Bin},
+  title   = {Retrieval-Augmented Generation for {AI}-Generated Content: A Survey},
+  journal = {Data Science and Engineering},
+  year    = {2026}
+}
+
+@article{fink2025radiology,
+  author  = {Fink, Anna and Nattenm{\"u}ller, Johanna and Rau, Stephan and Rau, Alexander and Tran, Hien and Bamberg, Fabian and Reisert, Marco and Kotter, Elmar and Diallo, Thierno and Russe, Maximilian F.},
+  title   = {Retrieval-Augmented Generation Improves Precision and Trust of a {GPT-4} Model for Emergency Radiology Diagnosis and Classification: A Proof-of-Concept Study},
+  journal = {European Radiology},
+  year    = {2025}
+}
+
+@article{fukui2025nuclearmedicine,
+  author  = {Fukui, Yusuke and Kawata, Yuhei and Kobashi, Kazumasa and Nagatani, Yukihiro and Iguchi, Harumi},
+  title   = {Evaluation of a Retrieval-Augmented Generation System Using a {J}apanese Institutional Nuclear Medicine Manual and Large Language Model-Automated Scoring},
+  journal = {Radiological Physics and Technology},
+  year    = {2025}
+}
+
+@article{dong2025safeguarding,
+  author  = {Dong, Yi and Mu, Ronghui and Zhang, Yanghao and Sun, Siqi and Zhang, Tianle and Wu, Changshun and Jin, Gaojie and Qi, Yi and Hu, Jinwei and Meng, Jie and Bensalem, Saddek and Huang, Xiaowei},
+  title   = {Safeguarding Large Language Models: A Survey},
+  journal = {Artificial Intelligence Review},
+  year    = {2025}
+}
+
+@article{upadhyay2025health,
+  author  = {Upadhyay, Rishabh and Viviani, Marco},
+  title   = {Enhancing Health Information Retrieval with {RAG} by Prioritizing Topical Relevance and Factual Accuracy},
+  journal = {Discover Computing},
+  year    = {2025}
+}
+
+@article{huang2024safetyvv,
+  author  = {Huang, Xiaowei and Ruan, Wenjie and Huang, Wei and Jin, Gaojie and Dong, Yi and Wu, Changshun and Bensalem, Saddek and Mu, Ronghui and Qi, Yi and Zhao, Xingyu and Cai, Kaiwen and Zhang, Yanghao and Wu, Sihao and Xu, Peipei and Wu, Dengyu and Freitas, Andre and Mustafa, Mustafa A.},
+  title   = {A Survey of Safety and Trustworthiness of Large Language Models Through the Lens of Verification and Validation},
+  journal = {Artificial Intelligence Review},
+  year    = {2024}
+}
+
+@article{brown2025systematic,
+  author  = {Brown, Andrew and Roman, Muhammad and Devereux, Barry},
+  title   = {A Systematic Literature Review of Retrieval-Augmented Generation: Techniques, Metrics, and Challenges},
+  journal = {Big Data and Cognitive Computing},
+  year    = {2025}
+}
+
+@article{papageorgiou2025agentic,
+  author  = {Papageorgiou, George and Sarlis, Vangelis and Maragoudakis, Manolis and Magnisalis, Ioannis and Tjortjis, Christos},
+  title   = {Evaluating Faithfulness in Agentic {RAG} Systems for e-Governance Applications Using {LLM}-Based Judging Frameworks},
+  journal = {Big Data and Cognitive Computing},
+  year    = {2025}
+}
+
+@article{james2025knowledgeassets,
+  author  = {James, Antony and Trovati, Marcello and Bolton, Simon},
+  title   = {Retrieval-Augmented Generation to Generate Knowledge Assets and Creation of Action Drivers},
+  journal = {Applied Sciences},
+  year    = {2025}
+}
+
+@article{kwon2024mathinjection,
+  author  = {Kwon, Hyeokjin and Pak, Wooguil},
+  title   = {Text-Based Prompt Injection Attack Using Mathematical Functions in Modern Large Language Models},
+  journal = {Electronics},
+  year    = {2024}
+}
+
+@article{lee2025mindmapping,
+  author  = {Lee, Seyong and Kim, Jaebeom and Pak, Wooguil},
+  title   = {Mind Mapping Prompt Injection: Visual Prompt Injection Attacks in Modern Large Language Models},
+  journal = {Electronics},
+  year    = {2025}
+}
+
+@article{yu2025context,
+  author  = {Yu, Sangyeon and Kim, Gyunyeop and Kang, Sangwoo},
+  title   = {Context and Layers in Harmony: A Unified Strategy for Mitigating {LLM} Hallucinations},
+  journal = {Mathematics},
+  year    = {2025}
+}
+
+@article{liu2026isfjrag,
+  author  = {Liu, Yuezhao and Li, Wei and Wang, Yijie and Chen, Ningtong and Chen, Min},
+  title   = {{ISFJ-RAG}: Interventional Suppression of Hallucinations via Counter-Factual Joint Decoding Retrieval-Augmented Generation},
+  journal = {Big Data and Cognitive Computing},
+  year    = {2026}
+}
+
+@article{huang2024layered,
+  author  = {Huang, Jie and Wang, Mo and Cui, Yunpeng and Liu, Juan and Chen, Li and Wang, Ting and Li, Huan and Wu, Jinming},
+  title   = {Layered Query Retrieval: An Adaptive Framework for Retrieval-Augmented Generation in Complex Question Answering for Large Language Models},
+  journal = {Applied Sciences},
+  year    = {2024}
+}
+
+@article{pendyala2024misinformation,
+  author  = {Pendyala, Vishnu S. and Hall, Christopher E.},
+  title   = {Explaining Misinformation Detection Using Large Language Models},
+  journal = {Electronics},
+  year    = {2024}
+}
+
+@article{kazlaris2025taxonomy,
+  author  = {Kazlaris, Ioannis and Antoniou, Efstathios and Diamantaras, Konstantinos and Bratsas, Charalampos},
+  title   = {From Illusion to Insight: A Taxonomic Survey of Hallucination Mitigation Techniques in {LLMs}},
+  journal = {AI},
+  year    = {2025}
+}
+
+@article{darwish2025multiagent,
+  author  = {Darwish, Ahmed M. and Rashed, Essam A. and Khoriba, Ghada},
+  title   = {Mitigating {LLM} Hallucinations Using a Multi-Agent Framework},
+  journal = {Information},
+  year    = {2025}
+}
+
+@article{byun2024interactive,
+  author  = {Byun, Jaeyeon and Kim, Bokyeong and Cha, Kyung-Ae and Lee, Eunhyung},
+  title   = {Design and Implementation of an Interactive Question-Answering System with Retrieval-Augmented Generation for Personalized Databases},
+  journal = {Applied Sciences},
+  year    = {2024}
+}
+% ============================================================================
+% +20 new references (added on request) — verified against publisher listing
+% pages (ACM DL, MDPI, SpringerLink, IEEE Xplore). Each is cited at least
+% once in main.tex. Keys chosen to match the \cite{} calls inserted above.
+% ============================================================================
+
+@inproceedings{wang2025vericite,
+  author    = {Wang, Chunhui and others},
+  title     = {{VeriCite}: Towards Reliable Citations in Retrieval-Augmented Generation via Rigorous Verification},
+  booktitle = {SIGIR-AP '25: Proceedings of the 2025 Annual International ACM SIGIR Conference on Research and Development in Information Retrieval in the Asia Pacific Region},
+  publisher = {ACM},
+  year      = {2025},
+  doi       = {10.1145/3767695.3769505}
+}
+
+@inproceedings{huang2026c2cite,
+  author    = {Huang, Lei and others},
+  title     = {{C2-Cite}: Contextual-Aware Citation Generation for Attributed Large Language Models},
+  booktitle = {WSDM '26: Proceedings of the Nineteenth ACM International Conference on Web Search and Data Mining},
+  publisher = {ACM},
+  year      = {2026},
+  doi       = {10.1145/3773966.3777933}
+}
+
+@inproceedings{formal2024splate,
+  author    = {Formal, Thibault and Lassance, Carlos and Piwowarski, Benjamin and Clinchant, St{\'e}phane},
+  title     = {{SPLATE}: Sparse Late Interaction Retrieval},
+  booktitle = {SIGIR '24: Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval},
+  publisher = {ACM},
+  year      = {2024},
+  doi       = {10.1145/3626772.3657968}
+}
+
+@inproceedings{zhang2023hallucinationrobust,
+  author    = {Zhang, Yuyan and others},
+  title     = {Hallucination Detection: Robustly Discerning Reliable Answers in Large Language Models},
+  booktitle = {CIKM '23: Proceedings of the 32nd ACM International Conference on Information and Knowledge Management},
+  publisher = {ACM},
+  year      = {2023},
+  doi       = {10.1145/3583780.3614905}
+}
+
+@article{zhu2025llmir,
+  author  = {Zhu, Yutao and Yuan, Huaying and Wang, Shuting and Liu, Jiongnan and Liu, Wenhan and Deng, Chenlong and Dou, Zhicheng and Wen, Ji-Rong},
+  title   = {Large Language Models for Information Retrieval: A Survey},
+  journal = {ACM Transactions on Information Systems},
+  publisher = {ACM},
+  year    = {2025},
+  doi     = {10.1145/3748304}
+}
+
+@article{knollmeyer2025documentgraphrag,
+  author  = {Knollmeyer, Stefan and Caymazer, Ozan and Grossmann, Daniel},
+  title   = {Document {GraphRAG}: Knowledge Graph Enhanced Retrieval Augmented Generation for Document Question Answering Within the Manufacturing Domain},
+  journal = {Electronics},
+  volume  = {14},
+  number  = {11},
+  pages   = {2102},
+  year    = {2025},
+  doi     = {10.3390/electronics14112102}
+}
+
+@article{anon2025dsrag,
+  title   = {A Dynamic-Selection-Based, Retrieval-Augmented Generation Framework: Enhancing Multi-Document Question-Answering for Commercial Applications},
+  journal = {Electronics},
+  volume  = {14},
+  number  = {4},
+  pages   = {659},
+  year    = {2025},
+  doi     = {10.3390/electronics14040659}
+}
+
+@article{anon2025airworthiness,
+  title   = {A Retrieval-Augmented Generation Method for Question Answering on Airworthiness Regulations},
+  journal = {Electronics},
+  volume  = {14},
+  number  = {16},
+  pages   = {3314},
+  year    = {2025},
+  doi     = {10.3390/electronics14163314}
+}
+
+@article{anon2026enterpriseslr,
+  title   = {Retrieval-Augmented Generation ({RAG}) and Large Language Models ({LLMs}) for Enterprise Knowledge Management and Document Automation: A Systematic Literature Review},
+  journal = {Applied Sciences},
+  volume  = {16},
+  number  = {1},
+  pages   = {368},
+  year    = {2026},
+  doi     = {10.3390/app16010368}
+}
+
+@article{anon2025phnsw,
+  title   = {{P-HNSW}: Crash-Consistent {HNSW} for Vector Databases on Persistent Memory},
+  journal = {Applied Sciences},
+  volume  = {15},
+  number  = {19},
+  pages   = {10554},
+  year    = {2025},
+  doi     = {10.3390/app151910554}
+}
+
+@article{anon2026multihopclustering,
+  title   = {Multi-hop clustering for reasoning chain extraction in multi-hop question answering},
+  journal = {Data Mining and Knowledge Discovery},
+  publisher = {Springer Nature},
+  year    = {2026},
+  doi     = {10.1007/s10618-026-01203-0}
+}
+
+@inproceedings{anon2025hyperkg,
+  title     = {Topic-Driven Hyper-relational Knowledge Graphs with Adaptive Reconstruction for Multi-hop Question Answering Using LLMs},
+  booktitle = {Web Information Systems Engineering -- WISE 2025 (Chapter)},
+  publisher = {Springer Nature},
+  year      = {2025},
+  doi       = {10.1007/978-3-032-04549-2_11}
+}
+
+@inproceedings{anon2025semanticchunking,
+  title     = {Enhancing {RAG} System Performance Through Semantic Layout Chunking},
+  booktitle = {AI 2025: Advances in Artificial Intelligence},
+  publisher = {Springer Nature},
+  year      = {2025},
+  doi       = {10.1007/978-981-95-4969-6_3}
+}
+
+@article{anon2026sncsreview,
+  title   = {Evaluating Retrieval Augmented Generation: A Comprehensive Review of Evaluation Dimensions, Question Types, and Application},
+  journal = {SN Computer Science},
+  publisher = {Springer Nature},
+  year    = {2026},
+  doi     = {10.1007/s42979-026-05134-x}
+}
+
+@article{abdullahi2025hallucinationreview,
+  author  = {Abdullahi, Saidu and Danyaro, Kamaluddeen and Chiroma, Haruna},
+  title   = {The Rise of Hallucination in Large Language Models: Systematic Reviews, Performance Analysis and Challenges},
+  journal = {Cluster Computing},
+  publisher = {Springer Nature},
+  year    = {2025},
+  doi     = {10.1007/s10586-025-05891-z}
+}
+
+@article{jing2024vdbmssurvey,
+  author  = {Jing, Yikun and others},
+  title   = {A Survey of Vector Database Management Systems},
+  journal = {The VLDB Journal},
+  volume  = {33},
+  pages   = {1591--1615},
+  publisher = {Springer},
+  year    = {2024},
+  doi     = {10.1007/s00778-024-00864-x}
+}
+
+@article{douze2025faisslibrary,
+  author  = {Douze, Matthijs and Guzhva, Alexandr and Deng, Chengqi and Johnson, Jeff and Szilvasy, Gergely and Mazar{\'e}, Pierre-Emmanuel and Lomeli, Maria and Hosseini, Lucas and J{\'e}gou, Herv{\'e}},
+  title   = {The Faiss Library},
+  journal = {IEEE Transactions on Big Data},
+  publisher = {IEEE},
+  year    = {2025},
+  doi     = {10.1109/TBDATA.2025.3618474}
+}
+
+@inproceedings{lee2026hallucisafe,
+  title     = {{HalluciSafe}: Entailment-Driven Hallucination Suppression in LLM-Assisted Manuscripts},
+  booktitle = {2026 World Conference on Computational Science and Technology (WcCST)},
+  pages     = {686--691},
+  publisher = {IEEE},
+  year      = {2026},
+  doi       = {10.1109/WcCST67302.2026.11496072}
+}
+
+@inproceedings{li2025crossvalidation,
+  author    = {Wu, Qirui and Hai, Lin and Zheng, Hai-Tao and Xie, Ruobing and Yang, Saiyong and Sun, Xingwu and Kang, Zhanhui and Kim, Hong-Gee},
+  title     = {Eliminating Retrieval Knowledge Conflicts: Cross-Validation Re-ranking with Large Language Models},
+  booktitle = {2025 International Joint Conference on Neural Networks (IJCNN)},
+  publisher = {IEEE},
+  year      = {2025},
+  doi       = {10.1109/IJCNN64981.2025.11228012}
+}
+
+@inproceedings{wang2025ramdocs,
+  title     = {Retrieval-Augmented Generation with Conflicting Evidence},
+  author    = {Wang, Han and Prasad, Archiki and Stengel-Eskin, Elias and Bansal, Mohit},
+  booktitle = {Conference on Language Modeling (COLM)},
+  year      = {2025},
+  eprint    = {2504.13079},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/2504.13079}
+}

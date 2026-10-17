@@ -1,0 +1,84 @@
+NON-DISCLOSURE AGREEMENT FOR PROJECT PROPOSALS
+This Agreement is made effective as of _________________, 20___
+BETWEEN:
+____________________ (“Company”)
+and
+___________________ (“Contractor”)
+PREAMBLE
+[Describe context]
+1. DEFINED TERMS
+1.1 In this Agreement, the following definitions shall apply:
+Agreement means this Non-Disclosure Agreement for Project Proposals.
+Confidential Information means all information relating to the Project or the Contractor’s proposal for the Project and all information relating to the nature of either Party’s business, affairs or trade secrets, which either Party directly or indirectly receives or acquires from the other Party, or the other Party’s representative, either in writing or verbally (but in the case of verbal information, only that which is reduced to writing by the Disclosing Party and delivered to the Receiving Party within 10 days of the verbal disclosure), or through observation of the Project, except information falling into any one or more of the following categories:
+(a) information which the Receiving Party can show was in its possession on a non-confidential basis before receipt of the information from the Disclosing Party;
+(b) information which is lawfully in the public domain at the time of the Receiving Party’s receipt of the information from the Disclosing Party, but not including the Company’s request for proposals for the Project;
+(c) information which, after the Receiving Party’s receipt of the information from the Disclosing Party, becomes part of the public domain through no act of the Receiving Party or of any third party under an obligation of confidence with respect to such information, but only after such information becomes part of the public domain; or
+(d) information which, after receipt of the information by the Receiving Party, is lawfully obtained by the Receiving Party from a third party, but only after such information is so received, and provided such third party is under no obligation of confidence with respect to such information.
+Disclosing Party means the Party disclosing Confidential Information.
+Effective Date means the date on which this Agreement is deemed to be effective, as first written above.
+Initial Term means the 1 year period commencing on the Effective Date and expiring at 11:59 pm. on _____________, 20__.
+Party means either the Company or Contractor and Parties means both of them.
+Permitted Purpose means the purpose for which the Confidential Information is disclosed by the Disclosing Party to the Receiving Party and which is more particularly described as:
+(i) responding to the Company’s request for proposals for the Project, in the case of the Contractor;
+(ii) assessing the Contractor’s proposal, in the case of the Company; and
+(iii) if applicable, negotiation by the Parties of a definitive agreement related to the Project.
+Permitted Recipients means those persons who have a need to know the Confidential Information for the Permitted Purpose and who are officers, directors, employees, agents or contractors (at any level) of the Receiving Party or its affiliates, or anyone else for whom the Receiving Party takes responsibility for under this Agreement.
+Project means the Company’s project in relation to which it is seeking proposals for performance of work or services or the provision of materials or equipment.
+Receiving Party means the Party receiving Confidential Information from the Disclosing Party.
+2. PERMITTED PURPOSE
+2.1 The Company and the Contractor believe it is in their mutual best interest to disclose information to support the Permitted Purpose. Either Party may disclose Confidential Information to the other for the Permitted Purpose, which disclosure will be governed by the Agreement.
+3. PROTECTION
+3.1 Except as expressly permitted by this Agreement, the Receiving Party shall not disclose the Disclosing Party’s Confidential Information and shall use reasonable care, which is at least the same degree of care that the Receiving Party ordinarily uses with respect to its own proprietary information, in relation to the use, transmittal and storage of the Disclosing Party’s Confidential Information.
+3.2 The Receiving Party shall not use the Confidential Information of the Disclosing Party for any purpose other than the Permitted Purpose and, subject to section 3.3, shall limit the disclosure of the Confidential Information of the Disclosing Party to Permitted Recipients.
+3.3 The Receiving Party shall not make any copies, reproductions or abstracts of the Confidential Information of the Disclosing Party except as specifically may be required for the Permitted Purpose. All copies, reproductions and abstracts of the Confidential Information shall also be deemed to be Confidential Information of the Disclosing Party to the same extent as any originals.
+3.4 Before disclosing any Confidential Information of the Disclosing Party to the Permitted Recipients, the Receiving Party shall identify to the Permitted Recipients that it is the Disclosing Party’s Confidential Information and is subject to disclosure and usage restrictions, and shall ensure that the Permitted Recipients have:
+(a) executed Appendix A – Permitted Recipient’s Acknowledgement; or
+(b) are bound in writing by confidentiality terms, policies or procedures no less restrictive than those in this Agreement.
+3.5 The Receiving Party will be responsible for any breach of this Agreement by the Permitted Recipients.
+3.6 Confidential Information shall be used and stored in secure locations that are not accessible to the personnel who are not Permitted Recipients.
+3.7 The Receiving Party shall immediately notify the Disclosing Party, in writing, upon the earlier of knowing of any application to obtain any disclosure order or of any disclosure order being granted which would require disclosure of any part or all of the Confidential Information. The Receiving Party shall cooperate reasonably with the Disclosing Party, at the Disclosing Party’s expense, in challenging the disclosure order or obtaining a protective order. The Receiving Party will disclose only that portion of the Confidential Information which is required by such disclosure order.
+4. RELATIONSHIP OF THE PARTIES
+4.1 This Agreement is not intended to and does not obligate either Party:
+(a) to disclose any specific Confidential Information; or
+(b) to enter into any subsequent business arrangements regarding the Permitted Purpose or any other matter.
+4.2 This Agreement does not create any exclusivity between the Parties; each Party remains free to negotiate and enter into any agreement with any third party covering all or any part of the Permitted Purpose without any liability to the other Party under this Agreement.
+4.3 No joint venture, partnership or other fiduciary relationship shall be deemed to exist or arise between the Parties as a result of this Agreement or exchanging Confidential Information.
+5. TERM AND RETURN OR DESTRUCTION OF CONFIDENTIAL INFORMATION
+5.1 This Agreement shall govern all disclosures of Confidential Information made during the Initial Term.
+5.2 Any disclosure of any Confidential Information to the Receiving Party made during the Initial Term shall continue to be subject to this Agreement for a period of 2 years thereafter, provided that any trade secret shall be entitled to protection for the life of the trade secret.
+5.3 Subject to section 5.4, within 10 days of a written request by the Disclosing Party, the Receiving Party shall, unless otherwise precluded by any legal obligation:
+(a) return to the Disclosing Party or destroy all of the Disclosing Party’s original tangible Confidential Information, together with all tangible copies and reproductions;
+(b) subject to subsection 5.3(c), make its best efforts to delete all electronic copies of the Confidential Information received from the Disclosing Party;
+(c) safeguard any electronic Confidential Information that cannot be destroyed due to the Receiving Party’s archiving practices or policies with the same degree of care as it would its own Confidential Information; and
+(d) retain electronic Confidential Information described in subsection 5.3(c) only for the period it normally maintains such records, which electronic Confidential Information shall remain subject to the provisions of this Agreement until destroyed.
+5.4 Notwithstanding anything in section 5.3, the Receiving Party shall not be obliged to return or destroy any derivative materials or reports prepared by the Receiving Party for the Permitted Purpose, which materials and reports shall nonetheless remain subject to the confidentiality obligations in this Agreement.
+5.5 Upon request of the Disclosing Party, the Receiving Party shall certify in writing to the Disclosing Party that it has complied with section 5.3.
+6. REMEDIES
+6.1 Each Party acknowledges that monetary damages would be inadequate to protect the other Party against any actual or threatened breach of this Agreement, and, without prejudice to any other rights and remedies otherwise available to the other Party, agrees to the granting of injunctive relief in favour of the other Party without proof of actual damages.
+6.2 The Receiving Party shall indemnify the Disclosing Party against any loss or damage suffered by the Disclosing Party as a result of the failure of the Receiving Party or such other persons who are disclosed Confidential Information under this Agreement to comply with the terms of this Agreement.
+7. COSTS AND EXPENSES
+7.1 Each Party shall pay its own costs and expenses incurred in connection with this Agreement.
+8. NOTICES
+8.1 All notices required pursuant to this Agreement shall be in writing delivered by personal service or commercial carrier to:
+If to Company: If to Contractor:
+8.2 Should either Party change its address while the Agreement is in effect, it is the obligation of that Party to provide notice to the other Party, in writing, of its new address and the date the new address is effective prior to changing its address.
+9. GENERAL PROVISIONS
+9.1 All Confidential Information provided by the Disclosing Party remains its property and the Receiving Party obtains no right of any kind to any Confidential Information provided to it.
+9.2 This Agreement is not intended to and does not grant, expressly or by implication, any right or license to any permit, patent, trademark, copyright, trade secret, improvement, or any other intellectual property right or similar proprietary right of any kind that the other Party may possess.
+9.3 Neither Party's failure or delay in exercising any right, power or privilege under this Agreement shall operate as a waiver thereof, nor shall any single or partial exercise of any right, power or privilege preclude any other or further exercise thereof.
+9.4 Neither Party may assign its rights or delegate its duties under this Agreement without the prior written consent of the other Party, or otherwise dispose of any right, title or interest in all or part of this Agreement, including assignment by operation of law or otherwise, without such consent. Either Party may grant or withhold consent in its sole discretion. The terms and provisions of this Agreement shall be binding upon and inure to the benefit of any permitted successor of either Party.
+9.5 To the extent that any statute, regulation or other legislation applies to the Confidential Information, the Parties shall comply with same.
+9.6 If any provision of this Agreement is held to be invalid, void, or unenforceable by any court of competent jurisdiction, that holding shall not affect the validity or enforceability of the remaining provisions of this Agreement.
+9.7 This Agreement constitutes the entire agreement between the Parties concerning its subject matter and supersedes all prior agreements and conduct, whether written or oral.
+9.8 This Agreement shall be governed by and interpreted under the laws of the Province of Alberta and the Parties consent to the exclusive jurisdiction of the courts of the Province of Alberta for all disputes arising out of this Agreement.
+9.9 This Agreement shall only be amended in writing and signed by authorised representatives of both Parties.
+This Agreement has been executed by the duly authorised representatives of the Parties, effective as of the Effective Date and may be executed and delivered electronically and in any number of counterparts, each of which shall be deemed an original and all of which taken together shall constitute one and the same Agreement.
+COMPANY CONTRACTOR
+By: By:
+Printed Name: Printed Name:
+Title: Title:
+Appendix A – Permitted Recipient’s Acknowledgement
+I _______________________________ [name], am _______________________________ [position] with _______________________________ [Company or Contractor] and have read and understood the attached Non-Disclosure Agreement for Project Proposals (the “Agreement”).
+I acknowledge that I am one of the individuals defined in the Agreement as a Permitted Recipient of Confidential Information.
+I agree to be bound by the same obligations of confidentiality that bind the Company and the Contractor. I also agree that disclosure of Confidential Information that is not in accordance with the Agreement will cause irreparable harm and significant injury to the Party to whom that Confidential Information belongs and that it may be difficult to ascertain and that specific performance or injunctive relief, in addition to other legal and equitable relief, may be appropriate remedies for any actual or threatened violation or breach of confidentiality by me.
+This Permitted Recipient’s Acknowledgement has been executed by the Permitted Recipient effective as of the Effective Date.

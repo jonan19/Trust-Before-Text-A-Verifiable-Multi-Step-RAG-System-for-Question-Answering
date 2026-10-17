@@ -9,7 +9,7 @@ Usage:
     python main.py --status               # show collection info and exit
 
 LLM backend priority (set keys in .env):
-    GROQ_API_KEY   → llama-3.3-70b-versatile  (primary)
+    GROQ_API_KEY   → openai/gpt-oss-120b      (primary)
     OPENAI_API_KEY → gpt-4o-mini              (fallback)
     GEMINI_API_KEY → gemini-1.5-flash         (fallback)
     (none)         → Mock LLM (always works)

@@ -1,0 +1,25 @@
+Non-Disclosure & Business Relationship Agreement
+1. After execution of this agreement and upon receipt of List, Raphael Industries Ltd. ("Raphael") will grand ListFusion limited rights (as stated below) to use the furnished names, addresses, telephone numbers and associated information (collectively known as the "List"). List Fusion understands and agrees that the List is a very valuable asset of Raphael and at all times the exclusive property of Raphael.
+2. ListFusion agrees that this Agreement grants only limited rights to use the List for the sole purpose of loading the List into ListFusion's proprietary database system. The List will not be reproduced, transferred, or conveyed to any 3rd party without prior written authorization by Raphael.
+3. ListFusion agrees that the List may not be used to overlay or enhance any 3rd party data without prior written authorization by Raphael.
+4. The List will be stored exclusively on ListFusion's secure servers. ListFusion will not use any 3rd party agents, vendors, or other providers to process the List without the written authorization by Raphael.
+5. ListFusion will provide Raphael with an Administrative username and password. Access to the List by Raphael will be controlled by this username and password. Raphael may at their discretion create additional usernames and passwords. ListFusion will not create, generate, distribute, or convey to any 3rd party a username or password without prior written authorization by Raphael.
+6. Other than the information set out in the data card and agreed to by the parties, ListFusion, its employees, officers and trustees agree not to divulge or disseminate to any person or entity any confidential information about Raphael, including but not limited to personal and financial information, that may arise out of the discharge of their responsibilities as set out herein. Additionally, ListFusion. agrees not to copy, reprint or disseminate the publications, or any information concerning the publication including the articles, graphics or contents without express written authorization from Raphael. Any and all such information shall be kept confidential and shall not in any manner be revealed to anyone except as expressly provided herein.
+7. Raphael my at any time request the List be completely destroyed, scratched, and purged from all media, including electronic storage, disk, tape, and printed documents.
+8. ListFusion reserves the right to discontinue services immediately if payment for services is not received when due or with 30 days prior written notice. In the event ListFusion discontinues services, the List will be returned to Raphael and then completely destroyed, scratched, and purged from all media, including electronic storage, disk, tape, and printed documents in possession of ListFusion.
+9. This Agreement contains the entire agreement relative to the protection of the List to be exchanged hereunder, and supersedes all prior to contemporaneous oral or written understandings or agreements regarding the issue. This Agreement shall not be modified or amended, except in a written instrument executed by the parties.
+10.Nothing contained in this Agreement shall, by express grant, implication, estoppel or otherwise, create in either party any right, title, interest or license in or to the inventions, patents, technical data, computer software or software documentation of the other party.
+11.In the event of a breach of this Agreement by either Party hereto resulting in damages to the other Party, that other Party may recover from the Party so breaching said contract such damages as may be sustained.
+12.Nothing contained in this Agreement shall grant to either party the right to make commitments of any kind or on behalf of any other party without the prior written consent of the other party.
+13.The effective date of this Agreement shall be the date upon which the last signatory below executes this Agreement.
+14.This Agreement shall be governed and construed in accordance with the laws of The Sate of Utah.
+15.This Agreement shall benefit and be binding upon the successors and assignees of the parties hereto.
+16.The invalidity or unenforceability of any particular provision of this Agreement, or portion thereof shall not affect the other provisions or portions thereof; and, this Agreement shall be construed in all respects as if any such invalid or unenforceable provision or portions thereof were omitted and this Agreement shall remain in full force and effect.
+17.This Agreement may be signed in counterparts and by facsimile, each of such counterparts so executed will be deemed to be an original and such counterparts together will constitute one and the same instrument.
+COMPANY: RAPHAEL INDUSTRIES, LTD COMPANY: LISTFUSION
+ADDRESS: 5190 NEIL ROAD, SUITE 430 ADDRESS: 763 NORTH 530 EAST
+CITY/ST/ZIP: RENO, NV 89502 CITY/ST/ZIP: OREM, UTAH 84097-4105
+NAME: ARNE RAABE NAME: ERIC SMITH
+TITLE: DIRECTOR TITLE: PRESIDENT
+SIGNATURE: ARNE RAABE SIGNATURE: ERIC SMITH
+DATE: 11-28-05 DATE: 11-28-05

@@ -1,0 +1,31 @@
+Confidentiality Agreement
+between
+Helu Kabel GmbH
+Dieselstraße 8-12
+71282 Hemmingen
+-Supplier-
+and
+[COMPANY]
+[CONTACT PERSON]
+[ADDRESS]
+[POSTCODE, CITY]
+[COUNTRY]
+-Buyer-
+1. The parties maintain a supply relationship. In the frame of this cooperation, confidential information also be exchanged.
+2. Every contract party can disclose confidential information to the other contract party orally or in writing. If the disclosure is in writing, the disclosing party will mark the confidential documents with the additional terms “Confidential” or “Liable to Secrecy” so that it is apparent to the other party which information is especially in need to protection.
+3. The contract parties are obligated to preclude disclosure of confidential information to third parties. The parties will entrust confidential information solely to those employees, consultants and third party companies which are concerned with the processing of the order and which are legally or contractually obligated to secrecy.
+4. To the extent that technical drawings of certain third-party companies are not to be made known, the buyer must point this fact out on its own initiative.
+5. All confidential information remains the property of the disclosing contract party.
+6. The confidentiality agreement does not apply to statements of the company Helukabel in its catalogues, datasheets and on the homepage and also not to information which
+a) the receiving party was already aware of or which was developed by the disclosing party itself independent of the disclosure,
+b) is publicly known without this agreement having been broken,
+c) was received by a third party without infringement of this or any other confidentiality agreement.
+7. If the recipient is forced to expose the confidential information due to a legal regulation, a legally valid judgement or a non-disputable official decision or decree in part or in whole, it shall immediately inform the owner of the confidential information in writing so that the owner can take measures to protect the confidential information.
+8. This agreement becomes effective with the signatures of both parties and is valid for three years. It is tacitly extended by one year if it is not terminated three months before its expiration.
+9. At the end of the contract the receiving party shall return the confidential information and any possibly extant copies after receipt of a written request, provided that this is technically feasible and does not violate the retention obligations. As an alternative to that, the receiving party can also ensure in writing the destruction of the received documentation if that is technically feasible.
+10. The confidential information will be provided as is. The disclosing party does not assume any warranty for the correctness, completeness or usability of the confidential information.
+11. The parties agree that for this agreement German law applies excluding the United Nations Convention on Contracts for the International Sale of Goods. The legal venue for all disputes arising from this agreement is the head office of the company Helukabel in Hemmingen.
+Hemmingen, ___________ _____________________
+Place, Date
+_________________________ _____________________
+Helu Kabel GmbH Buyer

@@ -1,0 +1,125 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b15-open-01",
+      "category": "track-b/open",
+      "query": "Does written information have to be marked \"Confidential\" for the agreement to protect it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_190.txt",
+        "nda_30.txt",
+        "nda_48.txt",
+        "nda_537.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_190.txt",
+        "nda_30.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_190 and nda_48 require written material to be marked or labelled 'Confidential'; nda_30 and nda_537 protect information regardless of marking.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b15-open-02",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_190.txt",
+        "nda_30.txt",
+        "nda_48.txt",
+        "nda_537.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_190.txt",
+        "nda_30.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_190 is five years from receipt; nda_30 is two years from signature; nda_48 runs until the information stops being a trade secret or a written release is given; nda_537 is eighteen months. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b15-open-03",
+      "category": "track-b/open",
+      "query": "If we are legally required to disclose the confidential information, must we notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_190.txt",
+        "nda_30.txt",
+        "nda_537.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice / an opportunity to protect the information before compelled disclosure; they agree. nda_48 has no such procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b15-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_190.txt",
+        "nda_30.txt",
+        "nda_48.txt",
+        "nda_537.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require return or destruction on request; they agree. nda_190 and nda_30 set a 14-day window; nda_537 permits limited retained legal/backup copies.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b15-open-05",
+      "category": "track-b/open",
+      "query": "Can a party get an injunction to stop a breach?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_190.txt",
+        "nda_30.txt",
+        "nda_537.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three that address remedies allow injunctive/equitable relief for breach; they agree. nda_48 has no remedies clause.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b15-open-06",
+      "category": "track-b/open",
+      "query": "Which law governs the generic (unnamed-parties) non-disclosure agreement and where would a dispute be heard?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_48 has no governing-law or venue clause. nda_190 (England), nda_30 (South Africa) and nda_537 (New York) name a governing law, but none speak to nda_48.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b15-open-07",
+      "category": "track-b/open",
+      "query": "Is there a cap on the damages a party can recover for breach?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "No document sets a monetary cap on breach liability. nda_190 excludes indirect and consequential loss but does not cap direct damages.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b15-open-08",
+      "category": "track-b/open",
+      "query": "Do any of these agreements require disputes to be settled by arbitration?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_30.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_30 contains an arbitration clause (AFSA, Johannesburg), preceded by a CEO-level negotiation step. nda_190 and nda_537 point to court litigation and nda_48 names no forum. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

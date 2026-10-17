@@ -1,0 +1,40 @@
+Non-Disclosure Agreement
+This Agreement is entered into this ……..(Date) day of ………….(Month), .......... (Year) between (Name of the Mission) (hereinafter called as "Discloser") and (Name of the Company with Address) (hereinafter called as "Recipient"), collectively "Party" or "Parties".
+WHEREAS the Discloser possesses certain information relating to the security set-up, security architecture, lay-out, security processes and procedures, designs, drawings, software and hardware configuration, computer programs, algorithms, services, customers etc that is confidential and proprietary in nature (hereinafter called as "Confidential Information"); and
+WHEREAS the Recipient is bound to get to know about the Confidential Information in pursuant to the terms of the Agreement for the purpose of supply, installation, testing and commissioning of a CCTV System (hereinafter called as "Purpose") in the (hereinafter called as "Premises");
+NOW THEREFORE, in consideration for the mutual undertakings of the Discloser and the Recipient under this Agreement, the Parties agree as follows:
+1. Disclosure: Recipient agrees not to disclose and the Discloser agrees to let the Recipient have the access to the Confidential Information as identified and reduced in writing or provided verbally or in any other way not reduced in writing at the time of such disclosure of the information.
+2. Confidentiality:
+2.1 No Use: Recipient agrees not to use the Confidential Information in any way or under any circumstances share the same, in writing or through any other means, with any Third Party.
+2.2 No Unauthorized Disclosure: Recipient agrees to use its best efforts to prevent and protect the Confidential Information, or any part thereof, from disclosure to any person(s) or entity (ies), even if authorized or directed under any law, without the express permission of the Discloser. Discloser, notwithstanding, shall have the right to deny such disclosure of the Confidential Information being detrimental to the security interests of the Discloser and/or its
+2.3 Protection of Secrecy: Recipient agrees to take all steps necessary to protect the secrecy of the Confidential Information, and to prevent the Confidential Information from failing into the public domain or into the possession of unauthorized person(s) and/or entity(ies).
+2.4 Recipient agrees that the layout plan of the structural design of the Premises, whether in in physical or electronic form, shall always be in the custody of the Discloser. However, the Recipient shall have the access to the layout plan for the purpose of carrying out the contract for installation of CCTV System.
+3. Notices: All notices hereunder shall be given by letter, addressed as follows:
+4. Term and Termination. The term of this Agreement shall commence on the [Name of the Mission/Post] [Name of the Company]
+[Address] [Address]
+Attention [Insert Name] Attention:[Insert Name]
+Title:[Insert Designation] E- Title: [Insert Designation] E-
+mail:[Insert E-mail] mail:[Insert E-mail]
+Telephone:[Insert Number] Telephone: [Insert
+Fax:[Insert Number] Number] Fax: [Insert Number]
+Effective Date i.e. the date of signing the Agreement for the Purpose and continue for such a period until and unless the Discloser terminates the Agreement or the Premises is relocated or vacated or abandoned, whichever is earlier.
+5. Breach. The Recipient acknowledges that disclosure or use of Confidential Information in violation of this Agreement could cause irreparable harm to Discloser including loss of lives and limbs of the persons and damage to the property, for which monetary damages may be difficult to ascertain or turn to be meaningless. The Recipient therefore agrees that Discloser will have the right, in addition to its other rights and remedies, to seek injunctive relief for violations of this Agreement.
+6. In case the Discloser suspects any violation of this Agreement, upon reasonable notice, it shall be binding for the Recipient to allow the Discloser to carry out an Audit by itself or by an authorized representative. In such a situation, the Recipient shall cooperate with the Discloser. The onus to rebut the suspicion shall lie on the Recipient
+7. Any dispute or difference arising out of or in connection with this Non- Discloser Agreement shall be setteled amicably by the Parties through mutual negotiations. Any unsettled dispute or difference shall be referred to Arbitration by a Sole Arbitrator. The Arbitration shall be conducted in accordance with the rules and procedure of UNCITRAL in force on the date of Agreement. Arbitration proceedings shall be held in India and will be conducted in English. The decision of Arbitral Tribunal shall be final and binding on all Parties. Cost of Arbitrtaion shall be borne by Parties themselves unless and otherwise ordered by the Tribunal.
+8. This Agreement shall be governed by and construed in accordance with the laws in force in India.
+9. Miscellaneous.
+a) Except in the event of an amalgamation or merger with or takeover by a third party of their business, neither Party may assign or transfer its rights or obligations in this Agreement without the prior written consent of the other.
+b) The Parties do not intend that any agency or partnership relationship be created by them by this Agreement.
+c) All additions or modifications to this Agreement must be made in writing and signed by an authorized representative of each Party.
+ACCEPTED AND AGREED
+[Name of the Mission/Post] [Name of the Company]
+[Address] [Address]
+Attention: [Insert Name]
+Attention: [Insert Name]
+Title: [Insert Designation]
+Title: [Insert Designation]
+E-mail:[Insert E-mail]
+E-mail:[Insert E-mail]
+Telephone:[Insert Number]
+Telephone:[Insert Number]
+Fax: [Insert Number]

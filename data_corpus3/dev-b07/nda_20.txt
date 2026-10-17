@@ -1,0 +1,36 @@
+Mutual Non-Disclosure Agreement
+This Mutual Non-Disclosure Agreement (the “Agreement”) is entered into between
+[Full business name/Name], [Org No], [Address]; and
+[Full business name/Name], [Org No], [Address]
+Each also individually referred to as “Party” and jointly as the “Parties”.
+1. Introduction
+1.1 The Parties wish to explore a possible co-operation regarding [brief description]. The Parties may during the evaluations, discussions and negotiations disclose to each other essential information regarding its operations, which they consider to be confidential.
+1.2 The Parties acknowledge that this confidential information is an essential part of the Disclosing Party’s operations and the result of an unauthorised disclosure thereof will be a damaged competitive situation for the Disclosing Party, commercially and/or academically. The Parties therefore agree that the disclosure and use of the Confidential Information shall be made on the terms and conditions of this Agreement.
+2. Confidentiality and Non-Use
+2.1 For the purpose of this Agreement, “Confidential Information” means any information received by a Party (the “Receiving Party”) regarding the other Party’s (the “Disclosing Party”) business, research, products and/or services, such as all information and technology, including without limitation, research, inventions, manufacture methods, data, designs, plans, drawings, know-how, IT systems, software, processes, schematics, blueprints, records, reports, models, prototypes and descriptions related thereto, customers, partners, as well as the terms and conditions of this Agreement and information furnished during discussions or oral presentations, whether or not designated as confidential at the time of disclosure.
+2.2 Confidential Information shall not include information that:
+i. is or becomes part of the public domain through no fault or breach on the part of Receiving Party;
+ii. was previously known to the Receiving Party free of any obligation to keep it confidential, as evidenced by its business records;
+iii. is lawfully obtained by the Receiving Party from a third party; or
+iv. is independently developed by the Receiving Party without the use of any Confidential Information, as evidenced by its records.
+2.3 This Agreement will not be deemed to restrict either Party from complying with a lawfully issued governmental order, order of a court of competent jurisdiction or other legal requirement to produce or disclose Confidential Information; provided, however, that the Receiving Party will promptly notify the Disclosing Party upon learning of such order or requirement.
+2.4 The Parties shall only use Confidential Information for the purpose of negotiation and/or evaluation of any co-operation between the Parties. The Parties shall not disclose Confidential Information to any third party, other than to their officers, employees or consultants (engaged in the matter of this Agreement) on a need to know basis, without the prior written approval of the other Party. Each Party shall ensure that any of its officers, employees, and consultants that receive Confidential Information is bound by confidentiality undertakings that provide at least the same level of protection as is provided by this Agreement.
+3. Return of Confidential Information
+3.1 All Confidential Information disclosed by the Disclosing Party to the Receiving Party shall remain the property of the Disclosing Party. The Receiving Party shall not be entitled to copy any Confidential Information furnished by the Disclosing Party hereunder, unless and to the extent it is necessary for the purpose of this Agreement. Upon request of the Disclosing Party or upon the termination of this Agreement, the Receiving Party shall return, delete or destroy (as instructed in writing by the Disclosing Party) all Confidential Information, and all copies thereof. The Receiving Party shall certify in writing that the information has been returned, deleted or destroyed (as applicable) and that no copies have been retained of any such Confidential Information, either partly or wholly.
+4. Intellectual Property Rights
+4.1 All Confidential Information (including but not limited to all intellectual property rights emanating from or related to Confidential Information) remains the exclusive property of the Disclosing Party and nothing in this Agreement grants any right or license in the Confidential Information to the Receiving Party.
+5. Liquidated Damages [only applicable for agreements between commercial partners]
+5.1 In the case of any breach of any material obligations under this Agreement by the Receiving Party or any permitted third party who has received Confidential Information according to this Agreement, the Receiving Party shall be liable to pay liquidated damages to the Disclosing Party amounting to SEK [amount] for each such breach of its obligations. Notwithstanding the right to receive liquidated damages, the Disclosing Party has the right to take any other legal measures available and to claim and receive compensation for damages exceeding any liquidated damages, including but not limited to loss of profit.
+6. Term and termination
+61. This Agreement shall remain in force and effect for [one (1)] year when duly signed by both Parties, provided, however that the confidentiality obligations imposed on the Receiving Party under this Agreement shall continue for a period of [five (5)] years after termination of the Agreement, except to the extent this Agreement is superseded by stipulations of a contemplated agreement. The provisions of this Agreement shall apply retroactively to any Confidential Information, which has been disclosed in accordance with this Agreement and in connection with discussions and negotiation regarding the possible co-operation described in this Agreement prior to the effective date of the Agreement.
+7. Assignment
+7.1 Neither Party shall have the right to assign this Agreement without the prior written consent of the other Party.
+8. Governing Law and Dispute Resolution
+8.1 This Agreement shall be construed in accordance with and be governed by the substantive laws of Sweden.
+8.2 Any dispute, controversy or claim arising out of or in connection with this Agreement shall be exclusively settled by the District Court of [city] as first instance. [Alt. Any dispute, controversy or claim arising out of or in connection with this Agreement shall be finally settled by arbitration in accordance with the Rules for Expedited Arbitrations of the Arbitration Institute of the Stockholm Chamber of Commerce. The seat of arbitration shall be [City]. The language to be used in the arbitral proceedings shall be [English].] This Agreement has been executed in two copies of which the Parties have taken one each.
+Place: Place:
+Date: Date:
+[Full organisation name/Name] [Full organisation name/Name]
+__________________________ __________________________
+[Name of the signatory] [Name of the signatory]
+[Title of signatory] [Title of signatory]

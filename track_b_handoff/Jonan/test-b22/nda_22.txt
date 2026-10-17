@@ -1,0 +1,76 @@
+Annex 5
+Non Disclosure Agreement
+Introduction
+This Non Disclosure Agreement (the "NDA") is made by and between the Ministry of Defence of the Kingdom of Norway ("NMOD") and Gripen International AB ("GI"), a business unit of Saab AB (publ), hereinafter jointly referred to as the "Parties" and individually referred to as "Party".
+The Parties:
+are referring to the letter of agreement between NMOD and GI concerning industrial participation in further development of Gripen and related projects (the "LOA");
+noting their wish to exchange information for the purpose of conducting evaluations of the Gripen aircraft, and pursuing discussions and work related to the Gripen Demonstrator Programme and other Gripen and defence related projects ("LOA Projects");
+noting that such exchange of information may involve the disclosure of confidential information by either Party, and that the Parties wish to record their agreement to maintain the confidentiality of such information;
+noting that exchanging information with GI shall also include exchanging information with Saab and upon such disclosure Saab shall confirm and be bound of the terms and conditions contained herein as if Saab was a Party to the NDA;
+noting that exchanging information with the NMOD shall also include other Norwegian authorities and upon such disclosure said Norwegian authority shall confirm and be bound of the terms and conditions contained herein as if said Norwegian authority was a Party to the NDA.
+NOW, THEREFORE, the parties agree as follows:
+Clause 1
+Confidential Information - information of whatever kind and in whatever form contained (and includes in particular but without prejudice to the generality of the foregoing, documents, drawings, computerized information, films, tapes, specifications, designs, models, equipment or data of any kind) which is clearly identified by the Disclosing Party as confidential by an appropriate legend or if orally disclosed then upon disclosure or within 30 days of such oral disclosure identified in writing by the Disclosing Party as confidential.
+Disclosing Party - the party from time to time disclosing Confidential Information.
+Receiving Party - the party from time to time receiving Confidential Information.
+Clause 2
+Subject to the terms of the NDA the Receiving Party hereby undertakes to the Disclosing Party:
+a) that it shall treat the Confidential Information directly or indirectly disclosed to it by the Disclosing Party as strictly confidential and will not without obtaining the prior written consent of the Disclosing Party disclose any part of the Confidential Information to any third party, except where compelled by law or regulation;
+b) that it shall not make use of any part of the Confidential Information disclosed to it by the Disclosing Party, except for LOA purposes;
+c) that it shall give access to the Confidential Information only,to those of its employees who need access to the Confidential Information for LOA purposes and will ensure that such employees adhere to the obligations and restrictions contained in the NDA;
+d) that it shall not copy or reproduce in any form any of the Confidential Information disclosed to it by the Disclosing Party, except to the extent necessary for the LOA purposes; and
+e) that it shall keep a current record of all copies and reproductions of the Confidential Information.
+Clause 3
+The obligations under the NDA do not apply to information of the Disclosing Party which is:
+a) at the time of disclosure or thereafter available to the public generally through no failure on the part of the Receiving Party;
+b) known to the Receiving Party at the time of its disclosure;
+c) disclosed to the Receiving Party by a third party having the right to disclose Confidential Information and without restrictions as to use or disclosure; or
+d) developed independently by the Receiving Party without use of or reference to the Confidential Information received.
+Clause 4
+The Confidential Information shall remain the sole property of the Disclosing Party.
+The Disclosing Party makes no representation, warranty, assurance, or inducement, express or implied, as to the Confidential Information's adequacy, sufficiency, or freedom from defect of any kind, including but not limited to, freedom from patent infringement that may result from use of such know-how information, nor shall the Disclosing Party incur any responsibility or obligation by reason of such Confidential Information, except as specifically provided herein.
+The Receiving Party shall under no circumstances obtain any right in the Disclosing Party's patents, trademark or know-how by reason of the NDA.
+Clause 5
+Either Party shall, upon 30 days written request by the other Party, return to the other party all Confidential Information which the latter has disclosed to the former, together with all copies or reproductions thereof together with a confirmation in writing that the Confidential Information in computerized form has been destroyed.
+Furthermore, at the request of the Disclosing Party the Receiving Party shall immediately cease to use the Confidential Information for any purposes whatsoever.
+Clause 6
+The NDA may also involve the exchange of classified information (which may or may not be Confidential Information), the handling of which shall be treated by the Parties according to applicable laws and regulations and other administrative acts and policies, now or hereinafter in effect.
+Clause 7
+Nothing in the NDA may be construed as compelling one Party to disclose any information to the other Party.
+Clause 8
+The Receiving Party shall notify the Disclosing Party immediately if it becomes aware that Confidential Information has been disclosed to or is in the possession of any person who is not authorized by the NDA to receive Confidential Information.
+Clause 9
+Neither Party may assign or transfer (including but not limited to sublicense) any of its rights or obligations under the NDA.
+Clause 10
+For the purpose of exchanging Confidential Information and other communication the following persons are authorized contact persons:
+For GI:
+Fredrik Gustafsson Campaign Manager, Gripen International
+SE-581 88 Linkoping
+Sweden
+For NMOD:
+Norwegian Defence Logistic Organisation
+New Fighter Aircraft Project (P7600)
+Att: Lt. col. Geir Nilssen
+P.box 10
+2027 Kjeller
+Norway
+A change of a contact person shall be notified in writing.
+Clause 11
+The NDA constitutes the entire agreement between the parties with respect to its subject matter and shall not be changed except by written agreement signed by both Parties.
+Clause 12
+The NDA shall become effective on the date on the date of signatures and shall be valid for a period of two years thereafter, when it shall automatically expire
+unless otherwise agreed in writing between the parties. However, all Confidential Information exchanged during the validity hereof shall be subject to the obligations and restrictions under the NDA (including the undertakings in Clause 13 and 14 below) for a period of five years following expiration or other termination of the NDA.
+Clause 13
+The NDA shall be governed by and construed in accordance with the laws and regulations of Norway.
+Clause 14
+Any disputes between the Parties arising out of or in connection with the NDA and which cannot be settled amicably shall be settled in the common court of law. The legal venue is Oslo tingrett, Norway.
+The NDA has been executed in two originals of which the Parties have received one each.
+For The Ministry of Defence For Gripen International AB
+of the Kingdom of Norway
+Name: Pål Bjørseth Name: Anders Frisen
+Title: Deputy Director General Title: Commerci I Director
+................................... j,{ ...........
+Signature gnature
+r
+................ f/.. ......
+Place and date Place and date

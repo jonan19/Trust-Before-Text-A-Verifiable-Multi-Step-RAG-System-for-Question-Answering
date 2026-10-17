@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import shutil
@@ -107,8 +108,12 @@ async def get_stats():
 async def query_pipeline(request: QueryRequest):
     """Query the V4 Trust Before Text RAG pipeline"""
     try:
-        # Run the full V4 orchestration pipeline
-        res = orchestrator.run(request.query, verbose=False)
+        # Run the full V4 orchestration pipeline in a worker thread — this is
+        # a fully synchronous call (retrieval, validation, and the LLM call
+        # all block), and calling it directly here would block the whole
+        # asyncio event loop for its entire duration, freezing every other
+        # request (including unrelated ones like /stats) until it returns.
+        res = await run_in_threadpool(orchestrator.run, request.query, verbose=False)
         
         # Structure the response for the frontend
         # Extract validated evidence chunks from validation_result
@@ -118,16 +123,17 @@ async def query_pipeline(request: QueryRequest):
         chunks = []
         similarity_scores = []
         raw_scores = []
-        
+
         for c in cleaned_chunks:
             chunks.append({
                 "source_document": c.get("source", "unknown"),
                 "text": c.get("text", ""),
-                "section": c.get("section", "unknown")
+                "section": c.get("section", "unknown"),
+                "rank": c.get("rank"),
             })
             similarity_scores.append(c.get("score", 0.0))
             raw_scores.append(c.get("relevance_score", 0.0))
-            
+
         return {
             "status": res.get("synthesis_result", {}).get("status", "success"),
             "query": request.query,
@@ -149,6 +155,14 @@ async def query_pipeline(request: QueryRequest):
             # Faithfulness (V5): only populated on successful synthesis
             "faithfulness_score": res.get("synthesis_result", {}).get("faithfulness_score"),
             "unsupported_sentences": res.get("synthesis_result", {}).get("unsupported_sentences", []),
+            # --- Pipeline observability (full stage-by-stage trace) ---
+            "query_type": res.get("query_type", "simple"),
+            "sub_queries": res.get("sub_queries", []),
+            "target_source": res.get("target_source"),
+            "raw_chunk_count": res.get("raw_chunk_count", 0),
+            "conflict_detail": validation_result.get("conflict_detail"),
+            "unverified_count": validation_result.get("unverified_count", 0),
+            "unverified_sources": validation_result.get("unverified_sources", []),
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

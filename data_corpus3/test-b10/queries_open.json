@@ -1,0 +1,123 @@
+{
+  "_track": "B",
+  "_authorship": "LLM-generated, no project context; see docs/PREREGISTRATION_CORPUS3.md Amendment 1",
+  "queries": [
+    {
+      "id": "test-b10-open-01",
+      "category": "track-b/open",
+      "query": "How long do the confidentiality obligations last after the agreement ends?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_26.txt",
+        "nda_413.txt",
+        "nda_84.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_26.txt",
+        "nda_413.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_26 is two years after termination; nda_413 is five years from the disclosure date; nda_84 survives termination with no end date; nda_43 sets no term. Incompatible.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b10-open-02",
+      "category": "track-b/open",
+      "query": "Does information have to be marked \"confidential\" for the agreement to cover it?",
+      "expected_decision": "conflict",
+      "expected_sources": [
+        "nda_413.txt",
+        "nda_43.txt",
+        "nda_84.txt"
+      ],
+      "expected_conflict_pair": [
+        "nda_413.txt",
+        "nda_43.txt"
+      ],
+      "expected_answer_or_key_facts": "nda_413 requires information to be listed in a CITR and marked with a confidential legend; nda_43 and nda_84 protect information regardless of marking. nda_26 is also form-agnostic.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b10-open-03",
+      "category": "track-b/open",
+      "query": "If a party is legally compelled to disclose the confidential information, must it notify the other party first?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_26.txt",
+        "nda_43.txt",
+        "nda_84.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three require notice before compelled disclosure; they agree. nda_43 fixes a two-day notice window; nda_413 has no compelled-disclosure procedure.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b10-open-04",
+      "category": "track-b/open",
+      "query": "Does the recipient have to return or destroy the confidential information on request?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_26.txt",
+        "nda_413.txt",
+        "nda_43.txt",
+        "nda_84.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All four require return or destruction on request; they agree. The deadlines differ (30 days / 7 days / immediately / promptly).",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b10-open-05",
+      "category": "track-b/open",
+      "query": "Does signing this oblige either party to enter into a further or definitive agreement?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_26.txt",
+        "nda_413.txt",
+        "nda_84.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "All three agree the NDA creates no obligation to enter a further agreement.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b10-open-06",
+      "category": "track-b/open",
+      "query": "Must the parties attempt negotiation or mediation before starting arbitration or court proceedings?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "None of the four require a pre-dispute negotiation or mediation step. nda_26 and nda_84 send disputes straight to arbitration; nda_43 and nda_413 name no dispute procedure at all.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b10-open-07",
+      "category": "track-b/open",
+      "query": "Who bears the costs of the arbitration under the agreements that require it?",
+      "expected_decision": "insufficient",
+      "expected_sources": [],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "nda_26 (Amsterdam) and nda_84 (Stockholm) both require arbitration but neither allocates the costs of the arbitration between the parties.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    },
+    {
+      "id": "test-b10-open-08",
+      "category": "track-b/open",
+      "query": "Is a fixed sum payable for each unauthorised use or disclosure of the information?",
+      "expected_decision": "answer",
+      "expected_sources": [
+        "nda_26.txt"
+      ],
+      "expected_conflict_pair": null,
+      "expected_answer_or_key_facts": "Free-choice question. Only nda_26 sets a liquidated-damages figure (€10,000 per incident, with the right to claim more if actual loss is higher). The other three provide only for actual damages or an indemnity. One document addressing the point is enough for 'answer'.",
+      "trace": "track-b",
+      "note": "LLM-authored; see PREREGISTRATION_CORPUS3.md Amendment 1"
+    }
+  ]
+}

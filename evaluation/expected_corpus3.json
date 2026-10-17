@@ -1,0 +1,67 @@
+{
+  "_comment": "Values previously REPORTED for the sealed Corpus 3 test (opened 2026-08-31, config frozen 2026-08-25): numbers.md section 3, docs/CORPUS3_RESULTS.md. The raw c3_* files were lost, so the 2026 numbers were prose-only. evaluation/rerun_corpus3.py replays the same frozen configuration and compares. [value, tolerance] means numeric within tolerance (the docs round to 1 or 3 decimals); a bare value must match exactly. These are EXPECTED REPLICATION values, never targets: a DIFF is a finding to explain, not something to tune away.",
+  "trackA": {
+    "file": "c3_hypothesis_corpus3_test.json",
+    "path": ["metrics"],
+    "values": {
+      "accuracy": 136, "accuracy_pct": [26.7, 0.06],
+      "conflict_tp": 47, "conflict_flagged": 386, "conflict_true": 74,
+      "conflict_precision": [0.122, 0.0006], "conflict_recall": [0.635, 0.0006], "conflict_f1": [0.204, 0.0006],
+      "attribution_precision": [0.031, 0.0006],
+      "gap_leak_count": "3/40", "unsafe_answers": "29/114",
+      "always_answer_floor_pct": [77.6, 0.06]
+    }
+  },
+  "trackA_gold": {
+    "file": "c3_hypothesis_corpus3_test.json",
+    "path": ["metrics", "gold_distribution"],
+    "values": {"answer": 396, "conflict": 74, "insufficient": 40}
+  },
+  "trackA_ci": {
+    "file": "c3_hypothesis_corpus3_test_ci.json",
+    "path": [],
+    "values": {
+      "n_bundles": 30, "n_queries": 510,
+      "intervals.accuracy_pct.ci_low": [22.5, 0.06], "intervals.accuracy_pct.ci_high": [31.0, 0.06],
+      "intervals.conflict_precision.ci_low": [0.096, 0.0006], "intervals.conflict_precision.ci_high": [0.149, 0.0006],
+      "intervals.conflict_recall.ci_low": [0.554, 0.0006], "intervals.conflict_recall.ci_high": [0.726, 0.0006],
+      "intervals.conflict_f1.ci_low": [0.166, 0.0006], "intervals.conflict_f1.ci_high": [0.242, 0.0006],
+      "intervals.attribution_precision.ci_low": [0.016, 0.0006], "intervals.attribution_precision.ci_high": [0.049, 0.0006],
+      "per_bundle_accuracy.min": [5.9, 0.06], "per_bundle_accuracy.median": [23.5, 0.06], "per_bundle_accuracy.max": [58.8, 0.06]
+    }
+  },
+  "trackA_attribution": {
+    "file": "c3_hypothesis_corpus3_test_attribution.json",
+    "path": [],
+    "values": {
+      "evidence_recall_n": "1612/2355", "evidence_precision_n": "1875/12637",
+      "external_attribution_n": "0/350",
+      "unresolved_chunks": 215, "unresolved_conflict_spans": 19
+    }
+  },
+  "baselines": {
+    "file": "c3_baselines_corpus3_test.json",
+    "path": ["arms"],
+    "values": {
+      "always_answer.accuracy_pct": [77.6, 0.06], "always_answer.unsafe_answers": "114/114",
+      "always_abstain.accuracy_pct": [7.8, 0.06], "always_abstain.unsafe_answers": "0/114",
+      "retrieval_threshold.accuracy_pct": [77.6, 0.06], "retrieval_threshold.unsafe_answers": "114/114"
+    }
+  },
+  "trackB": {
+    "file": "c3_open_corpus3_test.json",
+    "path": ["metrics"],
+    "values": {
+      "accuracy": 97, "accuracy_pct": [40.4, 0.06], "always_answer_floor_pct": [48.8, 0.06],
+      "conflict_tp": 10, "conflict_flagged": 57, "conflict_true": 63,
+      "conflict_precision": [0.175, 0.0006], "conflict_recall": [0.159, 0.0006], "conflict_f1": [0.167, 0.0006],
+      "attribution_precision": [0.018, 0.0006],
+      "gap_leak_count": "18/60", "unsafe_answers": "65/123"
+    }
+  },
+  "trackB_gold": {
+    "file": "c3_open_corpus3_test.json",
+    "path": ["metrics", "gold_distribution"],
+    "values": {"answer": 117, "conflict": 63, "insufficient": 60}
+  }
+}
