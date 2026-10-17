@@ -61,6 +61,7 @@
 | 48 | 2026-10-15 | Discussion and conclusion softened: "guarantee" kept only for by-construction properties | Paper wording | Done (`main.tex` only) | no number changed; ledger clean; 69 cited keys absent from references.bib listed |
 | 49 | 2026-10-15 | Owner's root `references.bib` checked; 7 cite keys renamed; 4 wrong author fields found via Crossref | Paper bibliography | Done (`main.tex` cite keys only) | 98/99 cited keys resolve; honovich2022true left to the owner |
 | 50 | 2026-10-17 | MultiHop-RAG: new preregistered measurement, 300 paired queries | External validation | Measured, no pipeline change | Gap leak 56/150 vs 2/150; over-abstention 52.0% vs 73.3%; strict correctness 41.7% vs 62.7% (P4 failed) |
+| 51 | 2026-10-17 | Every number-bearing doc made to agree with the ledger | Documentation | Done (docs, ledger, checker print fix; no pipeline change) | ledger 549 -> 570 rows, check passes (was 3 DIFFs); 169 tests pass; numbers.md s7 items 1, 13, 14, 18 closed |
 
 ---
 
@@ -642,6 +643,60 @@
   - `docs/NUMBERS_LEDGER.csv`: 15 rows (NU-010 onward), status REPRODUCED, all recomputing from the report file.
   - NLPIR's own MultiHop numbers (NL-035 to NL-044) stay UNVERIFIABLE, because this measurement is not a reproduction of them.
   - `main.tex` was not edited.
+
+---
+
+## Observation 51: Every number-bearing doc now agrees with the ledger
+
+*Added 2026-10-17. Commit/branch: on top of `aec628c`, `jonan`. No pipeline code, threshold or default changed; nothing run on Corpus 1, 2, 3, RAMDocs or MultiHop-RAG; no API key used. `main.tex` and the NLPIR PDF not edited.*
+
+- **Issue.** `evaluation/check_ledger.py` failed on 3 rows, and several docs outside the ledger still quoted superseded numbers. The checker's `-v` mode also crashed on a Windows console.
+- **Cause.**
+  - Docs were written before the answerhood gate shipped (2026-08-24) or before the RAMDocs clean rerun (2026-10-14), and were never brought forward.
+  - The NLPIR PDF's "31 of 48" uses the pre-margin Corpus 2 count.
+  - The crash: `print` of U+2212 from the PDF text under cp1252.
+- **Fix** (old values kept in labelled History notes, never deleted):
+  - **`docs/STATUS.md`:**
+    - invariance rows changed from pre-gate to gate-on values: C1 query_thanks 2/78 with 1 unsafe -> 1/78 with 0; C1 query_polite 1/78 with 1 -> 0/78 with 0; C2 query_polite 1/78 -> 0/78;
+    - the paragraph after the table and the Problem 4 row no longer say politeness moves decisions in the unsafe direction;
+    - new "External benchmarks" table (RAMDocs clean 85.2% vs 94.8% safe; MultiHop-RAG gap leak 56/150 vs 2/150, strict correct 41.7% vs 62.7%).
+  - **`docs/RAMDOCS_COMPARISON.md`:**
+    - new "Current result: clean rerun" section with the four-run table and the McNemar tests;
+    - the 88.4% / 2.6% body is moved under a "History: the label-leaky run" heading;
+    - the citation was already Wang et al.
+  - **`docs/FUTURE_WORK.md`:**
+    - "C1 92.3% / C2 80.8%" -> 96.2% / 89.7% (line 7 and the section 0 table);
+    - section 6 invariance counts marked as the earlier pre-gate run, with the current counts given.
+  - **`docs/REPRODUCE.md`:**
+    - "every transform should print 0/78" corrected (the politeness transforms give 1/78 and 2/78);
+    - test count 70 -> 169;
+    - new sections: the external benchmark commands (sealed, re-grade only) and the ledger checker.
+  - **`docs/HOW_IT_WORKS.md`:** test count 70 -> 169.
+  - **`docs/CORPUS3_RESULTS.md`:**
+    - a replication note (26.7% -> 26.1%, 40.4% -> 40.8%, 0/350 -> 0/351);
+    - section 6 updated: qform completed at 37.5% (191/510); the bare-LLM baseline was never completed.
+  - **`docs/CORPUS3_ANALYSIS_AND_FIXES.md`:** a one-paragraph replication pointer.
+  - **`numbers.md`:**
+    - section 0: the paper note now describes `main.tex`;
+    - section 2: C1 query_polite margin-on cell now 0 / 0;
+    - section 4: the clean rerun is named current at the top, and the 88.4% table and the pre-rerun reasoning sit under History headings;
+    - section 5: 0/48 marked verified;
+    - section 7: items 1, 13, 14 and 18 closed.
+  - **Ledger:**
+    - NL-048 now recomputes NLPIR's 31 as 17 + 14 (DERIVED, HISTORICAL);
+    - ST-010 and ST-011 hold the new STATUS rows;
+    - 21 new rows (ST-013 to ST-019, RC-004 to RC-012, FW-001, FW-002, C3-001 to C3-003);
+    - lines synced.
+  - **`evaluation/check_ledger.py`:** stdout set to `errors="replace"` so `-v` no longer crashes on Windows.
+- **Effect.**
+  - `python evaluation/check_ledger.py`: FAILED (3 DIFFs: NL-048, ST-010, ST-011) -> PASSED (570 rows: (a) 451 ok, (b) 570 ok, (c) 1297 ok, (e) 31 ok).
+  - The 26 (d) warnings are NLPIR rows that are UNVERIFIABLE by design.
+  - `python -m pytest tests -q`: 169 passed. No test encoded a stale number, so none was changed.
+- **Cost / regressions.** None to the system. The stale-string check (e) still covers only `main.tex`, README, STATUS and RAMDOCS_COMPARISON. A trial over the other six docs found 14 hits, all already-labelled historical mentions, so it was not widened.
+- **Evidence.** The checker output above, and `git diff` of the ten files.
+- **Numbers updated.**
+  - `numbers.md` sections 0, 2, 4, 5 and 7, as listed.
+  - Still open: section 7 items 4, 9, 15 and 19.
 
 ---
 

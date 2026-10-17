@@ -725,6 +725,9 @@ def main(argv=None) -> int:
     ap.add_argument("--sync-lines", action="store_true",
                     help="write each row's current line (or PDF page) back to the ledger, then check")
     args = ap.parse_args(argv)
+    # PDF text holds characters such as U+2212 that a Windows cp1252 console cannot print.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
     checks = args.checks.replace(",", "")
     if args.sync_lines:
         print(f"synced {sync_lines(args.ledger, ROOT)} line number(s)")

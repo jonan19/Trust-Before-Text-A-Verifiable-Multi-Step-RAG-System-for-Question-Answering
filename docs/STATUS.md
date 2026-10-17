@@ -10,6 +10,9 @@ ships the `ANSWERHOOD_MARGIN` gate (Problem 1) at δ=5.5, previously shipped
 disabled — see Problem 1 for the reasoning. **The "Current measurements" table
 below now reflects that default.** The 2026-08-23 pre-gate numbers are kept
 alongside it for comparison, not as the current state.
+**Number check 2026-10-17 (Observation 51):** the invariance table now shows
+the gate-on values, and an "External benchmarks" table (RAMDocs, MultiHop-RAG)
+was added; every number here is traced in `docs/NUMBERS_LEDGER.csv`.
 
 ---
 
@@ -165,14 +168,43 @@ same frozen code:
 | duplicate | 0/78 | 0 | 0/78 | 0 |
 | distractor | 0/78 | 0 | 0/78 | 0 |
 | query_lower | 0/78 | 0 | 0/78 | 0 |
-| query_thanks | 2/78 | **1** | 2/78 | 0 |
-| query_polite | 1/78 | **1** | 1/78 | 0 |
+| query_thanks | 1/78 | 0 | 2/78 | 0 |
+| query_polite | 0/78 | 0 | 0/78 | 0 |
 
-The four structural transforms (reordering, duplication, distractors, casing)
-are clean at 0/78 on both corpora — this is the by-construction claim holding.
-Politeness wording still moves 2 decisions into the unsafe direction on
-Corpus 1 (none on Corpus 2); this is unchanged in kind from before, and is the
-same failure family as Problem 2, not yet closed by it.
+Source: `evaluation/results/invariance_corpus{1,2}.json`, run with the gate on
+(δ=5.5). The four structural transforms (reordering, duplication, distractors,
+casing) are clean at 0/78 on both corpora — this is the by-construction claim
+holding. Politeness wording still moves decisions, but none in the unsafe
+direction: appending "Thanks!" turns 1 answer into `insufficient` on Corpus 1
+(Q010) and 2 on Corpus 2 (Q009, Q019). This is the same failure family as
+Problem 2 (surface tokens), not closed by it.
+
+History: until 2026-10-17 this table showed the pre-gate rows (query_thanks
+C1 2/78 with **1** refuse→answer flip, C2 2/78; query_polite C1 1/78 with **1**,
+C2 1/78), and the paragraph said politeness moved 2 decisions into the unsafe
+direction on Corpus 1. Problem 1 below already recorded that the gate removed
+both unsafe flips; the table had not been updated to match.
+
+### External benchmarks (not Corpus 1 or 2)
+
+Both are new measurements of the unchanged system on data this project did not
+write, each against a prompted `gpt-oss-120b` baseline (the E1 prompt). Full
+tables, intervals and caveats: `numbers.md` sections 4 and 4b.
+
+| Benchmark | Measure | Ours | Prompted baseline |
+|---|---|---|---|
+| RAMDocs, 500 queries (clean rerun, Observation 44) | Safe rate | 85.2% | 94.8% |
+| | Misinformation asserted | 2.8% | 1.0% |
+| | Exact match | 18.0% | 7.6% |
+| MultiHop-RAG, 300 queries (preregistered, Observation 50) | Null queries answered (gap leak) | 56/150 | 2/150 |
+| | Decision correct, strict | 41.7% | 62.7% |
+
+The baseline is safer on both by refusing far more often; ours answers
+correctly more often on RAMDocs. On MultiHop-RAG ours leaks on null queries
+and its refusals are mostly false conflicts (77 of 78), the same Problem 1
+mechanism seen on Corpus 2. RAMDocs and MultiHop-RAG are sealed: no tuning or
+fix-validation on them. The earlier RAMDocs figure from a label-leaky run is
+kept only as history in `docs/RAMDOCS_COMPARISON.md`.
 
 ---
 
@@ -429,7 +461,7 @@ independently and earlier than Corpus 2 did.
 
 | Item | Status |
 |---|---|
-| **Query wording still shifts decisions.** See the invariance table above — 2 decisions move on Corpus 1 under `query_thanks`, 1 under `query_polite`, both in the unsafe direction; Corpus 2 moves the same counts but never unsafely. | Improved from earlier rounds, not eliminated |
+| **Query wording still shifts decisions.** See the invariance table above — `query_thanks` moves 1 decision on Corpus 1 and 2 on Corpus 2, all answer → insufficient (the safe direction); `query_polite` moves none. (Before 2026-10-17 this row quoted the pre-gate counts: 2 and 1 on Corpus 1, both unsafe.) | Improved from earlier rounds, not eliminated |
 | **Over-abstention.** Seven answerable questions across both corpora are now refused: four pre-existing (single-passage evidence, Corpus 1 Q006/Q070, Corpus 2 Q023/Q064) and three new from the Problem 2 fix (Q013, Q059, Q074) | Accepted trade — the safe direction, cost characterised in Problem 2 |
 | **Output-side faithfulness gate** is shipped disabled | Closed as a characterised negative result, below |
 | **Provenance covers retrieval-time injection only** | By design; documented in HOW_IT_WORKS §3 |

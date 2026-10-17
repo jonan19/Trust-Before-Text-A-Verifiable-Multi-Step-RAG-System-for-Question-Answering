@@ -86,8 +86,12 @@ python evaluation/invariance_harness.py --corpus 1 --transforms permute,duplicat
 Available: `permute`, `duplicate`, `distractor`, `query_lower`, `query_thanks`,
 `query_polite`.
 
-**Reading the output.** Every transform should print `0/78 decisions changed`.
-Anything else is a defect — the transform cannot change the correct answer, so a
+**Reading the output.** The four structural transforms (`permute`, `duplicate`,
+`distractor`, `query_lower`) should print `0/78 decisions changed`. The current
+files show `query_thanks` at 1/78 (Corpus 1) and 2/78 (Corpus 2) and
+`query_polite` at 0/78, none in the unsafe direction (`docs/STATUS.md`). Until
+2026-10-17 this paragraph said every transform should print 0/78, which the
+politeness transforms have never done. Any change is a defect — the transform cannot change the correct answer, so a
 changed decision means the system depends on something it should not. The
 `abstain -> answer` column is the dangerous direction.
 
@@ -121,6 +125,43 @@ python evaluation/label_audit.py
 
 Only `adversarial_baseline_probe.py` needs LLM tokens — it runs external baseline
 models for comparison and requires a key in `.env`.
+
+---
+
+## External benchmarks (sealed: re-grade only)
+
+RAMDocs and MultiHop-RAG are sealed. Do not re-run them to tune or validate a
+change; the commands below are the record of how the numbers in
+`numbers.md` sections 4 and 4b were made. `--report` re-grades the stored
+answers with no LLM call and no API key.
+
+```bash
+# RAMDocs clean rerun (four runs; the full runs need Groq keys)
+python evaluation/run_eval_ramdocs_clean.py --arm ours --order original --tag rdc_ours_orig --rotate-keys
+python evaluation/run_eval_ramdocs_clean.py --arm baseline --order original --tag rdc_base_orig --rotate-keys
+python evaluation/run_eval_ramdocs_clean.py --arm ours --order shuffled --tag rdc_ours_shuf --rotate-keys
+python evaluation/run_eval_ramdocs_clean.py --arm baseline --order shuffled --tag rdc_base_shuf --rotate-keys
+python evaluation/run_eval_ramdocs_clean.py --report --tag rdc_ours_orig
+
+# MultiHop-RAG (ours needs no LLM; the baseline needs Groq keys)
+python evaluation/run_eval_multihop.py --prepare
+python evaluation/run_eval_multihop.py --arm ours --tag mh
+python evaluation/run_eval_multihop.py --arm baseline --tag mh --rotate-keys
+python evaluation/run_eval_multihop.py --report --tag mh
+```
+
+The old `evaluation/run_eval_ramdocs.py` is the label-leaky runner behind the
+superseded 88.4% figure; do not use it.
+
+## Checking every number against its source
+
+```bash
+python evaluation/check_ledger.py -v
+```
+
+Read-only, no API key. Checks every row of `docs/NUMBERS_LEDGER.csv` against
+the result files and the documents that quote it; exits non-zero on any
+mismatch. After editing a number in a document, run it with `--sync-lines`.
 
 ---
 
@@ -196,7 +237,8 @@ RAG_MIN_CHUNK_SCORE_THRESHOLD=0 python evaluation/run_eval.py --corpus 1 --tag n
 python -m pytest tests/
 ```
 
-70 fast tests (about a minute, nearly all of it importing the ML libraries; no
+169 fast tests as of 2026-10-17 (70 on 2026-10-10; the ledger, key-pool, RAMDocs and
+MultiHop-RAG runners added the rest) (about a minute, nearly all of it importing the ML libraries; no
 model is loaded, no vector store is touched, no LLM is called). They cover the
 mechanism, not the corpus behaviour: the provenance fingerprint and Stage 0
 rejection of fabricated evidence, the abstention truth table, the absence of any

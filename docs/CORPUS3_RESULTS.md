@@ -1,10 +1,18 @@
 # Corpus 3 (ContractNLI) — Sealed Test Results
 
 **Status:** Track A, Track B, and all three baseline arms are complete and final
-(sealed test set, opened once). Two supplementary runs — the phrasing-variant
-(qform) benchmark and the bare-LLM baseline — are in progress and are reported
-separately in §6 once they land. Nothing below is provisional; nothing below
-has been re-run.
+(sealed test set, opened once). The numbers below are the values reported on
+2026-08-31; their raw files are lost.
+
+> **Replication, 2026-10-10/11 (Observations 38 to 40).** The same frozen
+> configuration was re-run on the same 30 sealed bundles, zero LLM tokens. It
+> gives Track A 26.1% (133/510) instead of 26.7%, Track B 40.8% (98/240) instead
+> of 40.4%, external attribution 0.0% (0/351) instead of 0/350, and the same
+> floor, conflict counts and unsafe answers. Those replicated values are the
+> ones with raw files and `run_info` behind them; cite them when a source file
+> is needed. Side-by-side table: `numbers.md` section 3. The replication also
+> completed qform (§6). Nothing in this document was changed retroactively; the
+> 2026-08-31 values stay as the record of the first opening.
 
 **Governance:** Config frozen per `docs/PREREGISTRATION_CORPUS3.md`, frozen
 2026-08-25, amended 2026-08-28. No `RAG_*` overrides. The 30 test bundles were
@@ -142,6 +150,15 @@ That is the central number this evaluation exists to surface.
 
 This document will be updated in place once these land; no number above will
 change retroactively.
+
+**Update 2026-10-17.** The table above is the status as written on 2026-08-31
+(History). Since then:
+- **qform:** completed in the 2026-10-11 replication, all 510 queries: accuracy
+  37.5% (191/510), conflict precision 0.125 and recall 0.500, gap leaks 9/40,
+  unsafe 43/114; 118 of 510 decisions (23.1%) differ from Track A. Source:
+  `numbers.md` section 3.
+- **Bare-LLM baseline:** never completed (needs an API key); no number to cite.
+- **Track B evidence attribution:** still not run.
 
 ---
 

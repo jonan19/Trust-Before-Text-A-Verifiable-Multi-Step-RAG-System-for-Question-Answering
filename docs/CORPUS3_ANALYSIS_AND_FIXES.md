@@ -2,6 +2,11 @@
 
 Companion to `docs/CORPUS3_RESULTS.md`. Short and direct by design.
 
+Numbers here are the values reported on 2026-08-31. The 2026-10-11 replication
+(raw files available) gives 26.1% instead of 26.7% and 0/351 instead of 0/350,
+with the same 77.6% floor; see `numbers.md` section 3. The conclusions are
+unchanged.
+
 ## The problem, in one sentence
 
 The system finds real contradictions between documents correctly, but doesn't

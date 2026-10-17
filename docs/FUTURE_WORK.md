@@ -4,8 +4,13 @@
 backlog written after a full audit of the evaluation methodology, not a record
 of work done. Numbers cited are measured from files already in this repo.
 
-Current measured state: **C1 92.3% / 0 unsafe / 0 gap leaks · C2 80.8% /
-1 unsafe (Q045) / 0 gap leaks.**
+Current measured state: **C1 96.2% / 0 unsafe / 0 gap leaks · C2 89.7% /
+1 unsafe (Q045) / 0 gap leaks** (`ANSWERHOOD_MARGIN` 5.5; `numbers.md` section 2).
+
+History: this document was written before the answerhood gate shipped and
+originally said "C1 92.3% / 0 unsafe / 0 gap leaks · C2 80.8% / 1 unsafe (Q045)
+/ 0 gap leaks" (the sufficiency fix with margin 0). Its section 6 counts are from
+that earlier run too; see the note there.
 
 ---
 
@@ -25,7 +30,7 @@ for the headline claim is structural and does not depend on corpus tuning:
 | Invariance: `distractor` | 0 violations, both corpora | No |
 | Invariance: `query_lower` | 0 violations, both corpora | No |
 | Bare LLM baseline under attack | **12/12 unsafe** | No |
-| Accuracy 92.3% / 80.8% | — | **Yes, heavily** |
+| Accuracy 96.2% / 89.7% (was 92.3% / 80.8% before the gate) | — | **Yes, heavily** |
 
 Every row except the last is a *property*, provable by construction and
 expected to transfer to any corpus. The last row is a fitted number on a
@@ -182,6 +187,14 @@ This is a substantial redesign, not a patch.
 ## 6. MEDIUM-HIGH — Two known invariance defects (diagnosed, unfixed)
 
 Measured in `evaluation/results/invariance_corpus1.json` and `..._corpus2.json`.
+
+**Current values (gate on, files as of 2026-10-17):** `query_thanks` changes 1
+decision on Corpus 1 (Q010) and 2 on Corpus 2 (Q009, Q019), all answer →
+insufficient, no safety regression; `query_polite` changes none on either
+corpus. The violation counts in 6.1 and 6.2 below (C1 3 and 2, C2 2 and 1, with
+Q019, Q032 and Q070 as safety regressions) are History: they come from the
+earlier pre-gate run, and the files have since been overwritten. The diagnoses
+still describe the mechanism.
 
 ### 6.1 `query_thanks` — CHEAP, PROVABLY FREE FIX AVAILABLE
 

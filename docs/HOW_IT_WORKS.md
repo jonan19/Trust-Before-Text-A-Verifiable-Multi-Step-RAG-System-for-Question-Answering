@@ -295,7 +295,7 @@ be measured.
 | `evaluation/synthesis_containment_test.py` | Checks injected text never reaches the LLM prompt. |
 | `evaluation/*_lab.py`, `*_diag.py`, `*_sweep.py` | Single-purpose diagnostics from specific investigations. Not part of routine testing. |
 | `evaluation/results/` | JSON output from every run. |
-| `tests/` | Unit tests (pytest, 70 fast tests of the mechanism; see `REPRODUCE.md`). |
+| `tests/` | Unit tests (pytest, 169 fast tests as of 2026-10-17, 70 on 2026-10-10; see `REPRODUCE.md`). |
 
 ### Everything else
 

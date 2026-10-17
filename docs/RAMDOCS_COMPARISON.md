@@ -12,12 +12,54 @@
 > answers correctly far more often. The decision-layer counts (157 abstentions, 85
 > justified) are identical in every run. The §4 claim that the justified ratio "held within
 > 0.1 points from n = 207" is not supported (it varies between 48.7% and 56.9%), and 54.1%
-> is not distinguishable from the 48.6% base rate (p = 0.175). The rest of this document is
-> kept as the historical record of the leaky run.
+> is not distinguishable from the 48.6% base rate (p = 0.175). The next section gives the
+> current result in full; everything under "History" is the record of the leaky run.
 
-**Status:** sealed single-pass result, n = 500/500, 2026-09-04 (superseded, see above).
+**Status:** current = the clean rerun of 2026-10-11 to 2026-10-14 (four runs, n = 500 each,
+0 errors). The sealed single-pass result of 2026-09-04 is superseded and kept under History.
 **Data:** Wang et al. (first author Han Wang), *Retrieval-Augmented Generation with Conflicting Evidence*, arXiv:2504.13079 (`HanNight/RAMDocs`, MIT license). An earlier version of this line said "Han et al." (a first-name citation error) and "COLM 2025" (venue not confirmed).
-**Preregistration:** `docs/PREREGISTRATION_RAMDOCS.md` — grading rules fixed before this run; no threshold or filter was adjusted after seeing the result.
+**Preregistration:** current run `docs/PREREGISTRATION_RAMDOCS_RERUN.md`; superseded run `docs/PREREGISTRATION_RAMDOCS.md`.
+
+---
+
+## Current result: clean rerun (Observation 44)
+
+Runner `evaluation/run_eval_ramdocs_clean.py`: neutral document names, no label, answer or
+other field in any chunk or prompt, unchanged system (no `RAG_*` override), `gpt-oss-120b`
+on Groq. The baseline is the E1 prompt from `experiments/baseline_experiment.py` on the same
+documents; NLPIR's baseline prompt is not in the repo, so the baseline column is a new
+measurement, not a reproduction. Wilson 95% intervals. Raw files
+`evaluation/results/rdc_{ours,base}_{orig,shuf}_ramdocs_clean.json` (gitignored; each has a
+`run_info` block, commit `14fc243`).
+
+| Metric | Ours, original | Baseline, original | Ours, shuffled | Baseline, shuffled |
+|---|---|---|---|---|
+| Refusal rate | 31.4% (157) | 76.8% (384) | 31.4% (157) | 75.0% (375) |
+| Exact match | 18.0% (90) | 7.6% (38) | 18.6% (93) | 8.0% (40) |
+| Misinformation asserted | 2.8% (14) | 1.0% (5) | 4.0% (20) | 1.6% (8) |
+| Safe rate | 85.2% [81.8, 88.0] (426) | 94.8% [92.5, 96.4] (474) | 85.4% (427) | 93.6% (468) |
+| Refusals justified (base rate 48.6%) | 54.1% (85/157) | 54.4% (209/384) | 54.1% (85/157) | 53.3% (200/375) |
+
+Paired exact McNemar, ours vs baseline, original order: safe p = 2.4e-9 (baseline safer), EM
+p = 9.1e-13 (ours higher), misinformation asserted p = 0.022 (baseline lower). Ours makes
+the same refuse/answer decision on 500/500 queries in both orders. The 54.1% justified share
+is not distinguishable from the 48.6% base rate (exact binomial p = 0.175). Against NLPIR
+Table 6 every count is within 3 to 4 queries and every significance direction reproduces.
+All four preregistered predictions held. Full table (strict grader, unscored counts,
+shuffled-order tests): `numbers.md` section 4.
+
+**Reading it against the published table (section 3 under History).** Our exact match uses
+the same definition as Wang et al. Table 1 (every gold answer, no wrong one), but a
+different backbone and our own grader, so the published 32.6% / 34.4% are context for the
+data's difficulty, not a controlled comparison. The safe rate gives credit for abstaining;
+the published numbers do not, so the two never share a column.
+
+---
+
+# History: the label-leaky run of 2026-09-04 (superseded 2026-10-14)
+
+Everything below is the original document, unchanged. Its 88.4% / 2.6% figures and the
+claims built on them are not current.
 
 ---
 

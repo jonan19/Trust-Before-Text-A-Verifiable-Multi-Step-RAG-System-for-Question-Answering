@@ -40,6 +40,9 @@ re-run (sealed test, RAMDocs, and v6 experiments are out of scope by design).
 Observation 44); that subsection supersedes the 88.4% table.
 **Update 2026-10-15:** section 5 adversarial rows added and section 7 items 16 to 19
 added while aligning `main.tex` with NLPIR (Observation 47).
+**Update 2026-10-17 (Observation 51):** every number-bearing doc made to agree with the
+ledger; section 0 paper note, section 2 invariance, section 4 order and section 7 statuses
+updated (old wording kept in History notes).
 
 ---
 
@@ -50,8 +53,13 @@ added while aligning `main.tex` with NLPIR (Observation 47).
 | **v6 (paper-frozen)** | The system the paper `paper_assets/trust_before_text.tex` was written against. | Section 6 below; full tables in git: `git show 832736a:numbers.md` |
 | **Current defaults** | Repo as of `docs/STATUS.md` 2026-08-24: Stage 0 provenance, Stage 4 preconditions, sufficiency focus-term veto, `ANSWERHOOD_MARGIN=5.5`. | Sections 1 to 5 |
 
-The paper still quotes v6 (the tex contains the v6 figures 92.3% and 66.7%).
-**The paper and the current system now disagree.** See Section 7, item 1.
+The current paper, `main.tex`, reports both systems, labelled: the v6 frozen snapshot
+(92.3% / 66.7%) and the current defaults (96.2% / 89.7%, its "frozen vs current" table).
+The old draft `paper_assets/trust_before_text.tex` quotes v6 only. Section 7, item 1 is
+closed on that basis.
+
+History: until 2026-10-17 this paragraph read "The paper still quotes v6 ... The paper and
+the current system now disagree" (true of the old draft, before `main.tex` existed).
 
 Current default switches (all env-overridable, see `docs/REPRODUCE.md`):
 
@@ -143,8 +151,12 @@ Re-run command: `RAG_ANSWERHOOD_MARGIN=5.5 python evaluation/invariance_harness.
 | Transform | C1 changed / unsafe | C2 changed / unsafe |
 |---|---|---|
 | permute, duplicate, distractor, query_lower | 0 / 0 | 0 / 0 |
-| query_thanks | 2 / 1 (pre-gate); 1 / 0 (margin on) | 2 / 0 |
-| query_polite | 1 / 1 (pre-gate); unsafe 0 (margin on) | 0 / 0 (margin on, re-run 2026-10-10; was 1 / 0) |
+| query_thanks | 2 / 1 (pre-gate); 1 / 0 (margin on; Q010) | 2 / 0 (Q009, Q019) |
+| query_polite | 1 / 1 (pre-gate); 0 / 0 (margin on) | 0 / 0 (margin on, re-run 2026-10-10; was 1 / 0) |
+
+Margin-on values are from `evaluation/results/invariance_corpus{1,2}.json` (ledger ST-010,
+ST-011). History: until 2026-10-17 the C1 query_polite margin-on cell read "unsafe 0"
+without the changed count; the file gives 0 changed.
 
 ---
 
@@ -255,9 +267,17 @@ points, and unsafe answers rose by 14 (29 -> 43 of 114): rewording the same
 questions moves the answer / conflict boundary, a surface-form sensitivity on
 external text, with no accuracy gain reaching the 77.6% floor.
 
-## 4. RAMDocs (external benchmark, sealed single pass 2026-09-04)
+## 4. RAMDocs (external benchmark)
 
-Source: `docs/RAMDOCS_COMPARISON.md`. Raw: `evaluation/results/rd_full_ramdocs.json` (500 records; present in this checkout, but the folder is gitignored, so `[raw not in repo]` on a clean clone).
+**Current numbers: the subsection "Clean recalculation, 2026-10-11 to 2026-10-14" below**
+(ours 85.2% safe, 2.8% misinformation asserted, EM 18.0%, 31.4% refusals; prompted
+baseline 94.8% safe, 1.0% misinformation). Everything between here and that subsection is
+History: the label-leaky run and the reasoning from before the rerun. The published
+comparators in it (Wang et al. Table 1) are external and still valid.
+
+### History: label-leaky run, sealed single pass 2026-09-04 (superseded 2026-10-14)
+
+Source: `docs/RAMDOCS_COMPARISON.md` (History section). Raw: `evaluation/results/rd_full_ramdocs.json` (500 records; present in this checkout, but the folder is gitignored, so `[raw not in repo]` on a clean clone).
 
 | Metric | Value |
 |---|---|
@@ -269,14 +289,20 @@ Source: `docs/RAMDOCS_COMPARISON.md`. Raw: `evaluation/results/rd_full_ramdocs.j
 | LLM calls per query (ours) | 1 (`openai/gpt-oss-120b` on Groq) |
 
 Published comparators (Wang et al., arXiv 2504.13079, Table 1, exact match,
-Llama-3.3-70B unless noted; first author is Han Wang, so earlier "Han et al." in
-this repo was a first-name citation error; the COLM 2025 venue was not confirmed):
+Llama-3.3-70B unless noted; first author is Han Wang, so earlier citations in this
+repo that used his first name as the surname were wrong; the COLM 2025 venue was not
+confirmed):
 No RAG 5.8%, prompt-based RAG 32.6%, self-reflection 30.4%,
 speculative RAG 30.6%, Astute RAG 31.8%, MADAM-RAG 34.4% (Qwen2.5-72B 26.4%,
 GPT-4o-mini 28.0%). **Different metric from our safe rate**: do not put 88.4%
 and 34.4% in one "accuracy" column.
 
-### Which run is the current one (read this before citing RAMDocs)
+### History: which run was current (reasoning written before the clean rerun)
+
+**Settled 2026-10-14 (Observation 44):** the 88.4% file is label-leaky (confirmed in the
+code: document types in source and section names), and the clean recalculation below
+replaces both it and NLPIR's unverified Table 6 figures. The text of this subsection is
+kept as written on 2026-10-11.
 
 The 88.4% row above is the committed file `rd_full_ramdocs.json` (graded 2026-09-04,
 lenient grader). The NLPIR paper (`Trust_Before_Text_NLPIR.pdf`, the most up to date
@@ -417,7 +443,7 @@ held (ours +0.2, baseline -1.2); (4) baseline safer than ours: held.
 
 | Claim | Number | Source | Trust |
 |---|---|---|---|
-| Adversarial probes, ours unsafe | 0/48 | `docs/STATUS.md` "Fixed in earlier rounds" | prose only |
+| Adversarial probes, ours unsafe | 0/48 | `adversarial_gap_probes_corpus{1,2}.json` `meta.unsafe_after` (ledger RM-002, ST-012); quoted in `docs/STATUS.md` "Fixed in earlier rounds" | verified (was "prose only" until 2026-10-17) |
 | Adversarial probes, defended LLM baselines unsafe | 12/12 in each of three runs: llama-3.3-70b on C1 (`adversarial_baseline_corpus1.json`), gpt-oss-120b on C1 and C2 (`adversarial_baseline_gpt-oss-120b_corpus{1,2}.json`); 36 baseline probes in all, authority and aware styles only; gpt-oss C1 regex-only count is 10/12, adjudicated to 12/12 | raw files tracked in git | resolved 2026-10-10 (Observation 34); the README's "48" was our probe count, not the baselines' |
 | Injected text reaching prompt | 0/45 | `docs/STATUS.md` | prose |
 | Our synthesis injection grading | 18/45 -> 20/45 after grader fix | `docs/STATUS.md`; reproduced 2026-10-11 by `evaluation/label_audit.py` (2 confirmed mislabels, Q002 and Q067) | verified |
@@ -499,7 +525,7 @@ unchanged by later work (they were not re-run).
 
 | # | Where | Conflict | Needs |
 |---|---|---|---|
-| 1 | Paper vs current system | Paper quotes v6 (92.3% / 66.7%); current defaults give 96.2% / 89.7% | Decision: re-sync paper numbers or keep v6 as an explicitly labelled frozen snapshot |
+| 1 | Paper vs current system | Paper quotes v6 (92.3% / 66.7%); current defaults give 96.2% / 89.7% | Decision: re-sync paper numbers or keep v6 as an explicitly labelled frozen snapshot **Closed 2026-10-17 (Observation 51):** `main.tex`, the current paper, does both: v6 labelled frozen, current defaults (96.2% / 89.7%) in its frozen-vs-current table, all ledger-checked. The old draft `paper_assets/trust_before_text.tex` still quotes v6 only and is not the paper. |
 | 2 | `README.md` "Current state at a glance" | Says C1 92.3%, C2 82.1%, unsafe 1/32 and 2/32, C2 recall 15/16; `docs/STATUS.md` says 96.2%, 89.7%, 0/32 and 1/32, 14/16 | Update README to match Section 2. **Closed 2026-10-10 (Observation 31).** |
 | 3 | `docs/STATUS.md` Corpus 2 confusion matrix | Matrix sums to 64/78 = 82.1% (pre-margin) but the headline row says 89.7% | Re-run `run_eval.py --corpus 2` and replace the matrix. **Closed 2026-10-10 (Observations 30, 31).** |
 | 4 | `docs/CORPUS3_RESULTS.md` section 6 | Says qform and bare-LLM runs are "in progress", yet commit `d309565` (2026-08-31) is titled as adding the bare-LLM baseline | Author to confirm and update. **Narrowed 2026-10-10 (Observation 34):** not a contradiction. The doc says the bare-LLM run covered 12/30 bundles and qform 22/30, so "in progress" fits a partial run, and the commit added the script plus that partial output. Still open: whether either run has since finished, and the raw `c3_*` files are in no git ref. **Update 2026-10-11 (Observation 40):** qform and Tracks A and B were replicated; only the bare-LLM baseline (needs an API key) has never been run to completion. |
@@ -511,10 +537,16 @@ unchanged by later work (they were not re-run).
 | 10 | Old query-ID collisions | v6 numbers.md section 6 listed Q-number collisions across reports; not re-checked for the new docs | Read before citing any bare Q-number. **Closed 2026-10-10:** rule 5 above (always prefix with the corpus). |
 | 11 | `main.tex:1602`, this file section 4 (line 340) | Misinformation McNemar p written 0.023; exact McNemar on 11 vs 2 discordant pairs gives 0.02246 (0.022) | Change 0.023 to 0.022 in both (owner decision; Observation 45, ledger MT-171, NU-008) **Closed 2026-10-14 (Observation 46):** 0.022 in both, test named. |
 | 12 | `main.tex:1643` | Justified-abstention p written 0.18; the binomial test gives 0.17498 (0.175, or 0.17 to two places) | Write 0.17 or 0.175 (Observation 45, MT-192) **Closed 2026-10-14 (Observation 46):** owner chose 0.175, test named. |
-| 13 | NLPIR PDF p11 | "with provenance disabled, 31 of 48 are answered"; current files give 33 (17 + 16); 31 uses the pre-margin Corpus 2 value 14/24 | Use 33 if the sentence is ported (Observation 45, NL-048) **Closed for `main.tex` 2026-10-15 (Observation 47):** ported with 33 (17 + 16). The NLPIR PDF itself still says 31. |
-| 14 | `docs/STATUS.md` lines 168-169 | Invariance table under "Current measurements" shows the pre-gate values (C1 query_thanks 2/78 with 1 refuse-to-answer, query_polite 1/78 with 1, C2 query_polite 1/78); current files give 1/78, 0/78, 0/78, no refuse-to-answer flips | Update STATUS (Observation 45, ST-010, ST-011) |
+| 13 | NLPIR PDF p11 | "with provenance disabled, 31 of 48 are answered"; current files give 33 (17 + 16); 31 uses the pre-margin Corpus 2 value 14/24 | Use 33 if the sentence is ported (Observation 45, NL-048) **Closed for `main.tex` 2026-10-15 (Observation 47):** ported with 33 (17 + 16). The NLPIR PDF itself still says 31. **Closed 2026-10-17 (Observation 51):** the PDF is a fixed record and is not edited; ledger NL-048 now recomputes its 31 as 17 + 14 (C2 14 read from the pre-margin file at `b6e6326`), status DERIVED, marked HISTORICAL. |
+| 14 | `docs/STATUS.md` lines 168-169 | Invariance table under "Current measurements" shows the pre-gate values (C1 query_thanks 2/78 with 1 refuse-to-answer, query_polite 1/78 with 1, C2 query_polite 1/78); current files give 1/78, 0/78, 0/78, no refuse-to-answer flips | Update STATUS (Observation 45, ST-010, ST-011) **Closed 2026-10-17 (Observation 51):** STATUS rows now 1/78, 0 / 0/78, 0 (C1) and 2/78, 0 / 0/78, 0 (C2); the follow-on paragraph and the Problem 4 row fixed too; old rows kept in a History note. |
 | 15 | `main.tex` sec:retrieval_recall (haystack sentence, added 2026-10-14) | NLPIR's haystack claim (all 20 haystacks at every N, 95% interval [84, 100]%; gpt-oss-120b up to N=40) has no current-system file; the only tracked file, `experiments/haystack_results.json`, is the v6 run and gives ours recall 0.75 at N=2 and 0.60 at N=20 | Owner decision: kept as ACCEPTED_AS_IS and flagged in the ledger (MT-402 to MT-406, NL-017, NL-018). Rerun the haystack test on the current system to settle it (Observation 46). **Re-confirmed 2026-10-15 (Observation 47):** stays flagged; owner will look for the raw file before submission. |
 | 16 | `main.tex` tab:security_current and sec:adv-adaptive (before 2026-10-15) | Rows "In-corpus poisoning accepted 0/4, holds" were the retrieval-time fabricated-evidence test, and the adaptive 4/4 was described as pre-ingestion poisoning; NLPIR p11 says the 4/4 spliced passages in at retrieval time and pre-ingestion poisoning defeats ours 24/24 | **Closed 2026-10-15 (Observation 47):** relabelled; pre-ingestion row added (24/24, fails) |
 | 17 | `main.tex` tab:thresholds (before 2026-10-15) | Query-span floor 0.35 labelled Structural; NLPIR Table 9 says selected on both corpora | **Closed 2026-10-15 (Observation 47):** relabelled Calibrated; full 20-constant table added as Appendix B, every value checked against `validation.py` |
-| 18 | NLPIR p4 vs `main.tex` Reproducibility | NLPIR says Python 3.12; the post-merge runs used Python 3.11.9 | `main.tex` says 3.11.9 (owner, 2026-10-15). NLPIR left as printed |
+| 18 | NLPIR p4 vs `main.tex` Reproducibility | NLPIR says Python 3.12; the post-merge runs used Python 3.11.9 | `main.tex` says 3.11.9 (owner, 2026-10-15). NLPIR left as printed. **Closed 2026-10-17:** settled by that owner decision; nothing left to do. |
 | 19 | `main.tex` pre-ingestion poisoning (24/24, 0/12 clean, defended 24/24) | No result file on any branch | ACCEPTED_AS_IS by owner decision 2026-10-15; find or regenerate the file before submission |
+
+**Still open on 2026-10-17 (Observation 51):** item 4 (the Corpus 3 bare-LLM baseline was
+never run to completion; needs a key), item 9 (the 2026-08-31 Corpus 3 raw files are lost;
+the owner must accept those rows as prose-only, the replicated files stand in), item 15
+(haystack claim has no current-system file) and item 19 (pre-ingestion poisoning has no
+file). Items 15 and 19 need the owner before submission.
