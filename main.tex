@@ -155,7 +155,10 @@ prompt-based method provides only by tendency. On RAMDocs, an external
 benchmark of conflicting and misleading evidence, a prompted LLM is safer
 (94.8\% vs.\ 85.2\% safe rate) by refusing far more (76.8\% vs.\ 31.4\%),
 while our gate more than doubles exact match (18.0\% vs.\ 7.6\%), with no
-threshold retuned.
+threshold retuned. On MultiHop-RAG, a retrieval benchmark, the prompted LLM
+is also safer: our gate answers 56 of 150 null queries against 2 and its
+strict decision accuracy is lower (41.7\% vs.\ 62.7\%), mostly through false
+conflict flags.
 
 \end{abstract}
 
@@ -1705,6 +1708,71 @@ elsewhere in this paper. We treat it as one data point of external evidence
 for the guarantee-versus-behavior claim, not as a replacement for the
 held-out, same-domain test the paper still lacks.
 
+\subsection{External Validation: MultiHop-RAG}
+\label{sec:multihop}
+A second externally authored benchmark, MultiHop-RAG (public release
+\texttt{yixuantt/MultiHopRAG}), tests the full pipeline with retrieval, which
+RAMDocs does not. The corpus is 609 news articles and 2{,}556 queries; we
+indexed all 609 articles through the unchanged ingestion (22{,}131 chunks).
+The comparison was preregistered before any query was run and is a new
+measurement, not a repetition of an earlier sample. We drew 300 queries with a
+fixed seed: 150 null queries (no answer in the corpus) and 50 each of
+inference, comparison, and temporal queries, run in shuffled order. Our arm
+makes no LLM call. The baseline is the prompted LLM of
+Section~\ref{sec:baseline} (same E1 prompt, \texttt{gpt-oss-120b})
+given the same retrieved passages. Because the provider's free tier rejected
+requests above 8{,}000 tokens, the baseline receives at most 12 passages, a
+cap fixed after a pilot and before the full run; our gate validates about 30.
+Only 67.4\% of gold articles fall inside the baseline's 12 passages, so the
+comparison is asymmetric, and we report it as such rather than correcting it.
+Only decisions are graded, not answer content.
+
+\begin{table}[htbp]
+\caption{MultiHop-RAG, 300 Paired Queries (Wilson 95\% Intervals; Exact McNemar)}
+\label{tab:multihop}
+\centering
+\small
+\begin{tabularx}{\columnwidth}{@{}X r r r@{}}
+\toprule
+ & Ours & Baseline & $p$ \\
+\midrule
+Null queries answered (of 150)    & 56 (37.3\%) & 2 (1.3\%)   & $1.2\times10^{-14}$ \\
+Answerable not answered (of 150)  & 78 (52.0\%) & 110 (73.3\%) & $5.8\times10^{-5}$ \\
+Decision correct, strict (of 300) & 125 (41.7\%) & 188 (62.7\%) & $6.4\times10^{-7}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The result is mixed and we report all of it. The gate answers 56 of 150 null
+queries against the baseline's 2 (95\% intervals 30.0\% to 45.3\% and 0.4\%
+to 4.7\%), so on this benchmark it leaks answers into the gap far more often
+than the prompted LLM. It also refuses fewer answerable queries (52.0\%
+against 73.3\%), but 77 of its 78 refusals are conflict flags, not
+insufficient-evidence abstentions, and the strict decision-correct rate is
+significantly lower than the baseline's (41.7\% against 62.7\%, 95\% intervals
+36.2\% to 47.3\% and 57.1\% to 67.9\%). Under a lenient grading in which any
+abstention on a null query counts as correct, the difference is not
+significant (55.3\% against 62.7\%, $p=0.055$; exploratory). One of the five
+preregistered predictions failed: we predicted no significant difference in
+strict correctness, and the baseline is significantly better.
+
+Two mechanisms account for most of this, and both are failure patterns
+already named in this paper. The gate tests relevance and coverage, not
+whether the retrieved text contains the answer, so near-miss null queries
+pass. Conflict detection flags disagreement between articles without
+establishing that it concerns the question: 77 false conflicts on answerable
+queries and 41 on null ones. Retrieval is not the cause. Across sub-queries
+89.0\% of gold articles are retrieved, and article recall at rank five for the
+original question is 59.6\%, the same pattern as the paragraph on retrieval
+recall in Section~\ref{sec:retrieval_recall}. The baseline's refusals are not
+explained by the cap alone: it refused 38 of 60 answerable queries even when
+every gold article was sent, and 72 of 90 when some were cut (exploratory).
+
+This benchmark therefore supports the paper's claim only in its structural
+form, a decision that does not depend on an LLM, and not as an accuracy
+result. It is evidence against reading the gate as a general improvement in
+decision quality.
+
 \subsection{Post-Evaluation Fixes}
 \label{sec:post_eval_fixes}
 
@@ -2653,7 +2721,10 @@ corpus. The abstention-justification check on the same run
 barely more than half of abstentions lined up with an actual misinformation document,
 and the observed 54.1\% is not distinguishable from the 48.6\% of queries
 that contain one, which is a genuine calibration gap this paper does not yet
-have a fix for. Every accuracy number should be
+have a fix for. A second external benchmark with retrieval (MultiHop-RAG,
+Section~\ref{sec:multihop}) is less favourable: the gate answers more null
+queries than a prompted LLM and its strict decision accuracy is significantly
+lower, mostly through false conflict flags. Every accuracy number should be
 read as ``fits the data we have,'' not ``generalises.'' The invariance
 harness partially mitigates this. External validation on legal-domain
 text is ongoing and not reported here. We ran no conflict-aware RAG system

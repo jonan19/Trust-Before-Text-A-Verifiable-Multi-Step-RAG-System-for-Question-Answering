@@ -717,3 +717,17 @@
 ```
 
 Add the new row to the master timeline above and set `Last synced` in `numbers.md`.
+
+---
+
+## Observation 52: MultiHop-RAG added to main.tex from the verified run
+
+*Added 2026-10-17. Commit/branch: on top of `f1f3172`, `jonan`. No pipeline code, threshold or default changed; nothing run; no API key used.*
+
+- **Issue.** The NLPIR paper reports MultiHop-RAG (Section 4.8) and `main.tex` did not. NLPIR's own numbers (121-query sample) have no raw files and stay UNVERIFIABLE.
+- **Fix.** New `main.tex` subsection "External Validation: MultiHop-RAG" (`sec:multihop`, `tab:multihop`), a sentence in the abstract, and a sentence in the limitations paragraph, all written from the new preregistered 300-query run (Observation 50), not from NLPIR's figures.
+  - It reports the unfavourable result in full: 56/150 vs 2/150 null queries answered, 52.0% vs 73.3% answerable not answered (77 of 78 are conflicts), strict decision accuracy 41.7% vs 62.7% (p = 6.4e-7), prediction P4 failed, and the Amendment 1 caveat (the baseline sees at most 12 passages; 67.4% of gold articles visible to it).
+  - It states that NLPIR's "correctness does not differ" is not supported by this run.
+- **Ledger.** 27 new `main.tex` rows (MH-001 to MH-027). Items recomputed from the checkpoint files on 2026-10-17: 38/60 and 72/90 baseline refusals, 41 null-query conflicts, lenient p = 0.055 (49 vs 71 discordant pairs); status RECOMPUTED, literal values noted.
+- **Effect.** `check_ledger.py` passes: 1,356+ body numbers covered, 0 fails; 169 tests pass.
+- **Not done.** No citation for the MultiHop-RAG paper (no key in `references.bib`; not invented). The paper text names the public release only.
