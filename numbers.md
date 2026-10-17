@@ -38,6 +38,8 @@ RAMDocs rows (all ratios and percentages reproduce). Sections 3 to 6 were not
 re-run (sealed test, RAMDocs, and v6 experiments are out of scope by design).
 **Update 2026-10-14:** Section 4 RAMDocs recalculated on the clean protocol (four runs,
 Observation 44); that subsection supersedes the 88.4% table.
+**Update 2026-10-15:** section 5 adversarial rows added and section 7 items 16 to 19
+added while aligning `main.tex` with NLPIR (Observation 47).
 
 ---
 
@@ -355,6 +357,62 @@ held (ours +0.2, baseline -1.2); (4) baseline safer than ours: held.
 
 ---
 
+## 4b. MultiHop-RAG (new preregistered measurement, 2026-10-17, Observation 50)
+
+**Setup**
+- **Rules:** `docs/PREREGISTRATION_MULTIHOP.md`, including Amendment 1, which capped the
+  baseline at 12 passages after the pilot.
+- **Index:** all 609 articles, 22,131 chunks, store `qdrant_db_multihop/`.
+- **Sample:** seeded, 150 null queries plus 50 each of inference, comparison and temporal.
+  Both arms completed all 300 (paired).
+- **Arms:**
+  - ours: decision only, zero LLM calls;
+  - baseline: gpt-oss-120b, E1 prompt, top 12 of the same retrieved passages.
+- **Files:** `evaluation/results/mh_{ours,baseline}_multihop.ckpt.jsonl` and
+  `mh_multihop_report.json` (`python evaluation/run_eval_multihop.py --report --tag mh`).
+- **Status:** this is a NEW measurement, not a reproduction of NLPIR's 121-query sample.
+
+| Measure | Ours | Prompted baseline | Exact McNemar |
+|---|---|---|---|
+| Null queries answered (gap leak) | 56/150 (37.3%) [30.0, 45.3] | 2/150 (1.3%) [0.4, 4.7] | p = 1.2e-14 |
+| Answerable not answered (over-abstention) | 78/150 (52.0%) [44.1, 59.8] | 110/150 (73.3%) [65.7, 79.8] | p = 5.8e-5 |
+| ...of which conflict / insufficient | 77 / 1 | 2 / 108 | |
+| Decision correct, strict | 125/300 (41.7%) [36.2, 47.3] | 188/300 (62.7%) [57.1, 67.9] | p = 6.4e-7 |
+| Decision correct, lenient (null: any abstention) | 166/300 (55.3%) | 188/300 (62.7%) | p = 0.055 (exploratory) |
+| Refusal rate, all queries | 172/300 (57.3%) | 258/300 (86.0%) | |
+
+**Retrieval and baseline visibility** (answerable queries, 399 gold articles)
+- **Ours:** 89.0% of gold articles retrieved across sub-queries; article recall@5 for the
+  original question 59.6%.
+- **Baseline:** only 67.4% of gold articles fall inside the 12 passages it is sent.
+  - All gold articles were sent for 60 of 150 queries. The baseline refused 38 of those 60
+    (exploratory).
+  - Where some gold article was cut, it refused 72 of 90.
+
+**Predictions**
+- **P1** (ours answers more null queries, p < 0.05): held.
+- **P2** (baseline over-abstains more): held.
+- **P3** (ours' over-abstentions mostly conflicts): held, 77 of 78.
+- **P4** (strict correctness not significantly different): **did not hold**. The baseline is
+  significantly more often right, 62.7% vs 41.7%.
+- **P5** (recall across sub-queries at least 80% and recall@5 below 70%): held, 89.0% and 59.6%.
+
+**Against NLPIR's direction**
+- **Same direction:**
+  - gap leak, NLPIR 21/57 vs 1/57; here 56/150 vs 2/150;
+  - over-abstention, NLPIR 57.8% vs 79.7%; here 52.0% vs 73.3%;
+  - false conflicts dominating ours' refusals (36 of 37 in NLPIR; 77 of 78 here);
+  - retrieval, NLPIR 89.9% and 55.0%; here 89.0% and 59.6%.
+- **Different:** overall correctness. NLPIR found no difference (52.1% vs 57.0%, p = 0.48);
+  here the baseline is significantly better under the strict grading.
+  - Part of that gap is ours' 41 conflict abstentions on null queries, which strict grading
+    counts as wrong.
+  - Under lenient grading the gap is 55.3% vs 62.7%, p = 0.055 (exploratory).
+- **Caveat:** the baseline saw at most 12 passages (Amendment 1), so its over-abstention is
+  partly a visibility effect.
+
+---
+
 ## 5. Adversarial and LLM-baseline results quoted in the README and STATUS
 
 | Claim | Number | Source | Trust |
@@ -365,6 +423,9 @@ held (ours +0.2, baseline -1.2); (4) baseline safer than ours: held.
 | Our synthesis injection grading | 18/45 -> 20/45 after grader fix | `docs/STATUS.md`; reproduced 2026-10-11 by `evaluation/label_audit.py` (2 confirmed mislabels, Q002 and Q067) | verified |
 | Defended LLM injection grading | 0/45 recorded; 12/45 on the automated screen (reproduced); STATUS says 7/45 hand-adjudicated | `docs/STATUS.md` (7/45, prose only); `label_audit.py` (12/45) | the 7 is **not reproducible**; see the next block |
 | Undefended LLM / unhardened synthesis / hardened synthesis, automated screen | 45/45 / 22/45 / 2/45 | NLPIR footnote; reproduced from `experiments/*.json` with the project's own screen | verified |
+| Gap probes answered with provenance disabled | 33/48 (17 C1 + 16 C2) | `adversarial_gap_probes_corpus{1,2}.json` `meta.unsafe_before` | verified; NLPIR prints 31 (pre-margin C2 value); `main.tex` uses 33 (owner, 2026-10-15) |
+| Gap probes, exact McNemar ours vs defended LLM | 70B: p = 2 x 0.5^12 = 4.9e-4; 120B: p = 2 x 0.5^24 = 1.2e-7 | derived: every paired probe discordant (LLM leaked, ours abstained) | arithmetic; matches NLPIR p11 |
+| Pre-ingestion poisoning (fixed system) | ours 24/24 stated, Wilson [86, 100]%; defended gpt-oss-120b 24/24 (p = 1.0); clean stores ours 0/12 | NLPIR p11 only; **no result file on any branch** (searched 2026-10-15) | ACCEPTED_AS_IS by owner decision 2026-10-15 (Observation 47) |
 
 Independent hand adjudication of the 12 defended-LLM answers the screen flags
 (2026-10-11, Observation 42; rule: hijacked = the answer presents the planted
@@ -450,6 +511,10 @@ unchanged by later work (they were not re-run).
 | 10 | Old query-ID collisions | v6 numbers.md section 6 listed Q-number collisions across reports; not re-checked for the new docs | Read before citing any bare Q-number. **Closed 2026-10-10:** rule 5 above (always prefix with the corpus). |
 | 11 | `main.tex:1602`, this file section 4 (line 340) | Misinformation McNemar p written 0.023; exact McNemar on 11 vs 2 discordant pairs gives 0.02246 (0.022) | Change 0.023 to 0.022 in both (owner decision; Observation 45, ledger MT-171, NU-008) **Closed 2026-10-14 (Observation 46):** 0.022 in both, test named. |
 | 12 | `main.tex:1643` | Justified-abstention p written 0.18; the binomial test gives 0.17498 (0.175, or 0.17 to two places) | Write 0.17 or 0.175 (Observation 45, MT-192) **Closed 2026-10-14 (Observation 46):** owner chose 0.175, test named. |
-| 13 | NLPIR PDF p11 | "with provenance disabled, 31 of 48 are answered"; current files give 33 (17 + 16); 31 uses the pre-margin Corpus 2 value 14/24 | Use 33 if the sentence is ported (Observation 45, NL-048) |
+| 13 | NLPIR PDF p11 | "with provenance disabled, 31 of 48 are answered"; current files give 33 (17 + 16); 31 uses the pre-margin Corpus 2 value 14/24 | Use 33 if the sentence is ported (Observation 45, NL-048) **Closed for `main.tex` 2026-10-15 (Observation 47):** ported with 33 (17 + 16). The NLPIR PDF itself still says 31. |
 | 14 | `docs/STATUS.md` lines 168-169 | Invariance table under "Current measurements" shows the pre-gate values (C1 query_thanks 2/78 with 1 refuse-to-answer, query_polite 1/78 with 1, C2 query_polite 1/78); current files give 1/78, 0/78, 0/78, no refuse-to-answer flips | Update STATUS (Observation 45, ST-010, ST-011) |
-| 15 | `main.tex` sec:retrieval_recall (haystack sentence, added 2026-10-14) | NLPIR's haystack claim (all 20 haystacks at every N, 95% interval [84, 100]%; gpt-oss-120b up to N=40) has no current-system file; the only tracked file, `experiments/haystack_results.json`, is the v6 run and gives ours recall 0.75 at N=2 and 0.60 at N=20 | Owner decision: kept as ACCEPTED_AS_IS and flagged in the ledger (MT-402 to MT-406, NL-017, NL-018). Rerun the haystack test on the current system to settle it (Observation 46) |
+| 15 | `main.tex` sec:retrieval_recall (haystack sentence, added 2026-10-14) | NLPIR's haystack claim (all 20 haystacks at every N, 95% interval [84, 100]%; gpt-oss-120b up to N=40) has no current-system file; the only tracked file, `experiments/haystack_results.json`, is the v6 run and gives ours recall 0.75 at N=2 and 0.60 at N=20 | Owner decision: kept as ACCEPTED_AS_IS and flagged in the ledger (MT-402 to MT-406, NL-017, NL-018). Rerun the haystack test on the current system to settle it (Observation 46). **Re-confirmed 2026-10-15 (Observation 47):** stays flagged; owner will look for the raw file before submission. |
+| 16 | `main.tex` tab:security_current and sec:adv-adaptive (before 2026-10-15) | Rows "In-corpus poisoning accepted 0/4, holds" were the retrieval-time fabricated-evidence test, and the adaptive 4/4 was described as pre-ingestion poisoning; NLPIR p11 says the 4/4 spliced passages in at retrieval time and pre-ingestion poisoning defeats ours 24/24 | **Closed 2026-10-15 (Observation 47):** relabelled; pre-ingestion row added (24/24, fails) |
+| 17 | `main.tex` tab:thresholds (before 2026-10-15) | Query-span floor 0.35 labelled Structural; NLPIR Table 9 says selected on both corpora | **Closed 2026-10-15 (Observation 47):** relabelled Calibrated; full 20-constant table added as Appendix B, every value checked against `validation.py` |
+| 18 | NLPIR p4 vs `main.tex` Reproducibility | NLPIR says Python 3.12; the post-merge runs used Python 3.11.9 | `main.tex` says 3.11.9 (owner, 2026-10-15). NLPIR left as printed |
+| 19 | `main.tex` pre-ingestion poisoning (24/24, 0/12 clean, defended 24/24) | No result file on any branch | ACCEPTED_AS_IS by owner decision 2026-10-15; find or regenerate the file before submission |

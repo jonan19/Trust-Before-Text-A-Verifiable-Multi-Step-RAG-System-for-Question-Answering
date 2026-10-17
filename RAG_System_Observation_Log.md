@@ -57,6 +57,10 @@
 | 44 | 2026-10-14 | RAMDocs recalculated on a clean (no label leak) protocol, four runs | External validation / provenance of numbers | Measured, no pipeline change | NLPIR Table 6 reproduces: ours 85.2% safe (NLPIR 84.6%), baseline 94.8% (94.2%); all four preregistered predictions held |
 | 45 | 2026-10-14 | Number ledger and checker: every number in `main.tex` traced to a source | Paper / provenance of numbers | Implemented (evaluation tooling only) | 480 rows; 1,175/1,175 main.tex numbers covered; 6 DIFFs and 1 RULE break found (see entry) |
 | 46 | 2026-10-14 | Owner decisions on the ledger findings; misinformation p corrected 0.023 -> 0.022 (correction to 44) | Paper / provenance of numbers | Done (`main.tex`, numbers.md, ledger) | main.tex rule breaks 0; haystack claim added as ACCEPTED_AS_IS, flagged |
+| 47 | 2026-10-15 | `main.tex` aligned with NLPIR: poisoning mislabels fixed, pre-ingestion result, Table 8, Appendix B, framing | Paper / provenance of numbers | Done (`main.tex`, numbers.md, ledger) | 534 ledger rows; 1,297/1,297 main.tex numbers covered; 0 main.tex fails |
+| 48 | 2026-10-15 | Discussion and conclusion softened: "guarantee" kept only for by-construction properties | Paper wording | Done (`main.tex` only) | no number changed; ledger clean; 69 cited keys absent from references.bib listed |
+| 49 | 2026-10-15 | Owner's root `references.bib` checked; 7 cite keys renamed; 4 wrong author fields found via Crossref | Paper bibliography | Done (`main.tex` cite keys only) | 98/99 cited keys resolve; honovich2022true left to the owner |
+| 50 | 2026-10-17 | MultiHop-RAG: new preregistered measurement, 300 paired queries | External validation | Measured, no pipeline change | Gap leak 56/150 vs 2/150; over-abstention 52.0% vs 73.3%; strict correctness 41.7% vs 62.7% (P4 failed) |
 
 ---
 
@@ -480,6 +484,164 @@
 - **Cost / regressions.** The haystack sentence puts into `main.tex` a Corpus 1 number that the repo cannot reproduce, and the only tracked file contradicts it. That is the owner's accepted risk, flagged in the ledger notes.
 - **Evidence.** `python evaluation/check_ledger.py -v`; `python -m pytest tests/test_ledger.py -q` (16 passed); the `main.tex` backup above.
 - **Numbers updated.** `numbers.md` section 4: misinformation p 0.023 -> 0.022, test names added. Section 7: items 11 and 12 closed, item 15 added.
+
+## Observation 47: `main.tex` aligned with the NLPIR paper; two poisoning mislabels fixed
+
+*Added 2026-10-15. Commit/branch: on top of `8d27d23`, `jonan`. Zero LLM tokens, nothing run except the checker and the tests. `main.tex` was edited (backup `D:\Major Project_paper_backups\main_2026-10-15_before_nlpir_alignment.tex`); no pipeline code, threshold or default changed. ContractNLI / Corpus 3 stays out of `main.tex` (owner decision).*
+
+- **Issue.** A section-by-section diff of `Trust_Before_Text_NLPIR.pdf` against `main.tex` found:
+  - two places where `main.tex` contradicted NLPIR;
+  - one missing caveat;
+  - several NLPIR items missing from `main.tex`.
+
+  The tables added on 2026-10-11 match NLPIR and the ledger cell for cell: `tab:ci_mcnemar`, `tab:errors_component`, `tab:sensitivity` and `tab:component_ablation`. Table 5 was checked by eye on a rendered page, because the PDF text layer scrambles its precision column.
+- **Cause.**
+  - **Security table.** `tab:security_current` called the retrieval-time fabricated-evidence test (0/4 per corpus) "in-corpus poisoning, holds".
+  - **Adaptive attack.** Its 4/4 gap result was described as a document planted before ingestion. NLPIR p11 says that 4/4 spliced passages in at retrieval time, which provenance now blocks, and that pre-ingestion poisoning defeats ours 24/24.
+  - **Paragraph-level NLI.** These figures are taken from NLPIR, but the paper did not say they were never reproduced.
+- **Fix (owner-approved list).**
+  1. **Security table:** rows relabelled; a pre-ingestion poisoning row (24/24, fails) added; the note reworded.
+  2. **Adaptive attack:** `tab:adaptive`, its caption and Finding 2 now describe the v6 4/4 as retrieval-time splicing and point to the pre-ingestion result.
+  3. **sec:adv_separation:**
+     - gap-probe McNemar p-values, DERIVED with the arithmetic shown: 2 x 0.5^12 = 4.9e-4 and 2 x 0.5^24 = 1.2e-7;
+     - provenance disabled: 33 of 48 answered (17 + 16, current files, not NLPIR's 31);
+     - pre-ingestion poisoning, ACCEPTED_AS_IS from NLPIR (no result file on any branch): ours 24/24, Wilson [86, 100]%; defended 120B 24/24, p = 1.0; clean stores 0/12;
+     - NLPIR Table 8 as `tab:adversarial_summary`.
+  4. **Thresholds:** the query-span floor 0.35 is relabelled from Structural to Calibrated (selected on both corpora), as in NLPIR Table 9. The prose now says 3 constants are calibrated on Corpus 1, 3 are selected on both corpora, and 14 are structural. New Appendix B (`app:constants`, `tab:constants_full`) lists all 20 constants. Every value was checked against `validation.py`, and the 0.35 -> 0.60 score anchor against `retrieval_scoring.py`. An earlier chat message wrongly listed more provenance mismatches; the PDF text layer had misplaced Table 9's provenance column, and the rendered page corrected this.
+  5. **Abstract and introduction:**
+     - "safe behavior a property of the system" is replaced by NLPIR's wording: repeatable, not necessarily correct;
+     - determinism and safety are now separated;
+     - the abstract adds C2 unsafe 4/32 (1/32 after the fixes) and that pre-ingestion poisoning defeats both systems.
+  6. **Contributions:**
+     - the provenance check plus seven stages;
+     - the NLI prong carries detection;
+     - the list of analyses;
+     - provenance blocks retrieval-time injection.
+  7. **Limitations:**
+     - "External validation on legal-domain text is ongoing and not reported here" (no corpus named);
+     - no conflict-aware RAG baseline, no optimized or white-box attacker, and baseline non-determinism measured only at temperature 0.7.
+  8. **Reproducibility:**
+     - one value set for all results;
+     - no sampling or seed in the decision layer;
+     - temperature 0 except the 5 unseeded reruns at 0.7;
+     - invariance seed 20260819;
+     - Python 3.11.9 (owner; NLPIR says 3.12);
+     - dependencies as lower bounds.
+
+     Each was checked in code: `llm_interface.py`, `experiments/baseline_experiment.py` defaults, `evaluation/invariance_harness.py` SEED, and `requirements.txt` (only `>=`).
+  9. **Paragraph-level NLI caveat:** added in the prose and as a footnote on the Table 5 row.
+
+  Not done, by owner decision: Appendix A (prompts) and the machine-generated-text item in future work. The haystack sentence stays ACCEPTED_AS_IS and flagged.
+- **Effect.**
+  - **Ledger:** 485 -> 534 rows. 49 rows were added and 6 rewritten (MT-046, MT-310, MT-322, MT-323, MT-376, MT-378).
+  - **(c) coverage:** 1,297 of 1,297 numbers in `main.tex` covered.
+  - **(b) presence:** 534 of 534.
+  - **(d) rule:** 0 breaks in `main.tex`.
+  - **(e) stale strings:** 0.
+  - **(a) recompute:** the same three DIFFs outside `main.tex` (NL-048, ST-010, ST-011).
+  - **LaTeX:** braces and environments balance, every `\ref` has a label, no duplicate labels. There is no LaTeX engine here, so nothing was compiled.
+- **Cost / regressions.**
+  - Two more Corpus 1/2 claims in `main.tex` rest on NLPIR alone with no raw file: pre-ingestion poisoning and the "20 active constants" classification. Both are flagged in the ledger.
+  - The discussion and conclusion still say "deterministic, auditable safety guarantee" and "safe abstention a property of the architecture", which is softer than the new abstract framing. They were left for the owner to decide.
+- **Evidence.** `python evaluation/check_ledger.py -v`; `python -m pytest tests/test_ledger.py -q` (16 passed); the `main.tex` backup above.
+- **Numbers updated.** `numbers.md` section 5: three rows added (provenance-off 33/48, gap-probe p-values, pre-ingestion poisoning). Section 7: item 13 closed for `main.tex`, item 15 re-confirmed, items 16 to 19 added.
+
+## Observation 48: Discussion and conclusion softened to match the abstract
+
+*Added 2026-10-15. Commit/branch: on top of `8d27d23`, `jonan`. Zero LLM tokens. `main.tex` edited (same backup as Observation 47); no pipeline code, threshold, default or number changed. `paper_assets/references.bib` not touched.*
+
+- **Issue.** After Observation 47 the abstract said the decision is "repeatable, not necessarily correct". The discussion and conclusion still claimed more:
+  - "safe abstention a property of the architecture";
+  - "no input on which the safety condition quietly fails to hold";
+  - "a deterministic, auditable safety guarantee";
+  - that structural attribution transfers exactly. NLPIR and Observation 47 say attribution does not transfer.
+- **Fix (owner's instruction).**
+  - **"Guarantee Versus Behavior":** rewritten. "Guarantee" now names only the by-construction properties: injected text cannot change routing, unfingerprinted evidence is discarded, and the passage-level invariance transforms change nothing. It also says the decision is repeatable and not necessarily correct, and that a document planted before ingestion defeats both systems.
+  - **"Abstention as a Feature":** no longer says deterministic abstention escapes miscalibration under shift.
+  - **Conclusion, first paragraph:** "repeatable, not necessarily correct".
+  - **Conclusion, second paragraph:** attribution is dropped from what transfers; it adds that a prompted LLM is safer on external data, names the by-construction properties, states that pre-ingestion poisoning defeats both systems, and ends on "repeatable, auditable decision layer with no instruction-following component".
+- **Not changed (outside the requested scope; for the owner).** "Safety guarantee" wording remains:
+  - `main.tex` around line 1237 ("practical meaning of the safety guarantee");
+  - around line 1404 ("a worst-case safety guarantee");
+  - the guarantee framing near lines 599, 928, 1146, 1154 and 1329 (mostly about by-construction properties).
+- **Bibliography.** `main.tex` cites 99 keys; `references.bib` has 31 entries, 30 of them cited, so 69 cited keys are missing. One entry (`nguyen2024intent`) is uncited. The missing keys are listed in the handoff (2026-10-15 block); the full bibliography must come from Overleaf. No entry was invented.
+- **Effect.** `check_ledger.py --sync-lines`: 51 line numbers synced, coverage 1,297/1,297, presence 534/534, 0 `main.tex` fails; the same three DIFFs outside `main.tex`. Braces, environments and refs balance; there is no LaTeX engine here.
+- **Cost / regressions.** None measured; wording only.
+- **Evidence.** `python evaluation/check_ledger.py -v`; the `main.tex` diff against `main_2026-10-15_before_nlpir_alignment.tex`.
+- **Numbers updated.** None.
+
+## Observation 49: Bibliography keys matched to the owner's `references.bib`; four author fields wrong
+
+*Added 2026-10-15. Commit/branch: on top of `8d27d23`, `jonan`. Zero LLM tokens. `main.tex` edited (cite keys only); `references.bib` not touched (owner's file).*
+
+- **Issue.** The owner added `references.bib` at the repo root (109 entries; no duplicate keys, braces balance). Eight of the 99 keys cited in `main.tex` did not resolve.
+- **Check.** Crossref (`api.crossref.org/works/<DOI>`) was queried for the four entries whose first author disagreed with the old cite key. In all four, the old key's author is right and the new entry's `author` field is wrong:
+
+  | Entry | Bib file says | Crossref says |
+  |---|---|---|
+  | `jing2024vdbmssurvey` (10.1007/s00778-024-00864-x) | Jing, Yikun | James Jie Pan, Jianguo Wang, Guoliang Li (VLDB J 33:1591-1615) |
+  | `zhang2023hallucinationrobust` (10.1145/3583780.3614905) | Zhang, Yuyan | Yuyan Chen et al. (CIKM '23, pp. 245-255) |
+  | `wang2025vericite` (10.1145/3767695.3769505) | Wang, Chunhui | Haosheng Qian et al. (SIGIR-AP '25, pp. 47-54) |
+  | `huang2026c2cite` (10.1145/3773966.3777933) | Huang, Lei | Yue Yu et al. (WSDM '26, pp. 871-880) |
+- **Fix.** On the owner's instruction, the seven cite keys in `main.tex` now use the bib file's keys:
+  - `chen2023hallucinationdetection` -> `zhang2023hallucinationrobust`
+  - `zhu2025llm4ir` -> `zhu2025llmir`
+  - `abdullahi2025hallucinationrise` -> `abdullahi2025hallucinationreview`
+  - `qian2025vericite` -> `wang2025vericite`
+  - `yu2026c2cite` -> `huang2026c2cite`
+  - `pan2024vectordb` -> `jing2024vdbmssurvey`
+  - `douze2025faiss` -> `douze2025faisslibrary`
+
+  The four author fields above are NOT fixed. They are the owner's to correct, and until then the printed references name the wrong authors. `honovich2022true` (TRUE) has no entry; the owner will add it.
+- **Effect.** 98 of 99 cited keys resolve; 11 bib entries are uncited (harmless). The ledger is unchanged (coverage 1,297/1,297). Braces, environments and refs balance; there is no LaTeX engine here.
+- **Numbers updated.** None.
+
+## Observation 50: MultiHop-RAG, a new preregistered measurement; NLPIR's direction holds, its "no difference in correctness" does not
+
+*Added 2026-10-17. Commit/branch: on top of `8d27d23`, `jonan` (uncommitted docs edits present; the core-file hashes are in each result's `run_info`). No pipeline code, threshold or default changed; no `RAG_*` override set. API use: 6 pilot baseline calls, 3 superseded pilot calls, 300 full-run calls to `openai/gpt-oss-120b`. Our arm made zero LLM calls.*
+
+- **Issue.** NLPIR Section 4.8 (MultiHop-RAG) had no raw files, so its numbers were UNVERIFIABLE and kept out of `main.tex`.
+- **What was done.**
+  - **Preregistration:** written before any run (`docs/PREREGISTRATION_MULTIHOP.md`).
+  - **Data:** downloaded from Hugging Face (`yixuantt/MultiHopRAG` at `71ac0d0b`, ODC-BY, hashes checked). It is 609 articles and 2,556 queries, so NLPIR's "609-article index" is the whole corpus.
+  - **Index:** each article was written as `mh_NNN.txt` with a metadata header and indexed through the unchanged ingestion into a new store, `qdrant_db_multihop/`. That took 22,131 chunks and 92 minutes (NLPIR: 22,061).
+  - **Sample:** seeded, 150 null plus 50 each of inference, comparison and temporal, run in shuffled order.
+  - **Ours:** the decision-only harness, with retrieval not bypassed.
+  - **Baseline:** E1 prompt with gpt-oss-120b on the same first-attempt retrieved passages.
+  - **Code:** `evaluation/run_eval_multihop.py` (new) and `tests/test_run_eval_multihop.py` (22 tests, no network).
+- **Amendment 1 (after the pilot, before any full-run query).** The pilot's fourth baseline request needed 10,176 tokens against the free tier's 8,000-token-per-request limit (HTTP 413). The baseline was therefore capped at the top 12 passages, which is what E1 itself sent (`max_chunks_sent: 12`). The decision used only the error, not any pilot outcome. The three pre-amendment pilot rows are kept as `*.superseded_amendment1`. The owner stopped the first pilot attempt while it was still loading; it had written no query rows and no cache files.
+- **Effect** (`python evaluation/run_eval_multihop.py --report --tag mh`; 300/300 paired; Wilson 95%; exact McNemar):
+
+  | Measure | Ours | Baseline | p |
+  |---|---|---|---|
+  | Null queries answered | 56/150 (37.3%) [30.0, 45.3] | 2/150 (1.3%) [0.4, 4.7] | 1.2e-14 |
+  | Answerable not answered | 78/150 (52.0%), 77 of them conflicts | 110/150 (73.3%), 108 insufficient | 5.8e-5 |
+  | Decision correct (strict) | 125/300 (41.7%) | 188/300 (62.7%) | 6.4e-7 |
+  | Decision correct (lenient, exploratory) | 166/300 (55.3%) | 188/300 (62.7%) | 0.055 |
+
+  Retrieval (ours, 399 gold articles): 89.0% retrieved across sub-queries, article recall@5 59.6% for the original question.
+- **Predictions.** P1, P2, P3 and P5 held. **P4 failed.** The baseline's decisions are significantly more often correct under the preregistered strict grading.
+- **Against NLPIR.**
+  - **Matches in direction:** gap leak (NLPIR 21/57 vs 1/57), over-abstention (57.8% vs 79.7%), false conflicts as ours' main refusal mode, and retrieval (89.9%, 55.0%).
+  - **Does not match:** NLPIR's "overall correctness does not differ (p = 0.48)". Here the baseline is better.
+- **Cause, as far as the data says.**
+  - **Our gate:**
+    - it tests relevance and coverage, not whether the evidence contains the answer, so near-miss null queries pass (56 answered);
+    - Stage 4 flags conflicts between articles without establishing that they concern the question (77 false conflicts on answerable queries, 41 on null ones);
+    - this is failure patterns 1 and 2 in `claude.md`, at scale.
+  - **The baseline:**
+    - it refuses most answerable queries;
+    - only 67.4% of gold articles were inside its 12 passages;
+    - exploratory: it refused 38/60 answerable queries even when every gold article was sent, and 72/90 when some were cut, so the cap explains part, not all.
+- **Cost / regressions.**
+  - The comparison is asymmetric by Amendment 1 (the baseline sees at most 12 passages; ours validates about 30). This is reported, not corrected.
+  - Answer content is not graded; decisions only, as in NLPIR.
+- **Evidence.** `evaluation/results/mh_{ours,baseline}_multihop.ckpt.jsonl`, `mh_multihop_report.json`, `mh_sample.json`, `mh_full.log`. All gitignored, regenerable with the commands in the script header. The sample is now sealed: it is not to be used to choose or tune anything.
+- **Numbers updated.**
+  - `numbers.md`: new section 4b.
+  - `docs/NUMBERS_LEDGER.csv`: 15 rows (NU-010 onward), status REPRODUCED, all recomputing from the report file.
+  - NLPIR's own MultiHop numbers (NL-035 to NL-044) stay UNVERIFIABLE, because this measurement is not a reproduction of them.
+  - `main.tex` was not edited.
 
 ---
 

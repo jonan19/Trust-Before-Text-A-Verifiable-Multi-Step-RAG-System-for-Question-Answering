@@ -50,3 +50,6 @@ experiments/_*_log*.txt
 data_merged/
 qdrant_db_merged/
 data_ramdocs/
+# MultiHop-RAG (downloaded data, generated article files, its own store)
+data_multihop/
+qdrant_db_multihop/
