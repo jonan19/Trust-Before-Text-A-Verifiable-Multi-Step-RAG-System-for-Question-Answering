@@ -65,6 +65,7 @@
 | 53 | 2026-10-17 | Paper review (Part 6): 29 ACCURACY and CLAIM fixes applied to `main.tex` | Paper wording / provenance of numbers | Done (`main.tex`, ledger; no pipeline change) | haystack sentence removed; "by construction" kept only for flips and routing; ledger 597 rows, check passes; 169 tests pass |
 | 54 | 2026-10-17 | Paper figures rebuilt from result files; NLI separation measured on the current system | Paper figures / provenance of numbers | Done (`nli_scores.py`, `make_figures.py`, `main.tex`, ledger) | C1 clean separation, no false conflict; C2 false conflicts 0.9993 and 0.9984 sit inside the true range (0.9943 to 0.9994) |
 | 55 | 2026-10-17 | NLI-cutoff sensitivity explained by the measured score gap | Paper wording | Done (`main.tex`, ledger) | scored pairs are >= 0.982 or <= 0.224, so cutoffs in between give identical decisions |
+| 56 | 2026-10-17 | Paper restructured and cut (review P30 to P49) | Paper structure | Done (`main.tex`, ledger) | tables 29 -> 18, prose about 15.5k -> 14.1k words; external benchmarks after the fixes; Limitations its own section |
 
 ---
 
@@ -841,3 +842,46 @@ Add the new row to the master timeline above and set `Last synced` in `numbers.m
 - **Fix.** It now states the measured reason, from the Observation 54 files. Every candidate pair the NLI prong scores at the default cutoff (42 on Corpus 1, 112 on Corpus 2) scores either at least 0.982 or at most 0.224. Any cutoff between those values gives each pair the same verdict, so the system takes the same path and makes the same decisions.
 - **Effect.** Ledger: MT-272 extended, MT-473 added. `check_ledger.py` PASSED (602 rows). 169 tests pass.
 - **Numbers updated.** None changed (`numbers.md` section 2 already holds the score ranges).
+
+---
+
+## Observation 56: Paper restructured and cut (review items P30 to P49)
+
+*Added 2026-10-17. Commit/branch: on top of `b01946e`, `jonan`. Nothing run except the ledger checker and `pytest`; no pipeline code, threshold or default changed. Backup: `D:\Major Project_paper_backups\main_2026-10-17_before_structure_cut_style.tex`.*
+
+- **Issue.** The review (`docs/PAPER_REVIEW_2026-10-17.md`) found the paper about twice the NLPIR length.
+  - Many tables repeated each other.
+  - The external benchmarks (run on the current system) sat before the section that defines the current system.
+  - Limitations was a subsection of the Conclusion.
+  - Internal names (FIXES_REPORT, H5, H2/H4, E3), two em dashes and `---` table cells were left in.
+- **Fix (owner: "go with 3", all of P30 to P50; P50 was done in Observation 54).**
+  - **Structure:**
+    - RAMDocs and MultiHop-RAG moved after the post-evaluation fixes;
+    - Limitations is its own section before the Conclusion;
+    - frozen-system captions labelled;
+    - Future Work renumbered (the held-out corpus is now item 3);
+    - `tab:multihop` and `tab:security_current` referenced in the text;
+    - internal names replaced;
+    - bare query IDs given their corpus.
+  - **Cuts:**
+    - Related Work "Breadth" subsection condensed to one paragraph, all 39 citations kept;
+    - Implementation's stack, contracts and interface subsections folded into one paragraph;
+    - two Discussion subsections that repeated the introduction removed (the miscalibration caveat kept as one sentence);
+    - tables removed: `tab:validation`, `tab:results`, `tab:confusion`, `tab:stack`, `tab:thresholds`, `tab:corpus2`, `tab:hardening`, `tab:adaptive`, `tab:ramdocs_task`, `tab:ramdocs_published`, `tab:ramdocs_abstain` (their numbers stay in the prose, Fig. 4 or Appendix B);
+    - `tab:fixes_headline` merged into `tab:ci_mcnemar`;
+    - the Architectural Changes narrative became `tab:changes`;
+    - Limitations no longer repeats the external-benchmark numbers;
+    - the sensitivity and component-ablation tables moved to a new Appendix (`app:sweeps`).
+  - **Style:** em dashes and `---` cells replaced; editing comments and `\hfill\break` removed.
+- **New numbers in the paper**, recomputed from existing files (no new run):
+  - frozen attribution precision 0.727 (16/22, Corpus 1) and 0.405 (15/37, Corpus 2), from the frozen runs' cited pairs and the query files;
+  - prompted-baseline conflict F1 0.968 on both corpora (15/15 precision, 15/16 recall).
+- **Effect.**
+  - Prose about 15,460 -> 14,107 words; tables 29 -> 18 (figures 6).
+  - `check_ledger.py` PASSED: 566 rows; 43 rows retired with their text; 7 rows added; moved rows keep their original source, or an equivalent one over the same file where the order of numbers changed.
+  - `pytest` 169 passed. Braces balance, environments match, every `\ref` resolves.
+- **Cost / regressions.** The per-style hardening table and the RAMDocs published-score table are now prose. Dropped from the paper:
+  - the 0.70 faithfulness and 20 prefetch rows of the threshold table (the 0.70 remains in the synthesis section);
+  - the Main Results table's restatement of the prose.
+- **Not done.** Still no compiled PDF. The paper is still well above an 8-page conference limit. The review's further compression of Related Work and System Architecture (NLPIR-style) was not part of P30 to P50.
+- **Numbers updated.** `numbers.md` section 6: frozen attribution precision and baseline F1 rows.

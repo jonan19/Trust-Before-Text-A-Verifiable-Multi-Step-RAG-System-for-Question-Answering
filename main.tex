@@ -13,8 +13,8 @@
 %      behind \IfFileExists guards. NOTE: the TikZ figures have not been
 %      compiled locally (no TeX engine available here); check them on the
 %      first Overleaf build.
-%   3. References: DONE. 98 curated entries in references.bib (BibTeX,
-%      IEEEtran style; last count updated 2026-08-16). Compile order in
+%   3. References: DONE. 109 entries in references.bib (BibTeX,
+%      IEEEtran style; count updated 2026-10-17). Compile order in
 %      Overleaf: pdflatex, bibtex, pdflatex, pdflatex.
 %==============================================================================
 \documentclass[conference]{IEEEtran}
@@ -479,83 +479,30 @@ self-consistency voting~\cite{wang2023selfconsistency} likewise improve
 answer quality without a faithfulness guarantee, since a model can reach a
 stable consensus through unsupported reasoning.
 
-\subsection{Breadth of the RAG and Hallucination-Mitigation Literature}
-The pattern above, retrieval-side improvements, post-hoc detection, and
-learned in-generation signals, recurs across a much larger body of recent
-work than the papers discussed individually so far, and surveying that
-breadth is useful for showing that the gap this paper identifies is not an
-artifact of a narrow reading of the field.
-
-A first cluster targets detection and mitigation through mechanisms
-internal to the model rather than external to it: metamorphic testing of
-model outputs~\cite{yang2025metamorphic}, hallucination detection from a
-model's internal state and output probabilities~\cite{li2025mixhd},
-counterfactual joint decoding~\cite{liu2026isfjrag}, and layer- and
-context-weighting strategies~\cite{yu2025context} all probe or reweight
-what the model already knows. A complementary strand adds a second,
-independent view rather than a better single one: robust discernment of
-reliable answers from an ensemble of internal
-signals~\cite{zhang2023hallucinationrobust} and multi-agent
-cross-checking~\cite{darwish2025multiagent} trade compute for a form of
-consensus. None of these six inspect whether the retrieved evidence itself
-is sufficient or
-consistent, and a recent taxonomic survey organizes several hundred such
-techniques into six categories spanning training, architecture, prompting,
-and post-generation control~\cite{kazlaris2025taxonomy}.
-
-A second cluster
-improves the retrieval and system-engineering side of RAG rather than its
-correctness guarantees. Systems-level work speeds up or restructures the
-pipeline itself: accelerating RAG
-inference~\cite{quinn2025accelerating}, declarative pipeline
-construction~\cite{macdonald2025pyterrier}, and a sparsified
-late-interaction retriever that trades some of ColBERT's accuracy for
-index-time efficiency~\cite{formal2024splate} all optimize how fast or how
-cheaply retrieval runs. Retrieval-quality work instead changes what is
-retrieved: topology-aware
-retrieval~\cite{wang2024topology}, time-sensitive
-retrieval~\cite{wu2024timesensitive}, layered adaptive query
-handling~\cite{huang2024layered}, hybrid retrieval
-architectures~\cite{omrani2024hybrid}, and multimodal RAG
-evaluation~\cite{sun2024multimodal} each target a different retrieval
-scenario, but none of these five decide whether the result can be
-trusted. Graph-structured retrieval is
-sufficiently active to have produced independent surveys in the same
-period~\cite{peng2025graphrag, procko2024graphrag}, and RAG's use as a
-general content-generation and knowledge-asset tool has its own
-survey~\cite{zhao2026aigc, james2025knowledgeassets}. A broader survey of
-how large language models are reshaping every stage of the
-information-retrieval pipeline~\cite{zhu2025llmir} situates all of these
-efforts within the same retrieval-first paradigm that our validation gate
-sits downstream of.
-
-A third cluster demonstrates that the reliability problem this paper
-addresses is not confined to a research setting: RAG systems built for
-emergency radiology diagnosis~\cite{fink2025radiology}, institutional
-nuclear medicine manuals~\cite{fukui2025nuclearmedicine}, health
-information retrieval~\cite{upadhyay2025health}, personalized
-databases~\cite{byun2024interactive}, business information
-systems~\cite{klesel2025rag}, aircraft maintenance
-documentation~\cite{signe2025substring}, manufacturing-domain document
-question answering over knowledge-graph-enhanced
-retrieval~\cite{knollmeyer2025documentgraphrag}, and e-governance
-applications~\cite{papageorgiou2025agentic} all report the same tension
-between usefulness and trustworthiness in deployment, which is the
-practical motivation for a verification gate rather than a per-domain
-patch. A fourth cluster surveys trustworthiness and factuality at a level
-above any single technique~\cite{wang2025factuality, lin2024trustworthy,
+\subsection{Breadth of the Literature}
+The same pattern recurs across a much larger body of recent work. Methods
+internal to the model probe or reweight what it already
+knows~\cite{yang2025metamorphic, li2025mixhd, liu2026isfjrag, yu2025context,
+zhang2023hallucinationrobust, darwish2025multiagent, kazlaris2025taxonomy};
+systems and retrieval work makes retrieval faster or better
+targeted~\cite{quinn2025accelerating, macdonald2025pyterrier,
+formal2024splate, wang2024topology, wu2024timesensitive, huang2024layered,
+omrani2024hybrid, sun2024multimodal, peng2025graphrag, procko2024graphrag,
+zhao2026aigc, james2025knowledgeassets, zhu2025llmir}; and RAG deployments
+in radiology, nuclear medicine, health, personal databases, business
+systems, aircraft maintenance, manufacturing and e-governance report the
+same tension between usefulness and trust~\cite{fink2025radiology,
+fukui2025nuclearmedicine, upadhyay2025health, byun2024interactive,
+klesel2025rag, signe2025substring, knollmeyer2025documentgraphrag,
+papageorgiou2025agentic}. Surveys of trustworthiness and
+factuality~\cite{wang2025factuality, lin2024trustworthy,
 dong2025safeguarding, huang2024safetyvv, brown2025systematic,
-rahman2026hallucination, abdullahi2025hallucinationreview}, consistently
-identifying the same open problem this paper targets: verification
-mechanisms exist, but none of them is a hard precondition for generation.
-Finally, fact-checking and misinformation-detection systems that combine
-retrieval with an LLM judge~\cite{cheung2023factllama,
-pendyala2024misinformation} face the same attribution question raised
-earlier in this section, and further prompt-injection studies show the
-attack surface extending beyond text, to mathematical-notation
-obfuscation~\cite{kwon2024mathinjection} and image-based mind-map
-prompts~\cite{lee2025mindmapping}, reinforcing that instruction injection is
-a channel problem independent of input modality.
+rahman2026hallucination, abdullahi2025hallucinationreview} and fact-checking
+systems with an LLM judge~\cite{cheung2023factllama,
+pendyala2024misinformation} reach the same open problem, and further
+injection studies extend the attack surface to mathematical notation and
+images~\cite{kwon2024mathinjection, lee2025mindmapping}. In none of them is
+evidence verification a hard precondition for generation.
 
 \subsection{The Gap: No Pre-Generation Verification Gate}
 Taken together, the literature verifies evidence in three places, none of
@@ -726,31 +673,11 @@ final audit trail can see exactly why a chunk was retrieved.
 \subsection{Seven-Stage Validation Pipeline}
 \label{sec:validation}
 The validation pipeline is the factual gatekeeper. It applies seven
-deterministic stages in sequence (Table~\ref{tab:validation}), and
-Fig.~\ref{fig:validation} depicts the flow. Stages 1 through 3 clean and
-scope the evidence; Stage 4 tests it for internal contradiction; Stage 5
+deterministic stages in sequence, shown in Fig.~\ref{fig:validation}.
+Stages 1 through 3 clean and scope the evidence (normalization,
+deduplication at cosine $\geq 0.90$, and a relevance filter); Stage 4 tests it for internal contradiction; Stage 5
 tests whether enough of it survives to answer the query; Stages 6 and 7
 structure the survivors and emit the verdict.
-
-\begin{table}[htbp]
-\caption{Seven-Stage Evidence Validation Pipeline}
-\label{tab:validation}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}>{\bfseries}c l X@{}}
-\toprule
-\# & Stage & Function \\
-\midrule
-1 & Normalization      & Standardize retrieved chunk text. \\
-2 & Deduplication      & Remove near-identical chunks (cosine $\geq 0.90$). \\
-3 & Relevance filter   & Drop chunks below a relevance floor; scope evidence to the query. \\
-4 & Conflict detection & Flag cross-document contradiction via three prongs (Sec.~\ref{sec:conflict}). \\
-5 & Sufficiency check  & Decide whether surviving evidence is adequate to answer. \\
-6 & Evidence structuring & Rank validated chunks into an ordered evidence pack. \\
-7 & Abstention decision & Emit PASS, CONFLICT, or INSUFFICIENT. \\
-\bottomrule
-\end{tabularx}
-\end{table}
 
 \begin{figure}[htbp]
 \centering
@@ -899,7 +826,7 @@ default $\tau_{\text{focus}} = 0.5$) is a hard presence test, not a
 threshold on a score: a majority of the query's rarest content words
 must appear in the evidence at all. On Corpora 1 and 2 this is what refuses
 a question the corpus genuinely does not cover: two gap queries (Corpus~1 Q051,
-Corpus~2 Q017) were passing H2/H4 through marginal score or coverage
+Corpus~2 Q017) were passing the average-score or coverage test through marginal values
 while their subject was absent from the corpus entirely. The cost of
 this fix is three answerable queries that now over-abstain because the
 corpus answers them in different vocabulary than the query used;
@@ -951,61 +878,24 @@ path to a generated answer.
 \section{Implementation}
 \label{sec:impl}
 
-The system is implemented in Python as a set of single-responsibility
-modules that communicate through fixed, typed schemas. This section
-documents the technology stack, the inter-module contracts, the complete
-set of deterministic thresholds, and the steps taken for reproducibility.
-
-\subsection{Technology Stack}
-The retrieval index is a local, persistent Qdrant collection holding three
-vectors per chunk: a dense \texttt{all-MiniLM-L6-v2} embedding (384
+The system is implemented in Python as single-responsibility modules that
+exchange fixed, typed schemas. The validation pipeline returns a verdict
+object carrying the ranked evidence, the two decision flags, a confidence
+score, the count of relevant chunks, and, on failure, a named abstention
+reason, so the orchestrator branches on explicit fields rather than on
+generated text. The index is a local, persistent Qdrant collection with
+three vectors per chunk: a dense \texttt{all-MiniLM-L6-v2} embedding (384
 dimensions), a BM25 sparse vector with Qdrant's inverse-document-frequency
-modifier, and ColBERT token-level multivectors from
-\texttt{answerai-colbert-small-v1}. Contradiction and faithfulness checks
-share a single \texttt{cross-encoder/nli-deberta-v3-base} model instance.
-Synthesis is performed by a Groq-hosted LLM behind an interface
-that abstracts the backend, so alternative providers can be substituted
-without touching the pipeline. A FastAPI service exposes document-upload
-and query endpoints and static-mounts a lightweight HTML, CSS, and
-JavaScript frontend. Table~\ref{tab:stack} summarizes the stack.
-
-\begin{table}[htbp]
-\caption{Core Technology Stack}
-\label{tab:stack}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}l X@{}}
-\toprule
-Component & Technology \\
-\midrule
-Language          & Python 3.11 \\
-Vector database   & Qdrant (local persistent) \\
-Dense embedding   & \texttt{all-MiniLM-L6-v2} (384-d) \\
-Sparse retrieval  & BM25 with Qdrant IDF modifier \\
-Reranker          & ColBERT \texttt{answerai-colbert-small-v1} \\
-NLI model         & \texttt{cross-encoder/nli-deberta-v3-base} \\
-Synthesis LLM     & Groq-hosted LLM (see Sec.~\ref{sec:synthesis}; pluggable) \\
-Service / UI      & FastAPI backend, static HTML/CSS/JS frontend \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsection{Inter-Module Contracts}
-Modules never pass free-form text between stages. Each stage returns a
-typed object with a fixed schema, which makes the pipeline unit-testable
-with mocked inputs and lets any single component be swapped in isolation.
-The validation pipeline returns a verdict object carrying the ranked
-evidence, the two decision flags, a confidence score, the count of
-relevant chunks, and, on failure, a named abstention reason. Synthesis
-returns an object carrying the answer, its citations, the faithfulness
-score, and any sentences that failed the entailment check. Because the
-decision flags and the abstention reason are explicit fields rather than
-parsed from prose, the orchestrator's branching is a direct function of the
-schema, not an interpretation of generated text.
+modifier, and ColBERT multivectors from \texttt{answerai-colbert-small-v1}.
+Contradiction and faithfulness checks share one
+\texttt{cross-encoder/nli-deberta-v3-base} instance, and synthesis calls a
+Groq-hosted LLM behind a provider-independent interface. A FastAPI service
+with a small HTML frontend shows each answer with its citations, confidence
+and faithfulness score, or the reason for an abstention.
 
 \subsection{Deterministic Thresholds}
 Every gate in the pipeline is a named constant, listed in full in
-Table~\ref{tab:thresholds}. This matters for two reasons. First, it makes
+Appendix~\ref{app:constants}. This matters for two reasons. First, it makes
 the system's behavior fully specified: given the corpus and these
 constants, the verdict for any query is determined. Second, it separates
 the two kinds of parameter this paper is careful to distinguish. Most
@@ -1026,41 +916,6 @@ Section~\ref{sec:limitations} flags as requiring re-fitting on a new
 corpus; the transferable contribution is the method for placing them, not
 the specific values.
 
-\begin{table}[htbp]
-\caption{Deterministic Thresholds. The first three calibrated values are
-fitted on Corpus 1 only; the query-intent gate, focus presence and the
-answerhood margin were selected using both corpora. Appendix~\ref{app:constants}
-lists all 20 active decision constants. Structural values are
-fixed design defaults and apply unchanged to every corpus.}
-\label{tab:thresholds}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}X c c l@{}}
-\toprule
-Threshold & Value & Stage & Type \\
-\midrule
-Duplicate similarity     & 0.90 & 2 & Structural \\
-Relevance ratio          & 0.30 & 3 & Structural \\
-Min relevance score      & 0.05 & 3 & Structural \\
-Min chunk score          & 0.60 & 3 & Structural \\
-Conflict similarity gate & 0.68 & 4 & Structural \\
-NLI similarity floor     & 0.15 & 4 & Structural \\
-NLI contradiction        & 0.94 & 4 & \textbf{Calibrated} \\
-Min chunks               & 1    & 5 & Structural \\
-Min average score        & 0.65 & 5 & \textbf{Calibrated} \\
-Min query coverage       & 0.55 & 5 & \textbf{Calibrated} \\
-Prefetch limit           & 20   & Ret. & Structural \\
-Faithfulness             & 0.70 & Syn. & Structural \\
-Query-intent gate        & 0.35 & 4 & \textbf{Calibrated} \\
-Anchor: require both     & yes  & 4 & Structural \\
-Min chunks for avg suff. & 2    & 5 & Structural \\
-Min focus presence       & 0.50 & 5 & \textbf{Calibrated} \\
-Answerhood margin        & 5.5  & 4 & \textbf{Calibrated} \\
-
-\bottomrule
-\end{tabularx}
-\end{table}
-
 \subsection{Reproducibility}
 Three provisions make the evaluation reproducible. The dataset is released
 in full: the 11-document corpus, the 78 queries with gold labels, and the
@@ -1080,14 +935,6 @@ uses temperature 0 except the baseline consistency check (5 unseeded reruns
 at temperature 0.7); the invariance transforms use seed 20260819. The
 post-merge runs used Python 3.11.9; dependencies are given as lower bounds,
 not pinned versions.
-
-\subsection{Interactive Interface}
-Beyond the batch evaluation harness, the system runs as an interactive
-service. A user uploads policy documents and submits queries through the
-frontend, and each answer is displayed alongside its verified inline
-citations, its confidence score, and its faithfulness score, so that the
-evidence behind an answer, or the reason for an abstention, is visible at
-the point of use.
 
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Evaluation}
@@ -1203,7 +1050,7 @@ not a repeat of the full 45-case Corpus 1 study.
 \end{table}
 
 \subsection{Main Results}
-Table~\ref{tab:results} reports the primary results. The system reaches
+On Corpus~1 the frozen system reaches
 92.3\% decision accuracy (72 of 78). Conflict recall is perfect (16 of 16),
 conflict precision is 0.727 (16 of 22), giving a conflict $F_1$ of 0.842.
 Answer recall is 87.0\% (40 of 46) and gap recall is 100\% (16 of 16). The
@@ -1211,29 +1058,8 @@ headline safety result is that the unsafe-answer rate is exactly zero:
 across all 32 queries that should trigger abstention, the system answered
 none.
 
-\begin{table}[htbp]
-\caption{Main Results on Corpus 1 (78 Queries)}
-\label{tab:results}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}X r@{}}
-\toprule
-Metric & Value \\
-\midrule
-Decision accuracy         & 92.3\% (72/78) \\
-Conflict recall           & 1.000 (16/16) \\
-Conflict precision        & 0.727 (16/22) \\
-Conflict $F_1$            & 0.842 \\
-Answer recall             & 87.0\% (40/46) \\
-Gap / insufficient recall & 100\% (16/16) \\
-\textbf{Unsafe answers}   & \textbf{0 / 32 (0\%)} \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-The confusion matrix in Table~\ref{tab:confusion} shows why this matters
-(Figure~\ref{fig:confusion_heat} sets it beside Corpus~2 and the current
-system).
+The confusion matrix (Figure~\ref{fig:confusion_heat}, top left; the other
+panels show Corpus~2 and the current system) shows why this matters.
 Every off-diagonal cell is zero except one: six answerable queries were
 flagged as conflicts. No conflict was missed, no gap was answered, and no
 query was answered when it should have abstained. In other words, every one
@@ -1241,22 +1067,6 @@ of the system's six errors is an over-cautious abstention, not a piece of
 misinformation. This asymmetry, errors that cost a refusal rather than
 produce a false answer, is what the gate is designed for; on this corpus it
 held, and on Corpus~2 it did not (Section~\ref{sec:corpus2}).
-
-\begin{table}[htbp]
-\caption{Confusion Matrix, Corpus 1 (rows: gold label, columns: system decision)}
-\label{tab:confusion}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}l *{3}{c} c@{}}
-\toprule
-Gold $\downarrow$ / Decision $\rightarrow$ & Answer & Conflict & Insuff. & Total \\
-\midrule
-Answer        & 40 & 6  & 0  & 46 \\
-Conflict      & 0  & 16 & 0  & 16 \\
-Insufficient  & 0  & 0  & 16 & 16 \\
-\bottomrule
-\end{tabularx}
-\end{table}
 
 \begin{figure}[htbp]
 \centering
@@ -1285,7 +1095,7 @@ The gains are cumulative and each corresponds to a specific, inspectable
 change, shown as a running total in Figure~\ref{fig:ablation}.
 
 \begin{table}[htbp]
-\caption{Ablation on Corpus 1 (78 Queries)}
+\caption{Ablation on Corpus 1, Frozen System (78 Queries)}
 \label{tab:ablation}
 \centering
 \small
@@ -1428,7 +1238,7 @@ lacking the second.
 \label{sec:corpus2}
 Every threshold of the frozen system was calibrated on Corpus 1 alone
 (Section~\ref{sec:impl}); the three marked as selected on both corpora in
-Table~\ref{tab:thresholds} were added later. To test whether that calibration, and the
+Appendix~\ref{app:constants} were added later. To test whether that calibration, and the
 architecture's guarantees more broadly, transfer to unseen content, we ran
 the identical frozen system, with no threshold or decision logic changed,
 on a second corpus, written separately by this project to the same fixed-fact-map
@@ -1444,7 +1254,7 @@ conflict, and 16 insufficient, with 4 planted conflicts and 6 gaps), so any
 change in results is attributable to content, not test design.
 
 The outcome separates cleanly into properties that transferred and numbers
-that did not (Table~\ref{tab:corpus2}), and we report the accuracy side of
+that did not (Tables~\ref{tab:summary} and~\ref{tab:heldvsdrifted}), and we report the accuracy side of
 that split first because it is the part where our system does not win.
 Decision accuracy fell from 92.3\% to
 66.7\% (52 of 78), while the prompted baseline rose slightly to 98.7\%,
@@ -1486,26 +1296,7 @@ correctly or not. This is Corpus 1's core open problem
 failure.
 
 \begin{table}[htbp]
-\caption{Corpus 2 (US academic regulations) against Corpus 1. By-construction
-properties transfer; calibrated numbers drift.}
-\label{tab:corpus2}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}X c c c@{}}
-\toprule
-Metric & Corpus 1 (ours) & Corpus 2 (ours) & Corpus 2 (base.) \\
-\midrule
-Decision accuracy       & 92.3\% & 66.7\% & 98.7\% \\
-Conflict $F_1$          & 0.84   & 0.60   & 0.97 \\
-\quad precision         & 0.73   & 0.43            & 1.00 \\
-\quad recall            & 1.00   & 1.00            & 0.94 \\
-Unsafe answers (/32)    & 0      & 4      & 1 \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\begin{table}[htbp]
-\caption{What held versus what drifted across the two corpora.}
+\caption{What held versus what drifted across the two corpora (frozen system).}
 \label{tab:heldvsdrifted}
 \centering
 \small
@@ -1528,271 +1319,8 @@ Unsafe-answer rate             & calibrated      & drifted \\
 \textsuperscript{a}Recall stayed at 16 of 16 on both corpora, but this is
 not an independent by-construction guarantee: the same query-unscoped
 firing that preserves recall is also what drives the precision collapse on
-Corpus 2 (Table~\ref{tab:corpus2}).
+Corpus 2 (Table~\ref{tab:ci_mcnemar}).
 \end{table}
-
-\subsection{External Validation: RAMDocs}
-\label{sec:ramdocs}
-Both corpora in Sections~\ref{sec:eval} and~\ref{sec:corpus2} were authored by
-this project to a fixed fact map, which is a controlled-evaluation strength
-and, as Section~\ref{sec:limitations} states plainly, an open question about
-generalization to content this project did not write and did not select
-against. To address that question directly, we ran the current system,
-the one in the ``current'' columns of Table~\ref{tab:fixes_headline}, against
-RAMDocs~\cite{wang2025ramdocs}, an externally authored benchmark of 500
-queries in which each query supplies several documents individually labeled
-\texttt{correct}, \texttt{misinfo}, or \texttt{noise}. Neither the documents
-nor the queries were seen during threshold calibration, and no threshold was
-adjusted after this run; the grading rules were fixed in advance
-(preregistration documented separately). A superseded earlier run exposed
-gold labels in document names and was replaced by the run reported here, in
-which every document is named only ``Document~$N$'' and no label or answer
-field reaches any chunk or prompt. A prompted baseline (\texttt{gpt-oss-120b},
-the model our synthesis uses here, temperature 0, instructed to answer only
-from the passages and to reply \texttt{INSUFFICIENT} or \texttt{CONFLICT}
-otherwise) ran on the same documents under the same names, and both systems
-were graded by the same code on one protocol (Table~\ref{tab:ramdocs_main});
-no baseline reply was empty. Because the first document is a correct one in
-476 of the 500 records, both systems were also run with the documents in a
-seeded random order; the results are given below.
-
-\subsubsection{Task Correspondence and a Deliberate Deviation}
-Table~\ref{tab:ramdocs_task} summarizes the correspondence. The one
-methodological deviation from every other result in this paper is that
-RAMDocs supplies its documents directly with each query, so retrieval is
-bypassed: the documents are injected as already-retrieved evidence rather
-than recovered from a Qdrant index. This means the RAMDocs result validates
-the validation and decision layers on unseen content, but it does not
-exercise Stage~3's relevance filtering the way live retrieval does (every
-supplied document receives a uniform placeholder score above the relevance
-floor), and it says nothing about whether our retrieval stage would have
-surfaced the same documents unassisted. We report this as a scope
-limitation on the result, not as a discovery made after the fact.
-
-\begin{table}[htbp]
-\caption{Task Correspondence, RAMDocs versus This System}
-\label{tab:ramdocs_task}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}l X X@{}}
-\toprule
- & RAMDocs (published) & Trust Before Text (as run) \\
-\midrule
-Input & 1--12 labeled docs/query & Same docs, closed-book (retrieval bypassed) \\
-Ambiguous queries & Multiple valid gold answers & Handled identically; no query-specific accommodation \\
-LLM calls/query & 1 (baseline) to several (MADAM-RAG) & 1 (single synthesis call) \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsubsection{Metric Non-Equivalence}
-RAMDocs' own published table~\cite{wang2025ramdocs} scores every method,
-including their best multi-round debate method, MADAM-RAG, by exact match
-(EM): the output must contain every gold answer and no wrong one. We score
-our system and the prompted baseline by EM, and we also report
-\textit{safe rate}, the fraction of queries whose answer contains a gold
-answer or that the system refused, because that is this paper's stated
-thesis and EM has no abstention credit. \textbf{The published EM figures
-come from different models, prompts, and no refusal option, so they are
-context only, and nothing below is a claim that our system outscores
-MADAM-RAG on their task.} Table~\ref{tab:ramdocs_main} reports what a
-deterministic gate applied after a single LLM call does on data explicitly
-designed to contain conflicting and misleading evidence, next to a prompted
-baseline under the same protocol.
-
-\begin{table}[htbp]
-\caption{RAMDocs, 500 Queries, One Protocol. Ours and the prompted baseline
-both use \texttt{gpt-oss-120b}, run on the same documents and graded by the
-same code; Wilson 95\% intervals. Published EM scores are in
-Table~\ref{tab:ramdocs_published}.}
-\label{tab:ramdocs_main}
-\centering
-\footnotesize
-\begin{tabularx}{\columnwidth}{@{}X r r@{}}
-\toprule
-Metric & Ours & Prompted baseline \\
-\midrule
-Refusal rate              & 31.4\% [27.5, 35.6] & 76.8\% [72.9, 80.3] \\
-Exact match (EM)          & 18.0\% [14.9, 21.6] & 7.6\% [5.6, 10.3] \\
-Misinformation asserted   & 2.8\% [1.7, 4.6]    & 1.0\% [0.4, 2.3] \\
-Safe rate                 & 85.2\% [81.8, 88.0] & 94.8\% [92.5, 96.4] \\
-Refusals justified        & 54.1\% (85/157)     & 54.4\% (209/384) \\
-Answered: gold / misinfo  & 78.4\% / 4.1\% (of 343) & 77.6\% / 4.3\% (of 116) \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\begin{table}[htbp]
-\caption{Published exact-match scores on RAMDocs~\cite{wang2025ramdocs}
-(Llama-3.3-70B unless noted; different prompts, no refusal option). Context
-only: not the protocol of Table~\ref{tab:ramdocs_main}.}
-\label{tab:ramdocs_published}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}X r r@{}}
-\toprule
-Method & Calls/query & Score \\
-\midrule
-No RAG (Llama-3.3-70B)        & 1     & 5.8\% EM \\
-Prompt-based RAG (Llama-3.3-70B) & 1  & 32.6\% EM \\
-Self-reflection agent          & 2+    & 30.4\% EM \\
-Speculative RAG                & 2+    & 30.6\% EM \\
-Astute RAG                     & 2+    & 31.8\% EM \\
-MADAM-RAG (Llama-3.3-70B)      & several & 34.4\% EM \\
-MADAM-RAG (Qwen2.5-72B)        & several & 26.4\% EM \\
-MADAM-RAG (GPT-4o-mini)        & several & 28.0\% EM \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-The prompted baseline is safer (94.8\% vs.\ 85.2\% safe rate, exact McNemar
-$p<10^{-8}$) and asserts misinformation less often (1.0\% vs.\ 2.8\%,
-exact McNemar $p=0.022$), largely by refusing 76.8\% of queries against our 31.4\%. Ours
-answers far more correctly (EM 18.0\% vs.\ 7.6\%, $p<10^{-12}$) and is
-comparable to the baseline per answered query (gold share $p=0.90$,
-misinformation share $p=1.0$). Of the 343 queries ours answered, 60 (17\%)
-match neither a gold nor a misinformation answer; the string-match grader
-leaves them unscored, so they count as neither safe nor unsafe, and the
-safe rate is a fraction of all 500 queries. The grader is lenient in one
-direction: an answer containing both a gold and a wrong value counts as
-safe. Counting any wrong value as unsafe gives 71.6\% safe for ours and
-94.2\% for the baseline. With the documents shuffled, our gate makes the
-identical decision on all 500 queries and the safe rate is 85.4\%
-(misinformation asserted 4.0\%, EM 18.6\%); the baseline gives 93.6\%
-(1.6\%, 8.0\%), so the comparison does not depend on document order.
-Every baseline figure in this section comes from the recalculated run with
-the prompt of Section~\ref{sec:baseline} (94.8\% safe in the original
-order); an earlier run with a different baseline prompt is not reported,
-because neither that prompt nor its per-query results are available.
-
-Two observations temper any reading of Table~\ref{tab:ramdocs_published} as a
-head-to-head win. First, the published numbers themselves show that extra
-LLM calls buy almost nothing on this data: self-reflection, Speculative
-RAG, and Astute RAG all score \textit{below} the single-call baseline, and
-even MADAM-RAG's several-round debate reaches only 1.8 points above it.
-This is evidence about what re-prompting an LLM to adjudicate conflicting
-evidence does and does not fix, and it is the same argument this paper
-makes about our own deterministic gate versus a prompted baseline in
-Section~\ref{sec:baseline}, now corroborated on a benchmark we did not
-author. Second, the prompted baseline in Table~\ref{tab:ramdocs_main} is a
-prompt-only LLM, not our own retrieval and pipeline with the gate removed;
-that same-metric, gate-removed ablation is scoped but not yet built, so
-neither table isolates what the gate itself contributes.
-
-\subsubsection{Abstention Quality on Unseen Data}
-Of the 426 safe outcomes, 157 were abstentions and 269 were answers
-containing a gold answer. Checked against RAMDocs' own per-document labels,
-a check no comparator system's published number is scored against, only
-54.1\% of those abstentions (85/157) coincided with a document actually
-labeled \texttt{misinfo} (Table~\ref{tab:ramdocs_abstain}); the prompted
-baseline's refusals line up at about the same rate (54.4\%, 209/384). The remaining
-45.9\% abstained on queries that were merely ambiguous or noise-heavy rather
-than contaminated. For scale, 243 of the 500 queries (48.6\%) contain a
-misinformation document, so abstaining at random would line up about as
-often: the observed 54.1\% (95\% interval 46.0\% to 62.1\%) is not
-distinguishable from that (exact binomial test against 48.6\%,
-$p=0.175$), and the abstention rate was 35.0\% on
-queries with a misinformation document against 28.0\% on those without
-($p=0.10$). We read this as a genuine limitation, not a hedge on the
-headline number: on unseen content the system's abstentions track the
-presence of misinformation only weakly.
-
-\begin{table}[htbp]
-\caption{RAMDocs Abstentions Checked Against Ground-Truth Document Labels}
-\label{tab:ramdocs_abstain}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}X r r@{}}
-\toprule
- & Count & \% of abstentions \\
-\midrule
-Misinformation document present (justified)   & 85 & 54.1\% \\
-No misinformation document present            & 72 & 45.9\% \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsubsection{What This Result Does and Does Not Show}
-RAMDocs closes one specific gap this paper is otherwise open about: it is
-externally authored and was never used for design selection, so the result
-is not subject to the self-authored-corpus concern that applies to Corpus~1
-and Corpus~2 (Section~\ref{sec:limitations}). It does not close the others.
-The run is closed-book, so it says nothing about retrieval; it was run in
-two document orders (a superseded earlier run that exposed gold labels in
-document names was discarded), which shows the gate's decisions do not
-depend on order, but it is not a repeated-run consistency check of the
-synthesised answers of the kind Table~\ref{tab:headtohead} runs for
-Corpus~1; a prompted LLM is safer on it
-(Table~\ref{tab:ramdocs_main}); and its safe-rate metric is not directly
-comparable to the accuracy, $F_1$, and unsafe-answer figures reported
-elsewhere in this paper. We treat it as one data point of external evidence
-for the guarantee-versus-behavior claim, not as a replacement for the
-held-out, same-domain test the paper still lacks.
-
-\subsection{External Validation: MultiHop-RAG}
-\label{sec:multihop}
-A second externally authored benchmark, MultiHop-RAG (public release
-\texttt{yixuantt/MultiHopRAG}), tests the full pipeline with retrieval, which
-RAMDocs does not. The corpus is 609 news articles and 2{,}556 queries; we
-indexed all 609 articles through the unchanged ingestion (22{,}131 chunks).
-The comparison was preregistered before any query was run and is a new
-measurement, not a repetition of an earlier sample. We drew 300 queries with a
-fixed seed: 150 null queries (no answer in the corpus) and 50 each of
-inference, comparison, and temporal queries, run in shuffled order. Our arm
-makes no LLM call. The baseline is the prompted LLM of
-Section~\ref{sec:baseline} (same E1 prompt, \texttt{gpt-oss-120b})
-given the same retrieved passages. Because the provider's free tier rejected
-requests above 8{,}000 tokens, the baseline receives at most 12 passages, a
-cap fixed after a pilot and before the full run; our gate validates about 30.
-Only 67.4\% of gold articles fall inside the baseline's 12 passages, so the
-comparison is asymmetric, and we report it as such rather than correcting it.
-Only decisions are graded, not answer content.
-
-\begin{table}[htbp]
-\caption{MultiHop-RAG, 300 Paired Queries (Wilson 95\% Intervals; Exact McNemar)}
-\label{tab:multihop}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}X r r r@{}}
-\toprule
- & Ours & Baseline & $p$ \\
-\midrule
-Null queries answered (of 150)    & 56 (37.3\%) & 2 (1.3\%)   & $1.2\times10^{-14}$ \\
-Answerable not answered (of 150)  & 78 (52.0\%) & 110 (73.3\%) & $5.8\times10^{-5}$ \\
-Decision correct, strict (of 300) & 125 (41.7\%) & 188 (62.7\%) & $6.4\times10^{-7}$ \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-The result is mixed and we report all of it. The gate answers 56 of 150 null
-queries against the baseline's 2 (95\% intervals 30.0\% to 45.3\% and 0.4\%
-to 4.7\%), so on this benchmark it leaks answers into the gap far more often
-than the prompted LLM. It also refuses fewer answerable queries (52.0\%
-against 73.3\%), but 77 of its 78 refusals are conflict flags, not
-insufficient-evidence abstentions, and the strict decision-correct rate is
-significantly lower than the baseline's (41.7\% against 62.7\%, 95\% intervals
-36.2\% to 47.3\% and 57.1\% to 67.9\%). Under a lenient grading in which any
-abstention on a null query counts as correct, the difference is not
-significant (55.3\% against 62.7\%, $p=0.055$; exploratory). One of the five
-preregistered predictions failed: we predicted no significant difference in
-strict correctness, and the baseline is significantly better.
-
-Two mechanisms account for most of this, and both are failure patterns
-already named in this paper. The gate tests relevance and coverage, not
-whether the retrieved text contains the answer, so near-miss null queries
-pass. Conflict detection flags disagreement between articles without
-establishing that it concerns the question: 77 false conflicts on answerable
-queries and 41 on null ones. Retrieval is not the cause. Across sub-queries
-89.0\% of gold articles are retrieved, and article recall at rank five for the
-original question is 59.6\%, the same pattern as the paragraph on retrieval
-recall in Section~\ref{sec:retrieval_recall}. The baseline's refusals are not
-explained by the cap alone: it refused 38 of 60 answerable queries even when
-every gold article was sent, and 72 of 90 when some were cut (exploratory).
-
-This benchmark therefore supports the paper's claim only in its structural
-form, a decision that does not depend on an LLM, and not as an accuracy
-result. It is evidence against reading the gate as a general improvement in
-decision quality.
 
 \subsection{Post-Evaluation Fixes}
 \label{sec:post_eval_fixes}
@@ -1804,96 +1332,33 @@ of the system, not the frozen one above.
 
 \subsubsection{Architectural Changes}
 
-The following structural changes were made, each motivated by a specific
-failure and each falsifiable by the evaluation harness.
+Table~\ref{tab:changes} lists the structural changes, each motivated by a
+specific failure and each falsifiable by the evaluation harness. The
+assertive-span precondition was derived from Corpus~2 observations but
+removed all three Corpus~1 false conflicts, which it had never seen; that
+transfer direction is the reason to believe it is structural rather than
+fitted.
 
-\textbf{Sentence-level conflict comparison.} The original system
-compared whole multi-sentence passages, but the contradiction signal
-dilutes rapidly with passage length: a genuine numeric disagreement
-between two sentences is undetectable once each is embedded in its
-surrounding paragraph. Conflict detection now operates on sentence
-pairs extracted from each passage. A real $2.5$-vs-$2.0$ GPA conflict
-was not detected on passages but was detected on sentences.
-
-\textbf{Stage~3 decoupling: dual evidence sets.} The single relevance
-filter was replaced with two:
-\begin{itemize}
-  \item \texttt{stage3}: the absolute score floor ($\geq 0.60$) is
-    applied. This feeds Stage~5 (sufficiency), Stage~6 (structuring),
-    and synthesis.
-  \item \texttt{stage3\_wide}: only the relative cutoff (top 30\% of
-    best score) is applied; no absolute floor. This feeds Stage~4
-    (conflict detection).
-\end{itemize}
-The design principle is that \textbf{weak evidence can block an answer
-but can never produce one}: a low-scoring passage that contradicts a
-high-scoring one should trigger a conflict abstention, but it should
-never satisfy the sufficiency gate. Concretely, Corpus~2 Q038's
-conflicting passage scored $0.5945$ against a $0.60$ bar and was
-deleted before conflict detection ran; the decoupled design recovered it
-without loosening the sufficiency gate.
-
-\textbf{Anchor test for query-relevance in conflict detection.} The
-evidence-rank gate described in the original FIXES\_REPORT
-(\texttt{MAX\_CONFLICT\_EVIDENCE\_RANK\,=\,4}) was retired because it
-introduced fragile boundary effects: Corpus~1 Q047's conflicting
-passage sat $0.0006$ below the top-4 cutoff, and adding ``Could you
-tell me:'' to the query moved it $0.0001$ above, flipping a genuine
-conflict into an answer. In its place, an \textbf{anchor test} requires
-both sentences in a compared pair to mention the question's
-\textit{focus terms}, its rarest content words measured by corpus-level
-inverse document frequency (written to \texttt{corpus\_stats.json} at
-ingestion). This filters at the semantic level rather than at the rank
-level: a sentence pair that does not mention what the question is about
-is never compared, regardless of its retrieval score. A separate
-\textbf{query-intent gate} (cosine $\geq 0.35$ between each sentence
-and the query embedding) provides a second, embedding-based check.
-
-The anchor test reduced Corpus~1's false conflicts from 6 to 3 but
-introduced a known failure mode: it suppresses a genuine conflict when
-two documents state the same rule with different vocabulary
-(Corpus~2 Q045, where one side uses ``Satisfactory Academic Progress''
-and the other states the same rule informally without the anchor word).
-This is the one conflict Corpus~2 currently misses.
-
-
-\textbf{Assertive-span precondition.}
-A sentence pair is considered for contradiction only if both sentences
-make a positive factual assertion — neither is a question, a disclaimer,
-or boilerplate preamble. This eliminated all three Corpus~1 false
-conflicts (Q019, Q025, Q032), which were all generated by boilerplate
-``Purpose'' or ``Scope'' sentences being compared against each other,
-and removed the boilerplate and incommensurable-quantity families from
-Corpus~2 as well, reducing Corpus~2's false conflicts from 10 to 9 in
-a single pass. Crucially, the precondition was derived from Corpus~2
-observations but removed all three Corpus~1 false conflicts it had
-never seen — the transfer direction is the reason to believe it is
-structural rather than fitted.
-
-\textbf{Dimensional veto.}
-Two numeric values are compared as a potential contradiction only when
-they share the same physical dimension or unit class. This prevents a
-``6 months'' span from being compared against a ``2.5 GPA'' span solely
-because both contain a number. The veto moves zero decisions but corrects
-a mis-attribution on Corpus~1 Q076, which previously cited the wrong
-conflicting pair in its abstention message. Attribution precision
-(the fraction of conflict abstentions that cite the pair the ground
-truth names) is now computed and reported alongside precision/recall;
-it was not tracked in the original evaluation.
-
-
-\textbf{Chunk boundary realignment.} In the original system, 47\% of
-all chunks began mid-word because the overlap backstep landed at a raw
-character offset (producing fragments like ``inancial aid'' or ``uate
-course load''). These truncated fragments were embedded, indexed, and
-fed to the contradiction checker as if they were claims. Realigning the
-overlap to a sentence boundary eliminated all mid-word starts without
-content loss.
-
-\textbf{Stage~0 provenance verification.} A chunk fingerprint registry,
-written at ingestion time, enables a set-membership test before Stage~1:
-evidence whose SHA-256 fingerprint is absent from the registry is
-removed before any validation or synthesis occurs.
+\begin{table*}[t]
+\caption{Structural Changes After the Frozen Evaluation}
+\label{tab:changes}
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\toprule
+Change & What it does & Measured effect \\
+\midrule
+Sentence-level comparison & Conflict detection compares sentence pairs, not whole passages, whose contradiction signal dilutes with length & A real $2.5$-vs-$2.0$ GPA conflict missed on passages is detected on sentences \\
+Dual evidence sets (Stage~3) & The absolute floor ($\geq 0.60$) feeds sufficiency and synthesis; only the relative cutoff (top 30\% of best score) feeds conflict detection, so weak evidence can block an answer but never produce one & Corpus~2 Q038's conflicting passage ($0.5945$, below $0.60$) is recovered without loosening sufficiency \\
+Anchor test & Both sentences of a pair must mention a focus term (the query's rarest words by corpus IDF); replaces the evidence-rank gate (\texttt{MAX\_CONFLICT\_EVIDENCE\_RANK\,=\,4}), where Corpus~1 Q047's passage sat $0.0006$ below the cutoff and ``Could you tell me:'' moved it $0.0001$ above & Corpus~1 false conflicts 6 $\to$ 3; misses Corpus~2 Q045, whose two sides state the rule in different words \\
+Query-intent gate & Each sentence must reach cosine $\geq 0.35$ with the query embedding & A second, embedding-based relevance check \\
+Assertive-span precondition & Both sentences must make a positive factual assertion (no question, disclaimer or boilerplate preamble) & Corpus~1 false conflicts 3 $\to$ 0 (Q019, Q025, Q032); Corpus~2 10 $\to$ 9 \\
+Dimensional veto & Numbers are compared only within one dimension or unit class & No decision moves; Corpus~1 Q076 no longer cites the wrong pair \\
+Chunk boundary realignment & Chunk overlap starts on a sentence boundary & Chunks starting mid-word 47\% $\to$ none \\
+Stage~0 provenance & Evidence whose SHA-256 fingerprint was not registered at ingestion is removed before Stage~1 & Fabricated evidence at retrieval time accepted 0/4 per corpus \\
+\bottomrule
+\end{tabularx}
+\end{table*}
 
 \textbf{Answerhood gate.} The NLI step asks whether two sentences
 contradict, not whether they contradict \textit{as answers to this query},
@@ -1908,7 +1373,7 @@ never create an abstention, so retrieved text cannot talk the system into or
 out of a refusal. On Corpus~2 it reduced false conflicts from nine to two,
 raised conflict precision from 0.625 to 0.875 and attribution precision from
 0.583 to 0.875, and lifted accuracy from 82.1\% to 89.7\%; Corpus~1 was
-unaffected. Its cost is one conflict (Q036), which had already been a
+unaffected. Its cost is one conflict (Corpus~2 Q036), which had already been a
 wrong-evidence report and now ends as an INSUFFICIENT abstention (recall 15/16
 to 14/16); unsafe answers stay at 1/32. The four structural invariance
 transforms stay at 0/78 on both corpora with the gate on. Setting the margin
@@ -1916,29 +1381,9 @@ to $0$ restores the earlier behavior exactly.
 
 \subsubsection{Current Measurements}
 
-Table~\ref{tab:fixes_headline} reports the headline metrics in the
-current system state.
-
-\begin{table*}[t] % <--- Note the asterisk (*) here
-\caption{System State After All Fixes, Both Corpora (in-sample: both corpora were used to select the fixes)}
-\label{tab:fixes_headline}
-\centering
-\small
-\begin{tabular}{l c c c c}
-\toprule
-Metric & C1 frozen & C1 current & C2 frozen & C2 current \\
-\midrule
-Decision accuracy    & 92.3\% & \textbf{96.2\%} & 66.7\% & \textbf{89.7\%} \\
-Conflict precision   & 0.727  & \textbf{1.000}  & 0.432  & \textbf{0.875}  \\
-Conflict recall      & 16/16  & 16/16           & 16/16  & 14/16           \\
-Conflict $F_1$       & 0.842  & \textbf{1.000}  & 0.604  & \textbf{0.875}  \\
-Attribution precision& ---    & \textbf{1.000}  & ---    & \textbf{0.875}  \\
-Unsafe answers       & 0/32   & 0/32            & 4/32   & 1/32            \\
-\bottomrule
-\end{tabular}
-\end{table*} % <--- Note the asterisk (*) here
-
-
+Table~\ref{tab:ci_mcnemar} (Section~\ref{sec:ci_mcnemar}) reports the
+headline metrics in the current system state, next to the frozen system
+and the prompted baseline.
 
 The gains and the residual errors are both visible. Corpus~1 accuracy rose
 3.8 points (3 queries; 92.3\% to 96.2\%): the assertive-span precondition removed all
@@ -1990,13 +1435,15 @@ Decision accuracy (/78) & 72 [84.2, 96.4] & 75 [89.3, 98.7] & 76 [91.1, 99.3]
                         & 52 [55.6, 76.1] & 70 [81.0, 94.7] & 77 [93.1, 99.8] \\
 Conflict recall (/16)   & 16 & 16 & 15 & 16 & 14 & 15 \\
 Conflict precision      & 0.727 & 1.000 & 1.000 & 0.432 & 0.875 & 1.000 \\
+Conflict $F_1$          & 0.842 & 1.000 & 0.968 & 0.604 & 0.875 & 0.968 \\
+Attribution precision\textsuperscript{a} & 0.727 & 1.000 & n/a & 0.405 & 0.875 & n/a \\
 Unsafe answers (/32)    & 0 [0, 10.7] & 0 [0, 10.7] & 1 [0.6, 15.7]
                         & 4 [5.0, 28.1] & 1 [0.6, 15.7] & 1 [0.6, 15.7] \\
 Refusals (/78)          & 38 & 35 & 32 & 48 & 35 & 31 \\
 Abstained on answerable (/46) & 6 & 3 & 1 & 20 & 4 & 0 \\
 \midrule
-McNemar $p$, accuracy vs.\ base.      & 0.22 & 1.0 & --- & $4.2\times10^{-7}$ & 0.016 & --- \\
-McNemar $p$, unsafe answers vs.\ base. & 1.0  & 1.0 & --- & 0.375 & 1.0 & --- \\
+McNemar $p$, accuracy vs.\ base.      & 0.22 & 1.0 & n/a & $4.2\times10^{-7}$ & 0.016 & n/a \\
+McNemar $p$, unsafe answers vs.\ base. & 1.0  & 1.0 & n/a & 0.375 & 1.0 & n/a \\
 \bottomrule
 \end{tabular}
 
@@ -2004,6 +1451,8 @@ McNemar $p$, unsafe answers vs.\ base. & 1.0  & 1.0 & --- & 0.375 & 1.0 & --- \\
 \raggedright\scriptsize
 Intervals are in percent. McNemar tests are exact (binomial) on the paired
 per-query outcomes of the same 78 (accuracy) or 32 (unsafe answers) queries.
+\textsuperscript{a}Fraction of conflict reports that cite the gold pair
+(frozen: 16 of 22 and 15 of 37); not graded for the baseline.
 \end{table*}
 
 \subsubsection{Errors by Component}
@@ -2065,7 +1514,8 @@ because one genuine conflict (Q048) is now answered.
 \label{sec:sensitivity}
 
 Six thresholds were swept end to end on the current system, each with the
-others at their defaults (Table~\ref{tab:sensitivity}). The NLI
+others at their defaults (Table~\ref{tab:sensitivity} in
+Appendix~\ref{app:sweeps}). The NLI
 contradiction cutoff is not a knife-edge: results are identical at 0.80,
 0.94 and 0.99. Every candidate pair the prong scores at the default (42 on
 Corpus~1, 112 on Corpus~2) scores either at least 0.982 or at most 0.224
@@ -2099,78 +1549,10 @@ unsafe answer. All settings are in-sample: both corpora were used to choose
 the defaults, so these tables show how close each default sits to a worse
 region, not how it would behave on new content.
 
-\begin{table*}[t]
-\caption{Threshold Sensitivity, Current System (deployed value in bold in
-each heading). Acc.\ in \%; Prec.\ conflict precision; Rec.\ conflict
-recall (/16); Uns.\ unsafe answers (/32), in bold where above the
-default.}
-\label{tab:sensitivity}
-\centering
-\small
-\begin{tabular}{l c c c c c c c c}
-\toprule
- & \multicolumn{4}{c}{Corpus 1} & \multicolumn{4}{c}{Corpus 2} \\
-Value & Acc. & Prec. & Rec. & Uns. & Acc. & Prec. & Rec. & Uns. \\
-\midrule
-\multicolumn{9}{l}{NLI contradiction cutoff (\textbf{0.94}); 0.80--0.99, all identical} \\
-0.80--0.99 & 96.2 & 1.000 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
-\multicolumn{9}{l}{Average-score sufficiency floor (\textbf{0.65})} \\
-0.55--0.65 & 96.2 & 1.000 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
-0.68 / 0.70--0.75 & 94.9 / 93.6 & 1.000 & 16 & 0 & 88.5 / 87.2 & 0.875 & 14 & 1 \\
-\multicolumn{9}{l}{Query-coverage floor (\textbf{0.55})} \\
-0.35--0.50 & 96.2 & 1.000 & 16 & \textbf{1} & 89.7--91.0 & 0.875 & 14 & 1 \\
-0.55--0.65 & 96.2 & 1.000 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
-0.75 & 89.7 & 1.000 & 16 & 0 & 85.9 & 0.875 & 14 & 1 \\
-\multicolumn{9}{l}{Answerhood margin (\textbf{5.5}; 0 = off)} \\
-0 (off) & 96.2 & 1.000 & 16 & 0 & 82.1 & 0.625 & 15 & 1 \\
-3--4 (C2: 4) & 94.9 & 1.000 & 15 & \textbf{1} & 89.7 & 0.875 & 14 & 1 \\
-5--8 (C2: 5.5, 7) & 96.2 & 1.000 & 16 & 0 & 89.7, 88.5 & 0.875, 0.824 & 14 & 1 \\
-\multicolumn{9}{l}{Query-span floor (\textbf{0.35}; 0 = off)} \\
-0--0.30 (C2: 0, 0.25) & 94.9 & 0.941 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
-0.35--0.40 (C2: 0.35) & 96.2 & 1.000 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
-0.45 & 96.2 & 1.000 & 16 & 0 & 87.2 & 0.923 & 12 & \textbf{3} \\
-\multicolumn{9}{l}{Lexical conflict-similarity gate (\textbf{0.68}), Corpus~1 only} \\
-0.60--0.76 & 96.2 & 1.000 & 16 & 0 & \multicolumn{4}{c}{not run} \\
-\bottomrule
-\end{tabular}
-\end{table*}
-
-\begin{table*}[t]
-\caption{Component Ablations (default in bold; one query = 1.3 points)}
-\label{tab:component_ablation}
-\centering
-\small
-\begin{tabular}{l c c c c c c c c}
-\toprule
- & \multicolumn{4}{c}{Corpus 1} & \multicolumn{4}{c}{Corpus 2} \\
-Ablation & Acc. & Prec. & Rec. & Uns. & Acc. & Prec. & Rec. & Uns. \\
-\midrule
-\textbf{Default (full system)} & \textbf{96.2} & \textbf{1.000} & \textbf{16/16} & \textbf{0/32}
-                               & \textbf{89.7} & \textbf{0.875} & \textbf{14/16} & \textbf{1/32} \\
-No conflict detection                 & 75.6 & ---   & 0/16  & 16/32 & 73.1 & ---   & 0/16  & 13/32 \\
-Rule-only detector (NLI off)          & 92.3 & 1.000 & 13/16 & 3/32  & 79.5 & 0.833 & 5/16  & 10/32 \\
-NLI-only detector                     & 96.2 & 1.000 & 16/16 & 0/32  & 89.7 & 0.875 & 14/16 & 1/32 \\
-Paragraph-level NLI (answerhood off)\textsuperscript{a} & 91.0 & 0.875 & 14/16 & 2/32  & 74.4 & 0.500 & 12/16 & 3/32 \\
-No query conditioning                 & 96.2 & 1.000 & 16/16 & 0/32  & 82.1 & 0.625 & 15/16 & 1/32 \\
-Sufficiency: presence + quality ($n\geq2$) off & 93.6 & 1.000 & 16/16 & 3/32 & 84.6 & 0.875 & 14/16 & 8/32 \\
-No presence check                     & 96.2 & 1.000 & 16/16 & 1/32  & 91.0 & 0.875 & 14/16 & 2/32 \\
-Sufficiency: quality ($n\geq2$) off   & 96.2 & 1.000 & 16/16 & 0/32  & 89.7 & 0.875 & 14/16 & 1/32 \\
-Anchor: either sentence               & 96.2 & 1.000 & 16/16 & 0/32  & 89.7 & 0.875 & 14/16 & 1/32 \\
-No assertive-span filter              & 96.2 & 1.000 & 16/16 & 0/32  & 88.5 & 0.824 & 14/16 & 1/32 \\
-No query-span gate                    & 94.9 & 0.941 & 16/16 & 0/32  & 89.7 & 0.875 & 14/16 & 1/32 \\
-\bottomrule
-\end{tabular}
-
-\vspace{3pt}
-\raggedright\scriptsize
-\textsuperscript{a}From an earlier run; the current code has no switch for
-paragraph-level comparison, so this row was not reproduced.
-\end{table*}
-
-
 \subsubsection{Security Properties}
-\hfill \break
 \label{sec:security_properties}
+Table~\ref{tab:security_current} lists the security properties of the current
+system.
 
 \vspace{0.5em}
 \noindent
@@ -2202,7 +1584,7 @@ and defeats the gate (Section~\ref{sec:adv_separation}). The Corpus~1
 gap-leak caveat present in an earlier version of
 this table (4/24 attacked, 4/24 control) is gone: its cause (Q051
 answering from legitimate evidence through a sufficiency-gate bug) was
-fixed by the Stage~5 focus-term presence requirement (H5).
+fixed by the Stage~5 focus-term presence requirement.
 \end{minipage}
 \vspace{0.5em}
 
@@ -2231,7 +1613,7 @@ System & Corpus 1 & Corpus 2 \\
 \midrule
 Ours (after provenance) & \textbf{0/24} & \textbf{0/24} \\
 Defended \texttt{gpt-oss-120b}    & 12/12         & 12/12         \\
-Defended \texttt{llama-3.3-70b}   & 12/12         & ---           \\
+Defended \texttt{llama-3.3-70b}   & 12/12         & not run       \\
 Control (no attack)               & 0/24          & 0/24          \\
 \bottomrule
 \end{tabularx}
@@ -2343,6 +1725,219 @@ three \texttt{query\_thanks} changes left in Table~\ref{tab:invariance} all
 go toward abstention.
 
 
+
+\subsection{External Validation: RAMDocs}
+\label{sec:ramdocs}
+Both corpora in Sections~\ref{sec:eval} and~\ref{sec:corpus2} were authored by
+this project to a fixed fact map, which is a controlled-evaluation strength
+and, as Section~\ref{sec:limitations} states plainly, an open question about
+generalization to content this project did not write and did not select
+against. To address that question directly, we ran the current system,
+the one in the ``fixed'' columns of Table~\ref{tab:ci_mcnemar}, against
+RAMDocs~\cite{wang2025ramdocs}, an externally authored benchmark of 500
+queries in which each query supplies several documents individually labeled
+\texttt{correct}, \texttt{misinfo}, or \texttt{noise}. Neither the documents
+nor the queries were seen during threshold calibration, and no threshold was
+adjusted after this run; the grading rules were fixed in advance
+(preregistration documented separately). A superseded earlier run exposed
+gold labels in document names and was replaced by the run reported here, in
+which every document is named only ``Document~$N$'' and no label or answer
+field reaches any chunk or prompt. A prompted baseline (\texttt{gpt-oss-120b},
+the model our synthesis uses here, temperature 0, instructed to answer only
+from the passages and to reply \texttt{INSUFFICIENT} or \texttt{CONFLICT}
+otherwise) ran on the same documents under the same names, and both systems
+were graded by the same code on one protocol (Table~\ref{tab:ramdocs_main});
+no baseline reply was empty. Because the first document is a correct one in
+476 of the 500 records, both systems were also run with the documents in a
+seeded random order; the results are given below.
+
+\subsubsection{Task Correspondence and a Deliberate Deviation}
+RAMDocs supplies 1--12 labeled documents with each query, including
+ambiguous queries with several valid gold answers, which our system handles
+identically with no query-specific accommodation; it makes 1 LLM call per
+query (the synthesis call), against 1 for the published baseline and
+several for MADAM-RAG. The one methodological deviation from every other result in this paper is that
+RAMDocs supplies its documents directly with each query, so retrieval is
+bypassed: the documents are injected as already-retrieved evidence rather
+than recovered from a Qdrant index. This means the RAMDocs result validates
+the validation and decision layers on unseen content, but it does not
+exercise Stage~3's relevance filtering the way live retrieval does (every
+supplied document receives a uniform placeholder score above the relevance
+floor), and it says nothing about whether our retrieval stage would have
+surfaced the same documents unassisted. We report this as a scope
+limitation on the result, not as a discovery made after the fact.
+
+\subsubsection{Metric Non-Equivalence}
+RAMDocs' own published table~\cite{wang2025ramdocs} scores every method by
+exact match (EM): the output must contain every gold answer and no wrong one.
+With Llama-3.3-70B it reports no RAG 5.8\%, prompt-based RAG 32.6\%,
+self-reflection 30.4\%, Speculative RAG 30.6\%, Astute RAG 31.8\%, and the
+multi-round debate method MADAM-RAG 34.4\% (26.4\% with Qwen2.5-72B, 28.0\%
+with GPT-4o-mini). We score
+our system and the prompted baseline by EM, and we also report
+\textit{safe rate}, the fraction of queries whose answer contains a gold
+answer or that the system refused, because that is this paper's stated
+thesis and EM has no abstention credit. \textbf{The published EM figures
+come from different models, prompts, and no refusal option, so they are
+context only, and nothing below is a claim that our system outscores
+MADAM-RAG on their task.} Table~\ref{tab:ramdocs_main} reports what a
+deterministic gate applied after a single LLM call does on data explicitly
+designed to contain conflicting and misleading evidence, next to a prompted
+baseline under the same protocol.
+
+\begin{table}[htbp]
+\caption{RAMDocs, 500 Queries, One Protocol. Ours and the prompted baseline
+both use \texttt{gpt-oss-120b}, run on the same documents and graded by the
+same code; Wilson 95\% intervals.}
+\label{tab:ramdocs_main}
+\centering
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}X r r@{}}
+\toprule
+Metric & Ours & Prompted baseline \\
+\midrule
+Refusal rate              & 31.4\% [27.5, 35.6] & 76.8\% [72.9, 80.3] \\
+Exact match (EM)          & 18.0\% [14.9, 21.6] & 7.6\% [5.6, 10.3] \\
+Misinformation asserted   & 2.8\% [1.7, 4.6]    & 1.0\% [0.4, 2.3] \\
+Safe rate                 & 85.2\% [81.8, 88.0] & 94.8\% [92.5, 96.4] \\
+Refusals justified        & 54.1\% (85/157)     & 54.4\% (209/384) \\
+Answered: gold / misinfo  & 78.4\% / 4.1\% (of 343) & 77.6\% / 4.3\% (of 116) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The prompted baseline is safer (94.8\% vs.\ 85.2\% safe rate, exact McNemar
+$p<10^{-8}$) and asserts misinformation less often (1.0\% vs.\ 2.8\%,
+exact McNemar $p=0.022$), largely by refusing 76.8\% of queries against our 31.4\%. Ours
+has the higher exact match (EM 18.0\% vs.\ 7.6\%, $p<10^{-12}$) and is
+comparable to the baseline per answered query (gold share $p=0.90$,
+misinformation share $p=1.0$). Of the 343 queries ours answered, 60 (17\%)
+match neither a gold nor a misinformation answer; the string-match grader
+leaves them unscored, so they count as neither safe nor unsafe, and the
+safe rate is a fraction of all 500 queries. The grader is lenient in one
+direction: an answer containing both a gold and a wrong value counts as
+safe. Counting any wrong value as unsafe gives 71.6\% safe for ours and
+94.2\% for the baseline. With the documents shuffled, our gate makes the
+identical decision on all 500 queries and the safe rate is 85.4\%
+(misinformation asserted 4.0\%, EM 18.6\%); the baseline gives 93.6\%
+(1.6\%, 8.0\%), so the comparison does not depend on document order.
+Every baseline figure in this section comes from the recalculated run with
+the prompt of Section~\ref{sec:baseline} (94.8\% safe in the original
+order); an earlier run with a different baseline prompt is not reported,
+because neither that prompt nor its per-query results are available.
+
+Two observations temper any reading of these published scores as a
+head-to-head win. First, the published numbers themselves show that extra
+LLM calls buy almost nothing on this data: self-reflection, Speculative
+RAG, and Astute RAG all score \textit{below} the single-call baseline, and
+even MADAM-RAG's several-round debate reaches only 1.8 points above it.
+This is evidence about what re-prompting an LLM to adjudicate conflicting
+evidence does and does not fix, and it is the same argument this paper
+makes about our own deterministic gate versus a prompted baseline in
+Section~\ref{sec:baseline}, now corroborated on a benchmark we did not
+author. Second, the prompted baseline in Table~\ref{tab:ramdocs_main} is a
+prompt-only LLM, not our own retrieval and pipeline with the gate removed;
+that same-metric, gate-removed ablation is scoped but not yet built, so
+neither table isolates what the gate itself contributes.
+
+\subsubsection{Abstention Quality on Unseen Data}
+Of the 426 safe outcomes, 157 were abstentions and 269 were answers
+containing a gold answer. Checked against RAMDocs' own per-document labels,
+a check no comparator system's published number is scored against, only
+54.1\% of those abstentions (85/157) coincided with a document actually
+labeled \texttt{misinfo}, and 72 (45.9\%) did not; the prompted
+baseline's refusals line up at about the same rate (54.4\%, 209/384). Those 72 abstained on queries that were merely ambiguous or noise-heavy
+rather than contaminated. For scale, 243 of the 500 queries (48.6\%) contain a
+misinformation document, so abstaining at random would line up about as
+often: the observed 54.1\% (95\% interval 46.0\% to 62.1\%) is not
+distinguishable from that (exact binomial test against 48.6\%,
+$p=0.175$), and the abstention rate was 35.0\% on
+queries with a misinformation document against 28.0\% on those without
+($p=0.10$). We read this as a genuine limitation, not a hedge on the
+headline number: on unseen content the system's abstentions track the
+presence of misinformation only weakly.
+
+\subsubsection{What This Result Does and Does Not Show}
+RAMDocs closes one specific gap this paper is otherwise open about: it is
+externally authored and was never used for design selection, so the result
+is not subject to the self-authored-corpus concern that applies to Corpus~1
+and Corpus~2 (Section~\ref{sec:limitations}). It does not close the others.
+The run is closed-book, so it says nothing about retrieval; it was run in
+two document orders (a superseded earlier run that exposed gold labels in
+document names was discarded), which shows the gate's decisions do not
+depend on order, but it is not a repeated-run consistency check of the
+synthesised answers of the kind Table~\ref{tab:headtohead} runs for
+Corpus~1; a prompted LLM is safer on it
+(Table~\ref{tab:ramdocs_main}); and its safe-rate metric is not directly
+comparable to the accuracy, $F_1$, and unsafe-answer figures reported
+elsewhere in this paper. We treat it as one data point of external evidence
+for the guarantee-versus-behavior claim, not as a replacement for the
+held-out, same-domain test the paper still lacks.
+
+\subsection{External Validation: MultiHop-RAG}
+\label{sec:multihop}
+A second externally authored benchmark, MultiHop-RAG (public release
+\texttt{yixuantt/MultiHopRAG}), tests the full pipeline with retrieval, which
+RAMDocs does not. The corpus is 609 news articles and 2{,}556 queries; we
+indexed all 609 articles through the unchanged ingestion (22{,}131 chunks).
+The comparison was preregistered before any query was run and is a new
+measurement, not a repetition of an earlier sample. We drew 300 queries with a
+fixed seed: 150 null queries (no answer in the corpus) and 50 each of
+inference, comparison, and temporal queries, run in shuffled order. Our arm
+makes no LLM call. The baseline is the prompted LLM of
+Section~\ref{sec:baseline} (same E1 prompt, \texttt{gpt-oss-120b})
+given the same retrieved passages. Because the provider's free tier rejected
+requests above 8{,}000 tokens, the baseline receives at most 12 passages, a
+cap fixed after a pilot and before the full run; our gate validates about 30.
+Only 67.4\% of gold articles fall inside the baseline's 12 passages, so the
+comparison is asymmetric, and we report it as such rather than correcting it.
+Only decisions are graded, not answer content.
+
+\begin{table}[htbp]
+\caption{MultiHop-RAG, 300 Paired Queries (Wilson 95\% Intervals; Exact McNemar)}
+\label{tab:multihop}
+\centering
+\small
+\begin{tabularx}{\columnwidth}{@{}X r r r@{}}
+\toprule
+ & Ours & Baseline & $p$ \\
+\midrule
+Null queries answered (of 150)    & 56 (37.3\%) & 2 (1.3\%)   & $1.2\times10^{-14}$ \\
+Answerable not answered (of 150)  & 78 (52.0\%) & 110 (73.3\%) & $5.8\times10^{-5}$ \\
+Decision correct, strict (of 300) & 125 (41.7\%) & 188 (62.7\%) & $6.4\times10^{-7}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The result is mixed (Table~\ref{tab:multihop}) and we report all of it. The gate answers 56 of 150 null
+queries against the baseline's 2 (95\% intervals 30.0\% to 45.3\% and 0.4\%
+to 4.7\%), so on this benchmark it leaks answers into the gap far more often
+than the prompted LLM. It also refuses fewer answerable queries (52.0\%
+against 73.3\%), but 77 of its 78 refusals are conflict flags, not
+insufficient-evidence abstentions, and the strict decision-correct rate is
+significantly lower than the baseline's (41.7\% against 62.7\%, 95\% intervals
+36.2\% to 47.3\% and 57.1\% to 67.9\%). Under a lenient grading in which any
+abstention on a null query counts as correct, the difference is not
+significant (55.3\% against 62.7\%, $p=0.055$; exploratory). One of the five
+preregistered predictions failed: we predicted no significant difference in
+strict correctness, and the baseline is significantly better.
+
+Two mechanisms account for most of this, and both are failure patterns
+already named in this paper. The gate tests relevance and coverage, not
+whether the retrieved text contains the answer, so near-miss null queries
+pass. Conflict detection flags disagreement between articles without
+establishing that it concerns the question: 77 false conflicts on answerable
+queries and 41 on null ones. Retrieval is not the cause. Across sub-queries
+89.0\% of gold articles are retrieved, and article recall at rank five for the
+original question is 59.6\%, the same pattern as the paragraph on retrieval
+recall in Section~\ref{sec:retrieval_recall}. The baseline's refusals are not
+explained by the cap alone: it refused 38 of 60 answerable queries even when
+every gold article was sent, and 72 of 90 when some were cut (exploratory).
+
+This benchmark therefore supports the paper's claim only in its structural
+form, a decision that does not depend on an LLM, and not as an accuracy
+result. It is evidence against reading the gate as a general improvement in
+decision quality.
 
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Threat Model}
@@ -2473,26 +2068,10 @@ This is an application of spotlighting~\cite{hines2024spotlighting} rather
 than a new defense, and we claim no novelty for it; we report it because it
 closes the end-to-end hole that Section~\ref{sec:adv-injection} exposed and
 because it isolates what the architecture contributes from what a prompt
-contributes. Re-running the same 45 poisoned cases plus a 15-query clean
-regression
-yields Table~\ref{tab:hardening}.
-
-\begin{table}[htbp]
-\caption{Synthesis ASR Before and After Hardening, Corpus 1 (same 45 inputs).}
-\label{tab:hardening}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}X c c@{}}
-\toprule
-Style & Before (E3) & After hardening \\
-\midrule
-Direct        & 0.133 & \textbf{0.000} \\
-Authority     & 0.200 & \textbf{0.000} \\
-Exfiltration  & 0.867 & \textbf{0.000} \\
-\textbf{All (45)} & \textbf{0.400} & \textbf{0.000} \\
-\bottomrule
-\end{tabularx}
-\end{table}
+contributes. Re-running the same 45 poisoned cases lowers synthesis ASR from 0.400
+(direct 0.133, authority 0.200, exfiltration 0.867) to 0.000 on every style
+(Table~\ref{tab:adversarial_summary}); a 15-query clean regression checks
+the cost.
 
 The regression showed zero decision flips, the correct value retained on 14
 of 15 queries (the single miss is a grader phrasing artifact identical in
@@ -2509,25 +2088,10 @@ adversary, against the defended LLM. The 10 targets are cases where a plain
 answer is the wrong behavior: 6 conflict queries (conflict-suppression) and
 4 gap queries (fabricated evidence spliced in at retrieval time), each
 attacked with up to four escalating
-rephrasings, best-of-N. Only unsafe flips to a confident plain answer count.
-Table~\ref{tab:adaptive} reports the result.
-
-\begin{table}[htbp]
-\caption{Adaptive Attack: Unsafe Decision-Flip Rate, Corpus 1. Our decision
-resists conflict-suppression by construction; fabricated evidence spliced in
-at retrieval time defeated both in this v6 run, before the provenance check.}
-\label{tab:adaptive}
-\centering
-\small
-\begin{tabularx}{\columnwidth}{@{}X c c@{}}
-\toprule
-Attack family & Defended LLM & Ours (routing) \\
-\midrule
-Conflict-suppression (6) & 2/6 = 0.33      & \textbf{0/6 = 0.00} \\
-Fabricated gap evidence, v6 (4) & 4/4 = 1.00 & 4/4 = 1.00 \\
-\bottomrule
-\end{tabularx}
-\end{table}
+rephrasings, best-of-N. Only unsafe flips to a confident plain answer count. The defended LLM
+flipped on 2 of 6 conflict queries and ours on 0 of 6; fabricated gap
+evidence spliced in at retrieval time defeated both, 4 of 4, in this v6
+run before the provenance check (Table~\ref{tab:adversarial_summary}).
 
 \textbf{Finding 1 (flagship, stated as an existence proof).} On the two
 directly-phrased conflict queries (Q040 probation, Q041 pension), an adaptive
@@ -2607,77 +2171,14 @@ Section~\ref{sec:corpus2} reports the direct test of that
 assumption on a second corpus and states plainly where it held and where it
 did not.
 
-\subsection{Why Pre-Generation Verification Works}
-Retrieval quality and generation faithfulness are orthogonal. A retriever
-optimizes for surfacing relevant passages, but relevance is not
-answerability, and a set of individually relevant passages can still be
-mutually contradictory or collectively insufficient. Placing a
-deterministic check between the two stages addresses exactly the failures a
-better retriever cannot: it detects when relevant-looking passages disagree,
-and it detects when they do not add up to an answer. The check succeeds not
-by being cleverer than the model, but by running before the model and
-having the authority to stop it.
-
-\subsection{Abstention as a Feature}
-In standard RAG, a system that cannot find a good answer tends to produce
-one anyway. Trust Before Text treats the refusal itself as the correct
-output in that situation, and it makes the refusal useful by naming the
-failing stage and, for a conflict, the documents and values that disagree.
-Selective-prediction approaches reach abstention by calibrating a model's
-confidence and declining when an error seems likely~\cite{kamath2020selective};
-our abstention instead falls out of a deterministic evidence check, which
-makes it repeatable and explainable, though its thresholds can be just as
+Abstention itself is the same: unlike selective prediction, which declines
+when a calibrated model confidence predicts an error~\cite{kamath2020selective},
+our abstention falls out of a deterministic evidence check, which makes it
+repeatable and explainable, though its thresholds can be just as
 miscalibrated under domain shift (Section~\ref{sec:ramdocs}).
-A structured, explainable refusal is more valuable than a confident
-fabrication in precisely the settings that motivate this work, where an
-incorrect answer carrying a plausible citation has real cost.
 
 % ─────────────────────────────────────────────────────────────────────────────
-\section{Conclusion}
-\label{sec:conclusion}
-
-Trust Before Text is a verification-first RAG architecture built on the
-view that reliable retrieval-augmented question answering needs a
-structured evidence-verification gate between retrieval and generation, not
-only better retrieval; on our two corpora every error arises downstream of
-retrieval. By separating
-the pipeline into explicitly governed stages, Retrieval, Validation, and
-Synthesis, and enforcing a deterministic gate at the boundary, the system
-makes the answer-or-abstain decision repeatable, not necessarily correct.
-The language model is never reached until the gate has judged the evidence
-sufficient and free of detected contradiction, and when it is not, the
-system abstains with an auditable reason.
-
-On an authored 11-document enterprise-policy corpus with 78 queries, the
-frozen system reaches 92.3\% decision accuracy, 100\% conflict recall, a conflict
-$F_1$ of 0.842, and zero unsafe answers across all 32 abstention-required
-queries; every error it makes is a safe over-abstention rather than a piece
-of misinformation. A well-prompted language model, given the same evidence,
-is slightly more accurate at 97.4\%, but it is not deterministic, it changed
-a decision across repeated runs, and it answered one query whose sources
-genuinely conflict, where our system answered none. Replicated on a second
-corpus, written separately by this project in a different domain, the same
-split holds:
-decision accuracy drops well below the prompted baseline, while
-determinism and decision-layer injection immunity transfer exactly:
-what generalizes is repeatability, not the accuracy number. After the
-later, in-sample fixes, accuracy is 96.2\% and 89.7\% on the two corpora;
-on external data a prompted LLM is safer: on RAMDocs by refusing more, and
-on MultiHop-RAG because our gate answers more null queries and raises false
-conflicts. The
-by-construction properties are clearest under adversarial pressure: injected
-text cannot change the routing decision, evidence without a registered
-fingerprint cannot support an answer, and where an adaptive attack flips a
-defended model's decision on a genuine conflict, ours holds. A fabricated
-document planted before ingestion, however, defeats both systems, because a
-deterministic decision cannot judge that a fact is invented. The
-contribution is therefore not a higher accuracy number. It is a repeatable,
-auditable decision layer with no instruction-following component, whose
-structural properties a prompt-based method provides only by tendency, and
-that matters most in exactly the high-stakes settings where an incorrect
-answer carrying a plausible citation has real cost.
-
-\subsection{Limitations}
+\section{Limitations}
 \label{sec:limitations}
 
 We state the system's limits precisely, because the honesty of the
@@ -2724,7 +2225,7 @@ Asymmetric anchor rescue & Recovers Q045 but adds a C2 false conflict (precision
 \end{table}
 
 The \textbf{sufficiency gate} now correctly refuses the two gap leaks
-(Q051, Q017) via the focus-term presence requirement (H5), at the cost
+(Corpus~1 Q051, Corpus~2 Q017) via the focus-term presence requirement, at the cost
 of three answerable queries that over-abstain due to paraphrase misses.
 An exhaustive search over 2{,}304 configurations confirmed no setting
 closes both gap leaks and passes all three paraphrase misses. The
@@ -2732,27 +2233,18 @@ closes both gap leaks and passes all three paraphrase misses. The
 (Q045), now the only unsafe answer in either corpus.
 
 Both corpora were written by this project and used for design selection;
-\textbf{no data is currently held out}. An external benchmark (RAMDocs,
-Section~\ref{sec:ramdocs}) partially addresses this for the safety-relevant
-metric: it is content this project did not author and did not use for design
-selection, and without any threshold change the system reaches a safe rate
-of 85.2\% and asserts misinformation on 2.8\% of queries, while a prompted
-LLM under the same protocol is safer on both (94.8\%, 1.0\%) by refusing far
-more often. This is only partial credit. The run is closed-book, so it
-tests the decision layer, not retrieval; it was repeated only with the
-documents reordered (a superseded earlier run was discarded), not as a
-repeated-run determinism check of the synthesised answers;
-and its safe-rate metric is not directly comparable to this paper's own
-accuracy and $F_1$ figures, so it cannot be read as a third calibration
-corpus. The abstention-justification check on the same run
-(Table~\ref{tab:ramdocs_abstain}) is itself a limitation: on unseen content,
-barely more than half of abstentions lined up with an actual misinformation document,
-and the observed 54.1\% is not distinguishable from the 48.6\% of queries
-that contain one, which is a genuine calibration gap this paper does not yet
-have a fix for. A second external benchmark with retrieval (MultiHop-RAG,
-Section~\ref{sec:multihop}) is less favourable: the gate answers more null
-queries than a prompted LLM and its strict decision accuracy is significantly
-lower, mostly through false conflict flags. Every accuracy number should be
+\textbf{no data is currently held out}. Two external
+benchmarks address this only in part. On RAMDocs
+(Section~\ref{sec:ramdocs}), which this project did not author or use for
+design selection, a prompted LLM is safer by refusing far more often; the
+run is closed-book, so it tests the decision layer, not retrieval, and its
+safe-rate metric cannot be read as a third calibration corpus. Its
+abstentions line up with an actual misinformation document no more often
+than chance (54.1\% against the 48.6\% of queries that contain one), a
+calibration gap this paper does not yet have a fix for. On MultiHop-RAG
+(Section~\ref{sec:multihop}), with retrieval, the gate answers more null
+queries than a prompted LLM and its strict decision accuracy is
+significantly lower, mostly through false conflict flags. Every accuracy number should be
 read as ``fits the data we have,'' not ``generalises.'' The invariance
 harness partially mitigates this. External validation on legal-domain
 text is ongoing and not reported here. We ran no conflict-aware RAG system
@@ -2762,6 +2254,51 @@ at temperature 0.7. Provenance covers retrieval-time
 injection only; in-corpus poisoning defeats both systems. Synthesis is
 hardened but not guaranteed, reaching parity with a defended model
 rather than a structural guarantee.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Conclusion}
+\label{sec:conclusion}
+
+Trust Before Text is a verification-first RAG architecture built on the
+view that reliable retrieval-augmented question answering needs a
+structured evidence-verification gate between retrieval and generation, not
+only better retrieval; on our two corpora every error arises downstream of
+retrieval. By separating
+the pipeline into explicitly governed stages, Retrieval, Validation, and
+Synthesis, and enforcing a deterministic gate at the boundary, the system
+makes the answer-or-abstain decision repeatable, not necessarily correct.
+The language model is never reached until the gate has judged the evidence
+sufficient and free of detected contradiction, and when it is not, the
+system abstains with an auditable reason.
+
+On an authored 11-document enterprise-policy corpus with 78 queries, the
+frozen system reaches 92.3\% decision accuracy, 100\% conflict recall, a conflict
+$F_1$ of 0.842, and zero unsafe answers across all 32 abstention-required
+queries; every error it makes is a safe over-abstention rather than a piece
+of misinformation. A well-prompted language model, given the same evidence,
+is slightly more accurate at 97.4\%, but it is not deterministic, it changed
+a decision across repeated runs, and it answered one query whose sources
+genuinely conflict, where our system answered none. Replicated on a second
+corpus, written separately by this project in a different domain, the same
+split holds:
+decision accuracy drops well below the prompted baseline, while
+determinism and decision-layer injection immunity transfer exactly:
+what generalizes is repeatability, not the accuracy number. After the
+later, in-sample fixes, accuracy is 96.2\% and 89.7\% on the two corpora;
+on external data a prompted LLM is safer: on RAMDocs by refusing more, and
+on MultiHop-RAG because our gate answers more null queries and raises false
+conflicts. The
+by-construction properties are clearest under adversarial pressure: injected
+text cannot change the routing decision, evidence without a registered
+fingerprint cannot support an answer, and where an adaptive attack flips a
+defended model's decision on a genuine conflict, ours holds. A fabricated
+document planted before ingestion, however, defeats both systems, because a
+deterministic decision cannot judge that a fact is invented. The
+contribution is therefore not a higher accuracy number. It is a repeatable,
+auditable decision layer with no instruction-following component, whose
+structural properties a prompt-based method provides only by tendency, and
+that matters most in exactly the high-stakes settings where an incorrect
+answer carrying a plausible citation has real cost.
 
 \subsection{Future Work}
 \label{sec:future}
@@ -2774,18 +2311,18 @@ requires introducing a small auditable language-model step;
 project's own retrieval and LLM against RAMDocs' exact-match axis with the
 validation gate disabled, to isolate what the gate itself contributes on
 external data rather than comparing safe rate to a different published
-metric (Section~\ref{sec:ramdocs}); and, separately, \textbf{a held-out
+metric (Section~\ref{sec:ramdocs}); (3)~\textbf{a held-out
 third corpus} drawn from a public, naturally-occurring policy collection
 with independently authored ground truth on this project's own
 answer/conflict/insufficient taxonomy, used once and never for design
-selection;(3)~\textbf{document authentication}
+selection; (4)~\textbf{document authentication}
 via cryptographic signing or digital watermarking to defend against
-in-corpus poisoning; (4)~\textbf{faithfulness model replacement},
+in-corpus poisoning; (5)~\textbf{faithfulness model replacement},
 substituting the DeBERTa-v3 entailment check with a task-specific
-model such as TRUE~\cite{honovich2022true}; (5)~a
+model such as TRUE~\cite{honovich2022true}; (6)~a
 \textbf{model-invariance experiment} confirming that swapping the
 synthesis LLM changes the wording of answers but zero decisions; and
-(6)~integration of RAGAS~\cite{es2023ragas} for standardized
+(7)~integration of RAGAS~\cite{es2023ragas} for standardized
 faithfulness evaluation alongside our decision-level metrics.
 
 % ─────────────────────────────────────────────────────────────────────────────
@@ -2834,6 +2371,80 @@ Constant & Value & Stage & Prov. \\
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\section{Threshold Sensitivity and Component Ablations}
+\label{app:sweeps}
+
+Tables~\ref{tab:sensitivity} and~\ref{tab:component_ablation} give the
+full sweeps summarized in Section~\ref{sec:sensitivity}.
+
+\begin{table*}[t]
+\caption{Threshold Sensitivity, Current System (deployed value in bold in
+each heading). Acc.\ in \%; Prec.\ conflict precision; Rec.\ conflict
+recall (/16); Uns.\ unsafe answers (/32), in bold where above the
+default.}
+\label{tab:sensitivity}
+\centering
+\small
+\begin{tabular}{l c c c c c c c c}
+\toprule
+ & \multicolumn{4}{c}{Corpus 1} & \multicolumn{4}{c}{Corpus 2} \\
+Value & Acc. & Prec. & Rec. & Uns. & Acc. & Prec. & Rec. & Uns. \\
+\midrule
+\multicolumn{9}{l}{NLI contradiction cutoff (\textbf{0.94}); 0.80--0.99, all identical} \\
+0.80--0.99 & 96.2 & 1.000 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
+\multicolumn{9}{l}{Average-score sufficiency floor (\textbf{0.65})} \\
+0.55--0.65 & 96.2 & 1.000 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
+0.68 / 0.70--0.75 & 94.9 / 93.6 & 1.000 & 16 & 0 & 88.5 / 87.2 & 0.875 & 14 & 1 \\
+\multicolumn{9}{l}{Query-coverage floor (\textbf{0.55})} \\
+0.35--0.50 & 96.2 & 1.000 & 16 & \textbf{1} & 89.7--91.0 & 0.875 & 14 & 1 \\
+0.55--0.65 & 96.2 & 1.000 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
+0.75 & 89.7 & 1.000 & 16 & 0 & 85.9 & 0.875 & 14 & 1 \\
+\multicolumn{9}{l}{Answerhood margin (\textbf{5.5}; 0 = off)} \\
+0 (off) & 96.2 & 1.000 & 16 & 0 & 82.1 & 0.625 & 15 & 1 \\
+3--4 (C2: 4) & 94.9 & 1.000 & 15 & \textbf{1} & 89.7 & 0.875 & 14 & 1 \\
+5--8 (C2: 5.5, 7) & 96.2 & 1.000 & 16 & 0 & 89.7, 88.5 & 0.875, 0.824 & 14 & 1 \\
+\multicolumn{9}{l}{Query-span floor (\textbf{0.35}; 0 = off)} \\
+0--0.30 (C2: 0, 0.25) & 94.9 & 0.941 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
+0.35--0.40 (C2: 0.35) & 96.2 & 1.000 & 16 & 0 & 89.7 & 0.875 & 14 & 1 \\
+0.45 & 96.2 & 1.000 & 16 & 0 & 87.2 & 0.923 & 12 & \textbf{3} \\
+\multicolumn{9}{l}{Lexical conflict-similarity gate (\textbf{0.68}), Corpus~1 only} \\
+0.60--0.76 & 96.2 & 1.000 & 16 & 0 & \multicolumn{4}{c}{not run} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[t]
+\caption{Component Ablations (default in bold; one query = 1.3 points)}
+\label{tab:component_ablation}
+\centering
+\small
+\begin{tabular}{l c c c c c c c c}
+\toprule
+ & \multicolumn{4}{c}{Corpus 1} & \multicolumn{4}{c}{Corpus 2} \\
+Ablation & Acc. & Prec. & Rec. & Uns. & Acc. & Prec. & Rec. & Uns. \\
+\midrule
+\textbf{Default (full system)} & \textbf{96.2} & \textbf{1.000} & \textbf{16/16} & \textbf{0/32}
+                               & \textbf{89.7} & \textbf{0.875} & \textbf{14/16} & \textbf{1/32} \\
+No conflict detection                 & 75.6 & n/a   & 0/16  & 16/32 & 73.1 & n/a   & 0/16  & 13/32 \\
+Rule-only detector (NLI off)          & 92.3 & 1.000 & 13/16 & 3/32  & 79.5 & 0.833 & 5/16  & 10/32 \\
+NLI-only detector                     & 96.2 & 1.000 & 16/16 & 0/32  & 89.7 & 0.875 & 14/16 & 1/32 \\
+Paragraph-level NLI (answerhood off)\textsuperscript{a} & 91.0 & 0.875 & 14/16 & 2/32  & 74.4 & 0.500 & 12/16 & 3/32 \\
+No query conditioning                 & 96.2 & 1.000 & 16/16 & 0/32  & 82.1 & 0.625 & 15/16 & 1/32 \\
+Sufficiency: presence + quality ($n\geq2$) off & 93.6 & 1.000 & 16/16 & 3/32 & 84.6 & 0.875 & 14/16 & 8/32 \\
+No presence check                     & 96.2 & 1.000 & 16/16 & 1/32  & 91.0 & 0.875 & 14/16 & 2/32 \\
+Sufficiency: quality ($n\geq2$) off   & 96.2 & 1.000 & 16/16 & 0/32  & 89.7 & 0.875 & 14/16 & 1/32 \\
+Anchor: either sentence               & 96.2 & 1.000 & 16/16 & 0/32  & 89.7 & 0.875 & 14/16 & 1/32 \\
+No assertive-span filter              & 96.2 & 1.000 & 16/16 & 0/32  & 88.5 & 0.824 & 14/16 & 1/32 \\
+No query-span gate                    & 94.9 & 0.941 & 16/16 & 0/32  & 89.7 & 0.875 & 14/16 & 1/32 \\
+\bottomrule
+\end{tabular}
+
+\vspace{3pt}
+\raggedright\scriptsize
+\textsuperscript{a}From an earlier run; the current code has no switch for
+paragraph-level comparison, so this row was not reproduced.
+\end{table*}
 
 % ─────────────────────────────────────────────────────────────────────────────
 % Bibliography now managed via BibTeX (references.bib, IEEEtran style).

@@ -530,6 +530,8 @@ Full tables: `git show 832736a:numbers.md`. Headline values only:
 | Conflict precision | 0.727 (16/22) | see git | 0.43 (16 true / 21 false flags) | 1.00 |
 | Conflict recall | 16/16 | see git | 16/16 | 15/16 |
 | Unsafe answers (/32) | 0 | see git | 4 | 1 |
+| Attribution precision (conflict reports citing the gold pair; added 2026-10-17, Observation 56) | 0.727 (16/22) | not graded | 0.405 (15/37) | not graded |
+| Conflict F1, prompted baseline (15/15 precision, 15/16 recall) | | 0.968 | | 0.968 |
 
 Source: `git show 832736a:numbers.md` sections 1a, 1d, 2a (`experiments_corpus2/our_decisions_corpus2.json`).
 
