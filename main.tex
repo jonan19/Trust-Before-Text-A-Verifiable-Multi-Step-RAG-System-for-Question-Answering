@@ -7,8 +7,9 @@
 %      once available in the compile environment. Kept IEEEtran conference
 %      here so the file compiles anywhere.
 %   2. Figures: DONE. Figs 1-3 are native TikZ (drawn inline, no external
-%      files). Figs 4-6 are matplotlib PDFs in this folder
-%      (fig4_confusion_matrix, fig5_ablation, fig6_nli_separation), kept
+%      files). Figs 4-6 are matplotlib PDFs in paper_assets/
+%      (fig4_confusion_matrix, fig5_ablation, fig6_nli_separation; rebuild
+%      with python paper_assets/make_figures.py), kept
 %      behind \IfFileExists guards. NOTE: the TikZ figures have not been
 %      compiled locally (no TeX engine available here); check them on the
 %      first Overleaf build.
@@ -1230,8 +1231,9 @@ Gap / insufficient recall & 100\% (16/16) \\
 \end{tabularx}
 \end{table}
 
-The confusion matrix in Table~\ref{tab:confusion}, plotted as a heatmap in
-Figure~\ref{fig:confusion_heat}, shows why this matters.
+The confusion matrix in Table~\ref{tab:confusion} shows why this matters
+(Figure~\ref{fig:confusion_heat} sets it beside Corpus~2 and the current
+system).
 Every off-diagonal cell is zero except one: six answerable queries were
 flagged as conflicts. No conflict was missed, no gap was answered, and no
 query was answered when it should have abstained. In other words, every one
@@ -1258,12 +1260,15 @@ Insufficient  & 0  & 0  & 16 & 16 \\
 
 \begin{figure}[htbp]
 \centering
-\IfFileExists{fig4_confusion_matrix.pdf}
-  {\includegraphics[width=0.85\columnwidth]{fig4_confusion_matrix.pdf}}
-  {\figplaceholder{3x3 confusion-matrix heatmap: only off-diagonal cell is
-   Answer$\to$Conflict = 6.}}
-\caption{Confusion-matrix heatmap, Corpus 1. The only non-zero off-diagonal
-cell is the six answerable queries flagged as conflicts.}
+\IfFileExists{paper_assets/fig4_confusion_matrix.pdf}
+  {\includegraphics[width=\columnwidth]{paper_assets/fig4_confusion_matrix.pdf}}
+  {\figplaceholder{Four 3x3 confusion matrices: Corpus 1 and 2, frozen and
+   current system.}}
+\caption{Confusion matrices for both corpora, frozen system and current system
+(rows: gold label; columns: system decision). Frozen Corpus~1 errs only by
+flagging six answerable queries as conflicts; the current system's errors on
+both corpora are mostly over-cautious INSUFFICIENT abstentions, and Corpus~2
+keeps one answered conflict (Q045). Current values are in-sample.}
 \label{fig:confusion_heat}
 \end{figure}
 
@@ -1297,34 +1302,42 @@ Validation baseline                          & 67.9\% (53/78) \\
 
 \begin{figure}[htbp]
 \centering
-\IfFileExists{fig5_ablation.pdf}
-  {\includegraphics[width=\columnwidth]{fig5_ablation.pdf}}
+\IfFileExists{paper_assets/fig5_ablation.pdf}
+  {\includegraphics[width=\columnwidth]{paper_assets/fig5_ablation.pdf}}
   {\figplaceholder{Ablation bar chart: 67.9\% $\to$ 83.3\% $\to$ 92.3\%.}}
-\caption{Cumulative ablation on Corpus 1: each architectural change and its
-effect on decision accuracy.}
+\caption{Cumulative ablation on Corpus 1 (frozen system): each architectural
+change and its effect on decision accuracy.}
 \label{fig:ablation}
 \end{figure}
 
 \subsection{NLI Score Separation}
-Figure~\ref{fig:nli} plots the NLI contradiction scores of the true planted
-conflicts against those of the false conflicts, with the 0.94 threshold
-drawn between them. The true conflicts cluster tightly at the top (0.965 and
-above), and most false conflicts fall well below the threshold. The figure
-also makes the residual limitation visible: two false conflicts score above
-every true conflict (0.9996 and 0.9998), so no choice of threshold can
-remove them without also discarding real conflicts. This is the empirical
-basis for the core open problem discussed in Section~\ref{sec:limitations}.
+Figure~\ref{fig:nli} plots, for every query whose candidate pairs reach the
+NLI prong in the current system (18 of 78 on Corpus~1, 19 of 78 on
+Corpus~2), the highest contradiction score among those pairs, with the 0.94
+threshold. On Corpus~1 the 16 conflict queries score 0.982 to 1.000 and the
+two other queries that reach the prong score below 0.01, so there is no false
+conflict to separate. On Corpus~2 the 14 detected conflicts score 0.994 to
+0.9994, and the two remaining false conflicts, both on gap queries, score
+0.9993 and 0.9984: inside the range of the true conflicts, so no choice of
+threshold can remove them without also discarding real conflicts. The two
+conflicts Corpus~2 misses (Q036, Q045) never reach the prong; their pairs are
+removed by the checks before it (Section~\ref{sec:post_eval_fixes}). The
+scores come from a rerun of the current system that records each NLI score,
+with decisions identical to the stored run on all 78 queries of each corpus.
+This is the empirical basis for the core open problem discussed in
+Section~\ref{sec:limitations}: the two false conflicts are genuine
+contradictions in the corpus that do not answer the question asked.
 
 \begin{figure}[htbp]
 \centering
-\IfFileExists{fig6_nli_separation.pdf}
-  {\includegraphics[width=\columnwidth]{fig6_nli_separation.pdf}}
-  {\figplaceholder{NLI score separation: true conflicts $\geq 0.965$ vs
-   false $\leq 0.92$, threshold line at 0.94; two false outliers above all
-   true conflicts.}}
-\caption{NLI contradiction scores for true versus false conflicts, Corpus 1.
-The threshold at 0.94 sits in the gap between the two populations, except
-for two false conflicts that score above every true conflict.}
+\IfFileExists{paper_assets/fig6_nli_separation.pdf}
+  {\includegraphics[width=\columnwidth]{paper_assets/fig6_nli_separation.pdf}}
+  {\figplaceholder{NLI score separation, current system, Corpus 1 and 2;
+   threshold line at 0.94.}}
+\caption{Highest NLI contradiction score per query, current system, Corpus~1
+(top) and Corpus~2 (bottom); only queries whose candidate pairs reach the NLI
+prong are shown. Corpus~1 separates cleanly; on Corpus~2 the two false
+conflicts score inside the true-conflict range.}
 \label{fig:nli}
 \end{figure}
 
@@ -2054,8 +2067,10 @@ because one genuine conflict (Q048) is now answered.
 Six thresholds were swept end to end on the current system, each with the
 others at their defaults (Table~\ref{tab:sensitivity}). The NLI
 contradiction cutoff is not a knife-edge: results are identical at 0.80,
-0.94 and 0.99, likely because the query-scoping checks already discard the pairs
-a lower cutoff would admit. The average-score floor only costs
+0.94 and 0.99. Every candidate pair the prong scores at the default (42 on
+Corpus~1, 112 on Corpus~2) scores either at least 0.982 or at most 0.224
+(Figure~\ref{fig:nli}), so any cutoff between those values gives every pair
+the same verdict and the system the same decisions. The average-score floor only costs
 over-abstention, and only above 0.65. Two defaults sit near unsafe regions:
 the coverage floor of 0.55 has no margin (below it, Corpus~1 answers a gap
 query, Q058), and the answerhood margin and the query-span floor sit 1.5

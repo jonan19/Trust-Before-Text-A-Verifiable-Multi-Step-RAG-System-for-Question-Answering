@@ -63,6 +63,8 @@
 | 50 | 2026-10-17 | MultiHop-RAG: new preregistered measurement, 300 paired queries | External validation | Measured, no pipeline change | Gap leak 56/150 vs 2/150; over-abstention 52.0% vs 73.3%; strict correctness 41.7% vs 62.7% (P4 failed) |
 | 51 | 2026-10-17 | Every number-bearing doc made to agree with the ledger | Documentation | Done (docs, ledger, checker print fix; no pipeline change) | ledger 549 -> 570 rows, check passes (was 3 DIFFs); 169 tests pass; numbers.md s7 items 1, 13, 14, 18 closed |
 | 53 | 2026-10-17 | Paper review (Part 6): 29 ACCURACY and CLAIM fixes applied to `main.tex` | Paper wording / provenance of numbers | Done (`main.tex`, ledger; no pipeline change) | haystack sentence removed; "by construction" kept only for flips and routing; ledger 597 rows, check passes; 169 tests pass |
+| 54 | 2026-10-17 | Paper figures rebuilt from result files; NLI separation measured on the current system | Paper figures / provenance of numbers | Done (`nli_scores.py`, `make_figures.py`, `main.tex`, ledger) | C1 clean separation, no false conflict; C2 false conflicts 0.9993 and 0.9984 sit inside the true range (0.9943 to 0.9994) |
+| 55 | 2026-10-17 | NLI-cutoff sensitivity explained by the measured score gap | Paper wording | Done (`main.tex`, ledger) | scored pairs are >= 0.982 or <= 0.224, so cutoffs in between give identical decisions |
 
 ---
 
@@ -794,3 +796,48 @@ Add the new row to the master timeline above and set `Last synced` in `numbers.m
   - The MultiHop-RAG citation.
 - **Evidence.** `docs/PAPER_REVIEW_2026-10-17.md`; `git diff main.tex docs/NUMBERS_LEDGER.csv`; the backup above.
 - **Numbers updated.** `numbers.md` section 7 item 15 closed (haystack sentence removed from `main.tex`); no measured value changed.
+
+---
+
+## Observation 54: Figures rebuilt from result files; NLI-separation scores measured on the current system
+
+*Added 2026-10-17. Commit/branch: on top of `47f92c4`, `jonan`. Zero LLM tokens; the local DeBERTa NLI model was run on Corpus 1 and 2 with the owner's OK (retrieval from the harness cache, synthesis stubbed). No pipeline code, threshold or default changed.*
+
+- **Issue.** The three matplotlib figures were hard-coded and out of date.
+  - Fig. 4 showed only the frozen Corpus 1 matrix, repeating the table.
+  - Fig. 5's top label overlapped the title and used internal fix names.
+  - Fig. 6 and its paragraph (0.965; 0.9996 and 0.9998; 12 true and 8 false conflicts) came from a development stage that no file records. They match neither the frozen system (16 true, 6 false) nor the current one, and the ledger carried them as ACCEPTED_AS_IS.
+  - `main.tex` looked for the PDFs next to itself, so all three would have printed as placeholders.
+- **Fix.**
+  - New `evaluation/nli_scores.py` wraps `validation._has_nli_contradiction` only to record the score it already computes, runs the unchanged pipeline, and compares every decision with the stored current run.
+  - Output: `evaluation/results/nli_scores_corpus{1,2}.json` (gitignored; `run_info` at `47f92c4`; SHA-256 prefixes `d06e9058a571051f`, `69e1721caad461cc`).
+  - `paper_assets/make_figures.py` now reads the result files for Fig. 4 and Fig. 6.
+    - Fig. 4 is a 2x2 grid: Corpus 1 and 2, frozen and current.
+    - Fig. 5 keeps its v6 values (no file exists) with the label fixed.
+    - Fig. 6 shows the current system, both corpora.
+  - `main.tex`:
+    - figure paths now point to `paper_assets/`;
+    - Fig. 4, 5 and 6 captions updated;
+    - the NLI paragraph is rewritten from the new file.
+- **Effect.**
+  - Decisions in the scoring runs equal the stored runs on 78/78 queries per corpus.
+  - **Corpus 1:** 18 queries reach the NLI prong. The 16 conflict queries score 0.982 to 1.000; the other 2 score below 0.01. No false conflict.
+  - **Corpus 2:** 19 queries reach the prong.
+    - The 14 detected conflicts score 0.9943 to 0.9994.
+    - The two false conflicts (gap queries Q053 and Q054) score 0.9993 and 0.9984, inside the true range, so no threshold separates them. This is Standing Decision 1 measured directly.
+    - Q036 and Q045 never reach the prong.
+  - `check_ledger.py` PASSED (601 rows; MT-089 and MT-099 to MT-104 retired; MT-462 to MT-472 added). `pytest` 169 passed. Braces and refs balance.
+- **Cost / regressions.** The paper's old claim that "two false conflicts score above every true conflict" on Corpus 1 is gone. It was not a property of either reported system.
+- **Not done.** No unit test for `nli_scores.py` (it needs the model and the stores). No LaTeX engine here, so the figures have not been seen in a compiled PDF.
+- **Numbers updated.** `numbers.md` section 2 gains the NLI-separation table.
+
+---
+
+## Observation 55: Threshold-sensitivity sentence now states the measured reason
+
+*Added 2026-10-17. Commit/branch: on top of `47f92c4`, `jonan`. Nothing run; text and ledger only.*
+
+- **Issue.** `main.tex` explained why the NLI cutoff does not matter with a guess ("likely because the query-scoping checks already discard the pairs a lower cutoff would admit").
+- **Fix.** It now states the measured reason, from the Observation 54 files. Every candidate pair the NLI prong scores at the default cutoff (42 on Corpus 1, 112 on Corpus 2) scores either at least 0.982 or at most 0.224. Any cutoff between those values gives each pair the same verdict, so the system takes the same path and makes the same decisions.
+- **Effect.** Ledger: MT-272 extended, MT-473 added. `check_ledger.py` PASSED (602 rows). 169 tests pass.
+- **Numbers updated.** None changed (`numbers.md` section 2 already holds the score ranges).

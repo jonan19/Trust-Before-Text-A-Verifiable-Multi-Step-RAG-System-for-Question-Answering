@@ -132,6 +132,22 @@ STATUS's sequence (82.1% -> 80.8% -> 82.1%) is the "sufficiency first" path; the
 other path goes 82.1% -> 83.3% -> 82.1%. The "sufficiency only" row reproduces
 STATUS's "previous revision" row exactly (92.3% / 80.8%, precision 0.842 / 0.600).
 
+### NLI contradiction scores, current system (Observation 54)
+
+Source: `evaluation/results/nli_scores_corpus{1,2}.json` (`python evaluation/nli_scores.py --corpus N`;
+local NLI model only, decisions equal the stored run on 78/78). Highest score among each
+query's NLI-scored candidate pairs.
+
+| | Corpus 1 | Corpus 2 |
+|---|---|---|
+| Queries reaching the NLI prong | 18 | 19 |
+| Flagged true conflicts: count, score range | 16, 0.982 to 1.000 | 14, 0.9943 to 0.9994 |
+| False conflicts and their scores | none (other 2 queries < 0.01) | Q053 0.9993, Q054 0.9984 (inside the true range) |
+| Conflict queries that never reach the prong | none | Q036, Q045 |
+
+History: the paper's earlier figure (0.965 lowest true; false 0.9996, 0.9998; 12 true / 8 false)
+was a development-stage measurement with no file; retired 2026-10-17.
+
 ### Security properties (same code, one pass)
 
 Source: `docs/STATUS.md` "Security properties".
