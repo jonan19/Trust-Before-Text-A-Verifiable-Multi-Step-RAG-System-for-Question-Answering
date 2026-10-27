@@ -515,8 +515,8 @@ argument for preferring it.
    both safety-bug classes below it are either fixed or exhaustively
    characterised.
 2. **Problem 1 is research**, and now also covers the system's one remaining
-   unsafe answer (Q045). Do not spend more effort on deterministic rules — six
-   have been falsified, including a targeted anchor-rescue built specifically for
+   unsafe answer (Q045). Do not spend more effort on deterministic rules — eight
+   have been falsified (the table under Problem 1), including a targeted anchor-rescue built specifically for
    Q045. The untried routes are query-conditioned entailment and answer-span
    extraction.
 3. **Problem 2's residual cost (Q013, Q059, Q074) is not a to-do at this design

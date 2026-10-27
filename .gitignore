@@ -53,3 +53,6 @@ data_ramdocs/
 # MultiHop-RAG (downloaded data, generated article files, its own store)
 data_multihop/
 qdrant_db_multihop/
+data_poison/
+qdrant_db_poison/
+Trust_Before_Text_NLPIR.pdf

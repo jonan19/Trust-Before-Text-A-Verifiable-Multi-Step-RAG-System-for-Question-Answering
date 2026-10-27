@@ -28,6 +28,26 @@ from run_info import run_info
 OUT_DIR = Path(__file__).resolve().parent / "results"
 
 
+def make_recorder(validation, seen: list[dict]):
+    """Wrap validation._has_nli_contradiction so each NLI score is appended to `seen`.
+
+    Same computation as the original (both directions, max of the two); the
+    original's own verdict is returned unchanged, so no decision can move.
+    """
+    original = validation._has_nli_contradiction
+
+    def recording(text_a: str, text_b: str) -> bool:
+        model = validation._get_nli_model()
+        if model is not None:
+            ab = model.predict([(text_a, text_b)], apply_softmax=True)[0]
+            ba = model.predict([(text_b, text_a)], apply_softmax=True)[0]
+            seen.append({"a": text_a, "b": text_b,
+                         "score": round(max(float(ab[0]), float(ba[0])), 6)})
+        return original(text_a, text_b)
+
+    return recording
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--corpus", choices=sorted(CORPORA), required=True)
@@ -37,20 +57,7 @@ def main() -> None:
     import validation
 
     seen: list[dict] = []
-    original = validation._has_nli_contradiction
-
-    def recording(text_a: str, text_b: str) -> bool:
-        # Same computation as the original (both directions, max of the two),
-        # recorded, then the original's own verdict is returned unchanged.
-        model = validation._get_nli_model()
-        if model is not None:
-            ab = model.predict([(text_a, text_b)], apply_softmax=True)[0]
-            ba = model.predict([(text_b, text_a)], apply_softmax=True)[0]
-            seen.append({"a": text_a, "b": text_b,
-                         "score": round(max(float(ab[0]), float(ba[0])), 6)})
-        return original(text_a, text_b)
-
-    validation._has_nli_contradiction = recording
+    validation._has_nli_contradiction = make_recorder(validation, seen)
 
     stored_path = OUT_DIR / f"rerun_corpus{args.corpus}.json"
     stored = {r["id"]: r["observed"]
