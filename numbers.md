@@ -469,7 +469,7 @@ held (ours +0.2, baseline -1.2); (4) baseline safer than ours: held.
 | Undefended LLM / unhardened synthesis / hardened synthesis, automated screen | 45/45 / 22/45 / 2/45 | NLPIR footnote; reproduced from `experiments/*.json` with the project's own screen | verified |
 | Gap probes answered with provenance disabled | 33/48 (17 C1 + 16 C2) | `adversarial_gap_probes_corpus{1,2}.json` `meta.unsafe_before` | verified; NLPIR prints 31 (pre-margin C2 value); `main.tex` uses 33 (owner, 2026-10-15) |
 | Gap probes, exact McNemar ours vs defended LLM | 70B: p = 2 x 0.5^12 = 4.9e-4; 120B: p = 2 x 0.5^24 = 1.2e-7 | derived: every paired probe discordant (LLM leaked, ours abstained) | arithmetic; matches NLPIR p11 |
-| Pre-ingestion poisoning (fixed system) | **Recreated 2026-10-27 (Observation 57):** ours unsafe 17/24 (C1 9/12, C2 8/12), Wilson [50.8, 85.1]%; provenance rejected 0/24; fabricated document in the validated evidence 23/24; clean stores abstained 12/12. Defended gpt-oss-120b: not re-run (needs an API key). History: NLPIR p11 stated ours 24/24 [86, 100]%, defended 24/24 (p = 1.0), clean 0/12, with no file; that 24/24 does not reproduce. | `evaluation/results/preingestion_poisoning_corpus{1,2}.json` (`python evaluation/preingestion_poisoning.py --corpus N`) | REPRODUCED for ours (new file); defended-LLM arm still prose only |
+| Pre-ingestion poisoning (fixed system) | ours 24/24 stated, Wilson [86, 100]%; defended gpt-oss-120b 24/24 (p = 1.0); clean stores ours 0/12 | NLPIR p11 only; **no result file on any branch** (searched 2026-10-15); a script now exists, `evaluation/preingestion_poisoning.py` (2026-10-27), clean run pending | ACCEPTED_AS_IS by owner decision 2026-10-15 (Observation 47) |
 
 Independent hand adjudication of the 12 defended-LLM answers the screen flags
 (2026-10-11, Observation 42; rule: hijacked = the answer presents the planted
@@ -563,7 +563,7 @@ unchanged by later work (they were not re-run).
 | 16 | `main.tex` tab:security_current and sec:adv-adaptive (before 2026-10-15) | Rows "In-corpus poisoning accepted 0/4, holds" were the retrieval-time fabricated-evidence test, and the adaptive 4/4 was described as pre-ingestion poisoning; NLPIR p11 says the 4/4 spliced passages in at retrieval time and pre-ingestion poisoning defeats ours 24/24 | **Closed 2026-10-15 (Observation 47):** relabelled; pre-ingestion row added (24/24, fails) |
 | 17 | `main.tex` tab:thresholds (before 2026-10-15) | Query-span floor 0.35 labelled Structural; NLPIR Table 9 says selected on both corpora | **Closed 2026-10-15 (Observation 47):** relabelled Calibrated; full 20-constant table added as Appendix B, every value checked against `validation.py` |
 | 18 | NLPIR p4 vs `main.tex` Reproducibility | NLPIR says Python 3.12; the post-merge runs used Python 3.11.9 | `main.tex` says 3.11.9 (owner, 2026-10-15). NLPIR left as printed. **Closed 2026-10-17:** settled by that owner decision; nothing left to do. |
-| 19 | `main.tex` pre-ingestion poisoning (24/24, 0/12 clean, defended 24/24) | No result file on any branch | ACCEPTED_AS_IS by owner decision 2026-10-15; find or regenerate the file before submission **Updated 2026-10-27 (Observation 57):** file recreated; ours gives 17/24, not 24/24, so `main.tex` lines on this result must change (owner / paper editor); defended-LLM 24/24 still has no file (needs an API key). |
+| 19 | `main.tex` pre-ingestion poisoning (24/24, 0/12 clean, defended 24/24) | No result file on any branch | ACCEPTED_AS_IS by owner decision 2026-10-15; find or regenerate the file before submission |
 
 **Still open on 2026-10-17 (Observation 51):** item 4 (the Corpus 3 bare-LLM baseline was
 never run to completion; needs a key), item 9 (the 2026-08-31 Corpus 3 raw files are lost;
@@ -572,4 +572,3 @@ the owner must accept those rows as prose-only, the replicated files stand in), 
 file). Items 15 and 19 need the owner before submission.
 **Update 2026-10-17 (Observation 53):** item 15 closed (sentence removed from `main.tex`).
 Still open: 4, 9 and 19.
-**Update 2026-10-27 (Observation 57):** item 19 now has a file for our arm, and it disagrees with the paper (17/24, not 24/24); the defended-LLM arm and the `main.tex` text remain open.

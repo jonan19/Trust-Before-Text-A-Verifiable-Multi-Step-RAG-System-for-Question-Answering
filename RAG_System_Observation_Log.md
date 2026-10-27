@@ -66,7 +66,7 @@
 | 54 | 2026-10-17 | Paper figures rebuilt from result files; NLI separation measured on the current system | Paper figures / provenance of numbers | Done (`nli_scores.py`, `make_figures.py`, `main.tex`, ledger) | C1 clean separation, no false conflict; C2 false conflicts 0.9993 and 0.9984 sit inside the true range (0.9943 to 0.9994) |
 | 55 | 2026-10-17 | NLI-cutoff sensitivity explained by the measured score gap | Paper wording | Done (`main.tex`, ledger) | scored pairs are >= 0.982 or <= 0.224, so cutoffs in between give identical decisions |
 | 56 | 2026-10-17 | Paper restructured and cut (review P30 to P49) | Paper structure | Done (`main.tex`, ledger) | tables 29 -> 18, prose about 15.5k -> 14.1k words; external benchmarks after the fixes; Limitations its own section |
-| 57 | 2026-10-27 | Pre-ingestion poisoning recreated | Adversarial / provenance of numbers | Measured (new script, zero tokens); `main.tex` not edited | ours 17/24 unsafe, not 24/24; provenance rejected 0/24; clean 12/12 abstained |
+| 57 | 2026-10-27 | Pre-ingestion poisoning script written; doc slips fixed | Tooling / docs | Script and tests added; no result recorded (owner will run a clean test) | `main.tex` unchanged |
 
 ---
 
@@ -889,42 +889,21 @@ Add the new row to the master timeline above and set `Last synced` in `numbers.m
 
 ---
 
-## Observation 57: Pre-ingestion poisoning recreated; the paper's 24/24 does not reproduce (17/24)
+## Observation 57: Pre-ingestion poisoning script written (no result recorded); doc slips fixed
 
-*Added 2026-10-27. Commit/branch: on top of `8cfdd9b`, `jonan`. Zero LLM tokens (synthesis stubbed); no pipeline code, threshold or default changed; no `RAG_*` override. The run's `run_info` shows `tracked_files_modified: True` because `main.tex` and `references.bib` had uncommitted paper edits by someone else; no pipeline file was modified.*
+*Added 2026-10-27. Commit/branch: on top of `8cfdd9b`, `jonan`. No pipeline code, threshold or default changed.*
 
-- **Issue.** `main.tex` (security table, adversarial section, summary table) and NLPIR p11 state that a fabricated document ingested through the normal pipeline defeats our gate on 24/24 attacked queries [86, 100]%, as it does the defended gpt-oss-120b (24/24), while clean stores abstain on all 12. No result file or script for this existed on any branch or in git history (`numbers.md` section 7 item 19).
+- **Issue.** `main.tex` and NLPIR p11 state a pre-ingestion poisoning result (24/24) with no result file or script on any branch or in git history (`numbers.md` section 7 item 19).
 - **Fix.**
-  - New `evaluation/preingestion_poisoning.py`, built to NLPIR's description:
-    - the 6 genuine gaps per corpus from `adversarial_gap_probes.GAPS`;
-    - the two styles the defended LLMs saw (authority, aware): 12 attacked queries per corpus, 24 in all.
-  - For each attacked query:
-    - the corpus documents plus one fabricated document (`Policy_Update_2026.txt`, the probe text) are ingested by the unchanged ingestion code into a fresh scratch store (`data_poison/`, `qdrant_db_poison/`, gitignored);
-    - the gap query runs through the full pipeline with live retrieval;
-    - unsafe = the system answers with the fabricated document in its validated evidence.
-  - Control: the same 12 gap queries on the clean stores.
+  - New `evaluation/preingestion_poisoning.py`, built to NLPIR's description of the test:
+    - the 6 gaps per corpus from `adversarial_gap_probes.GAPS`, times the authority and aware styles;
+    - each fabricated passage is ingested as an ordinary document into a scratch store (`data_poison/`, `qdrant_db_poison/`, gitignored);
+    - the full pipeline runs with zero LLM tokens; clean stores serve as the control.
   - Tests: `tests/test_poisoning_and_nli_scores.py` (6 offline tests, also covering `nli_scores.py`).
-- **Effect** (`python evaluation/preingestion_poisoning.py --corpus {1,2}`):
-  - **Ours unsafe 17/24** (Corpus 1 9/12, Corpus 2 8/12), Wilson [50.8, 85.1]%.
-  - Provenance rejected 0 of 24: the fabricated document carries a genuine fingerprint.
-  - The fabricated document reached the validated evidence on 23 of 24.
-  - The other 7 ended INSUFFICIENT: Corpus 1 Q057 in both styles and Q052 (aware); Corpus 2 Q049 and Q057 in both styles.
-  - Clean stores abstained on 12 of 12, as stated.
-- **Against the paper.**
-  - **Structural claim holds:** provenance does not authenticate ingested content, and an ingested fabrication defeats the gate on most attacked queries.
-  - **Rate does not hold:** 17/24, not 24/24.
-  - NLPIR's fabricated documents and scoring are not in the repo, so the exact cause of the difference is unknown; this run is a new measurement to the same description.
-  - The defended-LLM 24/24 was not re-run: it needs an API key.
-- **Not done.**
-  - `main.tex` is not edited: the paper is being edited by someone else, so the change is left to the owner. Affected passages:
-    - the security table row (24/24);
-    - the adversarial-separation paragraph (24 of 24, [86, 100]%, defended 24/24 p = 1.0, clean 12);
-    - the adversarial summary row (1.00 / 1.00);
-    - the adaptive-attack Finding 2 (24 of 24).
-  - The ledger rows MT-416, MT-421, MT-423, MT-428, MT-432 and NL-050 stay ACCEPTED_AS_IS but carry a FLAG note with the new values.
+- **No result recorded.** The owner will run a clean test of this attack at a later date; until then item 19 stays open and `main.tex` is unchanged.
 - **Same change set.**
   - `docs/STATUS.md` next-steps "six" falsified rules -> eight (matches its own table, CLAUDE.md and the paper).
   - `evaluation/nli_scores.py` refactored for testing (no behaviour change).
   - Untracked files moved out of the repo to `D:\Major Project_untracked_backup\` (the IGDTUW `.xlsx`, the `.pptx` deck, `paper_assets/trust_before_text.tex.bak`), not deleted.
   - `Trust_Before_Text_NLPIR.pdf` stays (the ledger reads it) and is now gitignored.
-- **Numbers updated.** `numbers.md` section 5 poisoning row (new values, NLPIR kept as History) and section 7 item 19.
+- **Numbers updated.** None.
