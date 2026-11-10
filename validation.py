@@ -59,6 +59,7 @@ Return schema:
 
 from __future__ import annotations
 
+import tracing
 import logging
 import math
 import os
@@ -699,6 +700,7 @@ def _has_nli_contradiction(text_a: str, text_b: str) -> bool:
         scores_ab = model.predict([(text_a, text_b)], apply_softmax=True)[0]
         scores_ba = model.predict([(text_b, text_a)], apply_softmax=True)[0]
         contradiction_score = max(float(scores_ab[0]), float(scores_ba[0]))
+        tracing.append("nli_contradiction_scores", contradiction_score)
         return contradiction_score >= NLI_CONFLICT_THRESHOLD
     except Exception as exc:  # pragma: no cover
         _log.warning("[Validation V5] NLI inference error: %s — skipping NLI check.", exc)
@@ -1655,6 +1657,10 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
     """
     content_terms = _query_content_terms(query)
     focus = _focus_terms(query)
+    # Failure pattern 1: the decision turns on this unweighted token set, so a
+    # trace that does not show it cannot explain a reworded-query flip.
+    tracing.note(conflict_focus_terms=focus,
+                 conflict_content_terms=content_terms)
 
     # Answerhood pool (ANSWERHOOD_MARGIN gate): built once per query, not per
     # pair, from every query-relevant sentence across every individually
@@ -1676,6 +1682,8 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
                     seen_pool.add(sent)
                     pool.append(sent)
         answerhood_margins = _answerhood_margins(query, pool)
+        tracing.note(answerhood_margin_setting=ANSWERHOOD_MARGIN,
+                     answerhood_pool_size=len(answerhood_margins))
 
     # Query-relevance gate: the score a chunk must reach to be eligible for
     # comparison at all, defined as the score of this query's Nth-best chunk.
@@ -1692,6 +1700,7 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
         # the embedding by ~0.001, moved it 0.0001 above, and changed the
         # decision from conflict to answer.
         rank_cutoff = ranked_scores[MAX_CONFLICT_EVIDENCE_RANK - 1] - RANK_TIE_EPSILON
+        tracing.note(rank_cutoff=rank_cutoff)
 
     for i, a in enumerate(chunks):
         for b in chunks[i + 1:]:
@@ -1699,6 +1708,7 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
             source_a = a.get("source", "unknown_a")
             source_b = b.get("source", "unknown_b")
             if source_a == source_b and source_a != "unknown":
+                tracing.bump("veto_same_source")
                 continue
 
             # Both chunks must be top-ranked evidence FOR THIS QUERY. A
@@ -1708,12 +1718,14 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
             # irrelevant pairs also skip the expensive NLI inference.
             if rank_cutoff is not None and (
                     a.get("score", 0.0) < rank_cutoff or b.get("score", 0.0) < rank_cutoff):
+                tracing.bump("veto_rank_cutoff")
                 continue
 
             # Guard: both chunks must be individually relevant to the query.
             rel_a = a.get("relevance_score", a.get("score", 0.0))
             rel_b = b.get("relevance_score", b.get("score", 0.0))
             if rel_a < MIN_CONFLICT_RELEVANCE or rel_b < MIN_CONFLICT_RELEVANCE:
+                tracing.bump("veto_min_conflict_relevance")
                 continue
 
             # Query-scoping: compare the query-relevant SENTENCES pairwise.
@@ -1736,6 +1748,7 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
             sents_a = _query_relevant_sentences(a["text"], content_terms)
             sents_b = _query_relevant_sentences(b["text"], content_terms)
             if not sents_a or not sents_b:
+                tracing.bump("veto_no_query_relevant_sentence")
                 continue
 
             kind: Optional[str] = None
@@ -1763,6 +1776,7 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
                         ok = (_query_span_similarity(query, cand_a) >= ANCHOR_ASYMMETRIC_QSPAN
                               and _query_span_similarity(query, cand_b) >= ANCHOR_ASYMMETRIC_QSPAN)
                     if not ok:
+                        tracing.bump("veto_focus_anchor")
                         continue
 
                     # Query-intent gate, now per sentence: a contradiction only
@@ -1772,6 +1786,7 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
                     if QUERY_SPAN_RELEVANCE > 0.0 and query.strip():
                         if (_query_span_similarity(query, cand_a) < QUERY_SPAN_RELEVANCE
                                 or _query_span_similarity(query, cand_b) < QUERY_SPAN_RELEVANCE):
+                            tracing.bump("veto_query_span_relevance")
                             continue
 
                     # Answerhood gate: both sentences must score within
@@ -1784,6 +1799,7 @@ def find_conflict(chunks: list[dict], query: str = "") -> Optional[dict]:
                     if ANSWERHOOD_MARGIN > 0.0 and answerhood_margins:
                         if (answerhood_margins.get(cand_a, 0.0) > ANSWERHOOD_MARGIN
                                 or answerhood_margins.get(cand_b, 0.0) > ANSWERHOOD_MARGIN):
+                            tracing.bump("veto_answerhood_margin")
                             continue
 
                     kind = _contradiction_kind(cand_a, cand_b)
@@ -2021,11 +2037,13 @@ def check_sufficiency(chunks: list[dict], query: str = "") -> bool:
     """
     # H1 — hard
     if len(chunks) < MIN_CHUNKS_FOR_SUFFICIENCY:
+        tracing.note(suff_veto="H1_min_chunk_count", suff_n_chunks=len(chunks))
         return False
 
     # H3 — hard: at least one chunk must have non-trivial relevance to the query
     has_relevant = any(c.get("relevance_score", 1.0) > MIN_RELEVANCE_SCORE for c in chunks)
     if not has_relevant:
+        tracing.note(suff_veto="H3_relevance_floor")
         return False
 
     # H5 — hard: the query's focus terms must be IN the evidence.
@@ -2055,7 +2073,10 @@ def check_sufficiency(chunks: list[dict], query: str = "") -> bool:
         if focus:
             evidence_text = " ".join(c.get("text", "") for c in chunks)
             present = sum(1 for t in focus if _mentions_focus(evidence_text, {t}))
+            tracing.note(suff_focus_terms=focus, suff_focus_present=present,
+                         suff_focus_presence=present / len(focus))
             if present / len(focus) < MIN_FOCUS_PRESENCE:
+                tracing.note(suff_veto="H5_focus_presence")
                 return False
 
     # H2 OR H4 — sufficient if evidence is strong on either average quality or coverage
@@ -2072,8 +2093,11 @@ def check_sufficiency(chunks: list[dict], query: str = "") -> bool:
     # MIN_CHUNKS_FOR_AVG_SUFFICIENCY chunks is a structural correction, not a
     # re-tuned threshold: a single chunk must now earn sufficiency on coverage.
     avg_applies = len(chunks) >= MIN_CHUNKS_FOR_AVG_SUFFICIENCY
+    tracing.note(suff_avg_score=avg_score, suff_coverage=coverage,
+                 suff_avg_applies=avg_applies)
     if not (avg_applies and avg_score >= MIN_AVG_SCORE_FOR_SUFFICIENCY) \
             and coverage < MIN_QUERY_COVERAGE:
+        tracing.note(suff_veto="H2_H4_quality")
         return False
 
     return True
@@ -2170,18 +2194,23 @@ def validate(chunks: list[dict], query: str = "") -> dict:
     # ingested corpus is not weak evidence, it is not evidence, and no later
     # stage is able to notice the difference.
     stage0, rejected = verify_provenance(chunks)
+    tracing.stage("stage0_provenance", n_in=len(chunks), n_out=len(stage0),
+                  rejected=len(rejected))
 
     # ── Stage 1: Normalize ────────────────────────────────────────────────
     stage1 = normalize_chunks(stage0)
+    tracing.stage("stage1_normalize", n_in=len(stage0), n_out=len(stage1))
 
     # ── Stage 2: Deduplicate ──────────────────────────────────────────────
     stage2 = remove_duplicates(stage1)
+    tracing.stage("stage2_dedup", n_in=len(stage1), n_out=len(stage2))
 
     # ── Stage 3: Relevance Filtering ──────────────────────────────────────
     # V4: uses embedding-based relevance_score if already present in chunks
     # (set by retrieval.py); falls back to TF-cosine if not.
     stage3 = filter_by_relevance(stage2, query)
     relevant_count = len(stage3)
+    tracing.stage("stage3_relevance", n_in=len(stage2), n_out=len(stage3))
 
     # Stage 4 and Stage 5 ask different questions and need different evidence.
     #
@@ -2204,6 +2233,8 @@ def validate(chunks: list[dict], query: str = "") -> dict:
     # evidence can therefore block an answer but never produce one, which is the
     # safe direction for both stages.
     stage3_wide = filter_by_relevance(stage2, query, apply_score_floor=False)
+    tracing.stage("stage3_wide_no_score_floor", n_in=len(stage2),
+                  n_out=len(stage3_wide))
 
     # ── Stage 4: Conflict Detection ────────────────────────────────────────
     # Runs on the RELEVANCE-FILTERED set (stage3).
@@ -2213,17 +2244,26 @@ def validate(chunks: list[dict], query: str = "") -> dict:
     # show *which* documents disagree instead of listing every retrieved source.
     conflict_detail = find_conflict(stage3_wide, query=query)
     conflict_flag = conflict_detail is not None
+    tracing.stage("stage4_conflict", n_in=len(stage3_wide),
+                  conflict_flag=conflict_flag,
+                  conflict_kind=(conflict_detail or {}).get("kind"),
+                  conflict_sources=[c.get("source") for c in
+                                    (conflict_detail or {}).get("chunks", [])])
 
     # ── Stage 5: Sufficiency Check ───────────────────────────────────────
     # V5: query is passed through for the H4 coverage check
     query_coverage_score = _query_coverage(query, stage3)
     sufficiency_flag = check_sufficiency(stage3, query=query)
+    tracing.stage("stage5_sufficiency", n_in=len(stage3),
+                  sufficiency_flag=sufficiency_flag,
+                  query_coverage_score=query_coverage_score)
 
     # ── Stage 6: Evidence Structuring ──────────────────────────────────────
     structured = structure_evidence(stage3)
 
     # ── Stage 7: Abstention Decision ──────────────────────────────────────
     abstention_reason = decide_abstention(conflict_flag, sufficiency_flag)
+    tracing.stage("stage7_abstention", abstention_reason=abstention_reason)
 
     # ── Confidence score + tier ──────────────────────────────────────────
     confidence_score = _weighted_confidence(structured)

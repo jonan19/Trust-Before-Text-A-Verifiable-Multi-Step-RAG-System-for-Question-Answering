@@ -308,11 +308,169 @@ def print_status(run_dir, state):
         print("  %-18s %s" % (name, (s["status"] + " (exit %s, %ss)" % (s["exit"], s["seconds"])) if s else "pending"))
 
 
+def stray_rag_env():
+    """RAG_* variables inherited from the shell would silently change the
+    numbers, so every mode refuses to run while any one is set."""
+    return {k: v for k, v in os.environ.items() if k.startswith("RAG_")}
+
+
+# ---------------------------------------------------------------------------
+# --trace-compare: acceptance test for the trace layer
+# ---------------------------------------------------------------------------
+# The trace layer (tracing.py, enabled by RAG_TRACE=1) must observe the
+# pipeline without altering it. This mode runs the decision eval twice per
+# corpus, once with the flag and once without, and compares every query's
+# decision AND its cited conflict pair: a decision can match while the evidence
+# cited for it changes (CLAUDE.md failure pattern 3), which would still mean
+# tracing had altered the run.
+#
+# Both arms start from a cleared retrieval cache. The cache key is
+# corpus||top_k||query only (harness.py:62) and is blind to RAG_TRACE, so a
+# warm cache would serve the second arm from the first arm's stored chunks and
+# hide any retrieval-level difference.
+#
+# Corpus 3 is never accepted here: the sealed test split is not a debugging
+# surface, and this script's contract is never to touch it.
+TRACE_TAGS = ("tracecmp_off", "tracecmp_on")
+TRACE_CORPORA = ("1", "2")
+
+
+def _clear_corpus_cache(corpus):
+    shutil.rmtree(ROOT / "evaluation" / "_retrieval_cache" / corpus,
+                  ignore_errors=True)
+
+
+def _decision_map(tag, corpus):
+    """{query id: (decision, cited conflict pair)} from one eval result file.
+
+    The pair is JSON-serialised with sorted keys so the comparison is stable
+    whatever shape conflict_pair() returns.
+    """
+    f = RESULTS / ("%s_corpus%s.json" % (tag, corpus))
+    data = json.loads(f.read_text(encoding="utf-8"))
+    return {r["id"]: (r["observed"],
+                      json.dumps(r.get("conflict_pair"), sort_keys=True))
+            for r in data["results"]}
+
+
+def trace_compare(corpora, run_dir):
+    """Run both arms on each corpus and report every per-query difference."""
+    tracing_exists = (ROOT / "tracing.py").exists()
+    rows = []    # [corpus, query id or problem, arm-off value, arm-on value]
+    totals = []  # [corpus, identical, total]
+    ok = True
+
+    for corpus in corpora:
+        arm_failed = False
+        for tag, extra in ((TRACE_TAGS[0], {}), (TRACE_TAGS[1], {"RAG_TRACE": "1"})):
+            _clear_corpus_cache(corpus)
+            log = run_dir / ("%s_c%s.log" % (tag, corpus))
+            print("[%s] start %s corpus %s" % (now(), tag, corpus), flush=True)
+            t0 = time.time()
+            rc = run_cmd([PY, "evaluation/run_eval.py", "--corpus", corpus,
+                          "--tag", tag], extra, log)
+            print("[%s] %s corpus %s exit %s (%.1fs)"
+                  % (now(), tag, corpus, rc, time.time() - t0), flush=True)
+            if rc != 0:
+                rows.append([corpus, "RUN FAILED (%s)" % tag,
+                             "exit %s" % rc, str(log)])
+                ok, arm_failed = False, True
+                continue
+            # A silently disabled gate invalidates the comparison: both arms
+            # must run the shipped default configuration.
+            if GATE_WARNING in log.read_text(encoding="utf-8", errors="replace"):
+                rows.append([corpus, "GATE DISABLED (%s)" % tag,
+                             GATE_WARNING, str(log)])
+                ok, arm_failed = False, True
+
+        if arm_failed:
+            print("  corpus %s: no comparison (an arm produced no usable run)"
+                  % corpus)
+            continue
+
+        try:
+            off = _decision_map(TRACE_TAGS[0], corpus)
+            on = _decision_map(TRACE_TAGS[1], corpus)
+        except (OSError, ValueError, KeyError) as exc:
+            rows.append([corpus, "RESULTS UNREADABLE",
+                         type(exc).__name__, str(exc)])
+            ok = False
+            continue
+
+        ids = sorted(set(off) | set(on))
+        diffs = [i for i in ids if off.get(i) != on.get(i)]
+        totals.append([corpus, len(ids) - len(diffs), len(ids)])
+        print("  corpus %s: %d/%d identical"
+              % (corpus, len(ids) - len(diffs), len(ids)))
+        for i in diffs:
+            rows.append([corpus, i, str(off.get(i)), str(on.get(i))])
+            print("    DIFF %s  off=%s  on=%s" % (i, off.get(i), on.get(i)))
+        if diffs:
+            ok = False
+
+    if not tracing_exists:
+        verdict = "VACUOUS PASS" if ok else "FAIL"
+        note = ("tracing.py does not exist, so RAG_TRACE=1 is currently a "
+                "no-op. This run proves the comparison harness works; it "
+                "proves nothing about the trace layer until tracing.py lands. "
+                "Re-run it then.")
+    else:
+        verdict = "PASS" if ok else "FAIL"
+        note = ("Tracing is present. A PASS means tracing changed no decision "
+                "and no cited pair. A FAIL means the instrumentation is wrong, "
+                "not the system.")
+
+    L = ["# Trace-compare (acceptance test for the trace layer)", "",
+         "Run: %s" % now(), "", "Run dir: `%s`" % run_dir, "",
+         "Verdict: **%s**" % verdict, "", note, "",
+         "## Per-corpus", "", "| corpus | identical | total |", "|---|---|---|"]
+    L += ["| %s | %d | %d |" % tuple(r) for r in totals] or ["| - | - | - |"]
+    L += ["", "## Differences and problems", ""]
+    if rows:
+        L += ["| corpus | query / problem | trace off | trace on |",
+              "|---|---|---|---|"]
+        L += ["| %s | %s | %s | %s |" % tuple(r) for r in rows]
+    else:
+        L.append("None.")
+    L += ["", "## Environment", "", "```", env_record(run_dir), "```"]
+    (run_dir / "TRACE_COMPARE.md").write_text("\n".join(L) + "\n",
+                                              encoding="utf-8")
+
+    print("")
+    print("TRACE-COMPARE: %s" % verdict)
+    print(note)
+    print("Wrote %s" % (run_dir / "TRACE_COMPARE.md"))
+    return 0 if ok else 1
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--status", action="store_true")
     ap.add_argument("--fresh", action="store_true")
+    ap.add_argument("--trace-compare", action="store_true",
+                    help="run the decision eval with and without RAG_TRACE=1 "
+                         "and assert identical per-query decisions")
+    ap.add_argument("--corpora", default="1,2",
+                    help="--trace-compare only: comma-separated, from 1,2")
     args = ap.parse_args()
+
+    if args.trace_compare:
+        stray = stray_rag_env()
+        if stray:
+            print("REFUSING TO RUN: RAG_* variables are set in this shell: %s"
+                  % stray)
+            print("Unset them and restart; the two arms must differ only in "
+                  "RAG_TRACE.")
+            return 2
+        corpora = [c.strip() for c in args.corpora.split(",") if c.strip()]
+        bad = [c for c in corpora if c not in TRACE_CORPORA]
+        if bad or not corpora:
+            print("REFUSING TO RUN: --corpora must be drawn from %s, got %r"
+                  % (",".join(TRACE_CORPORA), args.corpora))
+            return 2
+        d = RESULTS / ("tracecmp_" + datetime.date.today().isoformat())
+        d.mkdir(parents=True, exist_ok=True)
+        return trace_compare(corpora, d)
 
     run_dir = pick_run_dir(args.fresh)
     state = load_state(run_dir)
@@ -320,7 +478,7 @@ def main():
         print_status(run_dir, state)
         return 0
 
-    stray = {k: v for k, v in os.environ.items() if k.startswith("RAG_")}
+    stray = stray_rag_env()
     if stray:
         print("REFUSING TO RUN: RAG_* variables are set in this shell: %s" % stray)
         print("Unset them and restart; they would silently change the numbers.")

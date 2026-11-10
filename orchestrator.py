@@ -26,6 +26,7 @@ import os
 import re
 from typing import Literal
 
+import tracing
 from retrieval_interface import retrieve  # semantic similarity search
 try:
     from qdrant_retrieval import retrieve_by_source as _retrieve_by_source
@@ -317,6 +318,8 @@ def run(query: str, verbose: bool = True) -> dict:
         "synthesis_result": dict | None,
     }
     """
+    tracing.begin_query(query)
+
     if verbose:
         print_separator("ORCHESTRATOR V4 START")
         print(f"  Query : {query}")
@@ -333,6 +336,8 @@ def run(query: str, verbose: bool = True) -> dict:
 
     # ── Step 2: Decompose if complex ────────────────────────────────────────
     sub_queries = decompose_query(processed_query) if query_type == "complex" else [processed_query]
+    tracing.stage("preprocess_classify_decompose", query_type=query_type,
+                  normalised=processed_query != query, n_sub_queries=len(sub_queries))
     if verbose and len(sub_queries) > 1:
         print(f"  Sub-queries: {sub_queries}")
 
@@ -406,6 +411,10 @@ def run(query: str, verbose: bool = True) -> dict:
             print(f"  Retrieved chunks : {len(raw_chunks)}")
 
         # ── Step 4: Validate (pass processed query for relevance filtering) ──
+        tracing.stage("retrieve", attempt=attempt, top_k=top_k,
+                      raw_chunks=len(raw_chunks),
+                      to_validate=len(chunks_to_validate),
+                      target_source=early_target_source)
         validation_result = validate(chunks_to_validate, query=processed_query)
 
         if verbose:
@@ -427,6 +436,8 @@ def run(query: str, verbose: bool = True) -> dict:
 
         # ── Step 5: Decide ───────────────────────────────────────────────────
         decision = make_decision(validation_result)
+        tracing.stage("decide", decision=decision,
+                      abstention_reason=validation_result.get("abstention_reason"))
         if verbose:
             print(f"  Decision : {decision.upper()}")
 
@@ -506,6 +517,11 @@ def run(query: str, verbose: bool = True) -> dict:
                 score_str = f"  score={c['score']:.4f}" if "score" in c else ""
                 print(f"    - [{c['source']}] {c['section']}{score_str}")
         print_separator()
+
+    tracing.end_query(decision=decision, query_type=query_type,
+                      n_sub_queries=len(sub_queries),
+                      answered=answer is not None,
+                      synthesis_reason=(synthesis_result or {}).get("reason"))
 
     return {
         "query"           : query,

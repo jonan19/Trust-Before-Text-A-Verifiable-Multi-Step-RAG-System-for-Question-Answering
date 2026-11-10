@@ -34,6 +34,8 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+import tracing  # noqa: E402  — needs ROOT on sys.path, inserted just above
+
 CACHE_DIR = Path(__file__).resolve().parent / "_retrieval_cache"
 
 # Corpus 1 reads from a byte-identical copy of qdrant_db/ (same collection,
@@ -153,6 +155,8 @@ def run_queries(orchestrator, queries: list[dict], *, progress: bool = True,
     records: list[dict] = []
     n = len(queries)
     for i, q in enumerate(queries, 1):
+        tracing.set_label(query_id=q["id"], category=q.get("category"),
+                          expected=q.get("expected_decision"))
         res = orchestrator.run(q["query"], verbose=False)
         val = res.get("validation") or {}
         detail = val.get("conflict_detail") or {}

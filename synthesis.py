@@ -42,6 +42,7 @@ Output schema:
 
 from __future__ import annotations
 
+import tracing
 import logging
 import os
 import re
@@ -669,6 +670,11 @@ def synthesize(
 
     # ── Attach ranked citations ──────────────────────────────────────────────
     citations = _build_citations(cleaned_chunks)
+
+    tracing.stage("synthesis", status="success", n_citations=len(citations),
+                  faithfulness_score=faithfulness["faithfulness_score"],
+                  unsupported_sentences=len(faithfulness["unsupported_sentences"]),
+                  removed_sentences=len(gate["removed_sentences"]))
 
     return {
         "status"               : "success",

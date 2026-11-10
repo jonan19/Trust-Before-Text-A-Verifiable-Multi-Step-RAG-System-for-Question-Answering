@@ -23,11 +23,16 @@ Return format:
 
 from __future__ import annotations
 
+import tracing
+
 import os
 
 from qdrant_retrieval import retrieve as _qdrant_retrieve
 
 SUPPORTED_RETRIEVERS: tuple[str, ...] = ("qdrant",)
+
+
+import tracing
 
 
 def active_retriever() -> str:
@@ -64,7 +69,13 @@ def retrieve(query: str, top_k: int = 5, backend: str | None = None) -> list[dic
         selected = "qdrant"
 
     if selected == "qdrant":
-        return _qdrant_retrieve(query, top_k=top_k)
+        chunks = _qdrant_retrieve(query, top_k=top_k)
+        tracing.append("retrieval_calls", {
+            "top_k": top_k, "n": len(chunks),
+            "top_score": chunks[0].get("score") if chunks else None,
+            "sources": sorted({c.get("source", "?") for c in chunks}),
+        })
+        return chunks
 
     raise ValueError(
         f"Unsupported retrieval backend '{selected}'. "
