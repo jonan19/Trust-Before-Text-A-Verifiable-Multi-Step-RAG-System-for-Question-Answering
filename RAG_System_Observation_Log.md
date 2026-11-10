@@ -67,6 +67,10 @@
 | 55 | 2026-10-17 | NLI-cutoff sensitivity explained by the measured score gap | Paper wording | Done (`main.tex`, ledger) | scored pairs are >= 0.982 or <= 0.224, so cutoffs in between give identical decisions |
 | 56 | 2026-10-17 | Paper restructured and cut (review P30 to P49) | Paper structure | Done (`main.tex`, ledger) | tables 29 -> 18, prose about 15.5k -> 14.1k words; external benchmarks after the fixes; Limitations its own section |
 | 57 | 2026-10-27 | Pre-ingestion poisoning script written; doc slips fixed | Tooling / docs | Script and tests added; no result recorded (owner will run a clean test) | `main.tex` unchanged |
+| 58 | 2026-11-08 | `--trace-compare` acceptance test added to `rerun_suite.py` | Tooling / observability | Done (`evaluation/rerun_suite.py` only; no pipeline change) | 78/78 identical decisions on both corpora, but VACUOUS until `tracing.py` exists |
+| 59 | 2026-11-08 | `tracing.py` trace sink; pipeline instrumented | Observability | Done (`tracing.py` new; 5 files instrumented; no threshold or decision change) | trace-compare PASS 78/78 both corpora; 175 tests pass; Stage 4 and Stage 5 disagree on focus terms |
+| 60 | 2026-11-08 | Safety-utility curve measured on Corpus 1 and 2 | Measurement (no code change) | Done (`evaluation/safety_curve.py` new; no pipeline change) | zero unsafe is free on C1 at the default, costs 22 answers and 21 accuracy on C2; the zero-unsafe point does not transfer (c=1.0 vs c=1.5) |
+| 61 | 2026-11-09 | Owner ruling: Observation 60 does not reopen Observation 43; sweep scope and claim wording fixed | Governance (no code change) | Decided; refusal list unchanged | C1/C2 sweeps permitted as re-verification; all three external sets sealed against tuning, so C3 dev is the only sweepable external data; "measured" and "validated" must stay apart |
 
 ---
 
@@ -907,3 +911,309 @@ Add the new row to the master timeline above and set `Last synced` in `numbers.m
   - Untracked files moved out of the repo to `D:\Major Project_untracked_backup\` (the IGDTUW `.xlsx`, the `.pptx` deck, `paper_assets/trust_before_text.tex.bak`), not deleted.
   - `Trust_Before_Text_NLPIR.pdf` stays (the ledger reads it) and is now gitignored.
 - **Numbers updated.** None.
+
+
+---
+
+## Observation 58: `--trace-compare` acceptance test for the trace layer
+
+*Added 2026-11-08. Commit/branch: `68837ce`, `jonan`.*
+
+- **Issue.** Observability is absent from this repo: the only instrumentation is
+  two `logging.getLogger` calls, in `synthesis.py:53` and `validation.py:78`. The
+  cost shows up as roughly thirty single-use diagnostic scripts in `evaluation/`
+  (`dump_stage3.py`, `focus.py`, `coverage_leak_diag.py`,
+  `overabstention_diag.py` and others), each written to answer one question once.
+  A trace layer is planned (`docs/AUTOMATION_PLAN.md` item A), and it touches
+  every stage of the pipeline, so it needs an acceptance test that exists
+  *before* the instrumentation does.
+- **Cause.** Not a defect. The project never needed runtime introspection while
+  every investigation was a one-off script run by hand from a chat.
+- **Fix.** `evaluation/rerun_suite.py` only. Added `stray_rag_env()` (factored
+  out of `main()`, so both modes share the existing refusal-on-stray-`RAG_*`
+  guard), `_clear_corpus_cache()`, `_decision_map()`, `trace_compare()`, and the
+  flags `--trace-compare` and `--corpora`. Writes `TRACE_COMPARE.md` with an
+  environment record into `evaluation/results/tracecmp_<date>/`.
+  **Not changed:** no pipeline file, no threshold, no default, no existing step
+  of the suite, no `expected_baseline.json`, and no new file. A first draft of
+  this work proposed a new standalone script; `rerun_suite.py` already provided
+  resumability, the zero-token contract and the sealed-split refusal, so the test
+  became a mode on it instead.
+- **Effect.** `python evaluation/rerun_suite.py --trace-compare --corpora 1,2`
+  (2026-11-08, 8.0 min, zero tokens): **78/78 identical on Corpus 1 and 78/78 on
+  Corpus 2**, comparing both the decision and the cited conflict pair per query.
+  All four arms reproduced `numbers.md` section 2 exactly: C1 75/78, C2 70/78, C2
+  conflict recall 0.875, precision 0.875, attribution 0.875, 2 false conflicts,
+  0 gap leaks. So the arms ran the shipped configuration rather than a degraded
+  one, which is the second thing this run establishes.
+- **Cost / regressions.** None measured. The three guards were exercised
+  directly: `--corpora 3-dev-b04` is refused (exit 2), a stray
+  `RAG_ANSWERHOOD_MARGIN=0` in the shell is refused (exit 2), and
+  `--status` on the existing suite is unaffected.
+- **Caveat, stated in the tool's own output.** `tracing.py` does not exist yet,
+  so `RAG_TRACE=1` is currently a no-op and this pass is **vacuous**. The script
+  detects the absence of `tracing.py` and prints the verdict as
+  `VACUOUS PASS`, with a note that it proves the comparison harness works and
+  nothing about the trace layer. It must be re-run once the instrumentation
+  lands, where a `FAIL` means the instrumentation is wrong, not the system.
+- **Design notes.** Two points decided by reading the code rather than guessing.
+  (1) The retrieval cache key is `corpus||top_k||query` only (`harness.py:62`)
+  and is blind to `RAG_TRACE`, so a warm cache would serve the second arm from
+  the first arm's stored chunks and hide a retrieval-level difference; both arms
+  therefore start from a cleared cache. (2) The comparison includes
+  `conflict_pair`, not just the decision, because a decision can match while the
+  evidence cited for it changes, which is `CLAUDE.md` failure pattern 3 and would
+  still mean tracing had altered the run.
+- **Evidence.** `evaluation/results/tracecmp_2026-11-08/TRACE_COMPARE.md`;
+  arm logs `tracecmp_{off,on}_c{1,2}.log` in the same folder; result files
+  `evaluation/results/tracecmp_{off,on}_corpus{1,2}.json` (gitignored).
+- **Numbers updated.** None. Every value reproduced; no row of `numbers.md`
+  changed.
+
+
+---
+
+## Observation 59: `tracing.py` trace sink; the decision layer is now inspectable
+
+*Added 2026-11-08. Commit/branch: `68837ce`, `jonan`.*
+
+- **Issue.** The decision layer is deterministic and therefore explainable in
+  principle, but nothing recorded what it did. Diagnosing one wrong decision
+  meant writing a new single-use script; `evaluation/` holds about thirty of
+  them. Observation 58 added the acceptance test for a trace layer; this is the
+  trace layer.
+- **Cause.** Not a defect. No runtime introspection was needed while every
+  investigation was a hand-run script.
+- **Fix.** New `tracing.py` (repo root, stdlib only, **no new dependency**).
+  Off unless `RAG_TRACE=1`; `RAG_TRACE_DIR` sets the output directory,
+  `RAG_TRACE_TEXT=1` includes evidence text (off by default, so a trace file
+  does not duplicate the corpus). Writes one JSON object per query as a line to
+  `evaluation/results/traces/trace_<date>.jsonl`.
+  API: `begin_query` / `end_query` bracket a run; `stage(name, **f)` records one
+  completed stage and auto-times it since the previous call; `note`, `bump` and
+  `append` write into a pending bucket the next `stage` flushes. That design is
+  what keeps the call sites to one line each with **no re-indentation** of any
+  existing block. `set_label` lets the eval harness attach a query id without
+  threading an id through pipeline signatures. Uses `contextvars`, so concurrent
+  `api.py` requests cannot interleave records. **Every public function swallows
+  its own exceptions**, so a bug in tracing cannot raise into the pipeline and
+  change control flow.
+  Instrumented: `orchestrator.py` (5 calls), `validation.py` (8 stage records,
+  the Stage 4 focus terms / gate settings / 7 per-gate veto counters, every NLI
+  contradiction score, and which Stage 5 hypothesis vetoed), `synthesis.py` (1),
+  `retrieval_interface.py` (1), `evaluation/harness.py` (1 label call plus one
+  import).
+  **Not changed:** no threshold, no default, no decision logic, no public API,
+  no `requirements.txt`, no `numbers.md` row. `api.py` was listed in the plan
+  but needs nothing: it calls `orchestrator.run`, which is traced, so an HTTP
+  request is already covered and an extra span would add no information.
+- **Effect.** `python evaluation/rerun_suite.py --trace-compare --corpora 1,2`:
+  **PASS, 78/78 identical on Corpus 1 and 78/78 on Corpus 2**, comparing the
+  decision and the cited conflict pair. This is the same test as Observation 58,
+  which could only return `VACUOUS PASS` then; it is meaningful now. All four
+  arms reproduce `numbers.md` section 2 (C1 75/78 and 0/32 unsafe, C2 70/78,
+  precision 0.875, recall 0.875, attribution 0.875, 1/32 unsafe).
+  `python -m pytest tests/ -q`: **175 passed**. Trace file held 159 lines
+  (78 + 78 + 3 demo queries), as expected.
+- **Cost / regressions.** None measured. Runtime overhead was not separately
+  measured and is not claimed: the two arms differed by more than the
+  instrumentation could explain in both directions (C1 117.0s off vs 112.6s on;
+  C2 229.3s off vs 154.0s on), so cold-run variance on this machine is larger
+  than the effect being looked for.
+- **Finding the traces produced immediately (recorded, not acted on).**
+  Stage 4 and Stage 5 compute **different focus terms for the same query**:
+  `_focus_terms` gives C2 Q053 `{credit, studying}` while
+  `_sufficiency_focus_terms` gives `{abroad, studying}`. Two functions, two
+  answers, feeding two gates that each decide whether to abstain. This is
+  recorded failure pattern 1 (`CLAUDE.md`), now visible per query instead of by
+  inference. **No change proposed:** altering either function is a
+  decision-layer change, and per Standing Decision 1 and the Five-Line Rule it
+  needs an external corpus to judge, not a local idea.
+  Also visible, both cost rather than correctness: Stage 4 is about 99% of
+  pipeline latency (C2 Q036, 9,970ms of 10,036ms), and C2 Q053's conflict retry
+  re-derives the identical pair for 4.2 extra seconds, since retrieval returns
+  the same top chunks on the second attempt.
+- **Not done from the plan.** `docs/AUTOMATION_PLAN.md` item A.3 asked for two
+  sinks, JSONL **and** OpenTelemetry. Only JSONL is built. The JSONL file is
+  what the trace pane (plan step 6) reads, and a local viewer such as Phoenix
+  can ingest it later; adding an OTel exporter now would add a dependency and a
+  second code path before anything consumes either. Stated here so it is not
+  mistaken for finished.
+- **Evidence.** `evaluation/results/tracecmp_2026-11-08/TRACE_COMPARE.md`;
+  `evaluation/results/traces/trace_2026-11-08.jsonl`;
+  `evaluation/results/tracecmp_{off,on}_corpus{1,2}.json` (all gitignored).
+- **Numbers updated.** None. Every value reproduced. The three new environment
+  variables are deliberately **not** added to the switches table in
+  `numbers.md` section 0: that table lists switches that change a measured
+  number, and `RAG_TRACE` cannot, which is what the acceptance test
+  establishes. They are documented in the `tracing.py` module docstring.
+
+
+---
+
+## Observation 60: what zero unsafe answers costs, measured
+
+*Added 2026-11-08. Commit/branch: `68837ce`, `jonan`.*
+
+- **Issue.** The owner's goal was stated as "never produce unsafe answers,
+  without breaking anything else". Standing Decision 1 records eight falsified
+  candidates that all conserved total error, so there was strong evidence no
+  cost-free move exists, but the **trade itself had never been measured**. The
+  project had no curve, so the goal could not be priced, accepted or refused.
+- **Cause.** Not a defect. Every previous experiment asked "does this change
+  help?" at one operating point. None asked "what does the operating point
+  cost?".
+- **Fix.** New `evaluation/safety_curve.py`. **No pipeline change, no new
+  threshold, no default altered.** It sweeps one conservatism scalar `c` that
+  scales the three env-overridable Stage 5 sufficiency gates together
+  (`MIN_FOCUS_PRESENCE` 0.50, `MIN_QUERY_COVERAGE` 0.55,
+  `MIN_AVG_SCORE_FOR_SUFFICIENCY` 0.65); `c = 1.0` is the shipped default
+  exactly. Each point runs in a fresh process because `validation.py` reads its
+  thresholds at import time, so an in-process sweep would measure the default
+  seven times. `check_defaults()` reads the live constants back out of
+  `validation.py` and refuses to run if the anchor table has drifted or any
+  `RAG_*` is set in the shell. This is a measurement, not a filter: it adds no
+  rule and names no individual query, so it passes the Overfitting Test.
+  **Deliberately excluded from the dial:** `ANSWERHOOD_MARGIN`, because it is
+  non-monotone (larger values suppress fewer pairs, but `0` disables the gate
+  entirely and raises the most conflicts of all, so a scalar through zero would
+  invert the dial's meaning); and the Stage 4 knobs, because conflict-versus-
+  answer is the space Standing Decision 1 closes. The dial moves only
+  answer-versus-insufficient, which is where unsafe answers come from.
+- **Effect.** `python evaluation/safety_curve.py --corpus 1,2 --tag c1c2`,
+  7 points each, zero tokens, 76 min. Full tables:
+  `evaluation/results/safety_curve_c1c2.md`.
+
+  | | Corpus 1 | Corpus 2 |
+  |---|---|---|
+  | Sufficiency gates off (c=0): answered / accuracy / unsafe | 53/78, 71, **7** | 59/78, 61, **14** |
+  | Shipped default (c=1.0) | 43/78, 75, **0** | 43/78, 70, **1** |
+  | First zero-unsafe point | **c=1.0**, 43/78, 75 | **c=1.5**, 21/78, 49 |
+  | Cost of reaching it from the default | none | **-22 answers, -21 accuracy** |
+
+  Three results, in order of importance.
+  1. **The zero-unsafe point does not transfer.** `c = 1.0` gives zero unsafe
+     answers on Corpus 1 and one on Corpus 2; Corpus 2 needs `c = 1.5`. There is
+     no single "safe mode" value that is safe on both. This is direct, measured
+     support on non-sealed data for the project's existing claim that
+     calibration does not transfer across corpora.
+  2. **On Corpus 2, eliminating the last unsafe answer costs 21 correct
+     decisions**, a ratio of 21 to 1, and halves the answer rate (55.1% ->
+     26.9%). That is the price tag the goal needed. It is the owner's call
+     whether to pay it; this entry does not recommend either way.
+  3. **Stage 5 is a strict win, not a trade.** Turning the sufficiency gates
+     off removes 7 unsafe answers' worth of protection on Corpus 1 and 13 on
+     Corpus 2 *and* costs accuracy (71 vs 75, 61 vs 70). It improves both axes
+     at once, which is why it shipped.
+- **Internal validity check.** Conflict recall and false-conflict counts are
+  **constant across all seven points** on both corpora (1.0 and 0 on Corpus 1;
+  0.875 and 2 on Corpus 2). That is the dial doing exactly what it claims and
+  nothing else: it never touches Stage 4. The `c = 1.0` row reproduces
+  `numbers.md` section 2 exactly on both corpora, which anchors the axis.
+- **Cost / regressions.** None. No system file was modified.
+- **Limits, which must travel with any use of this curve.**
+  - **Corpus 1 and 2 are training data.** Any `c` read off this curve is
+    fitted. The curve prices the trade; it does not select an operating point.
+  - The three gates are **not commensurable** (a presence fraction over the
+    rarest terms, a coverage fraction over all content terms, a mean retrieval
+    score). `c` is a convenience axis. The unsafe and answer-rate columns are
+    monotone here, which is reassuring, but a non-monotonic result would more
+    likely be the dial than the system. Accuracy is non-monotone by
+    construction, since it counts over- and under-abstention together.
+  - **The informative corpora are missing, by design.** Corpus 1 and 2 sit at
+    0 and 1 unsafe at the default, so they mostly show the cost side. The high-
+    unsafe data (MultiHop-RAG, 56/150 gap leaks; Corpus 3) is sealed. The
+    script **refuses RAMDocs, MultiHop-RAG and Corpus 3 test by name**, since
+    sweeping a dial over a sealed split and reading off the best point is how a
+    test set becomes a training set. **Both the plan in
+    `docs/AUTOMATION_PLAN.md` item B and the chat proposal that preceded it
+    listed RAMDocs and MultiHop-RAG as sweep targets. That was wrong and the
+    script does not permit it.** Corpus 3 **dev** is permitted (`--corpus
+    3-dev`) and is the next place to run this.
+- **Evidence.** `evaluation/results/safety_curve_c1c2.{json,md}`; per-point logs
+  and result files in `evaluation/results/safety_curve_c1c2/` and
+  `evaluation/results/corpus{1,2}_c*.json` (gitignored).
+- **Numbers updated.** None. No existing row changed; the `c = 1.0` column
+  reproduces `numbers.md` section 2. These are new measurements at non-default
+  configurations and are recorded here and in the result files, not as
+  `numbers.md` rows, until the owner decides whether any of them belongs in the
+  paper.
+
+
+---
+
+## Observation 61: owner ruling on the Corpus 1/2 sweep; what may be swept and what may be claimed
+
+*Added 2026-11-09. Commit/branch: `68837ce`, `jonan`. **No code or measurement
+changed by this entry.** It records a decision and two scope corrections.*
+
+- **Question.** Observation 60 swept seven dial points on Corpus 1 and Corpus 2.
+  Did that reopen the owner decision of 2026-10-11 (Observation 43), which
+  accepted the Corpus 1/2 results as they are, marked them ACCEPTED_AS_IS and
+  discontinued `evaluation/sweep_tables.py` at 24 of 57 runs? Two readings were
+  put to the owner: that the decision removed the *obligation* to re-verify
+  Corpus 1/2, or that it discontinued the *activity* itself.
+- **Ruling (owner, 2026-11-09).** The first reading. Those runs were
+  re-verification, so the 2026-10-11 decision is **not reopened** and
+  **Observation 60 stands as recorded**. Corpus 1 and Corpus 2 are **not** added
+  to the refusal list in `evaluation/safety_curve.py`; `SEALED_HINT` stays
+  exactly as written, covering `3-test`, `ramdocs` and `multihop` only.
+  *Provenance: raised in the side session, relayed to the main session, and
+  confirmed directly by the owner there before being written here. Recorded per
+  the Observation 43 precedent for logging an owner decision.*
+- **Clarification that came with it: keep "measured" and "validated" apart.**
+  Re-verification means running a known configuration and checking the numbers
+  reproduce. Observation 60 did something different: it swept seven dial points
+  and read off the first zero-unsafe point, which is a **sensitivity
+  measurement**. This does not affect permissions, since Corpus 1 and 2 are
+  training data with no held-out claim to protect, and nothing already built
+  needs changing. It affects **wording**: an operating point chosen from Corpus
+  1/2 numbers is selection on training data, which is the proper use of training
+  data, but that point **may not be described as validated**. Validation would
+  have to come from Corpus 3 dev, and then from the one-shot preregistered runs
+  on the sealed sets. This distinction must be carried into `main.tex` wherever
+  Observation 60's numbers reach the paper.
+- **Scope correction: all three external sets are sealed against tuning.**
+  An earlier revision of `docs/AUTOMATION_PLAN.md` item B listed RAMDocs and
+  MultiHop-RAG as sweepable, on the stated ground that they are "not held out
+  for this purpose". That is contradicted by their own preregistrations:
+  `docs/PREREGISTRATION_RAMDOCS_RERUN.md:12` lifts the RAMDocs seal "for this
+  recalculation only; the system is not changed or tuned", and
+  `docs/PREREGISTRATION_MULTIHOP.md:158` says the sample is "not used to choose
+  or tune anything". A dial sweep is tuning, by the same argument that a sweep
+  is selection by definition. The plan was corrected on 2026-11-08.
+  **Nothing was spoiled:** `evaluation/safety_curve.py` refused `3-test`,
+  `ramdocs` and `multihop` by name from the moment it was written.
+- **Consequence for what the curve can claim.** With Corpus 3 test, RAMDocs and
+  MultiHop-RAG all sealed against tuning, **Corpus 3 dev is the only external
+  data the curve may sweep** (255 queries; unsafe denominator n = 63, so report
+  Wilson or bootstrap intervals and do not read a one-or-two-query difference
+  between adjacent dial settings as real). That is materially weaker than the
+  three-dataset curve originally proposed, and the paper must describe it as a
+  **single-dataset sensitivity measurement, not a cross-corpus result**.
+- **Confirmation route for a chosen point.** If and only if the dev curve
+  selects an operating point, that **single** point may be run **once** on
+  **each** sealed set (Corpus 3 test, RAMDocs, MultiHop-RAG), each with a
+  preregistration written beforehand. One point, one run per set, no
+  re-selection afterwards whatever the result. This is the only legitimate route
+  to validating a point on MultiHop-RAG, which is the most informative set for
+  this question and therefore the worst one to spend on a sweep.
+- **Retraction carried forward from Observation 60.** The "21 to 1" cost ratio
+  reported there rests on eliminating **one** Corpus 2 unsafe answer, n = 1. The
+  cost side (22 answers, 21 accuracy points) is solid; the benefit side is a
+  single query and was stated more confidently than n = 1 supports. The same
+  interval discipline required for dev applies to Corpus 1/2 at n = 32.
+- **Open, not blocking.** Whether the sealed-data lock (plan Mod 1, item 1) must
+  exist before a Corpus 3 dev sweep is unresolved between the two sessions. The
+  main session's position: a hook that refuses Edit and Write cannot prevent
+  spoilage, which happens by *reading* a sealed set and letting the result steer
+  a decision, and split isolation is already structural, since `bundles_for()`
+  (`evaluation/run_eval_corpus3.py:49`) filters bundles by key prefix so
+  `--split dev` cannot reach the 30 test bundles. Unresolved and currently
+  blocking nothing, since no dev sweep is queued.
+- **Evidence.** `docs/AUTOMATION_PLAN.md` sections 3B and 9;
+  `evaluation/safety_curve.py` (`SEALED_HINT`);
+  `docs/PREREGISTRATION_RAMDOCS_RERUN.md:12`;
+  `docs/PREREGISTRATION_MULTIHOP.md:158`;
+  `evaluation/run_eval_corpus3.py:49`.
+- **Numbers updated.** None. No measured value changed.
