@@ -1369,3 +1369,349 @@ five line numbers synced. `check_ledger.py` goes from FAILED to PASSED.*
   the percentages but are not themselves recomputed from a result file. A row
   checking them against the per-query counts would close that gap. Deliberately
   not done here, to keep this change to one concern.
+
+---
+
+## Observation 64
+
+**Date.** 2026-11-11
+**Trigger.** Review of `Project_Report.pdf` found three test cases in its Table 6.1
+(Test Cases) shipped with no result: TC-12 (CONFLICT is terminal, LLM not invoked),
+TC-15 (faithfulness caution prefix and unsupported-sentence list) and TC-24 (service
+interface via API/CLI). Owner asked for them to be run.
+
+**Issue.** Two separate things were conflated under "To run".
+
+1. **TC-12 was never unconducted.** `tests/test_validation_structural.py` already
+   covers its substance: `test_validation_imports_no_llm_client` (the validation
+   module does not import an LLM client at all), `test_decide_abstention_truth_table`
+   (all four conflict/sufficiency combinations route correctly) and
+   `test_validate_with_only_fabricated_evidence_abstains`. Re-run here: **29 passed**.
+   The report under-claims a property it has already proven.
+2. **TC-15 and TC-24 genuinely had not run.** Observation line 232 already recorded
+   `live_end_to_end.py` under "Not run, and why" (needs LLM keys). The script exists
+   and is purpose-built for exactly these two cases.
+
+**Cause of the blocker.** Keys were present (13 `GROQ_API_KEY*` entries). The run
+still failed: `Groq call failed after 5 attempts: 404 ... The model
+'llama-3.3-70b-versatile' does not exist or you do not have access to it.`
+**`llama-3.3-70b-versatile` has been decommissioned by Groq.** `models.list()` on
+the account returns `openai/gpt-oss-120b`, `openai/gpt-oss-20b`,
+`openai/gpt-oss-safeguard-20b`, `qwen/qwen3.8-27b`, `allam-2-7b` and the
+whisper/orpheus/prompt-guard families. No Llama generative model remains.
+
+This affects the report and `paper/main.tex` (moved there by Observation 65), which both name `llama-3.3-70b-versatile` as
+the Corpus 1 and Corpus 2 synthesis and baseline model. The **decision-layer numbers
+are unaffected** (that layer makes no LLM call and is deterministic), but no live
+Corpus 1/2 synthesis or prompted-baseline run is reproducible as written any more.
+
+**Fix.** None in the pipeline. Ran with `--model openai/gpt-oss-120b`, the model the
+external benchmarks (RAMDocs, MultiHop-RAG) already use, so the project now has one
+live synthesis model rather than two.
+
+**Effect.** All three test cases now have results.
+
+TC-12 and TC-15, `python evaluation/live_end_to_end.py --corpus {1,2} --model
+openai/gpt-oss-120b` (results in `evaluation/results/live_end_to_end_corpus{1,2}.json`):
+
+| Query | Expected | Observed | status | faithfulness | citations |
+|---|---|---|---|---|---|
+| C1 Q001 | answer | answer | success | 1.0 | 20 |
+| C1 Q013 | answer | **insufficient** | abstain | None | 0 |
+| C1 Q040 | conflict | conflict | abstain | None | 2 |
+| C1 Q049 | insufficient | insufficient | abstain | None | 0 |
+| C2 Q001 | answer | answer | success | 1.0 | 5 |
+| C2 Q039 | conflict | conflict | abstain | None | 2 |
+| C2 Q050 | insufficient | insufficient | abstain | None | 0 |
+
+Routing correct **3/4 (C1)** and **3/3 (C2)**. The one miss is **Q013**, already a
+recorded over-abstention (`numbers.md:104` lists C1's three over-cautious refusals as
+Q006, Q070, Q013), so this is the known residual cost of the focus-presence test, not
+a new defect. **TC-12 holds in the live path:** every abstention returned
+`status=abstain` with `faithfulness=None`, which is the signature of synthesis never
+being reached; no re-query occurred.
+
+Live injection leg, both corpora: `rejected_at_stage0=1`,
+`answer_contaminated=False`. The spliced `SYSTEM OVERRIDE / PWNED-2026` chunk was
+dropped by provenance and neither the token nor its planted "40 days" value appears
+in the answer.
+
+**TC-15 verified directly.** The caution path fired on the C1 injection leg:
+`[CAUTION: 1 sentence(s) in this answer may not be fully supported by the retrieved
+evidence. Faithfulness score: 0%]`, with the sentence count rendered. This is the
+first recorded observation of `NLI_FAITHFULNESS_THRESHOLD = 0.70` firing end to end;
+previously only the code path existed.
+
+TC-24, FastAPI via `fastapi.testclient` against `api.app`:
+
+- `GET /stats` -> 200, `{"total_chunks": 185, "unique_documents": 11, "retriever": "qdrant"}`
+- `POST /query` -> 200 on all three routing outcomes, each returning the full 24-field
+  response (decision, abstention_reason, conflict_detail, faithfulness_score,
+  unsupported_sentences, unverified_count, citations, per-stage scores). Conflict and
+  gap queries returned `decision=abstain`, `faithfulness_score=None`, matching the
+  live harness.
+- CLI, `python main.py "What is the probationary period for new employees?"` ->
+  `Decision: ABSTAIN`, `Abstain: conflict`, and a citation pair naming
+  `Employee_Handbook.docx` (3 months) against `Recruitment_and_Onboarding_Policy.docx`
+  (6 months). **This reproduces the transcript in report section 5.4 nearly verbatim**,
+  so that figure's "(illustrative format)" hedge can be replaced with a real capture.
+
+**Numbers updated.** None. No previously reported value changed. Every figure above
+is a new measurement with no prior recorded value, and the Corpus 1/2 decision-layer
+headline numbers were not re-run (owner decision, `corpus12-accept-as-is`).
+
+**Side finding, not fixed.** The default `qdrant_db` store that `api.py` and `main.py`
+load is dirty: Stage 0 rejected 7 to 9 chunks per query from a source `HR-Policy.pdf`
+that is not in the ingested corpus. Provenance is doing its job, so behaviour is
+correct, but it means the API index is not the evaluation index. It also changed one
+observable: the C1 annual-leave query scores faithfulness 1.0 through
+`live_end_to_end.py` and 0.0 through `POST /query`, because the stale chunks shift the
+evidence set. Any latency or live-demo numbers taken from the API should be taken
+against a freshly rebuilt index.
+
+**Follow-up.**
+1. Decide how the report and `paper/main.tex` should name the synthesis model now that
+   `llama-3.3-70b-versatile` is gone. The honest options are to keep it as a frozen
+   historical record with a footnote stating it is decommissioned, or to re-run the
+   Corpus 1/2 baseline on `openai/gpt-oss-120b`. The first is cheaper and matches the
+   project's existing frozen-snapshot convention; the second changes a reported
+   baseline accuracy and is a measurement, not an edit.
+2. Purge or rebuild the default `qdrant_db` so the service index matches the
+   evaluation index.
+3. Fill Table 6.1's three Result cells, and replace section 5.4's illustrative
+   transcript with the captured one.
+
+---
+
+## Observation 65: reorganization Phase 2 (root made legible); the paper/ move held back
+
+*Added 2026-11-11. Commit/branch: on top of `f0b9211`, branch
+`chore/phase1-dedup`. **No pipeline code, threshold, default or measured number
+changed.** One file moved, one import path updated, two documentation files
+written or extended. Plan: `docs/REORG_PLAN_2026-11-11.md`.*
+
+- **Issue.** Phase 1 removed duplicates but did not address the second problem
+  from the survey: the repository root is flat, so the pipeline, the paper and
+  the ledger are indistinguishable in a directory listing, and
+  `evaluation/`'s 52 scripts were only partly indexed.
+
+- **Cause.** Fourteen pipeline modules sit at the root with no package
+  structure and no map. The nine pipeline stages named in `claude.md` have no
+  visible counterpart on disk. Separately, `evaluation/README.md` documented
+  33 of 52 scripts; the other 19 accumulated after it was written.
+
+- **Fix (three of four planned items).**
+  1. **`corpus3_queries_combined.json` moved into `data_corpus3/`** (244 KB off
+     the root). One code reference updated, `evaluation/ingest_track_b.py:32`,
+     from `ROOT /` to `DATA_ROOT /`, plus its docstring. Safe because
+     `harness.py:58` filters `is_dir()` when registering bundles, so a JSON file
+     at that level is ignored, and `data_corpus3/bundles.json` already
+     established the pattern. Verified by running `ingest_track_b.py --check`:
+     240 queries, 491 gold spans, **0 problems**.
+  2. **`ARCHITECTURE.md` written** at the root: the request path as six steps
+     mapped to function names, the eight validation stages, all fourteen modules
+     grouped by role with line counts, and what in the root is *not* pipeline
+     code. Every claim in it was checked against the source rather than inferred
+     from filenames: line counts verified, `api.py` confirmed to mount
+     `frontend/` via `StaticFiles`, and `llm_interface.py` confirmed as the only
+     module that calls an LLM (`main.py` matched a provider grep but only in a
+     docstring listing environment variables).
+  3. **`evaluation/README.md` extended** from 33 to **52 of 52** scripts
+     documented, each described from its own docstring. Three new sections:
+     External benchmarks (RAMDocs, MultiHop-RAG, merged-corpora), Measurement
+     and paper tables, Provenance and bookkeeping. Grouped **in the index, not
+     on disk**: ten scripts there depend on `harness_bootstrap` putting the
+     directory on `sys.path`, so subfolders would break sibling imports.
+
+- **Item 1 NOT done: the `paper/` move is on hold.** Two reasons, both found on
+  starting it, and the second contradicts this project's own plan:
+  - `main.tex` and `references.bib` carry uncommitted edits from another
+    session (4 lines and 24 lines respectively). Moving a file that someone is
+    mid-edit on entangles their work with the rename.
+  - **The plan's estimate was wrong.** It called this "the one rename with a
+    built-in migration path" because `check_ledger.py --sync-lines` exists. That
+    flag syncs *line numbers*, not the `file` column, and **450 ledger rows name
+    `main.tex` there**. Worse, the verifier hardcodes it: `PAPER = "main.tex"`
+    and `STALE_FILES` (`check_ledger.py`, lines 68 and 80 when this was written;
+    76 and 88 after Observation 67's docstring edit). So the move requires
+    changing the verification tool, which is a code change, not the
+    documentation-and-layout work this phase was scoped as.
+
+  Recorded in the plan file under Phase 2 as well, so the next reader does not
+  re-derive it.
+
+- **Effect.** Root loses one 244 KB data file and gains `ARCHITECTURE.md`.
+  `evaluation/` script coverage 33/52 to 52/52. Verification unchanged and
+  green: `pytest tests/` **175 passed**; `check_ledger.py` **PASSED**, with
+  recompute 455 ok / 0 fail, presence 565 ok / 0 fail / 0 warn, coverage of
+  `main.tex` 1263 ok / 0 fail, non-C1/C2 128 ok / 26 warn, stale strings 28 ok.
+  Identical to the post-Observation-63 state in every check.
+
+- **Numbers updated.** None. No measured value changed.
+
+- **Assumptions.** That `ARCHITECTURE.md`'s line counts will drift as the
+  modules change. They are there to convey relative weight (`validation.py` at
+  2,288 lines against `retrieval_scoring.py` at 55), not as a tracked number,
+  and are deliberately not in the ledger.
+
+- **Follow-up.** The `paper/` move needs its own decision, taking in the
+  `check_ledger.py` change and whatever happens to the uncommitted `main.tex`
+  edits. Phase 3 (merging `experiments_corpus2/` into `experiments/`) remains
+  optional and still touches frozen paper experiments for cosmetic gain. Phase 4
+  remains recommended against.
+
+---
+
+## Observation 66: the ledger's 50 NLPIR rows archived; it could not pass on a fresh clone
+
+*Added 2026-11-11. Commit/branch: on top of `1319a10`, branch
+`chore/phase1-dedup`. **No pipeline code, threshold, default or measured number
+changed.** 50 rows moved out of `docs/NUMBERS_LEDGER.csv` into
+`docs/archive/NUMBERS_LEDGER_NLPIR.csv`, schema preserved; one docstring and one
+archive index updated.*
+
+- **Issue.** Two problems, found while answering whether the ledger is still
+  needed now that `main.tex` supersedes the NLPIR paper.
+  1. **The live ledger could not pass anywhere but this machine.** 50 of its 565
+     rows targeted `Trust_Before_Text_NLPIR.pdf`, which is **gitignored**
+     (`.gitignore:58`, a pre-existing rule). `check_presence` treats a missing
+     file as a hard failure, not a warning (`check_ledger.py`, the
+     `if not path.exists()` branch). On any fresh clone those 50 rows fail and
+     the ledger reports FAILED. It passed here only because the PDF happens to
+     sit in the working directory.
+  2. Those same rows produced **all 26 warnings** the ledger printed on a clean
+     run, via check (d): a non-C1/C2 row with status `UNVERIFIABLE` warns
+     outside `main.tex`.
+
+- **Cause.** The NLPIR paper was **never submitted** (owner, 2026-11-11), and
+  `main.tex` has replaced it. Its rows were still being verified as though it
+  were a live document.
+
+- **Why they were archived and not deleted.** Checked before acting: of the 50,
+  only **2** share a `meaning` with a `main.tex` row and **0** share an exact
+  `value_as_written`. **48 of 50 track claims that appear nowhere in the current
+  paper** (the RAMDocs Table 6 rows, MultiHop-RAG, the Corpus 3 August run,
+  Table 7). They are therefore the only record of what that draft claimed, and
+  of the provenance of `main.tex` values carried over as `ACCEPTED_AS_IS`.
+  Deleting them would have destroyed an audit trail; this project keeps those
+  (`paper_assets/archive/`, the pre-2026-08 log, `docs/archive/`).
+
+- **Fix.** `NL-001`..`NL-050`, the whole `NL-` series, moved to
+  `docs/archive/NUMBERS_LEDGER_NLPIR.csv` with the **schema preserved exactly**,
+  so `check_ledger.py` can still be pointed at it by hand if those claims ever
+  need auditing. No code logic changed. The script's docstring no longer lists
+  the NLPIR PDF among the files the ledger covers, and says where the rows went
+  and why the PDF page-matching machinery is kept. `docs/archive/README.md`
+  gained a row describing the file.
+
+- **Effect.** Live ledger **565 to 515 rows**, and it now runs **completely
+  clean for the first time**:
+
+  | Check | Before | After |
+  |---|---|---|
+  | (a) recompute | 455 ok, 0 fail, 0 warn | 438 ok, 0 fail, 0 warn |
+  | (b) presence | 565 ok, 0 fail, 0 warn | **515 ok, 0 fail, 0 warn** |
+  | (c) coverage of `main.tex` | 1263 ok, 0 fail | **1263 ok, 0 fail (unchanged)** |
+  | (d) non-C1/C2 rule | 128 ok, **26 warn** | 122 ok, **0 warn** |
+  | (e) stale strings | 28 ok, 0 fail | 28 ok, 0 fail |
+
+  Coverage of `main.tex` holding at 1263 was the thing at risk and it is intact:
+  no number in the current paper lost its traceability. `pytest tests/` **175
+  passed**, unchanged. `tests/test_ledger.py:107` mentions `NLPIR p5` but in a
+  synthetic fixture, not against the real rows.
+
+- **Fresh-clone status, stated precisely.** Verified that **all 8 files the live
+  ledger now targets are tracked** (`README.md`, `main.tex`, `numbers.md`,
+  `docs/STATUS.md`, `docs/RAMDOCS_COMPARISON.md`, `docs/FUTURE_WORK.md`,
+  `docs/CORPUS3_RESULTS.md`, `docs/CORPUS3_ANALYSIS_AND_FIXES.md`), so check (b)
+  can pass on a clone. **Not a claim that a clone is warning-free**: the
+  `source` expressions read `evaluation/results/*.json`, which is gitignored, and
+  a missing result file is a `NO FILE` **warning** in check (a), not a failure.
+  So a fresh clone should report PASSED with recompute warnings until the suite
+  is run. That is the designed behaviour, not a defect.
+
+- **Numbers updated.** None. No measured value changed; no row's
+  `value_as_written` was edited.
+
+- **Follow-up.** None required. If the NLPIR claims are ever needed, run
+  `check_ledger.py` against the archived CSV with the PDF present.
+
+---
+
+## Observation 67: Phase 2 item 1, the paper moved to paper/
+
+*Added 2026-11-11. Commit/branch: on top of `1154412`, branch
+`chore/phase1-dedup`. **No pipeline code, threshold, default or measured number
+changed, and the paper's own content was not touched.** `main.tex` and
+`references.bib` moved to `paper/`; 450 ledger rows, two `check_ledger.py`
+constants, five test fixtures and nine live documentation files repointed.*
+
+- **Issue.** The root mixed the paper in with the fourteen pipeline modules and
+  the ledger, which was the second problem from the survey. Observation 65 had
+  put this item on hold; the owner instructed it to proceed.
+
+- **Two blockers from Observation 65, and how each was resolved.**
+  1. **The other session's uncommitted edits** (4 lines in `main.tex`, 24 in
+     `references.bib`). Resolved by **staging the rename only**: `git mv` moves
+     the index entry at `HEAD` content, so the edits stayed *unstaged* on the new
+     path and were not committed here. Verified byte-for-byte against copies
+     taken before the move, and `git status` showed `AM` on both files
+     afterwards, which is exactly the intended state. The main session was told
+     before the move, not after.
+  2. **The verifier hardcoded the path.** `PAPER = "main.tex"` and a
+     `STALE_FILES` entry, plus 450 rows carrying `main.tex` in the ledger's
+     `file` column. All repointed. `tests/test_ledger.py` had to follow, since
+     its fixtures build a fake repo with `main.tex` at the root; five call sites
+     changed, including creating `paper/` in the `repo` fixture.
+
+- **Two things no estimate had caught, both found by looking before moving.**
+  1. **`main.tex` includes its figures with repository-root-relative paths**
+     (`paper_assets/fig4_confusion_matrix.pdf`, three of them). Moving the file
+     without thought would have broken them. They are **deliberately left
+     unchanged**, because that is precisely the layout the Overleaf bundle needs:
+     the bundle is flat, with the paper at the zip root and `paper_assets/`
+     beside it. Changing them to `../paper_assets/` would have fixed the repo
+     and broken the bundle. Recorded in a new `paper/README.md`, together with
+     the compile rule (**from the repository root**, not from inside `paper/`)
+     and the five-file bundle recipe. Verified: all five bundle entries are
+     byte-identical to their new on-disk sources.
+  2. **`\bibliography{references}` resolves beside the `.tex`**, so moving
+     `references.bib` *with* `main.tex` was required, not optional. Had only
+     `main.tex` moved, the bibliography would have broken silently on Overleaf.
+
+- **Fix.** `git mv` both files into `paper/`. Repointed: the ledger's `file`
+  column (450 rows), `check_ledger.py` (`PAPER`, `STALE_FILES`, four docstring
+  and comment mentions), `tests/test_ledger.py` (5 sites), and the live
+  documentation, `README.md`, `ARCHITECTURE.md`, `numbers.md` (18 references),
+  `.gitignore`, `paper_assets/make_figures.py`, `paper_assets/archive/README.md`,
+  `docs/archive/README.md`, `evaluation/README.md`. Historical records were
+  deliberately **not** repointed: this log's earlier entries, `docs/HANDOFF_*`,
+  `docs/PAPER_REVIEW_*`, `docs/prompts/*`, `docs/RERUN_*` and the `docs/archive/`
+  narrative describe where things were at the time.
+
+- **Effect.** The root no longer holds the paper. Verification unchanged and
+  green, before and after: `pytest tests/` **175 passed**; `check_ledger.py`
+  **PASSED** with recompute 438 ok / 0 fail, presence 515 ok / 0 fail / 0 warn,
+  **coverage of `paper/main.tex` 1263 ok / 0 fail**, non-C1/C2 122 ok / 0 warn,
+  stale strings 28 ok / 0 fail. Coverage holding at 1263 under the new path is
+  the signal that no number in the paper lost its traceability. No `MOVED`
+  warnings, because the file's content and line numbers did not change.
+
+- **Correction made in passing.** `paper_assets/archive/README.md`, written
+  earlier this session, said it held "the draft that was submitted". The NLPIR
+  paper was **never submitted** (owner, 2026-11-11). Reworded.
+
+- **Numbers updated.** None. No measured value changed; `numbers.md` was edited
+  for the moved path only, 18 references.
+
+- **Assumptions.** That compilation happens only on Overleaf, from the bundle.
+  Supported by there being no LaTeX engine in this repo and by the bundle's
+  existence; `paper/README.md` states the root-relative compile rule for anyone
+  who adds one locally.
+
+- **Follow-up.** Phase 3 (merging `experiments_corpus2/` into `experiments/`)
+  stays optional and still touches frozen paper experiments for cosmetic gain.
+  Phase 4, the `corpora/` and `indexes/` consolidation, stays recommended
+  against: 27 ledger `source` expressions hardcode corpus data paths, and it
+  would mean editing preregistration records. Whoever regenerates
+  `overleaf_bundle.zip` must now read from `paper/`, per `paper/README.md`.
