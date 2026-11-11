@@ -63,7 +63,7 @@ data_temp/
 # Permanent uploads made through the local UI
 data_uploads/
 
-# Packaged upload of the current paper: main.tex + references.bib + the three
+# Packaged upload of the current paper: paper/main.tex + paper/references.bib
 # paper_assets figures, all of which are tracked. Verified byte-identical to the
 # working copies, so it is regenerable from them.
 overleaf_bundle.zip

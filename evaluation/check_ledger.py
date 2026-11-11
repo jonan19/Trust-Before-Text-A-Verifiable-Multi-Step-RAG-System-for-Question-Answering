@@ -2,7 +2,8 @@
 check_ledger.py: check docs/NUMBERS_LEDGER.csv against the files it describes.
 
 The ledger has one row per numeric claim, in every place the claim appears
-(main.tex, README.md, docs/STATUS.md, docs/RAMDOCS_COMPARISON.md, numbers.md).
+(paper/main.tex, README.md, docs/STATUS.md, docs/RAMDOCS_COMPARISON.md,
+numbers.md).
 This script is read-only: it runs no pipeline, calls no LLM and needs no API
 key. It runs five checks:
 
@@ -19,12 +20,12 @@ page-matching machinery below is kept for that case.
   (b) presence: each `value_as_written` string appears in its file, near its
       recorded line (MOVED is a warning, MISSING a failure). PDF rows give the
       page as "p7" and are matched on the page text (needs PyMuPDF).
-  (c) coverage: every number in the body of main.tex lies inside a ledger row
+  (c) coverage: every number in the body of paper/main.tex lies inside a row
       (citations, labels, layout sizes, equations, TikZ and the identifiers in
       NON_CLAIM_PATTERNS are not claims and are skipped).
   (d) rule: a number that is not about Corpus 1 or 2 (scope "other") must be
       REPRODUCED, RECOMPUTED, DERIVED or EXTERNAL. ACCEPTED_AS_IS or
-      UNVERIFIABLE on such a row fails in main.tex and warns elsewhere.
+      UNVERIFIABLE on such a row fails in paper/main.tex and warns elsewhere.
   (e) stale: superseded strings (STALE_PATTERNS) are flagged unless they sit in
       a section marked historical, or the ledger row covering them says so
       (notes starting "HISTORICAL:" or containing "STALE_OK:").
@@ -72,7 +73,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 LEDGER = ROOT / "docs" / "NUMBERS_LEDGER.csv"
-PAPER = "main.tex"
+PAPER = "paper/main.tex"
 
 COLUMNS = ["id", "value_as_written", "meaning", "corpus_scope", "file", "line",
            "source", "status", "tested_after_merge", "date", "commit", "notes"]
@@ -84,7 +85,7 @@ RULE_OK = {"REPRODUCED", "RECOMPUTED", "DERIVED", "EXTERNAL"}
 MOVE_TOLERANCE = 40  # lines; other chats edit these files, so drift is a warning
 
 # Files scanned for stale strings, and the strings (regex, why it is stale).
-STALE_FILES = ("main.tex", "README.md", "docs/STATUS.md", "docs/RAMDOCS_COMPARISON.md")
+STALE_FILES = ("paper/main.tex", "README.md", "docs/STATUS.md", "docs/RAMDOCS_COMPARISON.md")
 STALE_PATTERNS = (
     (r"88\.4\s*\\?%", "88.4% is the label-leaky RAMDocs run (Observation 44)"),
     (r"82\.1\s*\\?%", "82.1% is Corpus 2 before the answerhood gate, not the current system"),
@@ -97,7 +98,7 @@ HISTORICAL_HEADING = re.compile(r"histor|supersed|archive|frozen|\bv6\b|previous
 LATEX_HIST_BEGIN = re.compile(r"%\s*ledger:\s*historical-begin", re.I)
 LATEX_HIST_END = re.compile(r"%\s*ledger:\s*historical-end", re.I)
 
-# Numbers in main.tex that are identifiers or names, not claims.
+# Numbers in paper/main.tex that are identifiers or names, not claims.
 NON_CLAIM_PATTERNS = (
     r"\bQ\d{3}\b",                                   # query ids
     r"\b(?:C[123]|E[1-5]|H[1-9])\b",                 # corpus, experiment, hypothesis tags
@@ -533,7 +534,7 @@ def check_presence(rows: list[dict], root: Path, rep: Report) -> None:
 
 # ── coverage of main.tex ────────────────────────────────────────────────────
 def masked_body(lines: list[str]) -> list[str]:
-    """main.tex lines with every non-claim region blanked (same length, same columns)."""
+    """paper/main.tex lines with non-claim regions blanked (same length and columns)."""
     out = []
     in_body = False
     env_depth = {e: 0 for e in _MASKED_ENVS}
@@ -676,7 +677,7 @@ def check_stale(rows: list[dict], root: Path, rep: Report, files=STALE_FILES) ->
 
 
 # ── main ────────────────────────────────────────────────────────────────────
-CHECK_NAMES = {"a": "recompute", "b": "presence", "c": "coverage of main.tex",
+CHECK_NAMES = {"a": "recompute", "b": "presence", "c": "coverage of paper/main.tex",
                "d": "non-C1/C2 rule", "e": "stale strings"}
 
 

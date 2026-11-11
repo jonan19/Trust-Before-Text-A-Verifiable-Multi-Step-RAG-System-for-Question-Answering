@@ -190,7 +190,7 @@ Read in this order:
 | 1 | [docs/HOW_IT_WORKS.md](docs/HOW_IT_WORKS.md) | What the system does, how each stage works, what every file is for. Written for someone who has never seen the code. |
 | 2 | [docs/STATUS.md](docs/STATUS.md) | What works, what does not, and the open problems. |
 | 3 | [docs/REPRODUCE.md](docs/REPRODUCE.md) | Every command needed to regenerate every number. |
-| 4 | [main.tex](main.tex) | The paper. Reports both the frozen snapshot and the current system, labelled. |
+| 4 | [paper/main.tex](paper/main.tex) | The paper. Reports both the frozen snapshot and the current system, labelled. |
 
 Two living files track the work as it happens:
 
@@ -247,5 +247,5 @@ data_temp/            session-only uploads, purged on restart
 evaluation/           the test suite; start with run_eval.py
 experiments/          frozen results from the original paper experiments
 docs/                 documentation; start with HOW_IT_WORKS.md
-main.tex              the paper
+paper/                the paper: main.tex and references.bib
 ```

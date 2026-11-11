@@ -1,5 +1,5 @@
 """
-Generate the data-driven figures for the Trust Before Text paper (main.tex).
+Generate the data-driven figures for the Trust Before Text paper (paper/main.tex).
 
 Fig. 4 and Fig. 6 are read from result files in evaluation/results/, so they
 change only when those files do:

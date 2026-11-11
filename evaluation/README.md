@@ -95,7 +95,7 @@ rather than into pass/fail testing.
 | Script | Role |
 |---|---|
 | **`run_info.py`** | Stamps every result file with the code and settings that produced it. Added after a Corpus 2 gap-probe file turned out to predate `ANSWERHOOD_MARGIN` with nothing on it to say so. If you add a harness, stamp its output. |
-| **`check_ledger.py`** | Verifies every numeric claim in `docs/NUMBERS_LEDGER.csv` against the file it appears in: recomputes it, confirms the text is present, and checks `main.tex` is fully covered. Run it after any number or paper edit, with `--sync-lines` when text has moved. |
+| **`check_ledger.py`** | Verifies every numeric claim in `docs/NUMBERS_LEDGER.csv` against the file it appears in: recomputes it, confirms the text is present, and checks `paper/main.tex` is fully covered. Run it after any number or paper edit, with `--sync-lines` when text has moved. |
 | **`rerun_suite.py`** | Resumable, chat-independent re-run of the whole zero-token suite. Records progress to `<run-dir>/state.json` and skips completed steps, so it survives being run detached. |
 
 ---

@@ -26,7 +26,7 @@ def write_ledger(path: Path, rows: list[dict]) -> Path:
         w.writeheader()
         for i, r in enumerate(rows, start=1):
             base = {c: "" for c in cl.COLUMNS}
-            base.update(id=f"T-{i:03d}", corpus_scope="C1", file="main.tex", line="4",
+            base.update(id=f"T-{i:03d}", corpus_scope="C1", file="paper/main.tex", line="4",
                         status="ACCEPTED_AS_IS", tested_after_merge="no")
             base.update(r)
             w.writerow(base)
@@ -35,7 +35,8 @@ def write_ledger(path: Path, rows: list[dict]) -> Path:
 
 @pytest.fixture
 def repo(tmp_path):
-    (tmp_path / "main.tex").write_text(TEX, encoding="utf-8")
+    (tmp_path / "paper").mkdir()
+    (tmp_path / "paper" / "main.tex").write_text(TEX, encoding="utf-8")
     (tmp_path / "res.json").write_text('{"metrics": {"acc": 96.2, "n": 78, "list": [1, 2, 3]}}', encoding="utf-8")
     (tmp_path / "code.py").write_text('A: float = 0.90   # x\nB: float = float(\n    os.getenv("RAG_B", "5.5")\n)\n', encoding="utf-8")
     return tmp_path
@@ -126,7 +127,7 @@ def test_presence_missing_fails_and_moved_warns(repo):
 
 def test_repeated_values_stay_on_their_own_lines_after_a_shift(repo):
     body = "\n".join(["filler"] * 3 + [r"& 0/78 & 0/78 \\"] * 3)
-    (repo / "main.tex").write_text("\\begin{document}\n" + body + "\n\\end{document}\n", encoding="utf-8")
+    (repo / "paper" / "main.tex").write_text("\\begin{document}\n" + body + "\n\\end{document}\n", encoding="utf-8")
     # ledger recorded lines 2, 3, 4 before three filler lines pushed the table down
     rows = [{"value_as_written": "& 0/78 & 0/78", "line": str(n)} for n in (2, 3, 4)]
     rep = run(repo, rows, checks="bc")
@@ -167,11 +168,11 @@ def test_rule_non_c1c2_numbers_need_a_verified_status(repo):
 
 # ── (e) stale ───────────────────────────────────────────────────────────────
 def test_stale_strings_flagged_unless_marked_historical(repo):
-    (repo / "main.tex").write_text(TEX.replace("The gate", r"Frozen: 92.3\%. Also 88.4\%. The gate"), encoding="utf-8")
+    (repo / "paper" / "main.tex").write_text(TEX.replace("The gate", r"Frozen: 92.3\%. Also 88.4\%. The gate"), encoding="utf-8")
     (repo / "README.md").write_text("# Now\nHan et al. say 82.1%\n## History\n82.1% then\n", encoding="utf-8")
     rep = run(repo, [{"value_as_written": r"Frozen: 92.3\%", "line": "6", "notes": "HISTORICAL: frozen"}], checks="e")
     flagged = sorted(loc for loc, _ in rep.fails["e"])
-    assert flagged == ["README.md:2", "README.md:2", "main.tex:6"]   # Han et al., 82.1%, 88.4%
+    assert flagged == ["README.md:2", "README.md:2", "paper/main.tex:6"]   # Han et al., 82.1%, 88.4%
     assert rep.passes["e"] == 2                                        # 92.3% (row), 82.1% (History)
 
 

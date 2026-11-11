@@ -112,8 +112,6 @@ are recorded.
 
 The root also holds, and these are not part of the request path:
 
-- `main.tex`, `references.bib` — the live paper. Every number in it is traced by
-  `docs/NUMBERS_LEDGER.csv` and verified by `evaluation/check_ledger.py`.
 - `numbers.md` — the number of record. When a measured value changes, this is
   updated first and everything else is made to match it.
 - `RAG_System_Observation_Log.md` — append-only record of every change, with
@@ -130,7 +128,8 @@ And in subdirectories:
 | `data/`, `data_corpus2/`, `data_corpus3/` | Corpus 1 (HR), Corpus 2 (university), Corpus 3 (ContractNLI). Registered centrally in `evaluation/harness.py` as `CORPORA`. |
 | `qdrant_db*/` | Vector stores. Gitignored and rebuildable from the corpora by ingestion. |
 | `docs/` | Status, reproduction, preregistrations, handoffs, archive. |
-| `paper_assets/` | Figures and the figure script, referenced by `main.tex`. Its `archive/` holds the superseded v6 draft. |
+| `paper/` | The live paper: `main.tex` and `references.bib`. Every number in it is traced by `docs/NUMBERS_LEDGER.csv` and verified by `evaluation/check_ledger.py`. |
+| `paper_assets/` | Figures and the figure script, referenced by `paper/main.tex`. Its `archive/` holds the superseded v6 draft. |
 | `frontend/` | The local console served by `api.py`. |
 | `tests/` | Unit tests. `pytest tests/` |
 

@@ -134,15 +134,22 @@ import path changes, so any difference is a real regression.
 
 ### Phase 2: make the root legible without moving code
 
-> **Status 2026-11-11: items 2, 3 and 4 done. Item 1 (the `paper/` move) is NOT
-> done and is on hold.** Two reasons, both found when the work started.
-> (a) `main.tex` and `references.bib` have uncommitted edits belonging to
-> another session, and moving a file someone is mid-edit on entangles their work
-> with the move. (b) The estimate below was wrong: `--sync-lines` fixes line
-> numbers, not the `file` column, and **450 ledger rows carry `main.tex` there**,
-> while `check_ledger.py` hardcodes `PAPER = "main.tex"` (line 68) and lists it
-> in `STALE_FILES` (line 80). So the move needs a code change to the verifier
-> itself, not just a data edit. See Observation 65.
+> **Status 2026-11-11: Phase 2 is COMPLETE. All four items done.** Items 2, 3
+> and 4 landed in `00d4993`; item 1, the `paper/` move, landed afterwards on the
+> owner's instruction. See Observations 65 and 67.
+>
+> Item 1 cost more than this plan estimated, in the way Observation 65 records:
+> `--sync-lines` syncs line numbers, not the `file` column, so **450 ledger rows**
+> had to be repointed, and `check_ledger.py` hardcoded `PAPER = "main.tex"` plus
+> a `STALE_FILES` entry, which made it a change to the verifier and its tests
+> rather than pure layout work.
+>
+> Two things this estimate missed entirely, both found during the move and both
+> resolved: `main.tex`'s three `\includegraphics` paths are relative to the
+> repository root and are **deliberately left that way**, because that is the
+> layout the Overleaf bundle needs (now documented in `paper/README.md`); and the
+> other session's uncommitted edits were preserved by staging the rename only, so
+> they travelled to the new path unstaged rather than being committed here.
 
 The root's problem is that the pipeline, the paper and the ledger are
 indistinguishable. This is fixable by documentation and three safe moves.
