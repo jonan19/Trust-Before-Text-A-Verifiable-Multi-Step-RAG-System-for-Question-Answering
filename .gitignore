@@ -56,3 +56,9 @@ qdrant_db_multihop/
 data_poison/
 qdrant_db_poison/
 Trust_Before_Text_NLPIR.pdf
+
+# Temporary (session-only) uploads from the local UI
+data_temp/
+
+# Permanent uploads made through the local UI
+data_uploads/
