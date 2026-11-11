@@ -20,6 +20,23 @@ const rawToggle = document.getElementById('raw-toggle');
 const rawJson = document.getElementById('raw-json');
 const emptyState = document.getElementById('empty-state');
 
+// Mode switch: "use" (reader) vs "inspect" (pipeline trace). The data-mode
+// attribute on .app is the single source of truth and CSS does all the
+// showing and hiding, so no render function below behaves differently.
+const appEl = document.getElementById('app');
+const modeUseBtn = document.getElementById('mode-use');
+const modeInspectBtn = document.getElementById('mode-inspect');
+const MODE_KEY = 'tbt-mode';
+
+// Upload scope: "permanent" writes into the corpus on disk, "temporary" keeps
+// the document only until the server restarts or it is discarded.
+const scopePermanentBtn = document.getElementById('scope-permanent');
+const scopeTemporaryBtn = document.getElementById('scope-temporary');
+const scopeNote = document.getElementById('scope-note');
+const clearTempBtn = document.getElementById('clear-temp-btn');
+const loadDemoBtn = document.getElementById('load-demo-btn');
+let uploadScope = 'permanent';
+
 // State
 let isSearching = false;
 let lastData = null;
@@ -112,8 +129,68 @@ const STAGES = [
 // ---------------------------------------------------------------------
 // Init
 // ---------------------------------------------------------------------
+function setUploadScope(scope) {
+    uploadScope = scope === 'temporary' ? 'temporary' : 'permanent';
+    scopePermanentBtn.setAttribute('aria-checked', String(uploadScope === 'permanent'));
+    scopeTemporaryBtn.setAttribute('aria-checked', String(uploadScope === 'temporary'));
+    scopeNote.textContent = uploadScope === 'temporary'
+        ? 'Indexed for this session only. Discarded when the server restarts.'
+        : 'Kept in the corpus and reloaded every time the app starts.';
+}
+
+async function loadDemoCorpus() {
+    const note = showNotification('Loading the demo corpus — this takes a moment…', 'info', 0);
+    try {
+        const response = await fetch(`${API_BASE_URL}/demo`, { method: 'POST' });
+        const data = await response.json();
+        showNotification(data.message || data.detail || 'Done', response.ok ? 'success' : 'error');
+        await updateStats();
+    } catch (_) {
+        showNotification('Could not reach the API server', 'error');
+    } finally {
+        if (note && note.parentNode) note.remove();
+    }
+}
+
+async function clearTemporary() {
+    const note = showNotification('Discarding temporary documents…', 'info', 0);
+    try {
+        const response = await fetch(`${API_BASE_URL}/temporary`, { method: 'DELETE' });
+        const data = await response.json();
+        showNotification(data.message || 'Done', response.ok ? 'success' : 'error');
+        await updateStats();
+    } catch (_) {
+        showNotification('Could not reach the API server', 'error');
+    } finally {
+        if (note && note.parentNode) note.remove();
+    }
+}
+
+function setMode(mode) {
+    const m = mode === 'inspect' ? 'inspect' : 'use';
+    appEl.dataset.mode = m;
+    modeUseBtn.setAttribute('aria-selected', String(m === 'use'));
+    modeInspectBtn.setAttribute('aria-selected', String(m === 'inspect'));
+    // Remembering the choice is a per-viewer convenience; a private window or
+    // blocked site data just means it opens in Use mode next time.
+    try { localStorage.setItem(MODE_KEY, m); } catch (_) { /* ignore */ }
+}
+
 async function init() {
     renderTraceSkeleton();
+
+    let savedMode = 'use';
+    try { savedMode = localStorage.getItem(MODE_KEY) || 'use'; } catch (_) { /* ignore */ }
+    setMode(savedMode);
+    modeUseBtn.addEventListener('click', () => setMode('use'));
+    modeInspectBtn.addEventListener('click', () => setMode('inspect'));
+
+    setUploadScope('permanent');
+    scopePermanentBtn.addEventListener('click', () => setUploadScope('permanent'));
+    scopeTemporaryBtn.addEventListener('click', () => setUploadScope('temporary'));
+    clearTempBtn.addEventListener('click', clearTemporary);
+    loadDemoBtn.addEventListener('click', loadDemoCorpus);
+
     await updateStats();
 
     queryBtn.addEventListener('click', handleQuery);
@@ -185,31 +262,47 @@ async function updateDocumentList() {
         const response = await fetch(`${API_BASE_URL}/documents`);
         if (!response.ok) return;
         const data = await response.json();
-        renderDocumentList(data.documents || []);
+        renderDocumentList(data.documents || [], data.demo_loaded !== false);
     } catch (_) { /* silently skip */ }
 }
 
-function renderDocumentList(docs) {
+function renderDocumentList(docs, demoLoaded) {
     const listEl = document.getElementById('document-list');
     if (!listEl) return;
     listEl.innerHTML = '';
+    // The demo button appears exactly when the demo corpus is not in the index.
+    if (loadDemoBtn) loadDemoBtn.toggleAttribute('hidden', demoLoaded !== false);
     if (docs.length === 0) {
-        listEl.innerHTML = '<li class="doc-list-empty">No documents indexed yet</li>';
+        listEl.innerHTML = demoLoaded === false
+            ? '<li class="doc-list-empty">Nothing indexed. Load the demo corpus below to get the contradicting policy set back.</li>'
+            : '<li class="doc-list-empty">No documents indexed yet</li>';
+        if (clearTempBtn) clearTempBtn.setAttribute('hidden', '');
         return;
     }
+    let tempCount = 0;
     docs.forEach(doc => {
         const li = document.createElement('li');
-        li.className = 'doc-list-item';
+        li.className = 'doc-list-item' + (doc.temporary ? ' is-temp' : '');
         const name = document.createElement('span');
         name.className = 'doc-name';
         name.textContent = doc.filename;
-        const chunks = document.createElement('span');
-        chunks.className = 'doc-chunks';
-        chunks.textContent = doc.chunks ? `${doc.chunks}` : '';
         li.appendChild(name);
-        li.appendChild(chunks);
+        if (doc.temporary) {
+            tempCount += 1;
+            const badge = document.createElement('span');
+            badge.className = 'doc-temp-badge';
+            badge.textContent = 'temp';
+            li.appendChild(badge);
+        } else {
+            const chunks = document.createElement('span');
+            chunks.className = 'doc-chunks';
+            chunks.textContent = doc.chunks ? `${doc.chunks}` : '';
+            li.appendChild(chunks);
+        }
         listEl.appendChild(li);
     });
+    // The discard button only exists when there is something to discard.
+    if (clearTempBtn) clearTempBtn.toggleAttribute('hidden', tempCount === 0);
 }
 
 async function handleQuery() {
@@ -253,6 +346,7 @@ async function uploadFile(file) {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('mode', uploadScope);
 
     const indexingNote = showNotification(
         `Indexing ${file.name} — this may take up to a minute…`, 'info', 0
@@ -265,7 +359,7 @@ async function uploadFile(file) {
         const data = await response.json();
         if (response.ok) {
             const chunkInfo = data.num_chunks ? ` (${data.num_chunks} chunks indexed)` : '';
-            showNotification(`${file.name} uploaded successfully${chunkInfo}`, 'success');
+            showNotification(`${data.message || file.name}${chunkInfo}`, 'success');
         } else {
             showNotification(`Upload failed: ${data.detail || 'Unknown error'}`, 'error');
         }

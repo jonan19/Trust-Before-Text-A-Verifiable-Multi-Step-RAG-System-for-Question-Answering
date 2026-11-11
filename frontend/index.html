@@ -4,125 +4,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trust Before Text | Observability Console</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <title>Trust Before Text</title>
+    <link rel="stylesheet" href="style.css?v=8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
-    <div class="console">
+    <!-- data-mode drives the whole user/dev split in CSS: "use" or "inspect" -->
+    <div class="app" id="app" data-mode="use">
 
-        <!-- Top bar -->
         <header class="topbar">
             <div class="brand">
-                <span class="brand-mark" aria-hidden="true"></span>
-                <div class="brand-text">
-                    <h1>Trust Before Text</h1>
-                    <p>Evidence-validated RAG &mdash; observability console</p>
-                </div>
+                <h1>Trust Before Text</h1>
+                <p>Evidence-validated retrieval</p>
             </div>
 
-            <div class="topbar-readouts">
-                <div class="readout">
-                    <span class="readout-label">Chunks</span>
-                    <span id="total-chunks" class="readout-value">&mdash;</span>
+            <div class="topbar-right">
+                <div class="stats">
+                    <div class="readout">
+                        <span id="unique-docs" class="readout-value">&mdash;</span>
+                        <span class="readout-label">documents</span>
+                    </div>
+                    <div class="readout">
+                        <span id="total-chunks" class="readout-value">&mdash;</span>
+                        <span class="readout-label">chunks</span>
+                    </div>
                 </div>
-                <div class="readout">
-                    <span class="readout-label">Documents</span>
-                    <span id="unique-docs" class="readout-value">&mdash;</span>
+
+                <div class="modeswitch" role="tablist" aria-label="View mode">
+                    <button id="mode-use" class="modeswitch-btn" role="tab" aria-selected="true">Use</button>
+                    <button id="mode-inspect" class="modeswitch-btn" role="tab" aria-selected="false">Inspect</button>
                 </div>
+
                 <div id="api-status-badge" class="api-status-badge">
                     <span class="pulse-dot"></span>connecting&hellip;
                 </div>
             </div>
         </header>
 
-        <div class="console-body">
+        <div class="body">
 
-            <!-- Left rail: corpus -->
+            <!-- Corpus rail: Use mode only -->
             <aside class="rail">
-                <div class="rail-section">
+                <section class="rail-section">
                     <h2>Indexed corpus</h2>
                     <ul id="document-list" class="document-list">
                         <li class="doc-list-empty">Loading&hellip;</li>
                     </ul>
-                </div>
+                </section>
 
-                <div class="rail-section">
+                <section class="rail-section">
                     <h2>Add knowledge</h2>
+
+                    <div class="scope-switch" role="radiogroup" aria-label="How long to keep this document">
+                        <button id="scope-permanent" class="scope-btn" role="radio"
+                            aria-checked="true">Permanent</button>
+                        <button id="scope-temporary" class="scope-btn" role="radio"
+                            aria-checked="false">Temporary</button>
+                    </div>
+                    <p id="scope-note" class="scope-note">Kept in the corpus and reloaded every time the app
+                        starts.</p>
+
                     <div class="upload-area" id="drop-zone">
                         <input type="file" id="file-input" accept=".txt,.pdf,.docx" hidden>
-                        <div class="upload-icon">&uarr;</div>
-                        <p>Drop a .txt, .pdf, or .docx file</p>
-                        <button class="btn-secondary" onclick="document.getElementById('file-input').click()">Browse
-                            files</button>
+                        <p class="upload-hint">Drop a <code>.txt</code>, <code>.pdf</code> or <code>.docx</code> file
+                            here</p>
+                        <button class="btn-secondary"
+                            onclick="document.getElementById('file-input').click()">Choose a file</button>
                     </div>
-                </div>
+                </section>
 
-                <div class="rail-section rail-section-actions">
+                <section class="rail-section rail-foot">
+                    <button id="load-demo-btn" class="btn-accent btn-block" hidden>Load demo corpus</button>
+                    <button id="clear-temp-btn" class="btn-secondary btn-block" hidden>Discard temporary
+                        documents</button>
                     <button id="reset-btn" class="btn-danger">Reset index</button>
-                </div>
+                </section>
             </aside>
 
-            <!-- Main -->
             <main class="main">
 
                 <section class="query-bay">
                     <input type="text" id="query-input" class="query-input"
-                        placeholder="Ask a question &mdash; the console will trace every stage of the pipeline"
-                        autocomplete="off">
-                    <button id="query-btn" class="btn-run">
-                        <span>Run query</span>
-                    </button>
+                        placeholder="Ask a question about the indexed documents" autocomplete="off">
+                    <button id="query-btn" class="btn-run"><span>Run query</span></button>
                 </section>
 
-                <!-- Signature element: the pipeline trace -->
-                <section class="trace-bay" aria-label="Pipeline trace">
+                <!-- Pipeline trace: Inspect mode only -->
+                <section class="trace-bay dev-only" aria-label="Pipeline trace">
                     <div class="trace-header">
                         <h2>Pipeline trace</h2>
                         <span id="trace-state" class="trace-state">idle</span>
                     </div>
                     <div id="trace-line" class="trace-line">
-                        <ol id="trace-nodes" class="trace-nodes">
-                            <!-- stage nodes injected by app.js -->
-                        </ol>
+                        <ol id="trace-nodes" class="trace-nodes"></ol>
                     </div>
                     <div id="trace-detail" class="trace-detail" hidden></div>
                 </section>
 
-                <section id="outcome-bay" class="outcome-bay" hidden>
-                    <!-- decision / answer card injected here -->
-                </section>
+                <section id="outcome-bay" class="outcome-bay" hidden></section>
 
-                <section id="evidence-bay" class="evidence-bay" hidden>
-                    <!-- evidence explorer injected here -->
-                </section>
+                <section id="evidence-bay" class="evidence-bay" hidden></section>
 
-                <section id="raw-bay" class="raw-bay" hidden>
+                <!-- Raw response: Inspect mode only -->
+                <section id="raw-bay" class="raw-bay dev-only" hidden>
                     <button id="raw-toggle" class="raw-toggle">
-                        <span class="raw-toggle-chevron">&rsaquo;</span> Raw response (full trace JSON)
+                        <span class="raw-toggle-chevron">&rsaquo;</span> Raw response JSON
                     </button>
                     <pre id="raw-json" class="raw-json" hidden></pre>
                 </section>
 
                 <div id="empty-state" class="empty-state">
-                    <div class="empty-glyph"></div>
-                    <h3>No query traced yet</h3>
-                    <p>Ask a question above to watch it move through preprocessing, retrieval, validation, and
-                        synthesis &mdash; with every intermediate decision exposed.</p>
+                    <h3>Nothing asked yet</h3>
+                    <p class="use-only">Ask a question and you will get an answer with the evidence it rests on, or a
+                        refusal explaining what stopped it.</p>
+                    <p class="dev-only">Ask a question to watch it move through preprocessing, retrieval, validation
+                        and synthesis, with every intermediate decision exposed.</p>
                 </div>
 
             </main>
         </div>
     </div>
 
-    <!-- Notifications -->
     <div id="notification-container" class="notification-container"></div>
 
-    <script src="app.js?v=3"></script>
+    <script src="app.js?v=7"></script>
 </body>
 
 </html>
