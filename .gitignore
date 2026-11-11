@@ -63,6 +63,13 @@ data_temp/
 # Permanent uploads made through the local UI
 data_uploads/
 
-# Build outputs of the paper and report (regenerated from main.tex / Overleaf).
-Project_Report.pdf
+# Packaged upload of the current paper: main.tex + references.bib + the three
+# paper_assets figures, all of which are tracked. Verified byte-identical to the
+# working copies, so it is regenerable from them.
 overleaf_bundle.zip
+
+# The B.Tech degree report (Somaiya), 77 pages. NOT built from main.tex or from
+# anything else in this repo: no source for it is tracked here. Ignored only so
+# a 600 KB binary stays out of git. If the PDF itself should be versioned, or its
+# source brought into the repo, do that deliberately rather than by this rule.
+Project_Report.pdf

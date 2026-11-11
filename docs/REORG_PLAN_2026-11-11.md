@@ -139,7 +139,7 @@ import path changes, so any difference is a real regression.
 > (a) `main.tex` and `references.bib` have uncommitted edits belonging to
 > another session, and moving a file someone is mid-edit on entangles their work
 > with the move. (b) The estimate below was wrong: `--sync-lines` fixes line
-> numbers, not the `file` column, and **249 ledger rows carry `main.tex` there**,
+> numbers, not the `file` column, and **450 ledger rows carry `main.tex` there**,
 > while `check_ledger.py` hardcodes `PAPER = "main.tex"` (line 68) and lists it
 > in `STALE_FILES` (line 80). So the move needs a code change to the verifier
 > itself, not just a data edit. See Observation 65.
