@@ -2,7 +2,7 @@
 ingest_track_b.py — Convert the delivered Track B question set into per-bundle
 harness files.
 
-Input:  corpus3_queries_combined.json  (30 bundles x 8 questions)
+Input:  data_corpus3/corpus3_queries_combined.json  (30 bundles x 8 questions)
 Output: data_corpus3/<bundle>/queries_open.json       (harness query schema)
         data_corpus3/<bundle>/gold_spans_open.json    (author quotes -> offsets)
 
@@ -29,7 +29,7 @@ from span_attribution import load_documents, resolve_subspan
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_ROOT = ROOT / "data_corpus3"
-SOURCE = ROOT / "corpus3_queries_combined.json"
+SOURCE = DATA_ROOT / "corpus3_queries_combined.json"
 
 VALID_DECISIONS = {"answer", "conflict", "insufficient"}
 

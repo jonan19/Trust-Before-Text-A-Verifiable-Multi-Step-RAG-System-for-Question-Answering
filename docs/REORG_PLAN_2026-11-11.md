@@ -134,6 +134,16 @@ import path changes, so any difference is a real regression.
 
 ### Phase 2: make the root legible without moving code
 
+> **Status 2026-11-11: items 2, 3 and 4 done. Item 1 (the `paper/` move) is NOT
+> done and is on hold.** Two reasons, both found when the work started.
+> (a) `main.tex` and `references.bib` have uncommitted edits belonging to
+> another session, and moving a file someone is mid-edit on entangles their work
+> with the move. (b) The estimate below was wrong: `--sync-lines` fixes line
+> numbers, not the `file` column, and **249 ledger rows carry `main.tex` there**,
+> while `check_ledger.py` hardcodes `PAPER = "main.tex"` (line 68) and lists it
+> in `STALE_FILES` (line 80). So the move needs a code change to the verifier
+> itself, not just a data edit. See Observation 65.
+
 The root's problem is that the pipeline, the paper and the ledger are
 indistinguishable. This is fixable by documentation and three safe moves.
 
