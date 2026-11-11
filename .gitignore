@@ -62,3 +62,7 @@ data_temp/
 
 # Permanent uploads made through the local UI
 data_uploads/
+
+# Build outputs of the paper and report (regenerated from main.tex / Overleaf).
+Project_Report.pdf
+overleaf_bundle.zip

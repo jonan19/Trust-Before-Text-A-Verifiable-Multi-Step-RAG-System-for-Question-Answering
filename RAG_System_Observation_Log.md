@@ -15,7 +15,7 @@
 > **Earlier history.** Observations 1 to 20 (2026-07 to 2026-08-16: conflict
 > precision fixes, sufficiency AND->OR, NLI calibration, comparison-override
 > removal, adversarial probe separation) are in
-> [docs/archive/RAG_System_Observation_Log.md](docs/archive/RAG_System_Observation_Log.md).
+> [docs/archive/RAG_System_Observation_Log_pre-2026-08.md](docs/archive/RAG_System_Observation_Log_pre-2026-08.md).
 > Numbering continues from 21. Those entries describe the v6 system and are
 > historical.
 
@@ -1217,3 +1217,85 @@ changed by this entry.** It records a decision and two scope corrections.*
   `docs/PREREGISTRATION_MULTIHOP.md:158`;
   `evaluation/run_eval_corpus3.py:49`.
 - **Numbers updated.** None. No measured value changed.
+
+---
+
+## Observation 62: repository reorganization, Phase 1 (duplicate and superseded files removed)
+
+*Added 2026-11-11. Commit/branch: on top of `fd53e6d`, branch
+`chore/phase1-dedup`. **No pipeline code, threshold, default or measured number
+changed.** 124 tracked files removed, all of them verified duplicates or
+superseded drafts. Plan: `docs/REORG_PLAN_2026-11-11.md`.*
+
+- **Issue.** The repository had grown to 793 tracked files and read as
+  disorganized. Survey found the file count itself was not the problem: 544 of
+  the 793 were corpus fixtures that belong in the repo, and the packed size was
+  only 1.74 MiB. Three real problems were identified, of which this entry
+  addresses the first: duplicated and superseded content.
+
+- **Cause.** Working material was never retired after it served its purpose.
+  `track_b_handoff/` was the outbound packet for Corpus 3 question authoring,
+  staged per author and left in place after the questions came back. The v6
+  paper draft stayed beside the live `main.tex` with nothing naming which was
+  canonical. The pre-2026-08 observation log kept its original filename in
+  `docs/archive/`, so two files with the same name differed by 61 KB.
+
+- **Fix.** Five removals, none of them touching code:
+  1. `track_b_handoff/` deleted (123 files). Verified immediately before
+     deletion: all 120 `.txt` files byte-identical to their `data_corpus3/`
+     counterparts (120 identical, 0 differing, 0 absent), and all three per
+     author `CORPUS3_AUTHORING_PROTOCOL.md` copies byte-identical to
+     `docs/CORPUS3_AUTHORING_PROTOCOL.md`. No tracked `.py` file referenced the
+     directory. Its only unique information was the author-to-bundle
+     assignment, now recorded in `docs/CORPUS3_TRACK_B_ASSIGNMENT.md`.
+  2. `experimental/` deleted (1 file). Nothing imported it and it held no
+     prototypes. **Noted as a loss:** its `__init__.py` docstring declared it a
+     quarantine for "prototypes that must not alter the live decision path".
+     That boundary is now stated nowhere in the tree. Recreate the package if
+     quarantined prototypes return.
+  3. `paper_assets/trust_before_text.tex` and `paper_assets/references.bib`
+     moved to `paper_assets/archive/` with a `README.md` naming `main.tex` and
+     root `references.bib` as canonical. The figures in `paper_assets/` are
+     untouched and still live: `main.tex` references them 8 times.
+  4. `docs/archive/RAG_System_Observation_Log.md` renamed to
+     `..._pre-2026-08.md`, so the filename states that it is frozen.
+  5. `Project_Report.pdf` and `overleaf_bundle.zip` added to `.gitignore` as
+     build outputs. Neither is cited by `docs/NUMBERS_LEDGER.csv`.
+
+  Two inbound references were repaired in the same change: the live log's link
+  to the archived log (line 18), and three `paper_assets/trust_before_text.tex`
+  paths in `numbers.md` (lines 55, 60, 548).
+
+- **Effect.** Tracked files 793 to 669. Duplicated corpus files 120 to 0. Copies
+  of the authoring protocol 4 to 1. Ambiguous paper sources 2 to 1. Zero import
+  paths changed.
+
+  Verification, baseline recorded before any change and compared after:
+  `pytest tests/` 175 passed both times; `evaluation/check_ledger.py` byte
+  identical both times, including after the `numbers.md` path edit:
+  recompute 456 ok / 0 fail, presence 562 ok / 4 fail, main.tex coverage
+  1263 ok / 0 fail, non-C1/C2 128 ok / 26 warn, stale strings 28 ok / 0 fail.
+
+- **Pre-existing failure found, not caused by this change.** The ledger was
+  already red at baseline. Four presence rows (RM-001, RM-002, RM-003, RM-006)
+  fail against `README.md`: `12/12 in each of three runs`, `all 48 of its own
+  probes`, `| Decision accuracy | 96.2% | 89.7% |`, `| 0/24 |`. All four were
+  present in `README.md` before commit `fd53e6d` ("Rewrite the README"), which
+  dropped them. Verified by `git show fd53e6d~1:README.md`, which contains all
+  four. **The ledger has been failing on `jonan` since that commit.** Left
+  unfixed here to keep this change to one concern; it needs either the strings
+  restored to the README or those four ledger rows re-pointed.
+
+- **Numbers updated.** None. No measured value changed; `numbers.md` was edited
+  for a moved file path only.
+
+- **Assumptions.** That `track_b_handoff/` held no authored output. Supported by
+  its contents being only NDAs plus the protocol, and by
+  `evaluation/ingest_track_b.py` reading the delivered questions from
+  `corpus3_queries_combined.json` at the root.
+
+- **Follow-up.** Phase 2 of `docs/REORG_PLAN_2026-11-11.md` (move `main.tex` and
+  `references.bib` to `paper/`, add a root `ARCHITECTURE.md`, extend
+  `evaluation/README.md`). Phase 4 of that plan, the `corpora/` and `indexes/`
+  consolidation, is recommended against: it would break 27 path expressions in
+  `docs/NUMBERS_LEDGER.csv` and require editing preregistration records.

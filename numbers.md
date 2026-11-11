@@ -52,12 +52,12 @@ changed. The haystack sentence was removed, so section 7 item 15 is closed for `
 
 | Label | Meaning | Where its numbers are |
 |---|---|---|
-| **v6 (paper-frozen)** | The system the paper `paper_assets/trust_before_text.tex` was written against. | Section 6 below; full tables in git: `git show 832736a:numbers.md` |
+| **v6 (paper-frozen)** | The system the paper `paper_assets/archive/trust_before_text.tex` was written against. | Section 6 below; full tables in git: `git show 832736a:numbers.md` |
 | **Current defaults** | Repo as of `docs/STATUS.md` 2026-08-24: Stage 0 provenance, Stage 4 preconditions, sufficiency focus-term veto, `ANSWERHOOD_MARGIN=5.5`. | Sections 1 to 5 |
 
 The current paper, `main.tex`, reports both systems, labelled: the v6 frozen snapshot
 (92.3% / 66.7%) and the current defaults (96.2% / 89.7%, its "frozen vs current" table).
-The old draft `paper_assets/trust_before_text.tex` quotes v6 only. Section 7, item 1 is
+The old draft `paper_assets/archive/trust_before_text.tex` quotes v6 only. Section 7, item 1 is
 closed on that basis.
 
 History: until 2026-10-17 this paragraph read "The paper still quotes v6 ... The paper and
@@ -545,7 +545,7 @@ unchanged by later work (they were not re-run).
 
 | # | Where | Conflict | Needs |
 |---|---|---|---|
-| 1 | Paper vs current system | Paper quotes v6 (92.3% / 66.7%); current defaults give 96.2% / 89.7% | Decision: re-sync paper numbers or keep v6 as an explicitly labelled frozen snapshot **Closed 2026-10-17 (Observation 51):** `main.tex`, the current paper, does both: v6 labelled frozen, current defaults (96.2% / 89.7%) in its frozen-vs-current table, all ledger-checked. The old draft `paper_assets/trust_before_text.tex` still quotes v6 only and is not the paper. |
+| 1 | Paper vs current system | Paper quotes v6 (92.3% / 66.7%); current defaults give 96.2% / 89.7% | Decision: re-sync paper numbers or keep v6 as an explicitly labelled frozen snapshot **Closed 2026-10-17 (Observation 51):** `main.tex`, the current paper, does both: v6 labelled frozen, current defaults (96.2% / 89.7%) in its frozen-vs-current table, all ledger-checked. The old draft `paper_assets/archive/trust_before_text.tex` still quotes v6 only and is not the paper. |
 | 2 | `README.md` "Current state at a glance" | Says C1 92.3%, C2 82.1%, unsafe 1/32 and 2/32, C2 recall 15/16; `docs/STATUS.md` says 96.2%, 89.7%, 0/32 and 1/32, 14/16 | Update README to match Section 2. **Closed 2026-10-10 (Observation 31).** |
 | 3 | `docs/STATUS.md` Corpus 2 confusion matrix | Matrix sums to 64/78 = 82.1% (pre-margin) but the headline row says 89.7% | Re-run `run_eval.py --corpus 2` and replace the matrix. **Closed 2026-10-10 (Observations 30, 31).** |
 | 4 | `docs/CORPUS3_RESULTS.md` section 6 | Says qform and bare-LLM runs are "in progress", yet commit `d309565` (2026-08-31) is titled as adding the bare-LLM baseline | Author to confirm and update. **Narrowed 2026-10-10 (Observation 34):** not a contradiction. The doc says the bare-LLM run covered 12/30 bundles and qform 22/30, so "in progress" fits a partial run, and the commit added the script plus that partial output. Still open: whether either run has since finished, and the raw `c3_*` files are in no git ref. **Update 2026-10-11 (Observation 40):** qform and Tracks A and B were replicated; only the bare-LLM baseline (needs an API key) has never been run to completion. |
