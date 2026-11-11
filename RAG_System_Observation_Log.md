@@ -1299,3 +1299,73 @@ superseded drafts. Plan: `docs/REORG_PLAN_2026-11-11.md`.*
   `evaluation/README.md`). Phase 4 of that plan, the `corpora/` and `indexes/`
   consolidation, is recommended against: it would break 27 path expressions in
   `docs/NUMBERS_LEDGER.csv` and require editing preregistration records.
+
+---
+
+## Observation 63: the ledger had been failing since the README rewrite; four rows re-pointed
+
+*Added 2026-11-11. Commit/branch: on top of `d4bfd09`, branch
+`chore/phase1-dedup`. **No pipeline code, threshold, default or measured number
+changed.** `docs/NUMBERS_LEDGER.csv` only: three rows re-pointed, one retired,
+five line numbers synced. `check_ledger.py` goes from FAILED to PASSED.*
+
+- **Issue.** Found while recording a baseline before Observation 62, not by
+  looking for it. `evaluation/check_ledger.py` was failing four presence checks
+  against `README.md`: RM-001, RM-002, RM-003, RM-006. It had been failing since
+  commit `fd53e6d` ("Rewrite the README so a first-time reader gets the real
+  picture"), which was `HEAD` at the time. Verified by `git show fd53e6d~1:
+  README.md`, which contains all four strings.
+
+- **Cause.** Not a wrong number. **Every one of the four values was still
+  correct, and three of the four facts were still stated in the README**, in
+  different words. The presence check matches exact text, so a reworded claim
+  reads as a missing one. Two of the three had been *improved* by the rewrite:
+  RM-003 gained its raw fractions (`96.2% (75/78)`), and RM-002 was restated as
+  the stronger inverse (`0/48` answered unsafely, rather than "all 48
+  contained"). The ledger was stale, not the prose.
+
+- **Fix.** The README was left untouched; the ledger follows the prose.
+  1. **RM-001** re-pointed to `12 of 12 probes in each of three separate`
+     (line 43). A single-line fragment, because the sentence now wraps and the
+     presence check cannot match across a line break. Expression unchanged; it
+     returns a bool, so `compare()` short-circuits on it.
+  2. **RM-002** re-pointed to `| Adversarial gap probes answered unsafely |
+     0/48 |` (line 38), **and its expression rewritten** to compute
+     `(unsafe_after, n)` summed over both corpora, giving `(0, 48)`. The old
+     expression returned `48 if contained else -1`, which was built for the old
+     phrasing. The claim as written is now checked as written.
+  3. **RM-003** re-pointed to `| Decision accuracy | 96.2% (75/78) | 89.7%
+     (70/78) |` (line 58) with selector `@1,4`, which picks the two percentages
+     out of the six numbers the string now contains. **The 75/78 and 70/78
+     counts are written but not independently recomputed** (see follow-up).
+  4. **RM-006** retired. Its claim, the Corpus-2-only `| 0/24 |`, is no longer
+     made anywhere in the README, which now reports the combined `0/48`. A row
+     guarding a sentence that no longer exists can only produce false alarms
+     later. The combined figure remains traced by `ST-012` (`docs/STATUS.md`)
+     and `MT-431` (`main.tex`), so nothing became untraceable.
+  5. `--sync-lines` then corrected five recorded line numbers. **RM-004 and
+     RM-005 were also stale** (97 to 59, 98 to 62) from the same rewrite; they
+     had not failed, because a moved line is at most a warning while a missing
+     string is a failure.
+
+- **Effect.** `check_ledger.py`: **FAILED to PASSED.** Presence 562 ok / 4 fail
+  / 0 warn, to **565 ok / 0 fail / 0 warn**. Recompute 456 to 455 ok, 0 fail
+  (one fewer row, RM-006 retired). Coverage of `main.tex` 1263 ok / 0 fail,
+  non-C1/C2 128 ok / 26 warn, stale strings 28 ok / 0 fail: all three unchanged.
+  Ledger 566 rows to 565. `pytest tests/` 175 passed, unchanged.
+
+- **Numbers updated.** None. No measured value changed; no value in `README.md`,
+  `main.tex`, `numbers.md` or `docs/STATUS.md` was edited.
+
+- **What this says about the process.** The failure was introduced by a commit
+  whose own subject line was about improving the README, and it survived into
+  `HEAD` unnoticed. Nothing ran the checker between that commit and this one.
+  The lesson is not about the four rows: it is that `check_ledger.py` is only
+  load-bearing if something runs it. Gating it before push is the obvious
+  answer and belongs in `docs/AUTOMATION_PLAN.md`, deliberately, rather than
+  being attached to this fix.
+
+- **Follow-up.** RM-003's written fractions (75/78, 70/78) are consistent with
+  the percentages but are not themselves recomputed from a result file. A row
+  checking them against the per-query counts would close that gap. Deliberately
+  not done here, to keep this change to one concern.
