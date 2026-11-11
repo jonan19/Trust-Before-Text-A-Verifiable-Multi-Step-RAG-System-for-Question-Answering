@@ -21,6 +21,7 @@ import json
 import math
 import re
 import uuid
+from collections.abc import Sequence
 import atexit
 from collections import Counter
 from pathlib import Path
@@ -407,15 +408,34 @@ def _encode_sparse(text: str, encoder: dict, *, is_query: bool = False) -> model
     return models.SparseVector(indices=indices, values=values)
 
 
-def _iter_source_files(data_dir: Path) -> list[Path]:
+def _iter_source_files(data_dir: Path, extra_dirs: "Sequence[Path]" = ()) -> list[Path]:
+    """Source documents for one store.
+
+    `extra_dirs` lets a caller index documents that live outside the corpus
+    directory without copying them into it. The local UI uses it for
+    session-only ("temporary") uploads, which must be indexed exactly like
+    permanent ones but must never become part of `data/`. Default is empty, so
+    every existing caller, including every evaluation runner, is unchanged.
+    """
     supported = {".txt", ".pdf", ".docx"}
     skip_prefixes = {"readme", "changelog", "license", "licence"}
-    return sorted(
-        f for f in data_dir.iterdir()
-        if f.is_file()
-        and f.suffix.lower() in supported
-        and f.stem.lower() not in skip_prefixes
-    )
+    seen: set[str] = set()
+    found: list[Path] = []
+    for d in [data_dir, *[Path(x) for x in extra_dirs]]:
+        if not d.is_dir():
+            continue
+        for f in d.iterdir():
+            # Keyed by name because the manifest and every chunk's `source`
+            # field are names, not paths; a duplicate name across directories
+            # would silently shadow one document. First directory wins, and
+            # the upload endpoint refuses the collision up front.
+            if (f.is_file()
+                    and f.suffix.lower() in supported
+                    and f.stem.lower() not in skip_prefixes
+                    and f.name not in seen):
+                seen.add(f.name)
+                found.append(f)
+    return sorted(found, key=lambda f: f.name)
 
 
 def _point_id(source: str, chunk_id: int, section: str) -> str:
@@ -475,6 +495,7 @@ def ingest_documents(
     qdrant_dir: str | Path = DEFAULT_QDRANT_DIR,
     collection_name: str = COLLECTION_NAME,
     force: bool = False,
+    extra_dirs: "Sequence[str | Path]" = (),
 ) -> int:
     """
     Build or refresh the local Qdrant hybrid collection.
@@ -491,7 +512,7 @@ def ingest_documents(
     qdrant_dir = Path(qdrant_dir)
     qdrant_dir.mkdir(parents=True, exist_ok=True)
 
-    source_files = _iter_source_files(data_dir)
+    source_files = _iter_source_files(data_dir, extra_dirs)
     if not source_files:
         print(f"  [Qdrant] WARNING: No .txt or .pdf files found in {data_dir}")
         return 0
