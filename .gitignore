@@ -68,8 +68,9 @@ data_uploads/
 # working copies, so it is regenerable from them.
 overleaf_bundle.zip
 
-# The B.Tech degree report (Somaiya), 77 pages. NOT built from main.tex or from
-# anything else in this repo: no source for it is tracked here. Ignored only so
-# a 600 KB binary stays out of git. If the PDF itself should be versioned, or its
-# source brought into the repo, do that deliberately rather than by this rule.
+# The B.Tech degree report (Somaiya), 77 pages. An inbound copy, downloaded here
+# to be reviewed, not produced by this repo and not a deliverable of it. Its
+# source lives with whoever is editing the report. Review findings belong in
+# RAG_System_Observation_Log.md (see Observation 64), not in the binary, so the
+# PDF itself stays untracked.
 Project_Report.pdf
