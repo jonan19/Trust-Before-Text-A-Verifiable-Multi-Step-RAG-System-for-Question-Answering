@@ -43,6 +43,7 @@ is usually "yes, and here is the number that killed it".
 | **STATUS.md** | The old three-chat coordination dashboard. Badly stale — it describes the system as "frozen at v6" and instructs against re-running experiments. Kept only for the decision history it records. |
 | **RAG_System_Observation_Log.md** | 73 KB development log. |
 | **Report 1.md**, **Report 2.md** | Early project reports. |
+| **NUMBERS_LEDGER_NLPIR.csv** | The 50 ledger rows (`NL-001`..`NL-050`) that traced the numbers in the NLPIR paper, which was **never submitted** and is superseded by `main.tex`. Same schema as the live ledger, so `evaluation/check_ledger.py` can be pointed at it by hand. Not checked automatically: the PDF is gitignored, and a missing file is a hard failure, so these rows made the ledger fail on any fresh clone. 48 of the 50 track claims that appear nowhere in `main.tex` (the RAMDocs Table 6 rows, MultiHop-RAG, the Corpus 3 August run, Table 7), which is why they are kept rather than deleted. |
 | **phase5_verification_report.md**, **phase6_spotrun_report.md** | Verification runs from earlier development phases. |
 
 ---

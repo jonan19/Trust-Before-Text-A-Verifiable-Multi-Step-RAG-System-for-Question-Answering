@@ -2,9 +2,16 @@
 check_ledger.py: check docs/NUMBERS_LEDGER.csv against the files it describes.
 
 The ledger has one row per numeric claim, in every place the claim appears
-(main.tex, the NLPIR PDF, README.md, docs/STATUS.md, docs/RAMDOCS_COMPARISON.md,
-numbers.md). This script is read-only: it runs no pipeline, calls no LLM and
-needs no API key. It runs five checks:
+(main.tex, README.md, docs/STATUS.md, docs/RAMDOCS_COMPARISON.md, numbers.md).
+This script is read-only: it runs no pipeline, calls no LLM and needs no API
+key. It runs five checks:
+
+The superseded NLPIR paper's 50 rows (NL-001..NL-050) are no longer here; they
+are frozen in docs/archive/NUMBERS_LEDGER_NLPIR.csv, same schema, and are not
+checked. That PDF is gitignored, and a missing file is a hard failure in check
+(b), so keeping them made the ledger fail on every machine but one. Point this
+script at the archive by hand if those claims ever need auditing again. The PDF
+page-matching machinery below is kept for that case.
 
   (a) recompute: every row whose `source` is an expression (starts with "=" or
       "@i,j=") is evaluated and compared with the numbers in `value_as_written`
