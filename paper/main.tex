@@ -841,7 +841,14 @@ On a PASS verdict, the generation gatekeeper builds a structured evidence
 pack from the validated chunks and passes it, and only it, to a
 Groq-hosted LLM (\texttt{llama-3.3-70b-versatile} in the Corpus~1 and 2
 experiments, \texttt{gpt-oss-120b}, the current default, on the external
-benchmarks), which is instructed to answer with inline
+benchmarks),\footnote{Groq decommissioned \texttt{llama-3.3-70b-versatile}
+after the experiments on the two authored corpora were run; a request for it
+now returns a model-not-found error. Those synthesis and baseline figures are
+therefore a frozen record of that checkpoint rather than a reproducible
+measurement, and a rerun on \texttt{gpt-oss-120b} would not be model-identical
+to them. Because the decision layer contains no language model, no routing
+decision, structural property or abstention count reported here depends on
+either model.} which is instructed to answer with inline
 citation markers referencing specific chunks. The model has no access to
 unvalidated content.
 

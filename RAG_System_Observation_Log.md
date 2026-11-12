@@ -1868,3 +1868,56 @@ the frozen baselines stay frozen.
 3. Rebuild the live store before any demo or viva capture, and re-check that
    `unverified_count` is 0, since this failure mode is invisible from the UI: it
    degrades answers quietly while provenance reports success.
+
+---
+
+## Observation 69
+
+**Date.** 2026-11-12
+**Trigger.** Observation 68 Part A left the paper-side decision open: footnote the
+decommissioned `llama-3.3-70b-versatile`, or re-run the Corpus 1/2 baseline. Owner
+delegated the choice. Footnoted; not re-run.
+
+**Decision and why.** Recorded in full in Observation 68 and commit d3264b0, so in
+brief: a rerun is not one cell but both baseline accuracies, decision consistency,
+conflict attribution, the unsafe count, the whole defended-LLM column of the
+fixed-injection table, the gap-probe row and the adaptive-attack existence proof;
+re-running only part would leave the paper comparing against two baselines in
+different chapters without saying so; and it would reopen `corpus12-accept-as-is` on
+information about reproducibility rather than about the measurement being wrong.
+`evaluation/llm_baseline_corpus3.py` had already set the precedent in August:
+disclose the substitution, do not claim the published baseline is reproducible.
+
+**Fix.** One footnote in `paper/main.tex`, section `sec:synthesis`, on the first
+mention of the model, where the sentence already contrasts the two checkpoints. It
+states that Groq decommissioned the 70B after the two authored corpora were run,
+that those synthesis and baseline figures are a frozen record rather than a
+reproducible measurement, that a rerun on `gpt-oss-120b` would not be
+model-identical, and that because the decision layer contains no language model no
+routing decision, structural property or abstention count depends on either model.
+That last clause is the point of the footnote: it bounds what the retirement costs.
+
+`paper/main.tex` line 1773 was left untouched, as flagged in Observation 68: it
+reports Wolk's published numbers for Llama-3.3-70B, another paper's experiment.
+
+**A ledger rule caught a real defect in the first draft.** The footnote initially
+carried the verification dates (2026-08-31 and 2026-11-12) and a "Corpus~1 and 2"
+phrase. `check_ledger.py` check (c) FAILED with seven uncovered numbers, because
+every numeral in the paper must trace to a ledger row and audit dates have no row.
+The rule was right and the draft was wrong: provenance dates belong in this log,
+which already carries them, not in the paper. Rewrote the footnote numeral-free.
+Worth recording as a case where the ledger stopped unsourced numbers from entering
+the paper rather than merely reporting on them after the fact.
+
+**Effect.** `check_ledger.py` FAILED to PASSED: (c) coverage 1263 ok / 0 fail, and
+all five checks 0 fail / 0 warn. `--sync-lines` then corrected **420** recorded line
+numbers, since the footnote shifted everything below it in the file. `pytest tests/`
+175 passed.
+
+**Numbers updated.** None. No measured value changed and no number was added to the
+paper. Only line numbers in `docs/NUMBERS_LEDGER.csv` moved.
+
+**Follow-up.** `Project_Report.pdf`, a teammate's document and not in this
+repository, names the model in its sections 4.2.1 and 6.6.5 and in Appendix A, and
+needs the same disclosure. That is item 3 of the review handed to its author, not a
+repository task.
