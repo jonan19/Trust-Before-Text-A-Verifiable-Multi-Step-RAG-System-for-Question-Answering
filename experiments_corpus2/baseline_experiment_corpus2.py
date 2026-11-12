@@ -12,7 +12,9 @@ Same design as the original:
   * We do NOT touch validation.py / orchestrator.py / synthesis.py or any
     threshold. This script only reads the frozen system's decisions
     (our_decisions_corpus2.json) and reproduces the retrieval our system
-    sees, then calls a real LLM (Groq llama-3.3-70b-versatile).
+    sees, then calls a real LLM (Groq; the reported run used
+    llama-3.3-70b-versatile, which Groq has since decommissioned, so a rerun
+    uses baseline_experiment.GROQ_MODEL and will not reproduce it exactly).
   * Checkpointed / resumable JSON: re-running the same --out file skips
     already-completed query ids (run protocol rule 2).
 

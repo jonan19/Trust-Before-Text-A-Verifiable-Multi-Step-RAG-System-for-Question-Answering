@@ -140,9 +140,12 @@ def build_report():
     L = []
     A = L.append
     A("# HARD TEST 4 — Synthesis Hardening (before / after)\n")
+    # Report the model actually used, not a hardcoded name: the reported run
+    # used llama-3.3-70b-versatile, since decommissioned by Groq.
+    import baseline_experiment as _be
     A("*Only the synthesis prompt + evidence wrapping changed. No validation/"
       "decision threshold touched. Same 45 poisoned inputs as E3. Model "
-      "llama-3.3-70b-versatile, temp 0.*\n")
+      f"{_be.GROQ_MODEL}, temp 0.*\n")
     A("## End-to-end synthesis ASR: E3 (before) vs hardened (after)\n")
     A("| Injection style | E3 before | Hardened after |")
     A("|---|---|---|")

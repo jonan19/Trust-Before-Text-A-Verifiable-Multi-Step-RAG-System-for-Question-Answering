@@ -35,7 +35,9 @@ python-multipart>=0.0.6
 
 # ── LLM backends (at least one recommended; mock works without any) ─────────
 
-# Groq — llama-3.3-70b-versatile  [PRIMARY — set GROQ_API_KEY in .env]
+# Groq — openai/gpt-oss-120b  [PRIMARY — set GROQ_API_KEY in .env]
+# (the reported Corpus 1/2 baselines used llama-3.3-70b-versatile, since
+#  decommissioned by Groq; see experiments/baseline_experiment.py)
 groq>=0.9.0
 
 # OpenAI — gpt-4o-mini            [FALLBACK — set OPENAI_API_KEY in .env]

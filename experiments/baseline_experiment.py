@@ -33,7 +33,8 @@ Usage
 
 Environment
 -----------
-  Requires GROQ_API_KEY in .env (Groq llama-3.3-70b-versatile).
+  Requires GROQ_API_KEY in .env (Groq openai/gpt-oss-120b; the reported
+  Corpus 1 and 2 baselines used llama-3.3-70b-versatile, since decommissioned).
   Set HF_HUB_DISABLE_PROGRESS_BARS=1 TRANSFORMERS_VERBOSITY=error to quiet HF.
 """
 
@@ -75,7 +76,13 @@ GT_PATH = DATA / "ground_truth.json"
 # are stale (v4 = 67.9%, v5 = 83.3%), not the current v6 system.
 FROZEN_PATH = OUT / "our_decisions.json"
 
-GROQ_MODEL = "llama-3.3-70b-versatile"
+# The Corpus 1 and 2 results reported in the paper were produced with
+# llama-3.3-70b-versatile, which Groq has since decommissioned (a run against
+# it now returns 404 model_not_found). The default below is the model the
+# external-benchmark runs already use, so a rerun works out of the box; it does
+# NOT reproduce the reported baseline numbers, which stay frozen at the 70B.
+# Override with --model, or by assigning to this constant before calling.
+GROQ_MODEL = "openai/gpt-oss-120b"
 
 # ---------------------------------------------------------------------------
 # Baseline prompt (exact shape from the master prompt / Journal Guide §4.5)

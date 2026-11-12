@@ -1715,3 +1715,156 @@ constants, five test fixtures and nine live documentation files repointed.*
   against: 27 ledger `source` expressions hardcode corpus data paths, and it
   would mean editing preregistration records. Whoever regenerates
   `overleaf_bundle.zip` must now read from `paper/`, per `paper/README.md`.
+
+---
+
+## Observation 68
+
+**Date.** 2026-11-12
+**Trigger.** The two items left open by Observation 64. Owner asked for both to be
+closed. Neither changes a reported number; both are rot removal.
+
+### Part A: the dead model default
+
+**Issue.** `experiments/baseline_experiment.py` defaulted `GROQ_MODEL` to
+`llama-3.3-70b-versatile`, which Groq has decommissioned. Any run of it, or of
+anything importing it, fails with `404 model_not_found` before doing work. This is
+what broke `live_end_to_end.py` in Observation 64 until `--model` was passed.
+
+**What made this worse than a stale constant.** The decommissioning was already
+known in this repository. `evaluation/llm_baseline_corpus3.py:50-60` documents it
+under a heading "MODEL SUBSTITUTION", including the verification date,
+**2026-08-31**, and substitutes `openai/gpt-oss-120b` with its reasoning stated.
+That knowledge sat in one script for over two months and was never propagated to
+the primary baseline script, so the default kept pointing at a dead model. Same
+defect pattern as the NLPIR ledger rows in Observation 66 and the untracked
+`AUTOMATION_PLAN.md` in Observation 67: a record existed and nothing reconciled
+against it.
+
+**Fix.** Scoped deliberately narrowly, by whether a reference is *executable* or
+*descriptive*.
+
+Changed, because they are executed or would mislabel a future run:
+
+1. `experiments/baseline_experiment.py` `GROQ_MODEL` -> `openai/gpt-oss-120b`, with
+   a comment stating that the reported Corpus 1/2 baselines used the 70B, that this
+   default does **not** reproduce them, and that they stay frozen. Same model and
+   same reasoning as `llm_baseline_corpus3.py` chose independently, so the project
+   now has one current LLM rather than two.
+2. `experiments/baseline_experiment.py` docstring, `requirements.txt:38` comment,
+   and `experiments_corpus2/baseline_experiment_corpus2.py` docstring: say which
+   model runs now and that the reported run's model is decommissioned.
+3. `experiments/synth_hardening_test.py:143` wrote the literal string
+   `llama-3.3-70b-versatile, temp 0` into the header of the report it generates,
+   while generating that report from a live run in the same process. A rerun would
+   have produced a report labelled with a model it did not use. Now interpolates
+   `baseline_experiment.GROQ_MODEL`.
+
+Left alone, deliberately, because the name is a correct label on frozen results:
+
+- `experiments/make_haystack_report.py:105` and
+  `experiments/make_injection_report.py:91`. Both are pure renderers: they read
+  `haystack_results.json` / `injection_results.json` and make no LLM call (verified:
+  zero `groq_chat` references). The 70B **is** the model that produced those
+  numbers, so rewriting the label would assert a model that did not.
+- `evaluation/adversarial_gap_probes.py:21`, a docstring reporting a past measured
+  result, and the prose in `numbers.md`, `docs/STATUS.md`, `docs/CORPUS3_RESULTS.md`,
+  the ledger row and this log.
+
+**Effect.** `pytest tests/` 175 passed. `check_ledger.py` PASSED, 0 fail / 0 warn on
+all five checks. No reported number touched, so `numbers.md` needed no edit.
+
+**Not done, and why.** The paper still names the 70B at `paper/main.tex` lines 842,
+1159, 1616 and elsewhere, and those numbers are deliberately **not** being re-run.
+Recommendation recorded for the owner: footnote the model as decommissioned rather
+than re-measure. Reasoning, in the project's own terms:
+
+- Re-running is not one cell. It is the C1 and C2 baseline accuracies, decision
+  consistency 0.987 with the Q069 flip, conflict attribution 14/16, unsafe 1/32 at
+  Q035, the whole `Def. LLM` column of the fixed-injection table across 45 cases,
+  the `Defended llama-3.3-70b 12/12` gap-probe row, and the adaptive-attack
+  existence proof. Each needs a ledger row plus `--sync-lines`.
+- Re-running *part* of it would be worse than freezing: the paper would compare
+  against two different baselines in different chapters without saying so.
+- It would reopen the `corpus12-accept-as-is` standing decision (2026-10-11) on
+  information about reproducibility, not about the measurement being wrong. The
+  measurement was valid when taken.
+- The paper's claim is structural. The baseline exists to show that a prompted LLM
+  can be more accurate but not repeatable; a retired checkpoint does not touch that.
+- `llm_baseline_corpus3.py` already set the precedent: disclose the substitution,
+  do not claim reproducibility of the published baseline.
+
+`paper/main.tex:1773` must not be touched under any option: it reports Wolk's
+published numbers for Llama-3.3-70B, another paper's experiment.
+
+### Part B: the dirty default Qdrant store
+
+**Issue.** Observation 64 recorded Stage 0 rejecting 7 to 9 chunks per query from an
+`HR-Policy.pdf` absent from the corpus. Measured properly here, it was far larger
+than that sampling suggested: **85 of 185 points, 46% of the live index**, were that
+one ghost document. `manifest.json` and `chunk_registry.json` both listed only the
+correct 11 Corpus 1 files, so provenance rejected every stale point correctly; the
+collection itself had simply never been purged after an earlier ingestion.
+`data_uploads/` and `data_temp/` were both empty, so this was not a leftover upload.
+
+**Blast radius, checked before touching anything.** `evaluation/harness.py:47-48`
+points Corpus 1 and 2 at `qdrant_db_c1_copy` and `qdrant_db_c2_copy`, not at the
+live `qdrant_db/`. **No reported number depends on the live store.** The damage was
+confined to `api.py` and `main.py`, which is to say the demo and any live capture.
+
+It was already distorting an observable. The same annual-leave query scored
+faithfulness **1.0** through `live_end_to_end.py` (which uses the copy) and **0.0**
+through `POST /query` (which uses the live store), because 85 phantom points were
+consuming retrieval slots and shifting the evidence set before Stage 0 stripped them.
+
+**Fix.** Rebuilt through the project's own path, `api._reingest_all(force=True)`, not
+by deleting directories. Checked first that `qdrant_db/ui_state.json` has
+`base_loaded: true` and that `data/` holds its 11 files, because with nothing in
+scope that function empties the index outright rather than rebuilding it.
+
+**Effect.** 185 points -> **100**, distributed across exactly the 11 corpus
+documents, `SOURCES NOT IN MANIFEST: none`. Re-ran the API check:
+
+| Query class | decision | faithfulness | citations | unverified |
+|---|---|---|---|---|
+| answer | proceed | 1.0 | 20 | 0 |
+| conflict | abstain | None | 2 | 0 |
+| insufficient | abstain | None | 0 | 0 |
+
+`GET /stats` reports 100 chunks / 11 documents. `unverified_count` is **0** on every
+query, where it was 7 to 9 before, so the Stage 0 rejection noise is gone from the
+console. The faithfulness discrepancy is resolved: the answer query now scores 1.0
+through the API, matching the harness exactly.
+
+**Numbers updated.** None. No value in `numbers.md`, `paper/main.tex`,
+`docs/STATUS.md` or `README.md` changed. Part B changed no number because the
+evaluation never read the store that was dirty, and Part A changed no number because
+the frozen baselines stay frozen.
+
+**Edge cases and assumptions.**
+
+1. The new `GROQ_MODEL` default silently changes which model a future baseline rerun
+   uses. That is intended and is the only option, since the old model returns 404,
+   but it means a rerun is not comparable to the published baseline. The comment at
+   the constant says so at the point of use, which is the only place someone will
+   read it.
+2. `_reingest_all` sources from `data/` plus uploads. Anyone who had deliberately
+   indexed something outside `data/` through the UI would have lost it in this
+   rebuild. Both upload directories were verified empty first.
+3. The rebuild is not reproducible as a *byte-identical* store; chunk ids and
+   ordering come out of a fresh ingestion. Nothing depends on them, since the
+   evaluation uses the separate copies.
+4. `qdrant_db/` is gitignored, so none of Part B is in version control. If the store
+   goes stale again there is no diff to catch it, which is what the follow-up below
+   addresses.
+
+**Follow-up.**
+
+1. Owner decision on the paper footnote wording (Part A, "Not done").
+2. Nothing detects a dirty store. A check comparing the set of sources in the
+   collection against `manifest.json` is about ten lines, would have caught this
+   immediately, and belongs in the test suite or `docs/AUTOMATION_PLAN.md` rather
+   than being bolted onto this entry.
+3. Rebuild the live store before any demo or viva capture, and re-check that
+   `unverified_count` is 0, since this failure mode is invisible from the UI: it
+   degrades answers quietly while provenance reports success.
